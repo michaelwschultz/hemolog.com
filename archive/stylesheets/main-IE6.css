@@ -1,0 +1,93 @@
+#navigation {
+	height: 31px;
+	list-style-type: none;
+	position: absolute;
+	z-index: 1;
+	overflow: hidden;
+	left: 380px;
+	top: 122px;
+	padding-right: 50px;
+}
+
+#navigation li {
+	height: 31px;
+	float: left;
+	margin-right: -11px;
+}
+
+#navigation li a {
+	float: left;
+	text-decoration: none;
+	background: url(../images/essentials/header/navigation/ie6/left.png) no-repeat 3px 0;
+	height: 29px;
+	padding-left: 18px;
+	margin-right: 19px;
+	display: inline;
+}
+
+#navigation li a span {
+	height: 23px;
+	background: url(../images/essentials/header/navigation/ie6/right.png) no-repeat right 0;
+	margin-right: -25px;
+	padding-right: 25px;
+	position: relative;
+	z-index: 1;
+	cursor: pointer;
+	display: block;
+	float: left;
+	padding-top: 6px;
+	white-space: nowrap;
+}
+
+/* --- */
+
+#navigation li a:hover {
+	position: relative;
+	z-index: 1;
+	background: url(../images/essentials/header/navigation/ie6/left-current.png) no-repeat 3px 0;
+	height: 29px;
+}
+
+#navigation li a:hover span {
+	height: 23px;
+	background-image: url(../images/essentials/header/navigation/ie6/right-current.png);
+}
+
+/* --- */
+
+#navigation li.current a {
+	position: relative;
+	z-index: 2;
+	background: url(../images/essentials/header/navigation/ie6/left-current.png) no-repeat 3px 0;
+	height: 31px;
+}
+
+#navigation li.current a span {
+	background-image: url(../images/essentials/header/navigation/ie6/right-current.png);
+	height: 25px;
+}
+
+#navigation li.current a:hover {
+	background-position: 0 0;
+	height: 31px;
+}
+
+#navigation li.current a:hover span {
+	height: 25px;
+}
+
+/* --- */
+
+.mirror #navigation {
+	right: 386px;
+	top: 122px;
+	left: 49px;
+}
+
+#iphone a:hover {
+	background-position: 0 -56px;
+}
+
+#iphone a:active {
+	background-position: 0 -113px;
+}

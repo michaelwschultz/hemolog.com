@@ -1,0 +1,25 @@
+/** Style the tweets */
+.twitters {
+  padding: 0;
+  margin: 0;
+}
+
+#mytweets ul li {
+	margin: 0;
+	padding: 0 0 20px 50px;
+	list-style: none;
+	background:url('../images/basics/links/twitterbird.png') no-repeat 0 -15px;
+}
+
+.twitters span.prefix {
+  font-weight: bold;
+}
+
+.twitters span.time {
+  font-style: italic;
+  color: #c5c5c5;
+}
+
+.twitters span.status {
+  font-style: italic;
+}
