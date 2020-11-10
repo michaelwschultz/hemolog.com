@@ -1,5 +1,5 @@
 import React from 'react'
-import fetch from '../lib/fetch'
+import fetch from 'lib/fetch'
 import useSWR from 'swr'
 
 type Value = string[]
@@ -32,12 +32,18 @@ export default function InfusionTable(): JSX.Element {
   }
 
   const renderRow = (row): JSX.Element => {
-    //TODO: each cell needs a unique key
     return (
-      <tr>
-        {row.map((cell) => (
-          <td>{cell}</td>
+      <tr key={`table-row-${row[0]}`}>
+        {row.map((cell, index) => (
+          <td key={`table-cell-${index}`}>{cell}</td>
         ))}
+
+        <style jsx>{`
+          td {
+            padding: 0 16px 0 0;
+            text-align: left;
+          }
+        `}</style>
       </tr>
     )
   }
@@ -46,16 +52,25 @@ export default function InfusionTable(): JSX.Element {
   const columnHeaders = values[0]
 
   const entries = [...values]
-  entries.shift() // remove columnHeaders from array
+  entries.shift() // removes columnHeaders (first entry) from array
 
   return (
     <table>
-      <tr>
-        {columnHeaders.map((header) => (
-          <th>{header}</th>
-        ))}
-      </tr>
-      {entries.map((row) => renderRow(row))}
+      <thead>
+        <tr>
+          {columnHeaders.map((header, index) => (
+            <th key={`table-column-header-${index}`}>{header}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>{entries.map((row) => renderRow(row))}</tbody>
+
+      <style jsx>{`
+        th {
+          padding: 0 16px 0 0;
+          text-align: left;
+        }
+      `}</style>
     </table>
   )
 }
