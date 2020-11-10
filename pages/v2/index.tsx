@@ -1,7 +1,10 @@
+import React from 'react'
 import Head from 'next/head'
+import styled from 'styled-components'
 import InfusionTable from 'components/infusionTable'
 import Stats from 'components/stats'
 import Chart from 'components/chart'
+import Sidebar from 'components/sidebar'
 
 export default function Home(): JSX.Element {
   return (
@@ -10,24 +13,32 @@ export default function Home(): JSX.Element {
         <title>Hemolog version 2</title>
       </Head>
 
-      <main>
-        <h1>Hemolog</h1>
-        <div className='flex'>
-          <InfusionTable />
-          <Chart />
-        </div>
-        <Stats />
-      </main>
-
-      <style jsx>{`
-        .flex {
-          display: flex;
-          justify-content: space-between;
-        }
-        main {
-          padding: 24px;
-        }
-      `}</style>
+      <StyledPage>
+        <Sidebar />
+        <StyledMain>
+          <h1>Hemolog</h1>
+          <StyledFlex>
+            <InfusionTable />
+            <Chart />
+          </StyledFlex>
+          <Stats />
+        </StyledMain>
+      </StyledPage>
     </div>
   )
 }
+
+const StyledPage = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+`
+
+const StyledMain = styled.div`
+  padding: 24px;
+`
+
+const StyledFlex = styled.div`
+  display: flex;
+  justify-content: space-between;
+`

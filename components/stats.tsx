@@ -75,40 +75,42 @@ export default function Stats(): JSX.Element {
       <h1>2020 Stats</h1>
       <StyledGrid>
         <StyledCard>
-          <p>Infusions</p>
           <h2>{numberOfInfusions}</h2>
+          <p>Infusions</p>
         </StyledCard>
         <StyledCard>
-          <p>Bleeds</p>
           <h2>3 (placeholder)</h2>
+          <p>Bleeds</p>
         </StyledCard>
         <StyledCard>
-          <p>Consecutive prophy infusions</p>
           <h2>0 (placeholder)</h2>
+          <p>Consecutive prophy infusions</p>
         </StyledCard>
         <StyledCard>
-          <p>Most affected area</p>
           <h2>{mostAffectedArea}</h2>
+          <p>Most affected area</p>
         </StyledCard>
         <StyledCard>
-          <p>Biggest cause</p>
           <h2>{biggestCause}</h2>
+          <p>Biggest cause</p>
         </StyledCard>
         <StyledCard>
-          <p>Units of factor</p>
           <h2>~{unitsOfFactor.toLocaleString()}</h2>
+          <p>Units of factor</p>
         </StyledCard>
         <StyledCard>
           {/* I think this is between $1.19 and $1.66 per unit based on this article
             https://www.ashclinicalnews.org/spotlight/feature-articles/high-price-hemophilia/ */}
-          <p>Estimated total cost</p>
+
           <h2>${estimatedTotalCost.toLocaleString()}</h2>
+          <p>Estimated total cost</p>
         </StyledCard>
         <StyledCard>
           {/* TODO: could setup a separate sheet for this data as well as a 
             separate api call */}
-          <p>Pharmacy orders</p>
+
           <h2>6</h2>
+          <p>Pharmacy orders</p>
         </StyledCard>
       </StyledGrid>
 
@@ -122,15 +124,20 @@ export default function Stats(): JSX.Element {
 }
 
 const StyledCard = styled.div`
-  border: 1px solid black;
-  border-radius: 6px;
+  /* border: 1px solid rgba(0, 0, 0, 0.2); */
+  border-radius: 20px;
   padding: 32px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 
   h2 {
     font-size: 21px;
+    line-height: 24px;
+    margin: 0;
   }
   p {
     font-size: 14px;
+    line-height: 24px;
+    margin: 0;
   }
 `
 
