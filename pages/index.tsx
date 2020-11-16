@@ -2,7 +2,7 @@ import Head from 'next/head'
 
 export default function Home(): JSX.Element {
   return (
-    <div>
+    <>
       <Head>
         <title>Hemolog | First iPhone app for Hemophiliacs</title>
       </Head>
@@ -37,6 +37,6 @@ export default function Home(): JSX.Element {
           padding: 24px;
         }
       `}</style>
-    </div>
+    </>
   )
 }

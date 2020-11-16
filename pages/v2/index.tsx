@@ -8,7 +8,7 @@ import Sidebar from 'components/sidebar'
 
 export default function Home(): JSX.Element {
   return (
-    <div>
+    <>
       <Head>
         <title>Hemolog version 2</title>
       </Head>
@@ -24,12 +24,12 @@ export default function Home(): JSX.Element {
           <Stats />
         </StyledMain>
       </StyledPage>
-    </div>
+    </>
   )
 }
 
 const StyledPage = styled.div`
-  position: relative;
+  height: inherit;
   display: flex;
   flex-direction: row;
 `
