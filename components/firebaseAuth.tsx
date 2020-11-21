@@ -5,6 +5,8 @@ import initFirebase from 'utils/auth/initFirebase'
 import { setUserCookie } from 'utils/auth/userCookies'
 import { mapUserData } from 'utils/auth/mapUserData'
 
+// TODO: would be nice to move this to a Provider https://www.youtube.com/watch?v=1BUT7T9ThlU
+
 // Init the Firebase app.
 initFirebase()
 
@@ -36,6 +38,7 @@ const FirebaseAuth = (): JSX.Element => {
   return (
     <div>
       <StyledFirebaseAuth
+        // @ts-ignore
         uiConfig={firebaseAuthConfig}
         firebaseAuth={firebase.auth()}
       />

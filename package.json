@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@bit/recharts.recharts.radial-bar-chart": "^1.6.2",
+    "dayjs": "^1.9.6",
     "firebase": "^8.0.2",
     "firebase-admin": "^9.4.1",
+    "firestore-pagination-hook": "^1.0.0",
     "isomorphic-unfetch": "^3.1.0",
     "js-cookie": "^2.2.1",
     "next": "^10.0.1",

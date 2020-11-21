@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import firebase from 'firebase/app'
 import 'firebase/auth'
-import initFirebase from '../auth/initFirebase'
+import initFirebase from 'utils/auth/initFirebase'
 import {
   removeUserCookie,
   setUserCookie,
@@ -43,15 +43,11 @@ const useUser = () => {
         } else {
           removeUserCookie()
           setUser(null)
-          // router.push('/v2/login')
+          router.push('/v2/login')
         }
       })
 
     const userFromCookie = getUserFromCookie()
-    if (!userFromCookie) {
-      router.push('/v2/login')
-      return
-    }
     setUser(userFromCookie)
 
     return () => {

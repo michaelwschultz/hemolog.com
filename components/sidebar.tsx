@@ -7,7 +7,6 @@ import { useUser } from 'utils/auth/useUser'
 export default function Sidebar(): JSX.Element {
   const { user, logout } = useUser()
 
-  console.log('user', user)
   return (
     <StyledSidebar>
       <StyledAvatar>
