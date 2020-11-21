@@ -1,4 +1,3 @@
-import React from 'react'
 import { useRouter } from 'next/router'
 import InfusionTable from 'components/firebaseInfusionTable'
 import initFirebase from 'utils/auth/initFirebase'

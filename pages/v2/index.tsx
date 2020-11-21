@@ -1,9 +1,8 @@
-import React from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import InfusionTable from 'components/firebaseInfusionTable'
 import Stats from 'components/stats'
-import Chart from 'components/chart'
+// import Chart from 'components/chart'
 import Sidebar from 'components/sidebar'
 import { useUser } from 'utils/auth/useUser'
 
@@ -26,10 +25,8 @@ export default function Home(): JSX.Element {
         <Sidebar />
         <StyledMain>
           <h1>Hemolog</h1>
-          <StyledFlex>
-            <InfusionTable />
-            <Chart />
-          </StyledFlex>
+          <InfusionTable />
+          {/* <Chart /> */}
           <Stats />
         </StyledMain>
       </StyledPage>
@@ -45,9 +42,5 @@ const StyledPage = styled.div`
 
 const StyledMain = styled.div`
   padding: 24px;
-`
-
-const StyledFlex = styled.div`
-  display: flex;
-  justify-content: space-between;
+  width: 100%;
 `

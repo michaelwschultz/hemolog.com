@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { useUser } from 'utils/auth/useUser'
+import { Link, Row, Spacer } from '@geist-ui/react'
 
 export default function Sidebar(): JSX.Element {
   const { user, logout } = useUser()
@@ -18,25 +19,35 @@ export default function Sidebar(): JSX.Element {
               src={user.photoUrl}
               width={100}
               height={100}
-              alt='avatar'
-              className='avatar'
+              alt="avatar"
+              className="avatar"
             />
             <h3>{user.displayName}</h3>
           </>
         )}
       </StyledAvatar>
-
-      <StyledNavigation>
-        <li>
-          <Link href='/v2/stats'>Stats</Link>
-        </li>
-        <li>
-          <Link href='/v2/settings'>Settings</Link>
-        </li>
-        <li>
-          <a onClick={() => logout()}>Log out</a>
-        </li>
-      </StyledNavigation>
+      <Spacer y={2} />
+      <Row justify="center">
+        <NextLink href="/v2/stats">
+          <Link block style={{ color: 'white' }}>
+            Stats
+          </Link>
+        </NextLink>
+      </Row>
+      <Spacer y={1} />
+      <Row justify="center">
+        <NextLink href="/v2/settings">
+          <Link block style={{ color: 'white' }}>
+            Settings
+          </Link>
+        </NextLink>
+      </Row>
+      <Spacer y={1} />
+      <Row justify="center">
+        <Link onClick={() => logout()} block style={{ color: 'white' }}>
+          Log out
+        </Link>
+      </Row>
     </StyledSidebar>
   )
 }
@@ -61,15 +72,4 @@ const StyledAvatar = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
-
-const StyledNavigation = styled.ul`
-  list-style: none;
-  padding-inline-start: 0;
-
-  li {
-    padding: 24px;
-    font-size: 21px;
-    color: ${({ theme }) => theme.colors.text};
-  }
 `

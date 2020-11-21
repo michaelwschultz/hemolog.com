@@ -1,3 +1,4 @@
+import { GeistProvider, CssBaseline } from '@geist-ui/react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from 'lib/theme'
 
@@ -6,7 +7,10 @@ export default function App({ Component, pageProps }): JSX.Element {
     <>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <GeistProvider>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </GeistProvider>
       </ThemeProvider>
     </>
   )
@@ -16,18 +20,6 @@ export default function App({ Component, pageProps }): JSX.Element {
 /* @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,900;1,400;1,900&display=swap'); */
 
 const GlobalStyle = createGlobalStyle`
-  html {
-    height: 100%;
-  }
-
-  body {
-    height: inherit;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-  }
-
   /* targets the empty div applied by nextjs so the sidebar follows the height of the page */
   body > div {
     height: inherit;
@@ -39,7 +31,10 @@ const GlobalStyle = createGlobalStyle`
 
   a {
     color: inherit;
-    text-decoration: none;
-    cursor: pointer;
+  }
+
+  // overrides dumb geist-ui cssBaseline rules for unordered lists
+  li:before {
+    content: "" !important;
   }
 `
