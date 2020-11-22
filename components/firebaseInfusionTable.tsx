@@ -15,8 +15,13 @@ import Check from '@geist-ui/react-icons/check'
 import ChevronRight from '@geist-ui/react-icons/chevronRight'
 import ChevronLeft from '@geist-ui/react-icons/chevronLeft'
 
-export default function InfusionTable(): JSX.Element {
-  const { data: infusions, status, error } = useInfusions()
+interface Props {
+  limit?: number
+}
+
+export default function InfusionTable(props: Props): JSX.Element {
+  const { limit } = props
+  const { data: infusions, status, error } = useInfusions(limit)
 
   if (status === FirestoreStatusType.LOADING) {
     return (
@@ -27,12 +32,12 @@ export default function InfusionTable(): JSX.Element {
   }
 
   if (error) {
-    return <Note type="error">API did not return any data</Note>
+    return <Note type='error'>API did not return any data</Note>
   }
 
   if (status === FirestoreStatusType.ERROR && !error) {
     return (
-      <Note type="error">
+      <Note type='error'>
         Oops, something went wrong accessing your infusion data.
       </Note>
     )
@@ -53,25 +58,27 @@ export default function InfusionTable(): JSX.Element {
 
   return (
     <>
-      <Table data={rowData} width="100%">
-        <Table.Column prop="timestamp" label="Date" />
-        <Table.Column prop="prophy" label="Phrophy" />
-        <Table.Column prop="sites" label="Bleed sites" />
-        <Table.Column prop="bleedReason" label="Reason" />
-        <Table.Column prop="factorBrand" label="Factor" />
-        <Table.Column prop="units" label="Amount" />
+      <Table data={rowData} width='100%'>
+        <Table.Column prop='timestamp' label='Date' />
+        <Table.Column prop='prophy' label='Phrophy' />
+        <Table.Column prop='sites' label='Bleed sites' />
+        <Table.Column prop='bleedReason' label='Reason' />
+        <Table.Column prop='factorBrand' label='Factor' />
+        <Table.Column prop='units' label='Amount' />
       </Table>
       <Spacer y={0.5} />
-      <Row justify="end">
-        <Pagination count={1}>
-          <Pagination.Next>
-            <ChevronRight />
-          </Pagination.Next>
-          <Pagination.Previous>
-            <ChevronLeft />
-          </Pagination.Previous>
-        </Pagination>
-      </Row>
+      {infusions.length >= 25 && (
+        <Row justify='end'>
+          <Pagination count={1}>
+            <Pagination.Next>
+              <ChevronRight />
+            </Pagination.Next>
+            <Pagination.Previous>
+              <ChevronLeft />
+            </Pagination.Previous>
+          </Pagination>
+        </Row>
+      )}
     </>
   )
 }

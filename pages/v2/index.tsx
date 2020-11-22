@@ -1,10 +1,12 @@
 import Head from 'next/head'
+import NextLink from 'next/link'
 import styled from 'styled-components'
 import InfusionTable from 'components/firebaseInfusionTable'
 import Stats from 'components/stats'
 // import Chart from 'components/chart'
 import Sidebar from 'components/sidebar'
 import { useUser } from 'utils/auth/useUser'
+import { Note } from '@geist-ui/react'
 
 export default function Home(): JSX.Element {
   const { user } = useUser()
@@ -12,7 +14,12 @@ export default function Home(): JSX.Element {
   // and redirecting before hitting this page. Similar to how Lee Robinson explains
   // it here https://www.youtube.com/watch?v=NSR_Y_rm_zU
   if (!user) {
-    return <></>
+    return (
+      <Note label='Not found'>
+        Please return to the <NextLink href='/v2/login'>log in page</NextLink>{' '}
+        to continue
+      </Note>
+    )
   }
 
   return (

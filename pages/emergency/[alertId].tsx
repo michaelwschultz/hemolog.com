@@ -1,38 +1,46 @@
 import { useRouter } from 'next/router'
-import InfusionTable from 'components/firebaseInfusionTable'
+
 import initFirebase from 'utils/auth/initFirebase'
 import useEmergencyUser from 'lib/hooks/useEmergencyUser'
-import Avatar from 'components/avatar'
-import styled from 'styled-components'
+import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
+import { Loading, Page, Note, Text } from '@geist-ui/react'
+import EmergencyInfo from 'components/emergencyInfo'
 
-export default function EmergencyCard() {
+export default function EmergencyCard(): JSX.Element {
   // TODO: initFirebase this to a Provider and remove this call
   initFirebase()
 
   const router = useRouter()
   const { alertId } = router.query
+  const { person, status, error } = useEmergencyUser(alertId)
 
-  // TODO: figure out how to pass the alertId to this hook correctly
-  const { data: user, status, error } = useEmergencyUser(alertId)
+  return (
+    <Page>
+      <Page.Header style={{ paddingTop: '40px' }}>
+        <Text h4>Hemolog Emergency Card</Text>
+      </Page.Header>
+      <Page.Content>
+        {status === FirestoreStatusType.LOADING && (
+          <Loading>Loading emergency info...</Loading>
+        )}
 
-  if (error || status === 'error') return <div>Nothing could be found</div>
+        {error && (
+          <Note type='error' label='Error'>
+            Something went wrong. This could mean that this person no longer has
+            a Hemolog account or the app is broken. Please call 911 if this is
+            an emergency.
+          </Note>
+        )}
 
-  if (user) {
-    console.log(user)
-    return (
-      <StyledPage>
-        <h2>Emergency info for...</h2>
-        <h4>{user.name}</h4>
-        {/* TODO: give avatar the ability to load a user other than loggedInUser */}
-        <Avatar />
-        <InfusionTable />
-      </StyledPage>
-    )
-  }
+        {!person && status !== FirestoreStatusType.LOADING && (
+          <Note type='secondary' label='Try again'>
+            Nothing could be found at this address. Please make sure the URL
+            matches the link provided on the Hemolog Emergency Card.
+          </Note>
+        )}
 
-  return <div>Loading emergency info...</div>
+        {person && <EmergencyInfo person={person} />}
+      </Page.Content>
+    </Page>
+  )
 }
-
-const StyledPage = styled.div`
-  padding: 40px;
-`

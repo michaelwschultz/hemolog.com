@@ -33,12 +33,12 @@ interface InfusionResponse {
   error: Error;
 }
 
-export default function useInfusions(): InfusionResponse {
-  const db = firebase.firestore()
 
-  const { data, status, error } = useFirestoreQuery(
-    db.collection('infusions')
-  )
+export default function useInfusions(limit?: number): InfusionResponse {
+  const db = firebase.firestore()
+  const query = db.collection('infusions').limit(limit)
+
+  const { data, status, error } = useFirestoreQuery(query)
 
   return {
     data,

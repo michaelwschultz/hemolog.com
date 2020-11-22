@@ -6,8 +6,6 @@ import { useUser } from 'utils/auth/useUser'
 export default function Avatar(): JSX.Element {
   const { user } = useUser()
 
-  // TODO: add ability to pass userId to load here in place of having a loggedInUser
-
   return (
     <StyledAvatar>
       {!user ? (
