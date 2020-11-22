@@ -11,7 +11,6 @@ import {
   Spacer,
   Pagination,
 } from '@geist-ui/react'
-import Check from '@geist-ui/react-icons/check'
 import ChevronRight from '@geist-ui/react-icons/chevronRight'
 import ChevronLeft from '@geist-ui/react-icons/chevronLeft'
 
@@ -32,13 +31,18 @@ export default function InfusionTable(props: Props): JSX.Element {
   }
 
   if (error) {
-    return <Note type='error'>API did not return any data</Note>
+    return (
+      <Note type='error' label='Error'>
+        Oops, the database didn't respond. Refresh the page to try again.
+      </Note>
+    )
   }
 
   if (status === FirestoreStatusType.ERROR && !error) {
     return (
-      <Note type='error'>
-        Oops, something went wrong accessing your infusion data.
+      <Note type='error' label='Error'>
+        Something went wrong accessing your infusion data. Refresh the page to
+        try again.
       </Note>
     )
   }
@@ -46,10 +50,14 @@ export default function InfusionTable(props: Props): JSX.Element {
   function formatInfusionRow(infusion: Infusion) {
     const { bleedReason } = infusion
     const timestamp = dayjs(infusion.timestamp).format('MM/DD/YYYY')
-    const prophy = infusion.prophy && <Check />
+    const prophy = infusion.prophy ? (
+      <Badge type='success'>Prophy</Badge>
+    ) : (
+      <Badge type='error'>Bleed</Badge>
+    )
     const sites = infusion.sites.join(', ')
     const factorBrand = infusion.medication.brand
-    const units = <Badge>{infusion.medication.units}</Badge>
+    const units = `${infusion.medication.units} ui`
 
     return { timestamp, prophy, sites, bleedReason, factorBrand, units }
   }
@@ -60,9 +68,9 @@ export default function InfusionTable(props: Props): JSX.Element {
     <>
       <Table data={rowData} width='100%'>
         <Table.Column prop='timestamp' label='Date' />
-        <Table.Column prop='prophy' label='Phrophy' />
+        <Table.Column prop='prophy' label='Reason' />
         <Table.Column prop='sites' label='Bleed sites' />
-        <Table.Column prop='bleedReason' label='Reason' />
+        <Table.Column prop='bleedReason' label='Attribution' />
         <Table.Column prop='factorBrand' label='Factor' />
         <Table.Column prop='units' label='Amount' />
       </Table>

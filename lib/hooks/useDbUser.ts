@@ -18,11 +18,11 @@ interface FirestoreUserResponse {
   error: Error;
 }
 
-export default function useEmergencyUser(alertId?: string | string[]): FirestoreUserResponse {
+export default function useDbUser(uid: string | string[]): FirestoreUserResponse {
   const db = firebase.firestore()
 
   const { data, status, error } = useFirestoreQuery(
-    db.collection('users').where('alertId', '==', alertId || '').limit(1)
+    db.collection('users').where('uid', '==', uid || '').limit(1)
   )
 
   let person

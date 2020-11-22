@@ -17,7 +17,14 @@ export default function EmergencyCard(): JSX.Element {
   return (
     <Page>
       <Page.Header style={{ paddingTop: '40px' }}>
-        <Text h4>Hemolog Emergency Card</Text>
+        <Text h4 type='error'>
+          Hemolog Emergency Card
+        </Text>
+        <Text h6 type='secondary'>
+          This page shows the most recent medical logs for someone with
+          hemophilia. This data is <i>self reported</i> and used at the persons
+          discression.
+        </Text>
       </Page.Header>
       <Page.Content>
         {status === FirestoreStatusType.LOADING && (

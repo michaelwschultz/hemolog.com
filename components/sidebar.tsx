@@ -1,53 +1,56 @@
-import React from 'react'
-import styled from 'styled-components'
-import Image from 'next/image'
+import React, { useContext, useReducer } from 'react'
+import styled, { ThemeContext } from 'styled-components'
+import Avatar from 'components/avatar'
 import NextLink from 'next/link'
 import { useUser } from 'utils/auth/useUser'
-import { Link, Row, Spacer } from '@geist-ui/react'
+import { Link, Row, Spacer, Text } from '@geist-ui/react'
+import EmergencySnippet from 'components/emergencySnippet'
+import useDbUser from 'lib/hooks/useDbUser'
 
 export default function Sidebar(): JSX.Element {
   const { user, logout } = useUser()
+  const { person } = useDbUser(user && user.uid)
+  const themeContext = useContext(ThemeContext)
 
   return (
     <StyledSidebar>
-      <StyledAvatar>
-        {!user ? (
-          <h3>Loading user...</h3>
-        ) : (
-          <>
-            <Image
-              src={user.photoUrl}
-              width={100}
-              height={100}
-              alt="avatar"
-              className="avatar"
-            />
-            <h3>{user.displayName}</h3>
-          </>
-        )}
-      </StyledAvatar>
+      <Avatar />
       <Spacer y={2} />
-      <Row justify="center">
-        <NextLink href="/v2/stats">
-          <Link block style={{ color: 'white' }}>
-            Stats
-          </Link>
-        </NextLink>
-      </Row>
-      <Spacer y={1} />
-      <Row justify="center">
-        <NextLink href="/v2/settings">
-          <Link block style={{ color: 'white' }}>
-            Settings
-          </Link>
-        </NextLink>
-      </Row>
-      <Spacer y={1} />
-      <Row justify="center">
-        <Link onClick={() => logout()} block style={{ color: 'white' }}>
-          Log out
-        </Link>
-      </Row>
+      <StyledNavigation>
+        <div>
+          <Row justify='center'>
+            <NextLink href='/v2/stats'>
+              <Link block style={{ color: themeContext.colors.text }}>
+                Stats
+              </Link>
+            </NextLink>
+          </Row>
+          <Spacer y={1} />
+          <Row justify='center'>
+            <NextLink href='/v2/settings'>
+              <Link block style={{ color: themeContext.colors.text }}>
+                Settings
+              </Link>
+            </NextLink>
+          </Row>
+          <Spacer y={1} />
+          <Row justify='center'>
+            <Link
+              onClick={() => logout()}
+              block
+              style={{ color: themeContext.colors.text }}
+            >
+              Log out
+            </Link>
+          </Row>
+        </div>
+        <div>
+          <Text p style={{ color: themeContext.colors.text }}>
+            Emergency Card
+          </Text>
+          {person && <EmergencySnippet alertId={person.alertId} />}
+        </div>
+      </StyledNavigation>
     </StyledSidebar>
   )
 }
@@ -67,9 +70,9 @@ const StyledSidebar = styled.div`
     color: white;
   }
 `
-
-const StyledAvatar = styled.div`
+const StyledNavigation = styled.div`
   display: flex;
+  height: 100%;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
 `

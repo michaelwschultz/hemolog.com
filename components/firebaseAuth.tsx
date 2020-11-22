@@ -4,7 +4,6 @@ import 'firebase/auth'
 import initFirebase from 'utils/auth/initFirebase'
 import { setUserCookie } from 'utils/auth/userCookies'
 import { mapUserData } from 'utils/auth/mapUserData'
-import { Button } from '@geist-ui/react'
 
 // TODO: would be nice to move this to a Provider https://www.youtube.com/watch?v=1BUT7T9ThlU
 

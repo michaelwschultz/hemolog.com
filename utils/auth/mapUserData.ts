@@ -1,10 +1,17 @@
-import { profile } from "console"
+export interface User {
+  uid: string;
+  email: string;
+  token: string;
+  displayName: string;
+  photoUrl: string;
+}
 
-export const mapUserData = async (user) => {
+export const mapUserData = async (user): Promise<User> => {
   const { uid, email, displayName, photoURL } = user
   const token = await user.getIdToken(true)
+
   return {
-    id: uid,
+    uid,
     email,
     token,
     displayName,

@@ -8,12 +8,12 @@ import {
   setUserCookie,
   getUserFromCookie,
 } from './userCookies'
-import { mapUserData } from './mapUserData'
+import { mapUserData, User } from 'utils/auth/mapUserData'
 
 initFirebase()
 
 const useUser = () => {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<User>(null)
   const router = useRouter()
 
   const logout = async () => {

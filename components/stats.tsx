@@ -2,6 +2,7 @@ import React from 'react'
 import useSWR from 'swr'
 import _ from 'underscore'
 import styled from 'styled-components'
+import { Text, Spacer } from '@geist-ui/react'
 
 import fetch from 'lib/fetch'
 
@@ -72,7 +73,10 @@ export default function Stats(): JSX.Element {
   // right now all the data is fetched with the single call to /api/infusions
   return (
     <div>
-      <h1>2020 Stats</h1>
+      <Spacer y={2} />
+      <Text h4>2020 Stats</Text>
+
+      {/* Replace with Grid and Card geist-ui components */}
       <StyledGrid>
         <StyledCard>
           <h2>{numberOfInfusions}</h2>

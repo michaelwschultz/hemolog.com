@@ -2,14 +2,16 @@ import React from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
 import { useUser } from 'utils/auth/useUser'
+import { Text, Spacer, useTheme } from '@geist-ui/react'
 
 export default function Avatar(): JSX.Element {
   const { user } = useUser()
+  const theme = useTheme()
 
   return (
     <StyledAvatar>
       {!user ? (
-        <h3>Loading user...</h3>
+        <Text h4>Loading user...</Text>
       ) : (
         <>
           <Image
@@ -19,7 +21,10 @@ export default function Avatar(): JSX.Element {
             alt='avatar'
             className='avatar'
           />
-          <h3>{user.displayName}</h3>
+          <Spacer y={1} />
+          <Text h4 style={{ color: theme.palette.background }}>
+            {user.displayName}
+          </Text>
         </>
       )}
     </StyledAvatar>
