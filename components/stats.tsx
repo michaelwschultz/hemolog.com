@@ -2,7 +2,7 @@ import React from 'react'
 import useSWR from 'swr'
 import _ from 'underscore'
 import styled from 'styled-components'
-import { Text, Spacer } from '@geist-ui/react'
+import { Text, Spacer, Card, Grid } from '@geist-ui/react'
 
 import fetch from 'lib/fetch'
 
@@ -77,11 +77,11 @@ export default function Stats(): JSX.Element {
       <Text h4>2020 Stats</Text>
 
       {/* Replace with Grid and Card geist-ui components */}
-      <StyledGrid>
-        <StyledCard>
-          <h2>{numberOfInfusions}</h2>
-          <p>Infusions</p>
-        </StyledCard>
+      <Grid>
+        <Card shadow>
+          <Text h2>{numberOfInfusions}</Text>
+          <Text p>Infusions</Text>
+        </Card>
         <StyledCard>
           <h2>3 (placeholder)</h2>
           <p>Bleeds</p>
@@ -116,7 +116,7 @@ export default function Stats(): JSX.Element {
           <h2>6</h2>
           <p>Pharmacy orders</p>
         </StyledCard>
-      </StyledGrid>
+      </Grid>
 
       <style jsx>{`
         h1 {

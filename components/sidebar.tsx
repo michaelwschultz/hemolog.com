@@ -1,6 +1,6 @@
 import React, { useContext, useReducer } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import Avatar from 'components/avatar'
+import Identity from 'components/identity'
 import NextLink from 'next/link'
 import { useUser } from 'utils/auth/useUser'
 import { Link, Row, Spacer, Text } from '@geist-ui/react'
@@ -14,27 +14,27 @@ export default function Sidebar(): JSX.Element {
 
   return (
     <StyledSidebar>
-      <Avatar />
+      <Identity />
       <Spacer y={2} />
       <StyledNavigation>
         <div>
-          <Row justify='center'>
-            <NextLink href='/v2/stats'>
+          <Row justify="center">
+            <NextLink href="/v2/stats">
               <Link block style={{ color: themeContext.colors.text }}>
                 Stats
               </Link>
             </NextLink>
           </Row>
           <Spacer y={1} />
-          <Row justify='center'>
-            <NextLink href='/v2/settings'>
+          <Row justify="center">
+            <NextLink href="/v2/settings">
               <Link block style={{ color: themeContext.colors.text }}>
                 Settings
               </Link>
             </NextLink>
           </Row>
           <Spacer y={1} />
-          <Row justify='center'>
+          <Row justify="center">
             <Link
               onClick={() => logout()}
               block
