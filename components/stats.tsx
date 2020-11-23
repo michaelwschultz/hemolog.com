@@ -77,7 +77,7 @@ export default function Stats(): JSX.Element {
       <Text h4>2020 Stats</Text>
 
       {/* Replace with Grid and Card geist-ui components */}
-      <Grid>
+      <Grid.Container gap={2} justify='center'>
         <Card shadow>
           <Text h2>{numberOfInfusions}</Text>
           <Text p>Infusions</Text>
@@ -116,7 +116,7 @@ export default function Stats(): JSX.Element {
           <h2>6</h2>
           <p>Pharmacy orders</p>
         </StyledCard>
-      </Grid>
+      </Grid.Container>
 
       <style jsx>{`
         h1 {
