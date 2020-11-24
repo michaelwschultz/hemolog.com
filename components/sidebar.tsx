@@ -18,23 +18,23 @@ export default function Sidebar(): JSX.Element {
       <Spacer y={2} />
       <StyledNavigation>
         <div>
-          <Row justify="center">
-            <NextLink href="/v2/stats">
+          <Row justify='center'>
+            <NextLink href='/v2/stats'>
               <Link block style={{ color: themeContext.colors.text }}>
                 Stats
               </Link>
             </NextLink>
           </Row>
           <Spacer y={1} />
-          <Row justify="center">
-            <NextLink href="/v2/settings">
+          <Row justify='center'>
+            <NextLink href='/v2/settings'>
               <Link block style={{ color: themeContext.colors.text }}>
                 Settings
               </Link>
             </NextLink>
           </Row>
           <Spacer y={1} />
-          <Row justify="center">
+          <Row justify='center'>
             <Link
               onClick={() => logout()}
               block
@@ -55,20 +55,12 @@ export default function Sidebar(): JSX.Element {
   )
 }
 
-const StyledSidebar = styled.div`
+const StyledSidebar = styled.aside`
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.colors.primary};
-  min-width: 280px;
   padding: 24px;
-
-  img {
-    border-radius: 100px;
-  }
-
-  h3 {
-    color: white;
-  }
+  height: 100%;
 `
 const StyledNavigation = styled.div`
   display: flex;

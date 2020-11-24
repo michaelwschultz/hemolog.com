@@ -74,18 +74,20 @@ export default function InfusionTable(props: Props): JSX.Element {
         <Table.Column prop='factorBrand' label='Factor' />
         <Table.Column prop='units' label='Amount' />
       </Table>
-      <Spacer y={0.5} />
       {infusions.length >= 25 && (
-        <Row justify='end'>
-          <Pagination count={1}>
-            <Pagination.Next>
-              <ChevronRight />
-            </Pagination.Next>
-            <Pagination.Previous>
-              <ChevronLeft />
-            </Pagination.Previous>
-          </Pagination>
-        </Row>
+        <>
+          <Spacer y={0.5} />
+          <Row justify='end'>
+            <Pagination count={1}>
+              <Pagination.Next>
+                <ChevronRight />
+              </Pagination.Next>
+              <Pagination.Previous>
+                <ChevronLeft />
+              </Pagination.Previous>
+            </Pagination>
+          </Row>
+        </>
       )}
     </>
   )

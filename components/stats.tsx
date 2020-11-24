@@ -1,8 +1,8 @@
 import React from 'react'
 import useSWR from 'swr'
 import _ from 'underscore'
-import styled from 'styled-components'
-import { Text, Spacer, Card, Grid } from '@geist-ui/react'
+import { Text, Grid } from '@geist-ui/react'
+import StatCard from 'components/statCard'
 
 import fetch from 'lib/fetch'
 
@@ -72,81 +72,46 @@ export default function Stats(): JSX.Element {
   // This might not be nessisary, but could be nice. Although
   // right now all the data is fetched with the single call to /api/infusions
   return (
-    <div>
-      <Spacer y={2} />
+    <>
       <Text h4>2020 Stats</Text>
 
       {/* Replace with Grid and Card geist-ui components */}
-      <Grid.Container gap={2} justify='center'>
-        <Card shadow>
-          <Text h2>{numberOfInfusions}</Text>
-          <Text p>Infusions</Text>
-        </Card>
-        <StyledCard>
-          <h2>3 (placeholder)</h2>
-          <p>Bleeds</p>
-        </StyledCard>
-        <StyledCard>
-          <h2>0 (placeholder)</h2>
-          <p>Consecutive prophy infusions</p>
-        </StyledCard>
-        <StyledCard>
-          <h2>{mostAffectedArea}</h2>
-          <p>Most affected area</p>
-        </StyledCard>
-        <StyledCard>
-          <h2>{biggestCause}</h2>
-          <p>Biggest cause</p>
-        </StyledCard>
-        <StyledCard>
-          <h2>~{unitsOfFactor.toLocaleString()}</h2>
-          <p>Units of factor</p>
-        </StyledCard>
-        <StyledCard>
+      <Grid.Container gap={2}>
+        <Grid xs={24} sm={12} md={6}>
+          <StatCard value={numberOfInfusions.toString()} label='Infusions' />
+        </Grid>
+        <Grid xs={24} sm={12} md={6}>
+          <StatCard value='3' label='Bleeds' />
+        </Grid>
+        <Grid xs={24} sm={12} md={6}>
+          <StatCard value='0' label='Consecutive prophy infusions' />
+        </Grid>
+        <Grid xs={24} sm={12} md={6}>
+          <StatCard value={mostAffectedArea} label='Most affected area' />
+        </Grid>
+        <Grid xs={24} sm={12} md={6}>
+          <StatCard value={biggestCause} label='Biggest cause' />
+        </Grid>
+        <Grid xs={24} sm={12} md={6}>
+          <StatCard
+            value={`~${unitsOfFactor.toLocaleString()} ui`}
+            label='Units of factor'
+          />
+        </Grid>
+        <Grid xs={24} sm={12} md={6}>
           {/* I think this is between $1.19 and $1.66 per unit based on this article
             https://www.ashclinicalnews.org/spotlight/feature-articles/high-price-hemophilia/ */}
-
-          <h2>${estimatedTotalCost.toLocaleString()}</h2>
-          <p>Estimated total cost</p>
-        </StyledCard>
-        <StyledCard>
+          <StatCard
+            value={`$${estimatedTotalCost.toLocaleString()}`}
+            label='Estimated total cost'
+          />
+        </Grid>
+        <Grid xs={24} sm={12} md={6}>
           {/* TODO: could setup a separate sheet for this data as well as a 
             separate api call */}
-
-          <h2>6</h2>
-          <p>Pharmacy orders</p>
-        </StyledCard>
+          <StatCard value='6' label='Pharmacy Orders' />
+        </Grid>
       </Grid.Container>
-
-      <style jsx>{`
-        h1 {
-          padding-top: 40px;
-        }
-      `}</style>
-    </div>
+    </>
   )
 }
-
-const StyledCard = styled.div`
-  /* border: 1px solid rgba(0, 0, 0, 0.2); */
-  border-radius: 20px;
-  padding: 32px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-
-  h2 {
-    font-size: 21px;
-    line-height: 24px;
-    margin: 0;
-  }
-  p {
-    font-size: 14px;
-    line-height: 24px;
-    margin: 0;
-  }
-`
-
-const StyledGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-gap: 16px;
-`

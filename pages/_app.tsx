@@ -37,4 +37,10 @@ const GlobalStyle = createGlobalStyle`
   li:before {
     content: "" !important;
   }
+
+  .ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 `
