@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from 'react'
+import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import Identity from 'components/identity'
 import NextLink from 'next/link'
@@ -17,7 +17,7 @@ export default function Sidebar(): JSX.Element {
       <Identity />
       <Spacer y={2} />
       <StyledNavigation>
-        <div>
+        <>
           <Row justify='center'>
             <NextLink href='/v2/stats'>
               <Link block style={{ color: themeContext.colors.text }}>
@@ -43,13 +43,13 @@ export default function Sidebar(): JSX.Element {
               Log out
             </Link>
           </Row>
-        </div>
-        <div>
+        </>
+        <>
           <Text p style={{ color: themeContext.colors.text }}>
             Emergency Card
           </Text>
           {person && <EmergencySnippet alertId={person.alertId} />}
-        </div>
+        </>
       </StyledNavigation>
     </StyledSidebar>
   )

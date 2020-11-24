@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import Head from 'next/head'
-import styled from 'styled-components'
 import InfusionTable from 'components/firebaseInfusionTable'
 import Stats from 'components/stats'
 // import Chart from 'components/chart'
@@ -39,6 +38,7 @@ export default function Home(): JSX.Element {
         <title>Hemolog 2</title>
       </Head>
 
+      {/* TODO: hide mobal sidebar on load */}
       {!largerThanSm && <Sidebar />}
 
       <Row>
