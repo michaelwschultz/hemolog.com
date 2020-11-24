@@ -31,9 +31,9 @@ export default function EmergencyInfo(props: Props): JSX.Element {
           </Row>
           <Badge>Treat with Factor VIII</Badge>
         </Row>
-        <Spacer y={1} />
+        <Spacer />
         <InfusionTable limit={3} />
-        <Spacer y={1} />
+        <Spacer y={2} />
         <Note label='Note'>
           Pay attention to the date on each of these logs. We're only showing
           you the <Text b>3</Text> most recent logs. If you want to see more,{' '}

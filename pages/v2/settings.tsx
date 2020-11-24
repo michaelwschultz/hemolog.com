@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import Head from 'next/head'
-import InfusionTable from 'components/firebaseInfusionTable'
-import Stats from 'components/stats'
-// import Chart from 'components/chart'
 import Sidebar from 'components/sidebar'
+import { useUser } from 'utils/auth/useUser'
 import {
   Page,
   Text,
@@ -14,12 +12,11 @@ import {
   Spacer,
   useMediaQuery,
   useModal,
+  Note,
 } from '@geist-ui/react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import Droplet from '@geist-ui/react-icons/droplet'
 import FeedbackModal from 'components/feedbackModal'
-import InfusionModal from 'components/infusionModal'
-import { useUser } from 'utils/auth/useUser'
 
 export default function Home(): JSX.Element {
   const { user } = useUser()
@@ -34,37 +31,6 @@ export default function Home(): JSX.Element {
     bindings: feedbackModalBindings,
   } = useModal(false)
 
-  const {
-    visible: infusionModal,
-    setVisible: setInfusionModalVisible,
-    bindings: infusionModalBindings,
-  } = useModal(false)
-
-  console.log(user)
-
-  // TODO: add welcome message by checking to see if this is the users
-  // first time logging in. Still not sure how to accomplish this.
-  //
-  // const [toasts, setToast] = useToasts()
-
-  // // displays welcome message on first login
-  // useEffect(() => {
-  //   if (user && !toasts.length) {
-  //     setToast({
-  //       text: '👋 Welcome to Hemolog 2!',
-  //       delay: 12000,
-  //       type: 'success',
-  //       actions: [
-  //         {
-  //           name: 'thanks',
-  //           passive: true,
-  //           handler: (_event, cancel) => cancel(),
-  //         },
-  //       ],
-  //     })
-  //   }
-  // }, [user])
-
   // TODO: Could improve this by determining the user on the server side
   // and redirecting before hitting this page. Similar to how Lee Robinson explains
   // it here https://www.youtube.com/watch?v=NSR_Y_rm_zU
@@ -75,9 +41,9 @@ export default function Home(): JSX.Element {
   return (
     <>
       <Head>
-        <title>Hemolog 2</title>
+        <title>Hemolog - Settings</title>
       </Head>
-      {/* TODO: fix server side issue of sidebar not being found in HTML */}
+      {/* TODO: hide mobal sidebar on load */}
       {showSidebar && !largerThanSm && <Sidebar />}
       <Row>
         {showSidebar && largerThanSm && (
@@ -92,28 +58,17 @@ export default function Home(): JSX.Element {
               <Text h4>
                 Hemolog <Droplet color='salmon' />
               </Text>
-              <Row>
-                <Button
-                  onClick={() => setInfusionModalVisible(true)}
-                  auto
-                  type='error-light'
-                >
-                  Log infusion
-                </Button>
-                <Spacer />
-                <Button onClick={toggleSidebar} auto>
-                  Toggle sidebar
-                </Button>
-              </Row>
+              <Button onClick={toggleSidebar} auto>
+                Toggle sidebar
+              </Button>
             </Row>
           </Page.Header>
           <Page.Content>
-            <Stats />
-            {/* <Chart /> */}
-            <Spacer y={3} />
-            <InfusionTable />
-            {/* TODO: find out how this Spacer can be removed */}
-            <Spacer y={5} />
+            <Note label='Note'>
+              Soon you'll be able to add more info to your profile here like
+              severity type. That might also be something that is required when
+              you sign up.
+            </Note>
           </Page.Content>
           <Page.Footer style={{ paddingBottom: '16px' }}>
             {/* This footer overlays the content for some reason */}
@@ -136,11 +91,6 @@ export default function Home(): JSX.Element {
         visible={feedbackModal}
         setVisible={setFeedbackModalVisible}
         bindings={feedbackModalBindings}
-      />
-      <InfusionModal
-        visible={infusionModal}
-        setVisible={setInfusionModalVisible}
-        bindings={infusionModalBindings}
       />
     </>
   )

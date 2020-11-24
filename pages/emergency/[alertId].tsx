@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router'
+import NextLink from 'next/link'
 
 import initFirebase from 'utils/auth/initFirebase'
 import useEmergencyUser from 'lib/hooks/useEmergencyUser'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
-import { Loading, Page, Note, Text } from '@geist-ui/react'
+import { Loading, Page, Note, Text, Row, Link } from '@geist-ui/react'
 import EmergencyInfo from 'components/emergencyInfo'
 
 export default function EmergencyCard(): JSX.Element {
@@ -17,9 +18,17 @@ export default function EmergencyCard(): JSX.Element {
   return (
     <Page>
       <Page.Header style={{ paddingTop: '40px' }}>
-        <Text h4 type='error'>
-          Hemolog Emergency Card
-        </Text>
+        <Row justify='space-between' align='middle'>
+          <Text h4 type='error'>
+            Emergency Card
+          </Text>
+          <Text h6>
+            Provided by{' '}
+            <NextLink href='/v2'>
+              <Link>Hemolog.com</Link>
+            </NextLink>
+          </Text>
+        </Row>
         <Text h6 type='secondary'>
           This page shows the most recent medical logs for someone with
           hemophilia. This data is <i>self reported</i> and used at the persons

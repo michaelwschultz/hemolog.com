@@ -10,6 +10,7 @@ import {
   Badge,
   Spacer,
   Pagination,
+  Text,
 } from '@geist-ui/react'
 import ChevronRight from '@geist-ui/react-icons/chevronRight'
 import ChevronLeft from '@geist-ui/react-icons/chevronLeft'
@@ -25,7 +26,7 @@ export default function InfusionTable(props: Props): JSX.Element {
   if (status === FirestoreStatusType.LOADING) {
     return (
       <Row>
-        <Loading>Loading</Loading>
+        <Loading>Loading infusion logs...</Loading>
       </Row>
     )
   }
@@ -66,6 +67,7 @@ export default function InfusionTable(props: Props): JSX.Element {
 
   return (
     <>
+      <Text h4>Infusion logs</Text>
       <Table data={rowData} width='100%'>
         <Table.Column prop='timestamp' label='Date' />
         <Table.Column prop='prophy' label='Reason' />

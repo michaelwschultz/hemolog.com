@@ -1,15 +1,16 @@
 import FirebaseAuth from 'components/firebaseAuth'
-import { Page, Text, Card, Row } from '@geist-ui/react'
+import { Page, Text, Card, Row, Spacer } from '@geist-ui/react'
 
 const Auth = () => {
   return (
-    <Page size="medium">
+    <Page size='large'>
       <Page.Header>
-        <Text h2>Sign up or sign in</Text>
+        <Spacer />
+        <Text h4>Sign up or sign in</Text>
       </Page.Header>
       <Page.Content>
-        <Row justify="center">
-          <Card width="330px">
+        <Row justify='center'>
+          <Card width='330px'>
             <Text h4>Welcome to Hemolog</Text>
             <Text p>
               Whether you have an account or not, signing in with Google will

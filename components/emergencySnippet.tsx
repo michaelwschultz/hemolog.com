@@ -12,7 +12,11 @@ export default function EmergencySnippet(props: Props): JSX.Element {
 
   return (
     <Row>
-      <Snippet symbol='' text={`${domain}/emergency/${alertId}`} />
+      <Snippet
+        width='300px'
+        symbol=''
+        text={`${domain}/emergency/${alertId}`}
+      />
     </Row>
   )
 }

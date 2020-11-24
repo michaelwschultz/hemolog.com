@@ -12,14 +12,17 @@ export default function Sidebar(): JSX.Element {
   const { person } = useDbUser(user && user.uid)
   const themeContext = useContext(ThemeContext)
 
+  // TODO: change this to uid and use a env variable for storing it
+  const michael = 'Michael Schultz'
+
   return (
     <StyledSidebar>
       <Identity />
       <Spacer y={2} />
       <StyledNavigation>
-        <>
+        <div>
           <Row justify='center'>
-            <NextLink href='/v2/stats'>
+            <NextLink href='/v2'>
               <Link block style={{ color: themeContext.colors.text }}>
                 Stats
               </Link>
@@ -33,6 +36,18 @@ export default function Sidebar(): JSX.Element {
               </Link>
             </NextLink>
           </Row>
+          {user && user.displayName === michael && (
+            <>
+              <Spacer y={1} />
+              <Row justify='center'>
+                <NextLink href='/v2/feedback'>
+                  <Link block style={{ color: themeContext.colors.text }}>
+                    Feedback
+                  </Link>
+                </NextLink>
+              </Row>
+            </>
+          )}
           <Spacer y={1} />
           <Row justify='center'>
             <Link
@@ -43,13 +58,13 @@ export default function Sidebar(): JSX.Element {
               Log out
             </Link>
           </Row>
-        </>
-        <>
+        </div>
+        <div>
           <Text p style={{ color: themeContext.colors.text }}>
             Emergency Card
           </Text>
           {person && <EmergencySnippet alertId={person.alertId} />}
-        </>
+        </div>
       </StyledNavigation>
     </StyledSidebar>
   )
