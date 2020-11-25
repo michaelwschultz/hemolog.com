@@ -9,6 +9,7 @@ import {
 } from '@geist-ui/react'
 import { useUser } from 'utils/auth/useUser'
 import dayjs from 'dayjs'
+import Logo from 'components/logo'
 
 const Feedback = () => {
   const { user } = useUser()
@@ -76,9 +77,8 @@ const Feedback = () => {
   if (user.displayName === michael) {
     return (
       <Page size='large'>
-        <Page.Header>
-          <Spacer />
-          <Text h4>Hemolog.com feedback</Text>
+        <Page.Header style={{ paddingTop: '24px' }}>
+          <Logo />
         </Page.Header>
         <Page.Content>
           {/* TODO: sort the list of feedback by date/time */}
@@ -102,9 +102,6 @@ const Feedback = () => {
             </Row>
           ))}
         </Page.Content>
-        <Page.Footer>
-          <Text p>Built in Oakland California by Michael Schultz</Text>
-        </Page.Footer>
       </Page>
     )
   }

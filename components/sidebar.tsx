@@ -63,7 +63,7 @@ export default function Sidebar(): JSX.Element {
           <Text p style={{ color: themeContext.colors.text }}>
             Emergency Card
           </Text>
-          {person && <EmergencySnippet alertId={person.alertId} />}
+          {<EmergencySnippet alertId={person && person.alertId} />}
         </div>
       </StyledNavigation>
     </StyledSidebar>

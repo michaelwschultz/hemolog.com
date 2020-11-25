@@ -15,8 +15,8 @@ import {
   Note,
 } from '@geist-ui/react'
 import { useHotkeys } from 'react-hotkeys-hook'
-import Droplet from '@geist-ui/react-icons/droplet'
 import FeedbackModal from 'components/feedbackModal'
+import Logo from 'components/logo'
 
 export default function Home(): JSX.Element {
   const { user } = useUser()
@@ -52,12 +52,9 @@ export default function Home(): JSX.Element {
           </Col>
         )}
         <Page size='large'>
-          <Page.Header>
-            <Spacer y={1} />
+          <Page.Header style={{ paddingTop: '24px' }}>
             <Row justify='space-between' align='middle'>
-              <Text h4>
-                Hemolog <Droplet color='salmon' />
-              </Text>
+              <Logo />
               <Button onClick={toggleSidebar} auto>
                 Toggle sidebar
               </Button>

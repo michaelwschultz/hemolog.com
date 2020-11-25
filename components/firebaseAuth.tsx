@@ -6,6 +6,7 @@ import initFirebase from 'utils/auth/initFirebase'
 import { setUserCookie } from 'utils/auth/userCookies'
 import { mapUserData } from 'utils/auth/mapUserData'
 import { customAlphabet } from 'nanoid/async'
+import Router from 'next/router'
 
 // TODO: would be nice to move this to a Provider https://www.youtube.com/watch?v=1BUT7T9ThlU
 
@@ -36,33 +37,46 @@ const firebaseAuthConfig = {
     // },
   ],
 
-  signInSuccessUrl: '/v2',
+  // signInSuccessUrl: '/v2',
   credentialHelper: 'none',
   callbacks: {
-    signInSuccessWithAuthResult: async (
+    signInSuccessWithAuthResult: (
       { user }: { user: firebase.User },
       _redirectUrl
     ) => {
-      const userData = await mapUserData(user)
+      const userData = mapUserData(user)
       setUserCookie(userData)
 
-      const dbDoc = db.collection('users').doc(user.uid)
-      const dbUser = await dbDoc.get()
+      return false
+    },
+  },
+}
 
-      // if no user exist in Firestore, create them!
-      if (!dbUser.exists) {
-        const alertId = await generateUniqueAlertId()
-        return await db.collection('users').doc(user.uid).set({
+firebase.auth().onAuthStateChanged(async (user) => {
+  if (user) {
+    const dbDoc = db.collection('users').doc(user.uid)
+    const dbUser = await dbDoc.get()
+
+    // if no user exist in Firestore, create them!
+    if (!dbUser.exists) {
+      const alertId = await generateUniqueAlertId()
+      const doc = db.collection('users')
+
+      try {
+        await doc.doc(user.uid).set({
           uid: user.uid,
           alertId,
           name: user.displayName,
           photoUrl: user.photoURL,
           createdAt: new Date().toISOString(),
         })
+      } catch (error) {
+        return error
       }
-    },
-  },
-}
+    }
+    Router.push('/v2')
+  }
+})
 
 const FirebaseAuth = (): JSX.Element => {
   return (

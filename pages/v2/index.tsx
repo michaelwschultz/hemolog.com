@@ -16,14 +16,16 @@ import {
   useModal,
 } from '@geist-ui/react'
 import { useHotkeys } from 'react-hotkeys-hook'
-import Droplet from '@geist-ui/react-icons/droplet'
 import FeedbackModal from 'components/feedbackModal'
 import InfusionModal from 'components/infusionModal'
 import { useUser } from 'utils/auth/useUser'
+import Logo from 'components/logo'
 
 export default function Home(): JSX.Element {
   const { user } = useUser()
   const largerThanSm = useMediaQuery('md', { match: 'up' })
+
+  // TODO: store this variable in localstorage so it persists across pages
   const [showSidebar, setShowSidebar] = useState(true)
   const toggleSidebar = () => setShowSidebar((prevState) => !prevState)
   useHotkeys('ctrl+b', toggleSidebar)
@@ -39,8 +41,6 @@ export default function Home(): JSX.Element {
     setVisible: setInfusionModalVisible,
     bindings: infusionModalBindings,
   } = useModal(false)
-
-  console.log(user)
 
   // TODO: add welcome message by checking to see if this is the users
   // first time logging in. Still not sure how to accomplish this.
@@ -86,21 +86,18 @@ export default function Home(): JSX.Element {
           </Col>
         )}
         <Page size='large'>
-          <Page.Header>
-            <Spacer y={1} />
+          <Page.Header style={{ paddingTop: '24px' }}>
             <Row justify='space-between' align='middle'>
-              <Text h4>
-                Hemolog <Droplet color='salmon' />
-              </Text>
+              <Logo />
               <Row>
                 <Button
                   onClick={() => setInfusionModalVisible(true)}
                   auto
-                  type='error-light'
+                  type='success-light'
                 >
-                  Log infusion
+                  New infusion
                 </Button>
-                <Spacer />
+                <Spacer x={0.5} />
                 <Button onClick={toggleSidebar} auto>
                   Toggle sidebar
                 </Button>
@@ -108,9 +105,11 @@ export default function Home(): JSX.Element {
             </Row>
           </Page.Header>
           <Page.Content>
+            <Text h4>Stats</Text>
             <Stats />
             {/* <Chart /> */}
             <Spacer y={3} />
+            <Text h4>Infusions</Text>
             <InfusionTable />
             {/* TODO: find out how this Spacer can be removed */}
             <Spacer y={5} />

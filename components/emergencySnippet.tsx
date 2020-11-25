@@ -6,17 +6,13 @@ interface Props {
 }
 
 export default function EmergencySnippet(props: Props): JSX.Element {
-  const { alertId = 'test123' } = props
+  const { alertId = '' } = props
   const env = process.env.NODE_ENV
   const domain = env === 'development' ? 'localhost:3000' : 'hemolog.com'
 
   return (
     <Row>
-      <Snippet
-        width='300px'
-        symbol=''
-        text={`${domain}/emergency/${alertId}`}
-      />
+      <Snippet symbol='' text={`${domain}/emergency/${alertId}`} />
     </Row>
   )
 }
