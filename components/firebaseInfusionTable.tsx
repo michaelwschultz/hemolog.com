@@ -85,6 +85,7 @@ export default function InfusionTable(props: Props): JSX.Element {
         <Table.Column prop='factorBrand' label='Factor' />
         <Table.Column prop='units' label='Amount' />
       </Table>
+      {infusions.length === 0 && <Note>No infusions found</Note>}
       {infusions.length >= 25 && (
         <>
           <Spacer y={0.5} />

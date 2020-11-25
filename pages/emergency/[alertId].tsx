@@ -17,7 +17,7 @@ export default function EmergencyCard(): JSX.Element {
 
   return (
     <Page>
-      <Page.Header style={{ paddingTop: '40px' }}>
+      <Page.Header style={{ paddingTop: '24px' }}>
         <Row justify='space-between' align='middle'>
           <Text h4 type='error'>
             Emergency Card
@@ -37,7 +37,7 @@ export default function EmergencyCard(): JSX.Element {
       </Page.Header>
       <Page.Content>
         {status === FirestoreStatusType.LOADING && (
-          <Loading>Loading emergency info...</Loading>
+          <Loading>Loading emergency info</Loading>
         )}
 
         {error && (
