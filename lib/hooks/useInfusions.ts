@@ -2,6 +2,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore';
 // import initFirebase from 'utils/auth/initFirebase'
 // import usePagination from "firestore-pagination-hook";
+// import { useUser } from 'utils/auth/useUser'
 
 import useFirestoreQuery, { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
 
@@ -34,8 +35,13 @@ interface InfusionResponse {
 }
 
 
-export default function useInfusions(limit?: number): InfusionResponse {
+export default function useInfusions(limit?: number, uid?: string): InfusionResponse {
   const db = firebase.firestore()
+  // const { user } = useUser()
+  // const userId = uid || user.uid
+
+  // const query = db.collection('infusions').where('uid', '==', uid).limit(limit)
+
   const query = db.collection('infusions').limit(limit)
 
   const { data, status, error } = useFirestoreQuery(query)

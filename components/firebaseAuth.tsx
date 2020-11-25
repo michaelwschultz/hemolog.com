@@ -52,7 +52,7 @@ const firebaseAuthConfig = {
       // if no user exist in Firestore, create them!
       if (!dbUser.exists) {
         const alertId = await generateUniqueAlertId()
-        return db.collection('users').doc(user.uid).set({
+        return await db.collection('users').doc(user.uid).set({
           uid: user.uid,
           alertId,
           name: user.displayName,
