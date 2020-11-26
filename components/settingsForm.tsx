@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useFormik } from 'formik'
 import { Input, Button, Text, Spacer, useToasts } from '@geist-ui/react'
 import firebase from 'firebase/app'
