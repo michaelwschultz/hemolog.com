@@ -60,19 +60,23 @@ firebase.auth().onAuthStateChanged(async (user) => {
     // if no user exist in Firestore, create them!
     if (!dbUser.exists) {
       const alertId = await generateUniqueAlertId()
-      const doc = db.collection('users')
 
-      try {
-        await doc.doc(user.uid).set({
+      await dbDoc
+        .set({
           uid: user.uid,
           alertId,
           name: user.displayName,
           photoUrl: user.photoURL,
           createdAt: new Date().toISOString(),
+          lastLogin: new Date().toISOString(),
         })
-      } catch (error) {
-        return error
-      }
+        .catch((error) => {
+          return error
+        })
+    } else {
+      await dbDoc.update({
+        lastLogin: new Date().toISOString(),
+      })
     }
     Router.push('/v2')
   }

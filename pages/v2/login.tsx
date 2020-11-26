@@ -23,7 +23,7 @@ const Auth = () => {
           <Fieldset style={{ width: '460px' }}>
             <Text h4>Sign in</Text>
             <Text p>
-              Siging in will create an account if you don't have one yet. Don't
+              Signing in will create an account if you don't have one yet. Don't
               worry, Hemolog will always be <i>free</i>.
             </Text>
             <Spacer />

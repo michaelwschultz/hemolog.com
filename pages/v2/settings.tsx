@@ -9,14 +9,15 @@ import {
   Row,
   Col,
   Keyboard,
-  Spacer,
   useMediaQuery,
   useModal,
   Note,
+  Spacer,
 } from '@geist-ui/react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import FeedbackModal from 'components/feedbackModal'
 import Logo from 'components/logo'
+import SettingsForm from 'components/settingsForm'
 
 export default function Home(): JSX.Element {
   const { user } = useUser()
@@ -61,11 +62,8 @@ export default function Home(): JSX.Element {
             </Row>
           </Page.Header>
           <Page.Content>
-            <Note label='Note'>
-              Soon you'll be able to add more info to your profile here like
-              severity type. That might also be something that is required when
-              you sign up.
-            </Note>
+            <Text h4>Your profile</Text>
+            <SettingsForm />
           </Page.Content>
           <Page.Footer style={{ paddingBottom: '16px' }}>
             {/* This footer overlays the content for some reason */}
