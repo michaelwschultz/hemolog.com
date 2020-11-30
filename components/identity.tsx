@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useUser } from 'utils/auth/useUser'
-import { Text, Spacer, Avatar, useTheme, Col, Row } from '@geist-ui/react'
+import { useUser } from 'lib/hooks/useUser'
+import { Text, Spacer, Avatar, useTheme, Row } from '@geist-ui/react'
 
 export default function Identity(): JSX.Element {
   const { user } = useUser()
@@ -13,11 +13,11 @@ export default function Identity(): JSX.Element {
         <Text h4>Loading user...</Text>
       ) : (
         <>
-          <Row justify="center">
+          <Row justify='center'>
             <Avatar
               src={user.photoUrl}
               text={user.displayName && user.displayName.charAt(0)}
-              size="large"
+              size='large'
             />
           </Row>
           <Spacer y={2} />

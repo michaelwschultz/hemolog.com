@@ -1,13 +1,5 @@
-import {
-  Page,
-  Text,
-  Row,
-  Spacer,
-  Fieldset,
-  Button,
-  Note,
-} from '@geist-ui/react'
-import { useUser } from 'utils/auth/useUser'
+import { Page, Row, Fieldset, Button, Note } from '@geist-ui/react'
+import { useUser } from 'lib/hooks/useUser'
 import dayjs from 'dayjs'
 import Logo from 'components/logo'
 

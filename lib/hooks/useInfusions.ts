@@ -1,41 +1,43 @@
-import firebase from 'firebase/app'
-import 'firebase/firestore';
-// import initFirebase from 'utils/auth/initFirebase'
+import firebase from 'lib/firebase'
 // import usePagination from "firestore-pagination-hook";
 // import { useUser } from 'utils/auth/useUser'
 
-import useFirestoreQuery, { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
+import useFirestoreQuery, {
+  FirestoreStatusType,
+} from 'lib/hooks/useFirestoreQuery'
 
 export interface Medication {
-  brand?: string;
-  costPerUnit?: number;
-  lot?: number;
-  units?: number;
+  brand?: string
+  costPerUnit?: number
+  lot?: number
+  units?: number
 }
 
 export interface Infusion {
-  timestamp: string;
-  id: string;
-  bleedReason?: string;
-  prophy?: boolean;
-  sites?: string[];
-  medication?: Medication;
+  timestamp: string
+  id: string
+  bleedReason?: string
+  prophy?: boolean
+  sites?: string[]
+  medication?: Medication
 }
 
 type FirestoreStatusTypes =
-  FirestoreStatusType.IDLE |
-  FirestoreStatusType.ERROR |
-  FirestoreStatusType.SUCCESS |
-  FirestoreStatusType.LOADING
+  | FirestoreStatusType.IDLE
+  | FirestoreStatusType.ERROR
+  | FirestoreStatusType.SUCCESS
+  | FirestoreStatusType.LOADING
 
 interface InfusionResponse {
-  data: Infusion[];
-  status: FirestoreStatusTypes;
-  error: Error;
+  data: Infusion[]
+  status: FirestoreStatusTypes
+  error: Error
 }
 
-
-export default function useInfusions(limit?: number, uid?: string): InfusionResponse {
+export default function useInfusions(
+  limit?: number,
+  _uid?: string
+): InfusionResponse {
   const db = firebase.firestore()
   // const { user } = useUser()
   // const userId = uid || user.uid
@@ -49,7 +51,7 @@ export default function useInfusions(limit?: number, uid?: string): InfusionResp
   return {
     data,
     status,
-    error
+    error,
   }
 }
 

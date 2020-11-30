@@ -11,6 +11,7 @@
     "@bit/recharts.recharts.radial-bar-chart": "^1.6.2",
     "@geist-ui/react": "^2.1.0-canary.2",
     "@geist-ui/react-icons": "^1.0.1",
+    "date-fns": "^2.16.1",
     "dayjs": "^1.9.6",
     "firebase": "^8.0.2",
     "firebase-admin": "^9.4.1",

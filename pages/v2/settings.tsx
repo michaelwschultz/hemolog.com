@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Head from 'next/head'
 import Sidebar from 'components/sidebar'
-import { useUser } from 'utils/auth/useUser'
+import { useUser } from 'lib/hooks/useUser'
 import {
   Page,
   Text,

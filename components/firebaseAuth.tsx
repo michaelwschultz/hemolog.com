@@ -1,8 +1,5 @@
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
-import firebase from 'firebase/app'
-import 'firebase/auth'
-import 'firebase/firestore'
-import initFirebase from 'utils/auth/initFirebase'
+import firebase from 'lib/firebase'
 import { setUserCookie } from 'utils/auth/userCookies'
 import { mapUserData } from 'utils/auth/mapUserData'
 import { customAlphabet } from 'nanoid/async'
@@ -10,8 +7,6 @@ import Router from 'next/router'
 
 // TODO: would be nice to move this to a Provider https://www.youtube.com/watch?v=1BUT7T9ThlU
 
-// Init the Firebase app.
-initFirebase()
 const db = firebase.firestore()
 
 async function generateUniqueAlertId() {

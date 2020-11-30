@@ -1,13 +1,10 @@
 import React from 'react'
 import { useFormik } from 'formik'
 import { Input, Button, Text, Spacer, useToasts } from '@geist-ui/react'
-import firebase from 'firebase/app'
-import 'firebase/firestore'
-import initFirebase from 'utils/auth/initFirebase'
-import { useUser } from 'utils/auth/useUser'
+import firebase from 'lib/firebase'
+import { useUser } from 'lib/hooks/useUser'
 import useDbUser from 'lib/hooks/useDbUser'
 
-initFirebase()
 const db = firebase.firestore()
 
 const SettingsForm = () => {

@@ -18,7 +18,7 @@ import {
 import { useHotkeys } from 'react-hotkeys-hook'
 import FeedbackModal from 'components/feedbackModal'
 import InfusionModal from 'components/infusionModal'
-import { useUser } from 'utils/auth/useUser'
+import { useUser } from 'lib/hooks/useUser'
 import Logo from 'components/logo'
 
 export default function Home(): JSX.Element {

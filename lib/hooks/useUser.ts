@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import firebase from 'firebase/app'
-import 'firebase/auth'
-import initFirebase from 'utils/auth/initFirebase'
+import firebase from 'lib/firebase'
 import {
   removeUserCookie,
   setUserCookie,
   getUserFromCookie,
-} from './userCookies'
+} from 'utils/auth/userCookies'
 import { mapUserData, User } from 'utils/auth/mapUserData'
-
-initFirebase()
 
 const useUser = () => {
   const [user, setUser] = useState<User>(null)

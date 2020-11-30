@@ -1,5 +1,10 @@
+// firebase.ts
+// Initializes firebase across app for firebase, auth, functions, and firestore
+
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import 'firebase/functions'
+import 'firebase/firestore'
 
 const config = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY,
@@ -8,8 +13,8 @@ const config = {
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
 }
 
-export default function initFirebase() {
-  if (!firebase.apps.length) {
-    firebase.initializeApp(config)
-  }
+if (!firebase.apps.length) {
+  firebase.initializeApp(config)
 }
+
+export default firebase

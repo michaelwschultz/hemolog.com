@@ -1,16 +1,12 @@
 import { useRouter } from 'next/router'
 import NextLink from 'next/link'
 
-import initFirebase from 'utils/auth/initFirebase'
 import useEmergencyUser from 'lib/hooks/useEmergencyUser'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
 import { Loading, Page, Note, Text, Row, Link } from '@geist-ui/react'
 import EmergencyInfo from 'components/emergencyInfo'
 
 export default function EmergencyCard(): JSX.Element {
-  // TODO: initFirebase this to a Provider and remove this call
-  initFirebase()
-
   const router = useRouter()
   const { alertId } = router.query
   const { person, status, error } = useEmergencyUser(alertId)

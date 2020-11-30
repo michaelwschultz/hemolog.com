@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal, Input, Textarea, Text, Spacer } from '@geist-ui/react'
-import { useUser } from 'utils/auth/useUser'
+import { useUser } from 'lib/hooks/useUser'
 
 export default function FeedbackModal(props): JSX.Element {
   const { visible, setVisible, bindings } = props
