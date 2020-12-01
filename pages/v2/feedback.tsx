@@ -7,14 +7,12 @@ import {
   Row,
   Fieldset,
   Button,
-  Note,
   Spacer,
   useToasts,
 } from '@geist-ui/react'
 
 import Logo from 'components/logo'
 import { useAuth } from 'lib/auth'
-import { useEffect } from 'react'
 
 interface UserFeedback {
   id: string
@@ -40,18 +38,15 @@ const Feedback = () => {
   const [, setToast] = useToasts()
 
   if (error) {
-    console.log(error)
+    console.error(error)
+
     setToast({
       type: 'error',
       text: `Oops, something went wrong - ${error}`,
     })
   }
 
-  useEffect(() => {
-    console.log('this error', error)
-  }, [error])
-
-  if (data) {
+  if (user && data) {
     return (
       <Page size='large'>
         <Page.Header style={{ paddingTop: '24px' }}>
