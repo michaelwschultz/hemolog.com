@@ -5,22 +5,7 @@ import firebase from 'lib/firebase'
 import useFirestoreQuery, {
   FirestoreStatusType,
 } from 'lib/hooks/useFirestoreQuery'
-
-export interface Medication {
-  brand?: string
-  costPerUnit?: number
-  lot?: number
-  units?: number
-}
-
-export interface Infusion {
-  timestamp: string
-  id: string
-  bleedReason?: string
-  prophy?: boolean
-  sites?: string[]
-  medication?: Medication
-}
+import { InfusionType } from 'lib/db/infusions'
 
 type FirestoreStatusTypes =
   | FirestoreStatusType.IDLE
@@ -29,7 +14,7 @@ type FirestoreStatusTypes =
   | FirestoreStatusType.LOADING
 
 interface InfusionResponse {
-  data: Infusion[]
+  data: InfusionType[]
   status: FirestoreStatusTypes
   error: Error
 }

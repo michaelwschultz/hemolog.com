@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 import fetcher from 'lib/fetcher'
-import dayjs from 'dayjs'
+import { format } from 'date-fns'
 import {
   Avatar,
   Page,
@@ -58,7 +58,7 @@ const Feedback = () => {
                       />
                       <Spacer x={0.5} />
                       {feedback.user.email} on{' '}
-                      {dayjs(feedback.createdAt).format('MM/DD/YYYY')}
+                      {format(new Date(feedback.createdAt), 'PPp')}
                     </Row>
                   </Fieldset.Footer.Status>
                   <Fieldset.Footer.Actions>

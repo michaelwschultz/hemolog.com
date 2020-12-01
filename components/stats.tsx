@@ -1,9 +1,10 @@
 import React from 'react'
 import _ from 'underscore'
-import { Text, Grid, Row, Loading, Note } from '@geist-ui/react'
+import { Grid, Note } from '@geist-ui/react'
 import StatCard from 'components/statCard'
 import useInfusions from 'lib/hooks/useInfusions'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
+import { InfusionTypeEnum } from 'lib/db/infusions'
 
 // TODO: move types to types file
 type Value = string[]
@@ -84,8 +85,10 @@ export default function Stats(): JSX.Element {
 
   const numberOfInfusions = data.length
   const affectedAreas = data.map((entry) => entry.sites)
-  const causes = data.map((entry) => entry.bleedReason)
-  const numberOfBleeds = data.filter((entry) => !entry.prophy).length
+  const causes = data.map((entry) => entry.cause)
+  const numberOfBleeds = data.filter(
+    (entry) => entry.type === InfusionTypeEnum.BLEED
+  ).length
   const mostAffectedArea = _.chain(affectedAreas)
     .countBy()
     .pairs()
@@ -102,7 +105,9 @@ export default function Stats(): JSX.Element {
 
   const getTotalUnits = () => {
     let units = 0
-    data.forEach((entry) => (units = entry.medication.units + units))
+    data.forEach(
+      (entry) => (units = parseInt(entry.medication.units, 10) + units)
+    )
 
     return units
   }
@@ -122,12 +127,15 @@ export default function Stats(): JSX.Element {
       </Grid>
       <Grid xs={24} sm={12} md={6}>
         <StatCard
-          value={mostAffectedArea.split(',').join(', ')}
+          value={mostAffectedArea || 'Not enough data'}
           label='Most affected area'
         />
       </Grid>
       <Grid xs={24} sm={12} md={6}>
-        <StatCard value={biggestCause} label='Biggest cause' />
+        <StatCard
+          value={biggestCause || 'Not enough data'}
+          label='Biggest cause'
+        />
       </Grid>
       <Grid xs={24} sm={12} md={6}>
         <StatCard

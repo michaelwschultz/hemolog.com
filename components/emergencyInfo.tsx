@@ -1,5 +1,5 @@
 import React from 'react'
-import InfusionTable from 'components/firebaseInfusionTable'
+import InfusionTable from 'components/infusionTable'
 import { Person } from 'lib/hooks/useEmergencyUser'
 import {
   Avatar,

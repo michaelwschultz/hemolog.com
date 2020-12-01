@@ -1,5 +1,5 @@
 import { adminFirestore } from 'lib/firebase-admin'
-import { compareAsc, parseISO } from 'date-fns'
+import { compareAsc, compareDesc, parseISO } from 'date-fns'
 
 async function getAllFeedback() {
   try {
@@ -12,7 +12,7 @@ async function getAllFeedback() {
     })
 
     feedback.sort((a, b) =>
-      compareAsc(parseISO(a.createdAt), parseISO(b.createdAt))
+      compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
     )
 
     return { feedback }

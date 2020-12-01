@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Head from 'next/head'
-import InfusionTable from 'components/firebaseInfusionTable'
+import InfusionTable from 'components/infusionTable'
 import Stats from 'components/stats'
 // import Chart from 'components/chart'
 import Sidebar from 'components/sidebar'

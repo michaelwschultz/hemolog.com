@@ -1,18 +1,12 @@
 import firebase from 'lib/firebase'
+import { AttachedUserType } from 'lib/types/users'
 
 const firestore = firebase.firestore()
 
 export interface FeedbackType {
   createdAt: string
   message: string
-  user: FeedbackUserType
-}
-
-export interface FeedbackUserType {
-  email: string
-  name: string
-  photoUrl?: string
-  uid: string
+  user: AttachedUserType
 }
 
 function createFeedback(data: FeedbackType) {

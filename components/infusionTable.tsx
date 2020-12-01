@@ -1,76 +1,112 @@
 import React from 'react'
-import fetcher from 'lib/fetcher'
-import useSWR from 'swr'
+import useInfusions from 'lib/hooks/useInfusions'
+import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
+import { format } from 'date-fns'
+import {
+  Note,
+  Table,
+  Row,
+  Loading,
+  Badge,
+  Spacer,
+  Pagination,
+} from '@geist-ui/react'
+import ChevronRight from '@geist-ui/react-icons/chevronRight'
+import ChevronLeft from '@geist-ui/react-icons/chevronLeft'
+import { InfusionType, InfusionTypeEnum } from 'lib/db/infusions'
 
-type Value = string[]
-
-interface ValueRanges {
-  range: string
-  majorDimension: string
-  values: Value[]
+interface Props {
+  limit?: number
 }
 
-export interface InfusionSheet {
-  error?: Error
-  spreadsheetId: string
-  valueRanges: ValueRanges[]
-}
+export default function InfusionTable(props: Props): JSX.Element {
+  const { limit } = props
+  const { data: infusions, status, error } = useInfusions(limit)
 
-export default function InfusionTable(): JSX.Element {
-  const { data, error } = useSWR<InfusionSheet>('/api/infusions', fetcher)
-
-  if (!data) {
-    return <div>Loading infusion data...</div>
-  }
-
-  if (error) {
-    return <div>API failed to return data</div>
-  }
-
-  if (data.error) {
-    return <div>Oops, something went wrong accessing your infusion data.</div>
-  }
-
-  const renderRow = (row): JSX.Element => {
+  if (status === FirestoreStatusType.LOADING) {
     return (
-      <tr key={`table-row-${row[0]}`}>
-        {row.map((cell, index) => (
-          <td key={`table-cell-${index}`}>{cell}</td>
-        ))}
-
-        <style jsx>{`
-          td {
-            padding: 0 16px 0 0;
-            text-align: left;
-          }
-        `}</style>
-      </tr>
+      <>
+        <Table data={[]} width='100%'>
+          <Table.Column prop='createdAt' label='Date' />
+          <Table.Column prop='type' label='Reason' />
+          <Table.Column prop='sites' label='Bleed sites' />
+          <Table.Column prop='cause' label='Attribution' />
+          <Table.Column prop='factorBrand' label='Factor' />
+          <Table.Column prop='units' label='Amount' />
+        </Table>
+        <Spacer y={2} />
+        <Row>
+          <Loading>Loading infusion data</Loading>
+        </Row>
+      </>
     )
   }
 
-  const values = data.valueRanges[0].values
-  const columnHeaders = values[0]
+  if (error) {
+    return (
+      <Note type='error' label='Error'>
+        Oops, the database didn't respond. Refresh the page to try again.
+      </Note>
+    )
+  }
 
-  const entries = [...values]
-  entries.shift() // removes columnHeaders (first entry) from array
+  if (status === FirestoreStatusType.ERROR && !error) {
+    return (
+      <Note type='error' label='Error'>
+        Something went wrong accessing your infusion data. Refresh the page to
+        try again.
+      </Note>
+    )
+  }
+
+  enum infusionTypeBadgeStyle {
+    BLEED = 'error',
+    PROPHY = 'success',
+    PREVENTATIVE = 'secondary',
+  }
+
+  function formatInfusionRow(infusion: InfusionType) {
+    const { cause, sites } = infusion
+    const createdAt = format(new Date(infusion.createdAt), 'MM/dd/yyyy')
+    const type = (
+      <Badge type={infusionTypeBadgeStyle[infusion.type]}>
+        {InfusionTypeEnum[infusion.type]}
+      </Badge>
+    )
+    const factorBrand = infusion.medication.brand
+    const units = `${infusion.medication.units} ui`
+
+    return { createdAt, type, sites, cause, factorBrand, units }
+  }
+
+  const rowData = infusions.map((infusion) => formatInfusionRow(infusion))
 
   return (
-    <table>
-      <thead>
-        <tr>
-          {columnHeaders.map((header, index) => (
-            <th key={`table-column-header-${index}`}>{header}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>{entries.map((row) => renderRow(row))}</tbody>
-
-      <style jsx>{`
-        th {
-          padding: 0 16px 0 0;
-          text-align: left;
-        }
-      `}</style>
-    </table>
+    <>
+      <Table data={rowData} width='100%'>
+        <Table.Column prop='timestamp' label='Date' />
+        <Table.Column prop='prophy' label='Reason' />
+        <Table.Column prop='sites' label='Bleed sites' />
+        <Table.Column prop='bleedReason' label='Attribution' />
+        <Table.Column prop='factorBrand' label='Factor' />
+        <Table.Column prop='units' label='Amount' />
+      </Table>
+      {infusions.length === 0 && <Note>No infusions found</Note>}
+      {infusions.length >= 25 && (
+        <>
+          <Spacer y={0.5} />
+          <Row justify='end'>
+            <Pagination count={1}>
+              <Pagination.Next>
+                <ChevronRight />
+              </Pagination.Next>
+              <Pagination.Previous>
+                <ChevronLeft />
+              </Pagination.Previous>
+            </Pagination>
+          </Row>
+        </>
+      )}
+    </>
   )
 }
