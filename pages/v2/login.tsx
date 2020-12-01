@@ -31,7 +31,10 @@ const Auth = () => {
               worry, Hemolog will always be <i>free</i>.
             </Text>
             <Spacer />
-            <Button onClick={() => auth.signinWithGoogle('/v2')}>
+            <Button
+              onClick={() => auth.signinWithGoogle('/v2')}
+              loading={auth.loading}
+            >
               Continue with Google
             </Button>
             {/* <FirebaseAuth /> */}

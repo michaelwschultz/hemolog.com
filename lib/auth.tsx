@@ -3,7 +3,8 @@ import Router from 'next/router'
 import cookie from 'js-cookie'
 
 import firebase from 'lib/firebase'
-import { createUser } from 'lib/db'
+import { createUser } from 'lib/db/users'
+import { generateUniqueString } from 'lib/helpers'
 
 const authContext = createContext(undefined)
 
@@ -16,6 +17,8 @@ export const useAuth = () => {
   return useContext(authContext)
 }
 
+const firestore = firebase.firestore()
+
 function useProvideAuth() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -23,7 +26,15 @@ function useProvideAuth() {
   const handleUser = async (rawUser) => {
     if (rawUser) {
       const user = await formatUser(rawUser)
+      const dbUser = await firestore.collection('users').doc(user.uid).get()
+
       const { token, ...userWithoutToken } = user
+
+      // If user already exist then remove alertId
+      // so it isn't overwritten when the user is updated on `createUser`
+      if (dbUser.exists) {
+        delete userWithoutToken.alertId
+      }
 
       createUser(user.uid, userWithoutToken)
       setUser(user)
@@ -110,13 +121,15 @@ function useProvideAuth() {
 const formatUser = async (user) => {
   const idTokenResult = await user.getIdTokenResult()
   const token = idTokenResult.token
+  const alertId = await generateUniqueString(6)
 
   return {
-    uid: user.uid,
+    alertId,
     email: user.email,
     name: user.displayName,
-    token,
-    provider: user.providerData[0].providerId,
     photoUrl: user.photoURL,
+    provider: user.providerData[0].providerId,
+    token,
+    uid: user.uid,
   }
 }

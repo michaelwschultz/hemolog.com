@@ -13,24 +13,11 @@ import {
 
 import Logo from 'components/logo'
 import { useAuth } from 'lib/auth'
-
-interface UserFeedback {
-  id: string
-  message: string
-  user: {
-    name: string
-    email: string
-    photoUrl?: string
-    uid: string
-  }
-  createdAt: string
-}
-
-type Feedback = UserFeedback[]
+import { FeedbackType } from 'lib/db/feedback'
 
 const Feedback = () => {
   const { user } = useAuth()
-  const { data, error } = useSWR<Feedback>(
+  const { data, error } = useSWR<FeedbackType[]>(
     user ? ['/api/feedback', user.token] : null,
     fetcher
   )
@@ -53,8 +40,11 @@ const Feedback = () => {
           <Logo />
         </Page.Header>
         <Page.Content>
-          {data.map((feedback) => (
-            <Row key={feedback.id} style={{ paddingBottom: '16px' }}>
+          {data.map((feedback, index) => (
+            <Row
+              key={`feedback-card-${index}`}
+              style={{ paddingBottom: '16px' }}
+            >
               <Fieldset style={{ width: '100%' }}>
                 <Fieldset.Title>{feedback.user.name}</Fieldset.Title>
                 <Fieldset.Subtitle>{feedback.message}</Fieldset.Subtitle>

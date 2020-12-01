@@ -46,10 +46,10 @@ const SettingsForm = () => {
         )
     },
   })
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Text h5>Type of hemophilia</Text>
-      {console.log(formik.initialValues)}
       <Input
         id='hemophiliaType'
         name='hemophiliaType'
