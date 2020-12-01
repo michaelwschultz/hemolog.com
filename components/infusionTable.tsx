@@ -1,5 +1,5 @@
 import React from 'react'
-import fetch from 'lib/fetch'
+import fetcher from 'lib/fetcher'
 import useSWR from 'swr'
 
 type Value = string[]
@@ -17,7 +17,7 @@ export interface InfusionSheet {
 }
 
 export default function InfusionTable(): JSX.Element {
-  const { data, error } = useSWR<InfusionSheet>('/api/infusions', fetch)
+  const { data, error } = useSWR<InfusionSheet>('/api/infusions', fetcher)
 
   if (!data) {
     return <div>Loading infusion data...</div>

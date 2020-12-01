@@ -1,10 +1,10 @@
 import React from 'react'
 import { Modal, Input, Textarea, Text, Spacer } from '@geist-ui/react'
-import { useUser } from 'lib/hooks/useUser'
+import { useAuth } from 'lib/auth'
 
 export default function FeedbackModal(props): JSX.Element {
   const { visible, setVisible, bindings } = props
-  const { user } = useUser()
+  const { user } = useAuth()
 
   // TODO: implement formik
   // Submitted feedback could be viewed on a feedback page that can only be seen by me.

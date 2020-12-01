@@ -1,4 +1,5 @@
-import FirebaseAuth from 'components/firebaseAuth'
+// import FirebaseAuth from 'components/firebaseAuth'
+import { useAuth } from 'lib/auth'
 import {
   Page,
   Text,
@@ -9,10 +10,13 @@ import {
   Card,
   Divider,
   Link,
+  Button,
 } from '@geist-ui/react'
 import Logo from 'components/logo'
 
 const Auth = () => {
+  const auth = useAuth()
+
   return (
     <Page size='large'>
       <Page.Header style={{ paddingTop: '24px' }}>
@@ -27,7 +31,10 @@ const Auth = () => {
               worry, Hemolog will always be <i>free</i>.
             </Text>
             <Spacer />
-            <FirebaseAuth />
+            <Button onClick={() => auth.signinWithGoogle('/v2')}>
+              Continue with Google
+            </Button>
+            {/* <FirebaseAuth /> */}
             <Spacer />
           </Fieldset>
         </Row>

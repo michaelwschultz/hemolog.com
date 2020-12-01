@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useUser } from 'lib/hooks/useUser'
+import { useAuth } from 'lib/auth'
 import { Text, Spacer, Avatar, useTheme, Row } from '@geist-ui/react'
 
 export default function Identity(): JSX.Element {
-  const { user } = useUser()
+  const { user } = useAuth()
   const theme = useTheme()
 
   return (

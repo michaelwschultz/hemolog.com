@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Head from 'next/head'
 import Sidebar from 'components/sidebar'
-import { useUser } from 'lib/hooks/useUser'
+import { useAuth } from 'lib/auth'
 import {
   Page,
   Text,
@@ -11,8 +11,6 @@ import {
   Keyboard,
   useMediaQuery,
   useModal,
-  Note,
-  Spacer,
 } from '@geist-ui/react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import FeedbackModal from 'components/feedbackModal'
@@ -20,7 +18,7 @@ import Logo from 'components/logo'
 import SettingsForm from 'components/settingsForm'
 
 export default function Home(): JSX.Element {
-  const { user } = useUser()
+  const { user } = useAuth()
   const largerThanSm = useMediaQuery('md', { match: 'up' })
   const [showSidebar, setShowSidebar] = useState(true)
   const toggleSidebar = () => setShowSidebar((prevState) => !prevState)

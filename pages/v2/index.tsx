@@ -18,11 +18,11 @@ import {
 import { useHotkeys } from 'react-hotkeys-hook'
 import FeedbackModal from 'components/feedbackModal'
 import InfusionModal from 'components/infusionModal'
-import { useUser } from 'lib/hooks/useUser'
+import { useAuth } from 'lib/auth'
 import Logo from 'components/logo'
 
 export default function Home(): JSX.Element {
-  const { user } = useUser()
+  const { user } = useAuth()
   const largerThanSm = useMediaQuery('md', { match: 'up' })
 
   // TODO: store this variable in localstorage so it persists across pages

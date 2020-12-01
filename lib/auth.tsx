@@ -108,11 +108,14 @@ function useProvideAuth() {
 }
 
 const formatUser = async (user) => {
+  const idTokenResult = await user.getIdTokenResult()
+  const token = idTokenResult.token
+
   return {
     uid: user.uid,
     email: user.email,
     name: user.displayName,
-    token: user.xa,
+    token,
     provider: user.providerData[0].providerId,
     photoUrl: user.photoURL,
   }

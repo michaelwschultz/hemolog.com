@@ -1,88 +1,80 @@
-import { Page, Row, Fieldset, Button, Note } from '@geist-ui/react'
-import { useUser } from 'lib/hooks/useUser'
+import useSWR from 'swr'
+import fetcher from 'lib/fetcher'
 import dayjs from 'dayjs'
+import {
+  Avatar,
+  Page,
+  Row,
+  Fieldset,
+  Button,
+  Note,
+  Spacer,
+  useToasts,
+} from '@geist-ui/react'
+
 import Logo from 'components/logo'
+import { useAuth } from 'lib/auth'
+import { useEffect } from 'react'
+
+interface UserFeedback {
+  id: string
+  message: string
+  user: {
+    name: string
+    email: string
+    photoUrl?: string
+    uid: string
+  }
+  createdAt: string
+}
+
+type Feedback = UserFeedback[]
 
 const Feedback = () => {
-  const { user } = useUser()
+  const { user } = useAuth()
+  const { data, error } = useSWR<Feedback>(
+    user ? ['/api/feedback', user.token] : null,
+    fetcher
+  )
 
-  if (!user) {
-    return null
+  const [, setToast] = useToasts()
+
+  if (error) {
+    console.log(error)
+    setToast({
+      type: 'error',
+      text: `Oops, something went wrong - ${error}`,
+    })
   }
 
-  const MOCK_FEEDBACK_DATA = [
-    {
-      user: {
-        displayName: 'Michael Bishop',
-        uid: 'testalkjsdlfjasd',
-        email: 'michaelb@gmail.com',
-      },
-      feedback: {
-        userId: 'testalkjsdlfjasd',
-        text: `This is looking great man! I'd love to see some more options for brands
-          as I wasn't able to find mine in your list or have a way to add it myself.
-          Keep it up!`,
-        timestamp: '2020-11-24T12:47:05.123Z',
-      },
-    },
-    {
-      user: {
-        displayName: 'Shazia Hussain',
-        uid: '5dfgsdfg',
-        email: 'shaziah@gmail.com',
-      },
-      feedback: {
-        userId: '5dfgsdfg',
-        text: `Not as good as a fishing tournament app but I like it. haha`,
-        timestamp: '2020-11-24T12:47:05.123Z',
-      },
-    },
-    {
-      user: {
-        displayName: 'Jesse Schultz',
-        uid: 'asdfkwejk',
-        email: 'jesses@gmail.com',
-      },
-      feedback: {
-        userId: 'asdfkwejk',
-        text: `Not as good as a fishing tournament app but I like it. haha`,
-        timestamp: '2020-11-24T12:47:05.123Z',
-      },
-    },
-    {
-      user: {
-        displayName: 'Luke Schultz',
-        uid: 'asdfa',
-        email: 'luke10s@gmail.com',
-      },
-      feedback: {
-        userId: 'asdfa',
-        text: `Not as good as a fishing tournament app but I like it. haha`,
-        timestamp: '2020-11-24T12:47:05.123Z',
-      },
-    },
-  ]
+  useEffect(() => {
+    console.log('this error', error)
+  }, [error])
 
-  // TODO: change this to uid and use a env variable for storing it
-  const michael = 'Michael Schultz'
-
-  if (user.displayName === michael) {
+  if (data) {
     return (
       <Page size='large'>
         <Page.Header style={{ paddingTop: '24px' }}>
           <Logo />
         </Page.Header>
         <Page.Content>
-          {/* TODO: sort the list of feedback by date/time */}
-          {MOCK_FEEDBACK_DATA.map((entry) => (
-            <Row key={entry.user.uid} style={{ paddingBottom: '16px' }}>
+          {data.map((feedback) => (
+            <Row key={feedback.id} style={{ paddingBottom: '16px' }}>
               <Fieldset style={{ width: '100%' }}>
-                <Fieldset.Title>{entry.user.displayName}</Fieldset.Title>
-                <Fieldset.Subtitle>{entry.feedback.text}</Fieldset.Subtitle>
+                <Fieldset.Title>{feedback.user.name}</Fieldset.Title>
+                <Fieldset.Subtitle>{feedback.message}</Fieldset.Subtitle>
                 <Fieldset.Footer>
                   <Fieldset.Footer.Status>
-                    {entry.user.email} on{' '}
-                    {dayjs(entry.feedback.timestamp).format('MM/DD/YYYY')}
+                    <Row align='middle'>
+                      <Avatar
+                        src={feedback.user.photoUrl}
+                        text={feedback.user.name.charAt(0)}
+                        size='small'
+                      />
+                      <Spacer x={0.5} />
+                      {feedback.user.email} on{' '}
+                      {dayjs(feedback.createdAt).format('MM/DD/YYYY')}
+                    </Row>
                   </Fieldset.Footer.Status>
                   <Fieldset.Footer.Actions>
                     <Button auto size='mini'>
@@ -98,13 +90,7 @@ const Feedback = () => {
     )
   }
 
-  return (
-    <Page size='large'>
-      <Page.Content>
-        <Note>Nothing to see here</Note>
-      </Page.Content>
-    </Page>
-  )
+  return null
 }
 
 export default Feedback

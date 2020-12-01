@@ -1,5 +1,4 @@
-import firebase from 'firebase/app'
-import 'firebase/firestore'
+import firebase from 'lib/firebase'
 import useFirestoreQuery, {
   FirestoreStatusType,
 } from 'lib/hooks/useFirestoreQuery'

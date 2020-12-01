@@ -2,13 +2,13 @@ import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import Identity from 'components/identity'
 import NextLink from 'next/link'
-import { useUser } from 'lib/hooks/useUser'
+import { useAuth } from 'lib/auth'
 import { Link, Row, Spacer, Text } from '@geist-ui/react'
 import EmergencySnippet from 'components/emergencySnippet'
 import useDbUser from 'lib/hooks/useDbUser'
 
 export default function Sidebar(): JSX.Element {
-  const { user, logout } = useUser()
+  const { user, signout } = useAuth()
   const { person } = useDbUser(user && user.uid)
   const themeContext = useContext(ThemeContext)
 
@@ -36,7 +36,7 @@ export default function Sidebar(): JSX.Element {
               </Link>
             </NextLink>
           </Row>
-          {user && user.displayName === michael && (
+          {user && user.name === michael && (
             <>
               <Spacer y={1} />
               <Row justify='center'>
@@ -51,7 +51,7 @@ export default function Sidebar(): JSX.Element {
           <Spacer y={1} />
           <Row justify='center'>
             <Link
-              onClick={() => logout()}
+              onClick={() => signout()}
               block
               style={{ color: themeContext.colors.text }}
             >

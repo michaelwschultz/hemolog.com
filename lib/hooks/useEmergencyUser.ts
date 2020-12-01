@@ -1,28 +1,34 @@
-import firebase from 'firebase/app'
-import 'firebase/firestore';
-import useFirestoreQuery, { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
+import firebase from 'lib/firebase'
+import useFirestoreQuery, {
+  FirestoreStatusType,
+} from 'lib/hooks/useFirestoreQuery'
 
 // TODO move FirestoreStatusTypes to a more general place
 type FirestoreStatusTypes = FirestoreStatusType
 
 export interface Person {
-  alertId: string;
-  name?: string;
-  uid: string;
-  photoUrl?: string;
+  alertId: string
+  name?: string
+  uid: string
+  photoUrl?: string
 }
 
 interface FirestoreUserResponse {
-  person: Person;
-  status: FirestoreStatusTypes;
-  error: Error;
+  person: Person
+  status: FirestoreStatusTypes
+  error: Error
 }
 
-export default function useEmergencyUser(alertId?: string | string[]): FirestoreUserResponse {
+export default function useEmergencyUser(
+  alertId?: string | string[]
+): FirestoreUserResponse {
   const db = firebase.firestore()
 
   const { data, status, error } = useFirestoreQuery(
-    db.collection('users').where('alertId', '==', alertId || '').limit(1)
+    db
+      .collection('users')
+      .where('alertId', '==', alertId || '')
+      .limit(1)
   )
 
   let person
@@ -33,6 +39,6 @@ export default function useEmergencyUser(alertId?: string | string[]): Firestore
   return {
     person,
     status,
-    error
+    error,
   }
 }
