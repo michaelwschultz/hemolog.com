@@ -14,7 +14,7 @@ export default function FeedbackModal(props): JSX.Element {
   const [, setToast] = useToasts()
   const { user } = useAuth()
 
-  const handleCreateFeedback = (feedback: FeedbackValues) => {
+  const handleCreateFeedback = async (feedback: FeedbackValues) => {
     const feedbackUser: FeedbackUserType = {
       email: user.email,
       name: user.name,
@@ -31,7 +31,7 @@ export default function FeedbackModal(props): JSX.Element {
     createFeedback(feedbackPayload)
       .then(() => {
         setToast({
-          text: "Feedback submitted! I'll get back to you as soon as I can.",
+          text: "Feedback submitted! We'll respond soon via email.",
           type: 'success',
           delay: 5000,
         })
@@ -47,8 +47,8 @@ export default function FeedbackModal(props): JSX.Element {
   }
 
   const closeModal = () => {
-    formik.resetForm()
     setVisible(false)
+    formik.resetForm()
   }
 
   const formik = useFormik({
@@ -56,9 +56,8 @@ export default function FeedbackModal(props): JSX.Element {
       message: '',
     },
     enableReinitialize: true,
-    onSubmit: (values) => {
-      handleCreateFeedback(values)
-      formik.resetForm()
+    onSubmit: async (values) => {
+      await handleCreateFeedback(values)
     },
   })
 
