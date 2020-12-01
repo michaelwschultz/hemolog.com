@@ -1,6 +1,7 @@
 import React from 'react'
 import { Modal, Textarea, Text, Spacer, useToasts } from '@geist-ui/react'
 import { useFormik } from 'formik'
+
 import { useAuth } from 'lib/auth'
 import { createFeedback, FeedbackType, FeedbackUserType } from 'lib/db/feedback'
 
@@ -13,7 +14,7 @@ export default function FeedbackModal(props): JSX.Element {
   const [, setToast] = useToasts()
   const { user } = useAuth()
 
-  function handleCreateFeedback(feedback: FeedbackValues) {
+  const handleCreateFeedback = (feedback: FeedbackValues) => {
     const feedbackUser: FeedbackUserType = {
       email: user.email,
       name: user.name,
@@ -34,6 +35,7 @@ export default function FeedbackModal(props): JSX.Element {
           type: 'success',
           delay: 5000,
         })
+        closeModal()
       })
       .catch((error) =>
         setToast({
@@ -44,7 +46,7 @@ export default function FeedbackModal(props): JSX.Element {
       )
   }
 
-  function closeModal() {
+  const closeModal = () => {
     formik.resetForm()
     setVisible(false)
   }
@@ -83,11 +85,12 @@ export default function FeedbackModal(props): JSX.Element {
           <Spacer />
           <Text h6>Your feedback</Text>
           <Textarea
+            id='message'
             name='message'
-            value={formik.values.message}
-            onChange={(e) => formik.setFieldValue('message', e.target.value)}
-            width='100%'
+            onChange={formik.handleChange}
             placeholder="Your thoughts are appreciated, feel free to write as much or as little as you'd like."
+            value={formik.values.message}
+            width='100%'
           />
         </form>
       </Modal.Content>

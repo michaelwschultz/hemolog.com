@@ -25,4 +25,8 @@ async function deleteUser(uid) {
   return batch.commit()
 }
 
-export { createUser, deleteUser }
+async function updateUser(uid, newValues) {
+  return firestore.collection('users').doc(uid).update(newValues)
+}
+
+export { createUser, deleteUser, updateUser }

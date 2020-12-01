@@ -1,11 +1,10 @@
 import React from 'react'
 import { useFormik } from 'formik'
 import { Input, Button, Text, Spacer, useToasts } from '@geist-ui/react'
-import firebase from 'lib/firebase'
+
 import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
-
-const db = firebase.firestore()
+import { updateUser } from 'lib/db/users'
 
 const SettingsForm = () => {
   const { user } = useAuth()
@@ -25,11 +24,7 @@ const SettingsForm = () => {
     },
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2))
-
-      const userDocument = db.collection('users').doc(user.uid)
-      userDocument
-        .update(values)
+      updateUser(user.uid, values)
         .then(() => {
           setToast({
             text: 'Profile updated!',
