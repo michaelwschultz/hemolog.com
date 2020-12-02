@@ -105,9 +105,7 @@ export default function Stats(): JSX.Element {
 
   const getTotalUnits = () => {
     let units = 0
-    data.forEach(
-      (entry) => (units = parseInt(entry.medication.units, 10) + units)
-    )
+    data.forEach((entry) => (units = entry.medication.units + units))
 
     return units
   }
@@ -139,7 +137,7 @@ export default function Stats(): JSX.Element {
       </Grid>
       <Grid xs={24} sm={12} md={6}>
         <StatCard
-          value={`~${totalUnits.toLocaleString()} ui`}
+          value={`~${totalUnits.toLocaleString()} iu`}
           label='Units of factor'
         />
       </Grid>

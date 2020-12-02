@@ -18,7 +18,7 @@ export interface Medication {
   brand: string
   costPerUnit?: number
   lot?: string
-  units: string
+  units: number
 }
 
 export interface InfusionType {

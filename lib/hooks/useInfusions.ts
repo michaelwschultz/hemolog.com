@@ -1,6 +1,6 @@
 import firebase from 'lib/firebase'
 // import usePagination from "firestore-pagination-hook";
-// import { useUser } from 'utils/auth/useUser'
+import { useAuth } from 'lib/auth'
 
 import useFirestoreQuery, {
   FirestoreStatusType,
@@ -21,15 +21,19 @@ interface InfusionResponse {
 
 export default function useInfusions(
   limit?: number,
-  _uid?: string
+  uid?: string
 ): InfusionResponse {
   const db = firebase.firestore()
-  // const { user } = useUser()
-  // const userId = uid || user.uid
+  const { user } = useAuth()
 
-  // const query = db.collection('infusions').where('uid', '==', uid).limit(limit)
-
-  const query = db.collection('infusions').limit(limit)
+  // TODO: orderBy createdAt
+  // this isn't working right now becuase Firebase
+  // can't read the isostring format
+  const query = db
+    .collection('infusions')
+    .where('user.uid', '==', user ? user.uid : uid)
+    // .orderBy('createdAt', 'desc')
+    .limit(limit)
 
   const { data, status, error } = useFirestoreQuery(query)
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import useInfusions from 'lib/hooks/useInfusions'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
-import { format } from 'date-fns'
+import { format, compareDesc, parseISO } from 'date-fns'
 import {
   Note,
   Table,
@@ -17,11 +17,12 @@ import { InfusionType, InfusionTypeEnum } from 'lib/db/infusions'
 
 interface Props {
   limit?: number
+  uid?: string
 }
 
 export default function InfusionTable(props: Props): JSX.Element {
-  const { limit } = props
-  const { data: infusions, status, error } = useInfusions(limit)
+  const { limit, uid } = props
+  const { data: infusions, status, error } = useInfusions(limit, uid)
 
   if (status === FirestoreStatusType.LOADING) {
     return (
@@ -30,7 +31,7 @@ export default function InfusionTable(props: Props): JSX.Element {
           <Table.Column prop='createdAt' label='Date' />
           <Table.Column prop='type' label='Reason' />
           <Table.Column prop='sites' label='Bleed sites' />
-          <Table.Column prop='cause' label='Attribution' />
+          <Table.Column prop='cause' label='Cause' />
           <Table.Column prop='factorBrand' label='Factor' />
           <Table.Column prop='units' label='Amount' />
         </Table>
@@ -74,20 +75,26 @@ export default function InfusionTable(props: Props): JSX.Element {
       </Badge>
     )
     const factorBrand = infusion.medication.brand
-    const units = `${infusion.medication.units} ui`
+    const units = infusion.medication.units && `${infusion.medication.units} iu`
 
     return { createdAt, type, sites, cause, factorBrand, units }
   }
+
+  // TODO: add more sorting filters
+  // sort by date, most recent at the top
+  infusions.sort((a, b) =>
+    compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
+  )
 
   const rowData = infusions.map((infusion) => formatInfusionRow(infusion))
 
   return (
     <>
       <Table data={rowData} width='100%'>
-        <Table.Column prop='timestamp' label='Date' />
-        <Table.Column prop='prophy' label='Reason' />
+        <Table.Column prop='createdAt' label='Date' />
+        <Table.Column prop='type' label='Reason' />
         <Table.Column prop='sites' label='Bleed sites' />
-        <Table.Column prop='bleedReason' label='Attribution' />
+        <Table.Column prop='cause' label='Cause' />
         <Table.Column prop='factorBrand' label='Factor' />
         <Table.Column prop='units' label='Amount' />
       </Table>

@@ -38,7 +38,7 @@ export default function InfusionModal(props): JSX.Element {
       medication: {
         brand,
         lot,
-        units,
+        units: units ? parseInt(units, 10) : 0,
       },
       cause,
       sites,
@@ -70,6 +70,7 @@ export default function InfusionModal(props): JSX.Element {
     formik.resetForm()
   }
 
+  // TODO: Add formik validation
   const formik = useFormik({
     initialValues: {
       type: InfusionTypeEnum.PROPHY as InfusionTypeOptions,
@@ -143,6 +144,7 @@ export default function InfusionModal(props): JSX.Element {
           <Input
             id='units'
             name='units'
+            type='number'
             onChange={formik.handleChange}
             placeholder='3000'
             value={formik.values.units}
