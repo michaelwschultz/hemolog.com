@@ -1,6 +1,15 @@
 import React from 'react'
-import { Modal, Input, Text, Spacer, Radio, useToasts } from '@geist-ui/react'
+import {
+  Modal,
+  Input,
+  Text,
+  Spacer,
+  Button,
+  Row,
+  useToasts,
+} from '@geist-ui/react'
 import { useFormik } from 'formik'
+import { format, compareDesc, parseISO } from 'date-fns'
 
 import { useAuth } from 'lib/auth'
 import {
@@ -10,20 +19,32 @@ import {
   InfusionTypeOptions,
 } from 'lib/db/infusions'
 import { AttachedUserType } from 'lib/types/users'
+import useInfusions from 'lib/hooks/useInfusions'
 
 interface InfusionValues {
-  type: InfusionTypeOptions
-  sites: string
-  cause: string
   brand: string
-  units: string
+  cause: string
+  date: string
   lot: string
+  sites: string
+  type: InfusionTypeOptions
+  units: string
 }
 
 export default function InfusionModal(props): JSX.Element {
   const { visible, setVisible, bindings } = props
   const { user } = useAuth()
   const [, setToast] = useToasts()
+  const { data: infusions, status, error } = useInfusions()
+
+  // TODO: limit the firebase call instead of having
+  // to return all the infusions and filtering them here
+  infusions &&
+    infusions.sort((a, b) =>
+      compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
+    )
+
+  const previousInfusion = infusions && infusions[0]
 
   const handleCreateInfusion = async (infusion: InfusionValues) => {
     const infusionUser: AttachedUserType = {
@@ -33,17 +54,18 @@ export default function InfusionModal(props): JSX.Element {
       uid: user.uid,
     }
 
-    const { brand, lot, units, cause, sites, type } = infusion
+    const { date, brand, lot, units, cause, sites, type } = infusion
     const payload: InfusionType = {
+      cause,
+      createdAt: new Date().toISOString(),
+      date,
       medication: {
         brand,
         lot,
         units: units ? parseInt(units, 10) : 0,
       },
-      cause,
       sites,
       type,
-      createdAt: new Date().toISOString(),
       user: infusionUser,
     }
 
@@ -73,13 +95,17 @@ export default function InfusionModal(props): JSX.Element {
   // TODO: Add formik validation
   const formik = useFormik({
     initialValues: {
-      type: InfusionTypeEnum.PROPHY as InfusionTypeOptions,
-      sites: '',
+      brand: previousInfusion ? previousInfusion.medication.brand : '',
       cause: '',
-      brand: '',
-      units: '',
-      lot: '',
+      date: format(new Date(), 'yyyy-MM-dd'),
+      lot: previousInfusion ? previousInfusion.medication.lot : '',
+      sites: '',
+      type: InfusionTypeEnum.PROPHY as InfusionTypeOptions,
+      units: previousInfusion
+        ? previousInfusion.medication.units.toString()
+        : '',
     },
+    enableReinitialize: true,
     onSubmit: async (values) => {
       await handleCreateInfusion(values)
     },
@@ -90,48 +116,66 @@ export default function InfusionModal(props): JSX.Element {
       <Modal.Title>Log infusion</Modal.Title>
       <Modal.Content>
         <form onSubmit={formik.handleSubmit}>
-          <Radio.Group
-            id='type'
-            value={formik.values.type}
-            onChange={(value) =>
-              formik.setFieldValue('type', InfusionTypeEnum[value])
-            }
-          >
-            <Radio value={InfusionTypeEnum.PROPHY}>
+          <Row justify='space-between'>
+            <Button
+              auto
+              name='type'
+              onClick={() =>
+                formik.setFieldValue('type', InfusionTypeEnum.PROPHY)
+              }
+              style={{ width: '100%', marginRight: '8px' }}
+              type={
+                formik.values.type === InfusionTypeEnum.PROPHY
+                  ? 'success-light'
+                  : 'default'
+              }
+            >
               Prophy
-              <Radio.Description>
-                Part of your regular schedule
-              </Radio.Description>
-            </Radio>
-            <Radio value={InfusionTypeEnum.BLEED}>
-              Bleed<Radio.Desc>Stopping an active bleed</Radio.Desc>
-            </Radio>
-            <Radio value={InfusionTypeEnum.PREVENTATIVE}>
-              Preventative<Radio.Desc>Just in case</Radio.Desc>
-            </Radio>
-          </Radio.Group>
+            </Button>
+            <Button
+              auto
+              name='type'
+              onClick={() =>
+                formik.setFieldValue('type', InfusionTypeEnum.BLEED)
+              }
+              style={{ width: '100%', marginRight: '8px' }}
+              type={
+                formik.values.type === InfusionTypeEnum.BLEED
+                  ? 'error-light'
+                  : 'default'
+              }
+            >
+              Bleed
+            </Button>
+            <Button
+              auto
+              name='type'
+              onClick={() =>
+                formik.setFieldValue('type', InfusionTypeEnum.PREVENTATIVE)
+              }
+              style={{ width: '100%' }}
+              type={
+                formik.values.type === InfusionTypeEnum.PREVENTATIVE
+                  ? 'warning-light'
+                  : 'default'
+              }
+            >
+              Preventative
+            </Button>
+          </Row>
           <Spacer />
-          <Text h6>Affected areas</Text>
           <Input
-            id='sites'
-            name='sites'
+            id='date'
+            name='date'
+            type='date'
             onChange={formik.handleChange}
-            placeholder='Left ankle, right knee'
-            value={formik.values.sites}
+            placeholder='Date'
+            value={formik.values.date}
             width='100%'
-          />
+          >
+            <Text h6>Date</Text>
+          </Input>
           <Spacer />
-          <Text h6>Cause of bleed</Text>
-          <Input
-            id='cause'
-            name='cause'
-            onChange={formik.handleChange}
-            placeholder='Ran into a door 🤦‍♂️'
-            value={formik.values.cause}
-            width='100%'
-          />
-          <Spacer />
-          <Text h6>Medication</Text>
           <Input
             id='brand'
             name='brand'
@@ -139,12 +183,15 @@ export default function InfusionModal(props): JSX.Element {
             placeholder='Brand name'
             value={formik.values.brand}
             width='100%'
-          />
+          >
+            <Text h6>Medication</Text>
+          </Input>
           <Spacer y={0.5} />
           <Input
             id='units'
             name='units'
             type='number'
+            labelRight='units'
             onChange={formik.handleChange}
             placeholder='3000'
             value={formik.values.units}
@@ -160,6 +207,28 @@ export default function InfusionModal(props): JSX.Element {
             width='100%'
           />
           <Spacer />
+          <Input
+            id='sites'
+            name='sites'
+            onChange={formik.handleChange}
+            placeholder='Left ankle, right knee'
+            value={formik.values.sites}
+            width='100%'
+          >
+            <Text h6>Affected areas</Text>
+          </Input>
+          <Spacer />
+          <Input
+            id='cause'
+            name='cause'
+            onChange={formik.handleChange}
+            placeholder='Ran into a door 🤦‍♂️'
+            value={formik.values.cause}
+            width='100%'
+          >
+            <Text h6>Cause of bleed</Text>
+          </Input>
+
           {/* <Text h6>Notes</Text>
           <Textarea
             width='100%'
@@ -172,7 +241,7 @@ export default function InfusionModal(props): JSX.Element {
       </Modal.Action>
       <Modal.Action
         onClick={formik.submitForm}
-        disabled={!formik.isValid || !formik.dirty}
+        disabled={!formik.isValid}
         loading={formik.isSubmitting}
       >
         Log infusion

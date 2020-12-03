@@ -95,11 +95,7 @@ export default function Home(): JSX.Element {
                   auto
                   type='success-light'
                 >
-                  New infusion
-                </Button>
-                <Spacer x={0.5} />
-                <Button onClick={toggleSidebar} auto>
-                  Toggle sidebar
+                  Log infusion
                 </Button>
               </Row>
             </Row>

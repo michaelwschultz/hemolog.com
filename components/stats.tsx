@@ -90,18 +90,41 @@ export default function Stats(): JSX.Element {
     (entry) => entry.type === InfusionTypeEnum.BLEED
   ).length
   const mostAffectedArea = _.chain(affectedAreas)
+    .compact()
     .countBy()
     .pairs()
-    .max(_.first)
+    .max(_.last)
     .head()
     .value()
 
   const biggestCause = _.chain(causes)
+    .compact()
     .countBy()
     .pairs()
-    .max(_.first)
+    .max(_.last)
     .head()
     .value()
+
+  const consecutiveProphyInfusions = (): number => {
+    let longestStreak = 0
+    let currentStreak = 0
+
+    data.forEach((entry) => {
+      const isProphy = entry.type === InfusionTypeEnum.PROPHY
+
+      if (isProphy) {
+        currentStreak++
+      } else {
+        currentStreak = 0
+      }
+
+      if (currentStreak > longestStreak) {
+        longestStreak = currentStreak
+      }
+    })
+
+    return longestStreak
+  }
 
   const getTotalUnits = () => {
     let units = 0
@@ -109,6 +132,7 @@ export default function Stats(): JSX.Element {
 
     return units
   }
+
   const totalUnits = getTotalUnits()
   const estimatedTotalCost = totalUnits * COST_OF_FACTOR
 
@@ -121,7 +145,10 @@ export default function Stats(): JSX.Element {
         <StatCard value={numberOfBleeds} label='Bleeds' />
       </Grid>
       <Grid xs={24} sm={12} md={6}>
-        <StatCard value='tk' label='Consecutive prophy infusions' />
+        <StatCard
+          value={consecutiveProphyInfusions()}
+          label='Consecutive prophy infusions'
+        />
       </Grid>
       <Grid xs={24} sm={12} md={6}>
         <StatCard
@@ -150,10 +177,18 @@ export default function Stats(): JSX.Element {
         />
       </Grid>
       <Grid xs={24} sm={12} md={6}>
-        {/* TODO: could setup a separate sheet for this data as well as a 
-            separate api call */}
-        <StatCard value='tk' label='Pharmacy Orders' />
+        <StatCard
+          value='Missing something?'
+          label='Hit the feedback button below'
+          type='success'
+          shadow={false}
+        />
       </Grid>
+      {/* <Grid xs={24} sm={12} md={6}>
+        TODO: could setup a separate collection for this data as well as a 
+            separate api call
+        <StatCard value='tk' label='Pharmacy Orders' />
+      </Grid> */}
     </Grid.Container>
   )
 }

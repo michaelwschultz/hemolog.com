@@ -22,10 +22,11 @@ export interface Medication {
 }
 
 export interface InfusionType {
+  cause: string
   createdAt: string
+  date: string
   medication: Medication
   sites: string
-  cause: string
   type: InfusionTypeOptions
   user: AttachedUserType
 }
