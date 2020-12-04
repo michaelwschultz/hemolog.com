@@ -22,6 +22,8 @@ export interface Medication {
 }
 
 export interface InfusionType {
+  deletedAt: string | null
+  uid?: string
   cause: string
   createdAt: string
   date: string
@@ -31,12 +33,22 @@ export interface InfusionType {
   user: AttachedUserType
 }
 
+// NOTE(michael) this might be a bad way of adding the doc id.
+// Probably worth searching for another solution.
 function createInfusion(data: InfusionType) {
-  return firestore.collection('infusions').add(data)
+  return firestore
+    .collection('infusions')
+    .add(data)
+    .then((docRef) => {
+      docRef.set({ uid: docRef.id, ...data }, { merge: true })
+    })
 }
 
 function deleteInfusion(uid: string) {
-  return firestore.collection('infusions').doc(uid).delete()
+  return firestore
+    .collection('infusions')
+    .doc(uid)
+    .set({ deletedAt: new Date().toISOString() }, { merge: true })
 }
 
 async function updateInfusion(uid: string, newValues) {

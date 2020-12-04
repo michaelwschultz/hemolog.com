@@ -35,7 +35,7 @@ export default function InfusionModal(props): JSX.Element {
   const { visible, setVisible, bindings } = props
   const { user } = useAuth()
   const [, setToast] = useToasts()
-  const { data: infusions, status, error } = useInfusions()
+  const { data: infusions } = useInfusions()
 
   // TODO(michael) limit the firebase call instead of having
   // to return all the infusions and filtering them here
@@ -58,6 +58,7 @@ export default function InfusionModal(props): JSX.Element {
     const payload: InfusionType = {
       cause,
       createdAt: new Date().toISOString(),
+      deletedAt: null,
       date,
       medication: {
         brand,

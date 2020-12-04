@@ -1,15 +1,11 @@
-import { useState } from 'react'
 import Head from 'next/head'
-import { useHotkeys } from 'react-hotkeys-hook'
 import {
   Page,
   Text,
   Button,
   Row,
-  Col,
   Keyboard,
   Spacer,
-  useMediaQuery,
   useModal,
   Loading,
 } from '@geist-ui/react'
@@ -24,12 +20,6 @@ import Stats from 'components/stats'
 
 export default function Logs(): JSX.Element {
   const auth = useAuth()
-  const largerThanSm = useMediaQuery('md', { match: 'up' })
-
-  // TODO(michael) store this variable in localstorage so it persists across pages
-  const [showSidebar, setShowSidebar] = useState(true)
-  const toggleSidebar = () => setShowSidebar((prevState) => !prevState)
-  useHotkeys('ctrl+b', toggleSidebar)
 
   const {
     visible: feedbackModal,

@@ -10,19 +10,33 @@ import {
   Badge,
   Spacer,
   Pagination,
+  useToasts,
+  Button,
+  Tooltip,
 } from '@geist-ui/react'
 import ChevronRight from '@geist-ui/react-icons/chevronRight'
 import ChevronLeft from '@geist-ui/react-icons/chevronLeft'
-import { InfusionType, InfusionTypeEnum } from 'lib/db/infusions'
+import {
+  InfusionType,
+  InfusionTypeEnum,
+  deleteInfusion,
+} from 'lib/db/infusions'
 
 interface Props {
   limit?: number
   uid?: string
 }
 
+enum infusionTypeBadgeStyle {
+  BLEED = 'error',
+  PROPHY = 'success',
+  PREVENTATIVE = 'secondary',
+}
+
 export default function InfusionTable(props: Props): JSX.Element {
   const { limit, uid } = props
   const { data: infusions, status, error } = useInfusions(limit, uid)
+  const [, setToast] = useToasts()
 
   if (status === FirestoreStatusType.LOADING) {
     return (
@@ -60,10 +74,22 @@ export default function InfusionTable(props: Props): JSX.Element {
     )
   }
 
-  enum infusionTypeBadgeStyle {
-    BLEED = 'error',
-    PROPHY = 'success',
-    PREVENTATIVE = 'secondary',
+  const deleteRow = (uid: string) => {
+    deleteInfusion(uid)
+      .then(() => {
+        setToast({
+          text: 'Infusion deleted.',
+          type: 'success',
+          delay: 5000,
+        })
+      })
+      .catch((error) =>
+        setToast({
+          text: `Something went wrong: ${error}`,
+          type: 'error',
+          delay: 10000,
+        })
+      )
   }
 
   function formatInfusionRow(infusion: InfusionType) {
@@ -77,7 +103,16 @@ export default function InfusionTable(props: Props): JSX.Element {
     const factorBrand = infusion.medication.brand
     const units = infusion.medication.units && `${infusion.medication.units} iu`
 
-    return { createdAt, type, sites, cause, factorBrand, units }
+    const uid = (
+      <>
+        <Tooltip text="Hope you're sure about this." placement='left'>
+          <Button size='mini' onClick={() => deleteRow(infusion.uid)} auto>
+            Delete
+          </Button>
+        </Tooltip>
+      </>
+    )
+    return { createdAt, type, sites, cause, factorBrand, units, uid }
   }
 
   // TODO(michael) add more sorting filters
@@ -90,15 +125,29 @@ export default function InfusionTable(props: Props): JSX.Element {
 
   return (
     <>
-      <Table data={rowData} width='100%'>
+      <Table
+        data={rowData}
+        width='100%'
+        hover={false}
+        // TODO(michael) add the ability to update logs
+        // onRow={(row) => updateRow(row.uid)}
+      >
         <Table.Column prop='createdAt' label='Date' />
         <Table.Column prop='type' label='Reason' />
         <Table.Column prop='sites' label='Bleed sites' />
         <Table.Column prop='cause' label='Cause' />
         <Table.Column prop='factorBrand' label='Factor' />
         <Table.Column prop='units' label='Amount' />
+        <Table.Column prop='uid' />
       </Table>
-      {infusions.length === 0 && <Note>No infusions found</Note>}
+      {infusions.length === 0 && (
+        <>
+          <Spacer />
+          <Note type='success' filled>
+            No infusions found. Add one by clicking 'Log Infusion' above.
+          </Note>
+        </>
+      )}
       {infusions.length >= 25 && (
         <>
           <Spacer y={0.5} />

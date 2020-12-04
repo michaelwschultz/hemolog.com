@@ -32,6 +32,7 @@ export default function useInfusions(
   const query = db
     .collection('infusions')
     .where('user.uid', '==', user ? user.uid : uid)
+    .where('deletedAt', '==', null)
     // .orderBy('createdAt', 'desc')
     .limit(limit)
 
