@@ -20,7 +20,7 @@ export default function EmergencyCard(): JSX.Element {
           </Text>
           <Text h6>
             Provided by{' '}
-            <NextLink href='/v2'>
+            <NextLink href='/'>
               <Link>Hemolog.com</Link>
             </NextLink>
           </Text>

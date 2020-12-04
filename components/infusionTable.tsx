@@ -80,7 +80,7 @@ export default function InfusionTable(props: Props): JSX.Element {
     return { createdAt, type, sites, cause, factorBrand, units }
   }
 
-  // TODO: add more sorting filters
+  // TODO(michael) add more sorting filters
   // sort by date, most recent at the top
   infusions.sort((a, b) =>
     compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))

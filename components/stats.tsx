@@ -6,7 +6,7 @@ import useInfusions from 'lib/hooks/useInfusions'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
 import { InfusionTypeEnum } from 'lib/db/infusions'
 
-// TODO: move types to types file
+// TODO(michael) move types to types file
 type Value = string[]
 
 interface ValueRanges {
@@ -21,7 +21,7 @@ export interface InfusionSheet {
   valueRanges: ValueRanges[]
 }
 
-// TODO: create array of factor brands with associated prices
+// TODO(michael) create array of factor brands with associated prices
 // const PHARMACY_ORDERS = 6
 const COST_OF_FACTOR = 1.66
 
@@ -76,7 +76,7 @@ export default function Stats(): JSX.Element {
     )
   }
 
-  // TODO: there has to be a better way to understand this data without
+  // TODO(michael) there has to be a better way to understand this data without
   // iterating through it so many times. Iterating through it once would be a lot better
   // but doing it on the server would be even better.
 
@@ -185,8 +185,8 @@ export default function Stats(): JSX.Element {
         />
       </Grid>
       {/* <Grid xs={24} sm={12} md={6}>
-        TODO: could setup a separate collection for this data as well as a 
-            separate api call
+          TODO(michael) could setup a separate collection for this data as well as a 
+          separate api call
         <StatCard value='tk' label='Pharmacy Orders' />
       </Grid> */}
     </Grid.Container>

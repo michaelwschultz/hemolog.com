@@ -4,7 +4,6 @@
 
 import admin from 'firebase-admin'
 
-// TODO: remove if no longer needed
 const firebasePrivateKey = process.env.FIREBASE_PRIVATE_KEY
 const privateKey = firebasePrivateKey.replace(/\\n/g, '\n')
 

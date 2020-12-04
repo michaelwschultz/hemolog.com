@@ -5,6 +5,8 @@ import cookie from 'js-cookie'
 import firebase from 'lib/firebase'
 import { createUser } from 'lib/db/users'
 import { generateUniqueString } from 'lib/helpers'
+import LoadingScreen from 'components/loadingScreen'
+import { UserType } from 'lib/types/users'
 
 const authContext = createContext(undefined)
 
@@ -20,7 +22,7 @@ export const useAuth = () => {
 const firestore = firebase.firestore()
 
 function useProvideAuth() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<UserType>(null)
   const [loading, setLoading] = useState(true)
 
   const handleUser = async (rawUser) => {
@@ -30,9 +32,14 @@ function useProvideAuth() {
 
       const { token, ...userWithoutToken } = user
 
-      // If user already exist then remove alertId
+      // TODO(michael) If user already exist then remove alertId
       // so it isn't overwritten when the user is updated on `createUser`
+      // and overwrite the alertId created in the formatter.
+      // This needs to be cleaned up. isAdmin is also appended to
+      // the user here.
       if (dbUser.exists) {
+        user.alertId = dbUser.data().alertId
+        user.isAdmin = dbUser.data().isAdmin
         delete userWithoutToken.alertId
       }
 
@@ -46,7 +53,7 @@ function useProvideAuth() {
       setLoading(false)
       return user
     } else {
-      setUser(false)
+      setUser(null)
       cookie.remove('hemolog-auth')
 
       setLoading(false)
@@ -94,8 +101,7 @@ function useProvideAuth() {
   }
 
   const signout = () => {
-    Router.push('/v2/login')
-
+    Router.push('/login')
     return firebase
       .auth()
       .signOut()
@@ -118,7 +124,7 @@ function useProvideAuth() {
   }
 }
 
-const formatUser = async (user) => {
+const formatUser = async (user): Promise<UserType> => {
   const idTokenResult = await user.getIdTokenResult()
   const token = idTokenResult.token
   const alertId = await generateUniqueString(6)
@@ -132,4 +138,24 @@ const formatUser = async (user) => {
     token,
     uid: user.uid,
   }
+}
+
+// NOTE(michael) This takes care of protecting unauthed users
+// from seeing any protected pages. This could be handled better,
+// but this works for now
+export const ProtectRoute = ({ children }) => {
+  const { user, loading } = useAuth()
+
+  if (loading && !user) {
+    return <LoadingScreen />
+  }
+
+  const { pathname } = window.location
+
+  if (!user && pathname !== '/login' && !pathname.includes('emergency')) {
+    Router.push('/login')
+    return null
+  }
+
+  return children
 }

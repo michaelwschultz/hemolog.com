@@ -1,7 +1,7 @@
 import { GeistProvider, CssBaseline } from '@geist-ui/react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from 'lib/theme'
-import { AuthProvider } from 'lib/auth'
+import { AuthProvider, ProtectRoute } from 'lib/auth'
 
 export default function App({ Component, pageProps }): JSX.Element {
   return (
@@ -11,7 +11,9 @@ export default function App({ Component, pageProps }): JSX.Element {
         <AuthProvider>
           <GeistProvider>
             <CssBaseline />
-            <Component {...pageProps} />
+            <ProtectRoute>
+              <Component {...pageProps} />
+            </ProtectRoute>
           </GeistProvider>
         </AuthProvider>
       </ThemeProvider>
@@ -19,7 +21,7 @@ export default function App({ Component, pageProps }): JSX.Element {
   )
 }
 
-/* TODO find out where to import this */
+/* TODO(michael) find out where to import this */
 /* @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,900;1,400;1,900&display=swap'); */
 
 const GlobalStyle = createGlobalStyle`

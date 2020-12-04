@@ -3,7 +3,7 @@ import useFirestoreQuery, {
   FirestoreStatusType,
 } from 'lib/hooks/useFirestoreQuery'
 
-// TODO move FirestoreStatusTypes to a more general place
+// TODO(michael) move FirestoreStatusTypes to a more general place
 type FirestoreStatusTypes = FirestoreStatusType
 
 export interface Person {

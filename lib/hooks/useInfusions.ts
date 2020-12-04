@@ -26,7 +26,7 @@ export default function useInfusions(
   const db = firebase.firestore()
   const { user } = useAuth()
 
-  // TODO: orderBy createdAt
+  // TODO(michael) orderBy createdAt
   // this isn't working right now becuase Firebase
   // can't read the isostring format
   const query = db

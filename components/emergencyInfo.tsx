@@ -1,17 +1,9 @@
 import React from 'react'
+import { Avatar, Note, Row, Spacer, Text, Badge } from '@geist-ui/react'
+
 import InfusionTable from 'components/infusionTable'
 import { Person } from 'lib/hooks/useEmergencyUser'
-import {
-  Avatar,
-  Note,
-  Row,
-  Spacer,
-  Text,
-  Badge,
-  Button,
-  Card,
-  Grid,
-} from '@geist-ui/react'
+import { useAuth } from 'lib/auth'
 
 interface Props {
   person: Person
@@ -19,6 +11,7 @@ interface Props {
 
 export default function EmergencyInfo(props: Props): JSX.Element {
   const { person } = props
+  const { user } = useAuth()
 
   if (person) {
     return (
@@ -54,13 +47,19 @@ export default function EmergencyInfo(props: Props): JSX.Element {
 
         <Spacer y={3} />
 
-        <Text h5>Emergency contacts</Text>
+        {user && (
+          <>
+            <Text h5>Emergency contacts (coming soon)</Text>
+            <Text>
+              Soon you'll be able to add these from your settings page.
+            </Text>
+          </>
+        )}
         <Spacer />
-        <Grid.Container gap={2}>
+        {/* <Grid.Container gap={2}>
           <Grid sm={12}>
             <Card>
               <Row justify='space-between' align='middle'>
-                {/* TODO: pull this from real data */}
                 <Text h4>Jenifer Schultz</Text>
                 <Button
                   size='small'
@@ -88,7 +87,7 @@ export default function EmergencyInfo(props: Props): JSX.Element {
               <Text h6>555-555-5555</Text>
             </Card>
           </Grid>
-        </Grid.Container>
+        </Grid.Container> */}
       </>
     )
   }

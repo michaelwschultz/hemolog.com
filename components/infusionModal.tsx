@@ -37,7 +37,7 @@ export default function InfusionModal(props): JSX.Element {
   const [, setToast] = useToasts()
   const { data: infusions, status, error } = useInfusions()
 
-  // TODO: limit the firebase call instead of having
+  // TODO(michael) limit the firebase call instead of having
   // to return all the infusions and filtering them here
   infusions &&
     infusions.sort((a, b) =>
@@ -92,7 +92,7 @@ export default function InfusionModal(props): JSX.Element {
     formik.resetForm()
   }
 
-  // TODO: Add formik validation
+  // TODO(michael) Add formik validation
   const formik = useFormik({
     initialValues: {
       brand: previousInfusion ? previousInfusion.medication.brand : '',

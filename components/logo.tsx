@@ -6,7 +6,7 @@ import Link from 'next/link'
 export default function Logo(): JSX.Element {
   return (
     <Text h4>
-      <Link href='/v2'>
+      <Link href='/'>
         <a style={{ color: 'black' }}>
           Hemolog <Droplet color='salmon' />
         </a>

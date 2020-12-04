@@ -11,6 +11,8 @@ import {
   Divider,
   Link,
   Button,
+  Note,
+  Tag,
 } from '@geist-ui/react'
 import Logo from 'components/logo'
 
@@ -20,7 +22,12 @@ const Auth = () => {
   return (
     <Page size='large'>
       <Page.Header style={{ paddingTop: '24px' }}>
-        <Logo />
+        <Row align='middle' justify='space-between'>
+          <Logo />
+          <Link href='https://github.com/michaelwschultz/hemolog.com'>
+            <Tag>v2.0.0</Tag>
+          </Link>
+        </Row>
       </Page.Header>
       <Page.Content>
         <Row justify='center'>
@@ -32,16 +39,26 @@ const Auth = () => {
             </Text>
             <Spacer />
             <Button
-              onClick={() => auth.signinWithGoogle('/v2')}
+              onClick={() => auth.signinWithGoogle('/')}
               loading={auth.loading}
             >
               Continue with Google
             </Button>
-            {/* <FirebaseAuth /> */}
             <Spacer />
           </Fieldset>
         </Row>
-        <Spacer y={4} />
+        <Spacer y={2} />
+        <Note type='success' label='Important'>
+          Hemolog is currently in development. Data integrety is not guaranteed.
+          Hemolog is{' '}
+          <b>
+            <i>not</i>
+          </b>{' '}
+          HIPAA compliant... yada yada yada.
+        </Note>
+
+        <Spacer />
+
         <Divider />
         <Spacer y={4} />
         <Grid.Container gap={2}>
@@ -50,7 +67,15 @@ const Auth = () => {
               <Text h4>Open source</Text>
               <Text>
                 Hemolog is completely open source. We've got a limited number of
-                years to worry about logging.
+                years to worry about logging. Check out the code on{' '}
+                <Link
+                  href='https://github.com/michaelwschultz/hemolog.com'
+                  underline
+                  icon
+                >
+                  Github
+                </Link>
+                .
               </Text>
             </Card>
           </Grid>
@@ -80,12 +105,13 @@ const Auth = () => {
                 <Link
                   href='https://github.com/michaelwschultz/hemolog.com'
                   color
+                  icon
                 >
                   See for yourself!
                 </Link>
                 {` `}
                 Your data is stored in{' '}
-                <Link href='https://firebase.google.com/' color>
+                <Link href='https://firebase.google.com/' color icon>
                   Firebase
                 </Link>
                 , a trused Google product. You own your data, and it will never
@@ -98,7 +124,12 @@ const Auth = () => {
       </Page.Content>
       <Page.Footer>
         <Row justify='center'>
-          <Text>Built in Oakland California by Michael Schultz</Text>
+          <Text>
+            Built in Oakland California by{' '}
+            <Link href='https://michaelschultz.com' color icon>
+              Michael Schultz
+            </Link>
+          </Text>
           <Spacer />
         </Row>
       </Page.Footer>
