@@ -33,9 +33,9 @@ export default function Sidebar({ children }): JSX.Element {
             </Row>
             <Spacer y={1} />
             <Row justify='center'>
-              <NextLink href='/settings'>
+              <NextLink href='/profile'>
                 <Link block style={{ color: themeContext.colors.text }}>
-                  Settings
+                  Profile
                 </Link>
               </NextLink>
             </Row>

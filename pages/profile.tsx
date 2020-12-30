@@ -1,11 +1,14 @@
 import Head from 'next/head'
+import Link from 'next/link'
+
 import Sidebar from 'components/sidebar'
-import { Page, Text, Button, Row, useModal } from '@geist-ui/react'
+import { Page, Text, Button, Row, useModal, Spacer } from '@geist-ui/react'
 import FeedbackModal from 'components/feedbackModal'
 import Logo from 'components/logo'
 import SettingsForm from 'components/settingsForm'
+import EmergencyCard from 'components/emergencyCard'
 
-export default function Settings(): JSX.Element {
+export default function Profile(): JSX.Element {
   const {
     visible: feedbackModal,
     setVisible: setFeedbackModalVisible,
@@ -19,7 +22,7 @@ export default function Settings(): JSX.Element {
   return (
     <>
       <Head>
-        <title>Hemolog - Settings</title>
+        <title>Hemolog - Profile</title>
       </Head>
       <Sidebar>
         <Page size='large'>
@@ -31,6 +34,23 @@ export default function Settings(): JSX.Element {
           <Page.Content>
             <Text h4>Your profile</Text>
             <SettingsForm />
+            <Spacer y={3} />
+            <h4>In case of emergency</h4>
+            <div style={{ display: 'inline-block' }}>
+              <Row justify='space-between' align='middle'>
+                <Text>Hemolog card</Text>
+                <Link href='/emergency/print'>Print your card</Link>
+              </Row>
+              <EmergencyCard />
+            </div>
+            <Text>
+              A medical worker can simply type in the URL listed on the card, or
+              eaiser scan the QR code with their phone. This gives the worker a
+              quick summary of all your info including your 3 most recent logs,
+              and emergency contacts. These features aren’t available with Medic
+              Alert.
+            </Text>
+            <Spacer y={3} />
           </Page.Content>
           <Page.Footer style={{ paddingBottom: '16px' }}>
             {/* This footer overlays the content for some reason */}

@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { GeistProvider, CssBaseline } from '@geist-ui/react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from 'lib/theme'
@@ -6,6 +7,12 @@ import { AuthProvider, ProtectRoute } from 'lib/auth'
 export default function App({ Component, pageProps }): JSX.Element {
   return (
     <>
+      <Head>
+        <link rel='apple-touch-icon' href='/images/apple-touch-icon.png' />
+        <meta name='mobile-web-app-capable' content='yes' />
+        <meta name='apple-mobile-web-app-capable' content='yes' />
+        <title>Hemolog</title>
+      </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <AuthProvider>

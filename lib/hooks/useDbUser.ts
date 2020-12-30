@@ -13,6 +13,8 @@ export interface Person {
   photoUrl?: string
   hemophiliaType?: string
   severity?: string
+  medication?: string
+  factor?: number
 }
 
 interface FirestoreUserResponse {
@@ -22,7 +24,7 @@ interface FirestoreUserResponse {
 }
 
 export default function useDbUser(
-  uid: string | string[]
+  uid: string | string[],
 ): FirestoreUserResponse {
   const db = firebase.firestore()
 
@@ -30,10 +32,10 @@ export default function useDbUser(
     db
       .collection('users')
       .where('uid', '==', uid || '')
-      .limit(1)
+      .limit(1),
   )
 
-  let person
+  let person: Person
   if (data) {
     person = data[0]
   }

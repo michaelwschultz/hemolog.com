@@ -1,6 +1,6 @@
 import React from 'react'
 import { useFormik } from 'formik'
-import { Input, Button, Text, Spacer, useToasts } from '@geist-ui/react'
+import { Input, Button, Text, Spacer, useToasts, Row } from '@geist-ui/react'
 
 import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
@@ -15,6 +15,8 @@ const SettingsForm = () => {
     initialValues: {
       hemophiliaType: person ? person.hemophiliaType : '',
       severity: person ? person.severity : '',
+      factor: person ? person.factor : '',
+      medication: person ? person.medication : '',
       // emergencyContacts: [
       //   {
       //     name: '',
@@ -37,31 +39,62 @@ const SettingsForm = () => {
             text: `Something went wrong: ${error}`,
             type: 'error',
             delay: 10000,
-          })
+          }),
         )
     },
   })
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Text h5>Type of hemophilia</Text>
-      <Input
-        id='hemophiliaType'
-        name='hemophiliaType'
-        type='text'
-        onChange={formik.handleChange}
-        value={formik.values.hemophiliaType}
-      />
+      <div style={{ display: 'inline-block' }}>
+        <Row justify='space-between'>
+          <div style={{ paddingRight: '24px' }}>
+            <Text h5>Type of hemophilia</Text>
+            <Input
+              id='hemophiliaType'
+              name='hemophiliaType'
+              type='text'
+              onChange={formik.handleChange}
+              value={formik.values.hemophiliaType}
+            />
+          </div>
+          <div>
+            <Text h5>Severity</Text>
+            <Input
+              id='severity'
+              name='severity'
+              type='text'
+              onChange={formik.handleChange}
+              value={formik.values.severity}
+            />
+          </div>
+        </Row>
+        <Spacer />
+        <Row justify='space-between'>
+          <div style={{ paddingRight: '24px' }}>
+            <Text h5>Factor number</Text>
+            <Input
+              id='factor'
+              name='factor'
+              type='number'
+              onChange={formik.handleChange}
+              value={formik.values.factor}
+            />
+          </div>
+          <div>
+            <Text h5>Medication</Text>
+            <Input
+              id='medication'
+              name='medication'
+              type='text'
+              onChange={formik.handleChange}
+              value={formik.values.medication}
+            />
+          </div>
+        </Row>
+      </div>
       <Spacer />
-      <Text h5>Severity</Text>
-      <Input
-        id='severity'
-        name='severity'
-        type='text'
-        onChange={formik.handleChange}
-        value={formik.values.severity}
-      />
-      <Spacer />
+
       {/* <Text h5>Emergency contacts</Text>
       <Text h5>Contact name</Text>
       <Input
@@ -81,14 +114,16 @@ const SettingsForm = () => {
         value={formik.values.emergencyContacts[0].phone}
       />
       <Spacer /> */}
-      <Button
-        type='success'
-        onClick={formik.submitForm}
-        disabled={!formik.isValid || !formik.dirty}
-        loading={formik.isSubmitting}
-      >
-        Update
-      </Button>
+      <div>
+        <Button
+          type='success'
+          onClick={formik.submitForm}
+          disabled={!formik.isValid || !formik.dirty}
+          loading={formik.isSubmitting}
+        >
+          Update
+        </Button>
+      </div>
     </form>
   )
 }

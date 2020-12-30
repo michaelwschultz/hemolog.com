@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import {
   Page,
   Text,
@@ -17,6 +18,7 @@ import InfusionTable from 'components/infusionTable'
 import Logo from 'components/logo'
 import Sidebar from 'components/sidebar'
 import Stats from 'components/stats'
+import EmergencyCard from 'components/emergencyCard'
 
 export default function Logs(): JSX.Element {
   const auth = useAuth()
