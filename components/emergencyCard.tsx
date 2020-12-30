@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import Link from 'next/link'
 import { Row, Spacer } from '@geist-ui/react'
 import styled, { ThemeContext } from 'styled-components'
 
@@ -51,7 +52,11 @@ export default function EmergencyCard(): JSX.Element {
             </h5>
             <h5>
               Treat with factor{' '}
-              {person.factor ? person.factor : 'Fill in your profile'}
+              {person.factor ? (
+                person.factor
+              ) : (
+                <Link href='/profile'>Update profile</Link>
+              )}
             </h5>
           </div>
           <StyledScanLink>

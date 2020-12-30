@@ -78,7 +78,9 @@ const SettingsForm = () => {
               name='factor'
               type='number'
               onChange={formik.handleChange}
-              value={formik.values.factor}
+              value={
+                formik.values.factor ? formik.values.factor.toString() : ''
+              }
             />
           </div>
           <div>
