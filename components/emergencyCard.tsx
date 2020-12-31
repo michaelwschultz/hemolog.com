@@ -7,7 +7,11 @@ import QRCode from 'react-qr-code'
 import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
 
-export default function EmergencyCard({ forPrint }): JSX.Element {
+interface Props {
+  forPrint?: boolean
+}
+
+export default function EmergencyCard({ forPrint }: Props): JSX.Element {
   const { user } = useAuth()
   const { person } = useDbUser(user && user.uid)
 
