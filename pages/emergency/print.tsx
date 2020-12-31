@@ -33,7 +33,7 @@ export default function Print(): JSX.Element {
             Keep the card in your wallet or in your car.
           </Text>
           <StyledCutOut>
-            <EmergencyCard />
+            <EmergencyCard forPrint />
           </StyledCutOut>
         </Page.Content>
         <Page.Footer style={{ paddingBottom: '16px' }}></Page.Footer>

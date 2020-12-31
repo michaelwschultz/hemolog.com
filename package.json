@@ -24,6 +24,7 @@
     "react-dom": "17.0.1",
     "react-firebaseui": "^4.1.0",
     "react-hotkeys-hook": "^2.4.0",
+    "react-qr-code": "^1.0.5",
     "styled-components": "^5.2.1",
     "swr": "^0.3.9",
     "underscore": "^1.11.0"
