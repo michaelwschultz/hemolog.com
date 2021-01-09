@@ -21,6 +21,7 @@ import {
   InfusionTypeEnum,
   deleteInfusion,
 } from 'lib/db/infusions'
+import { useAuth } from 'lib/auth'
 
 interface Props {
   limit?: number
@@ -37,6 +38,7 @@ export default function InfusionTable(props: Props): JSX.Element {
   const { limit, uid } = props
   const { data: infusions, status, error } = useInfusions(limit, uid)
   const [, setToast] = useToasts()
+  const { user } = useAuth()
 
   if (status === FirestoreStatusType.LOADING) {
     return (
@@ -103,7 +105,7 @@ export default function InfusionTable(props: Props): JSX.Element {
     const factorBrand = infusion.medication.brand
     const units = infusion.medication.units && `${infusion.medication.units} iu`
 
-    const uid = (
+    const remove = (
       <>
         <Tooltip text="Hope you're sure about this." placement='left'>
           <Button size='mini' onClick={() => deleteRow(infusion.uid)} auto>
@@ -112,7 +114,8 @@ export default function InfusionTable(props: Props): JSX.Element {
         </Tooltip>
       </>
     )
-    return { createdAt, type, sites, cause, factorBrand, units, uid }
+
+    return { createdAt, type, sites, cause, factorBrand, units, remove }
   }
 
   // TODO(michael) add more sorting filters
@@ -138,7 +141,7 @@ export default function InfusionTable(props: Props): JSX.Element {
         <Table.Column prop='cause' label='Cause' />
         <Table.Column prop='factorBrand' label='Factor' />
         <Table.Column prop='units' label='Amount' />
-        <Table.Column prop='uid' />
+        {user && <Table.Column prop='remove' />}
       </Table>
       {infusions.length === 0 && (
         <>

@@ -1,6 +1,7 @@
 import firebase from 'lib/firebase'
 // import usePagination from "firestore-pagination-hook";
 import { useAuth } from 'lib/auth'
+import { compareDesc } from 'date-fns'
 
 import useFirestoreQuery, {
   FirestoreStatusType,
@@ -33,10 +34,19 @@ export default function useInfusions(
     .collection('infusions')
     .where('user.uid', '==', user ? user.uid : uid)
     .where('deletedAt', '==', null)
-    // .orderBy('createdAt', 'desc')
-    .limit(limit)
 
   const { data, status, error } = useFirestoreQuery(query)
+
+  // NOTE(Michael) sorts infusions by date (newest to oldest)
+  if (data) {
+    data.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
+
+    // For now, I've moved the limiting into the useFirestoreQuery
+    // method, this works ok but would be better to fix here long term
+    if (limit) {
+      data.length = limit
+    }
+  }
 
   return {
     data,
@@ -44,31 +54,3 @@ export default function useInfusions(
     error,
   }
 }
-
-//   const {
-//     loading,
-//     loadingError,
-//     loadingMore,
-//     loadingMoreError,
-//     hasMore,
-//     items,
-//     loadMore
-//   } = usePagination(
-//     db
-//       .collection("infusions")
-//       .orderBy("id", "asc"),
-//     {
-//       limit: 1
-//     }
-//   );
-
-//   return {
-//     loading,
-//     loadingError,
-//     loadingMore,
-//     loadingMoreError,
-//     hasMore,
-//     items,
-//     loadMore
-//   }
-// }
