@@ -28,7 +28,7 @@ export default function EmergencyCard(): JSX.Element {
         <Text h6 type='secondary'>
           This page shows the most recent medical logs for someone with
           hemophilia. This data is <i>self reported</i> and used at the persons
-          discression.
+          discretion.
         </Text>
       </Page.Header>
       <Page.Content>
