@@ -2,16 +2,10 @@ import firebase from 'lib/firebase'
 import useFirestoreQuery, {
   FirestoreStatusType,
 } from 'lib/hooks/useFirestoreQuery'
+import { Person } from 'lib/types/person'
 
 // TODO move FirestoreStatusTypes to a more general place
 type FirestoreStatusTypes = FirestoreStatusType
-
-export interface Person {
-  alertId: string
-  name?: string
-  uid: string
-  photoUrl?: string
-}
 
 interface FirestoreUserResponse {
   person: Person

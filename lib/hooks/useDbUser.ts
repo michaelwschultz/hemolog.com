@@ -2,20 +2,10 @@ import firebase from 'lib/firebase'
 import useFirestoreQuery, {
   FirestoreStatusType,
 } from 'lib/hooks/useFirestoreQuery'
+import { Person } from 'lib/types/person'
 
 // TODO(michael) move FirestoreStatusTypes to a more general place
 type FirestoreStatusTypes = FirestoreStatusType
-
-export interface Person {
-  alertId: string
-  name?: string
-  uid: string
-  photoUrl?: string
-  hemophiliaType?: string
-  severity?: string
-  medication?: string
-  factor?: number
-}
 
 interface FirestoreUserResponse {
   person: Person
@@ -24,7 +14,7 @@ interface FirestoreUserResponse {
 }
 
 export default function useDbUser(
-  uid: string | string[],
+  uid: string | string[]
 ): FirestoreUserResponse {
   const db = firebase.firestore()
 
@@ -32,7 +22,7 @@ export default function useDbUser(
     db
       .collection('users')
       .where('uid', '==', uid || '')
-      .limit(1),
+      .limit(1)
   )
 
   let person: Person

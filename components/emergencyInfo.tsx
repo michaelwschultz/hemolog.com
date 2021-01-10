@@ -1,8 +1,8 @@
 import React from 'react'
-import { Avatar, Note, Row, Spacer, Text, Badge } from '@geist-ui/react'
+import { Avatar, Note, Row, Spacer, Text, useMediaQuery } from '@geist-ui/react'
 
 import InfusionTable from 'components/infusionTable'
-import { Person } from 'lib/hooks/useEmergencyUser'
+import { Person } from 'lib/types/person'
 import { useAuth } from 'lib/auth'
 
 interface Props {
@@ -12,6 +12,7 @@ interface Props {
 export default function EmergencyInfo(props: Props): JSX.Element {
   const { person } = props
   const { user } = useAuth()
+  const smallerThanSmall = useMediaQuery('sm', { match: 'down' })
 
   if (person) {
     return (
@@ -26,16 +27,19 @@ export default function EmergencyInfo(props: Props): JSX.Element {
             />
             <Spacer x={0.5} />
             <div>
-              <Text h5>{person.name}</Text>
-              <Text h6 type='secondary'>
-                Hemophilia A Severe, treat with factor VIII (8)
+              <Text h3>{person.name}</Text>
+              <Text h5 type='secondary'>
+                {person.severity} Hemophilia {person.hemophiliaType}, treat with
+                factor {person.factor}
               </Text>
             </div>
           </Row>
-          <Badge>Treat with Factor VIII</Badge>
         </Row>
-        <Spacer y={3} />
-        <Text h5>Most recent infusions</Text>
+        <Spacer y={2} />
+        <Row justify='space-between' align='middle'>
+          <Text h5>Most recent infusions</Text>
+          {smallerThanSmall && <Text>Swipe →</Text>}
+        </Row>
         <InfusionTable limit={3} uid={person.uid} />
         <Spacer />
         <Note label='Note'>

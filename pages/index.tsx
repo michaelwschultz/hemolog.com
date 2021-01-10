@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import {
   Page,
   Text,
@@ -9,6 +8,7 @@ import {
   Spacer,
   useModal,
   Loading,
+  useMediaQuery,
 } from '@geist-ui/react'
 
 import { useAuth } from 'lib/auth'
@@ -18,10 +18,10 @@ import InfusionTable from 'components/infusionTable'
 import Logo from 'components/logo'
 import Sidebar from 'components/sidebar'
 import Stats from 'components/stats'
-import EmergencyCard from 'components/emergencyCard'
 
 export default function Logs(): JSX.Element {
   const auth = useAuth()
+  const smallerThanSmall = useMediaQuery('sm', { match: 'down' })
 
   const {
     visible: feedbackModal,
@@ -92,7 +92,10 @@ export default function Logs(): JSX.Element {
             <Stats />
             {/* <Chart /> */}
             <Spacer y={3} />
-            <Text h4>Infusions</Text>
+            <Row justify='space-between' align='middle'>
+              <Text h4>Infusions</Text>
+              {smallerThanSmall && <Text>Swipe →</Text>}
+            </Row>
             <InfusionTable />
             {/* TODO(michael) find out how this Spacer can be removed */}
             <Spacer y={5} />

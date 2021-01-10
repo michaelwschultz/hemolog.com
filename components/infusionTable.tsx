@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import useInfusions from 'lib/hooks/useInfusions'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
 import { format, compareDesc, parseISO } from 'date-fns'
@@ -127,7 +128,7 @@ export default function InfusionTable(props: Props): JSX.Element {
   const rowData = infusions.map((infusion) => formatInfusionRow(infusion))
 
   return (
-    <>
+    <StyledTableWrapper>
       <Table
         data={rowData}
         width='100%'
@@ -166,6 +167,10 @@ export default function InfusionTable(props: Props): JSX.Element {
           </Row>
         </>
       )}
-    </>
+    </StyledTableWrapper>
   )
 }
+
+const StyledTableWrapper = styled.div`
+  overflow-x: scroll;
+`

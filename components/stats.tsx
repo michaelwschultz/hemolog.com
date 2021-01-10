@@ -180,7 +180,6 @@ export default function Stats(): JSX.Element {
         <StatCard
           value='Missing something?'
           label='Hit the feedback button below'
-          type='success'
           shadow={false}
         />
       </Grid>
