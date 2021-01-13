@@ -37,6 +37,7 @@ export default function FeedbackModal(props): JSX.Element {
           delay: 5000,
         })
         closeModal()
+        return fetch('/api/alert-lightstrip')
       })
       .catch((error) =>
         setToast({
