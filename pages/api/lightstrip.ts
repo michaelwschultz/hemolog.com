@@ -1,13 +1,12 @@
-import fetch from 'isomorphic-unfetch'
-
 const REQUEST_URL = `${process.env.HUE_BRIDGE_URL}/lights/3`
 
-export default async (req, res) => {
+export default (req, res) => {
   const { query } = req
   let on = query.on
 
   let currentState = undefined
 
+  // NOTE(michael) this is only needed if I want to accept a query param
   if (query.on) {
     switch (query.on) {
       case 'false': {
@@ -24,7 +23,7 @@ export default async (req, res) => {
       }
     }
   } else {
-    await fetch(REQUEST_URL, {
+    return fetch(REQUEST_URL, {
       method: 'GET',
     })
       .then((resp) => resp.json())
@@ -32,16 +31,26 @@ export default async (req, res) => {
         currentState = data.state.on
         // toggle light state
         on = !currentState
-        res.json(data)
+
+        return fetch(REQUEST_URL + '/state', {
+          method: 'PUT',
+          body: JSON.stringify({ on: on }),
+        })
+          .then((resp) => resp.json())
+          .then((data) => {
+            res.json(data)
+            return
+          })
       })
   }
 
-  await fetch(REQUEST_URL + '/state', {
+  return fetch(REQUEST_URL + '/state', {
     method: 'PUT',
     body: JSON.stringify({ on: on }),
   })
     .then((resp) => resp.json())
     .then((data) => {
       res.json(data)
+      return
     })
 }
