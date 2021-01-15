@@ -65,7 +65,7 @@ export default function Header(): JSX.Element {
           <Spacer />
           <Popover
             content={popoverContent}
-            trigger='hover'
+            // trigger='hover'
             placement='bottomEnd'
           >
             <Avatar
