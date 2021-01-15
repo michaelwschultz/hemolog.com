@@ -9,6 +9,18 @@ export default function App({ Component, pageProps }): JSX.Element {
     <>
       <Head>
         <link rel='apple-touch-icon' href='/images/apple-touch-icon.png' />
+        <link
+          rel='icon'
+          type='image/png'
+          sizes='32x32'
+          href='/images/favicon-32x32.png'
+        />
+        <link
+          rel='icon'
+          type='image/png'
+          sizes='16x16'
+          href='/images/favicon-16x16.png'
+        />
         <meta name='mobile-web-app-capable' content='yes' />
         <meta name='apple-mobile-web-app-capable' content='yes' />
         <title>Hemolog</title>
@@ -27,9 +39,6 @@ export default function App({ Component, pageProps }): JSX.Element {
     </>
   )
 }
-
-/* TODO(michael) find out where to import this */
-/* @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,900;1,400;1,900&display=swap'); */
 
 const GlobalStyle = createGlobalStyle`
   /* targets the empty div applied by nextjs so the sidebar follows the height of the page */

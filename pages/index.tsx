@@ -2,38 +2,21 @@ import Head from 'next/head'
 import {
   Page,
   Text,
-  Button,
   Row,
-  Keyboard,
   Spacer,
-  useModal,
   Loading,
   useMediaQuery,
 } from '@geist-ui/react'
 
 import { useAuth } from 'lib/auth'
-import FeedbackModal from 'components/feedbackModal'
-import InfusionModal from 'components/infusionModal'
 import InfusionTable from 'components/infusionTable'
-import Logo from 'components/logo'
-import Sidebar from 'components/sidebar'
 import Stats from 'components/stats'
+import Header from 'components/header'
+import Footer from 'components/footer'
 
 export default function Logs(): JSX.Element {
   const auth = useAuth()
   const smallerThanSmall = useMediaQuery('sm', { match: 'down' })
-
-  const {
-    visible: feedbackModal,
-    setVisible: setFeedbackModalVisible,
-    bindings: feedbackModalBindings,
-  } = useModal(false)
-
-  const {
-    visible: infusionModal,
-    setVisible: setInfusionModalVisible,
-    bindings: infusionModalBindings,
-  } = useModal(false)
 
   // TODO(michael) add welcome message by checking to see if this is the users
   // first time logging in. Still not sure how to accomplish this.
@@ -71,62 +54,23 @@ export default function Logs(): JSX.Element {
       <Head>
         <title>Hemolog</title>
       </Head>
-      <Sidebar>
-        <Page size='large'>
-          <Page.Header style={{ paddingTop: '24px' }}>
-            <Row justify='space-between' align='middle'>
-              <Logo />
-              <Row>
-                <Button
-                  onClick={() => setInfusionModalVisible(true)}
-                  auto
-                  type='success-light'
-                >
-                  Log infusion
-                </Button>
-              </Row>
-            </Row>
-          </Page.Header>
-          <Page.Content>
-            <Text h4>Stats</Text>
-            <Stats />
-            {/* <Chart /> */}
-            <Spacer y={3} />
-            <Row justify='space-between' align='middle'>
-              <Text h4>Infusions</Text>
-              {smallerThanSmall && <Text>Swipe →</Text>}
-            </Row>
-            <InfusionTable />
-            {/* TODO(michael) find out how this Spacer can be removed */}
-            <Spacer y={5} />
-          </Page.Content>
-          <Page.Footer style={{ paddingBottom: '16px' }}>
-            {/* This footer overlays the content for some reason */}
-            <Row justify='space-between' align='middle'>
-              <Button
-                onClick={() => setFeedbackModalVisible(true)}
-                auto
-                type='secondary-light'
-              >
-                Feedback
-              </Button>
-              <Text p>
-                Toggle sidebar with: <Keyboard ctrl>b</Keyboard>
-              </Text>
-            </Row>
-          </Page.Footer>
-        </Page>
-      </Sidebar>
-      <FeedbackModal
-        visible={feedbackModal}
-        setVisible={setFeedbackModalVisible}
-        bindings={feedbackModalBindings}
-      />
-      <InfusionModal
-        visible={infusionModal}
-        setVisible={setInfusionModalVisible}
-        bindings={infusionModalBindings}
-      />
+      <Page size='large'>
+        <Header />
+        <Page.Content>
+          <Text h4>Insights</Text>
+          <Stats />
+          {/* <Chart /> */}
+          <Spacer y={3} />
+          <Row justify='space-between' align='middle'>
+            <Text h4>Infusions</Text>
+            {smallerThanSmall && <Text>Swipe →</Text>}
+          </Row>
+          <InfusionTable />
+          {/* TODO(michael) find out how this Spacer can be removed */}
+          <Spacer y={5} />
+        </Page.Content>
+        <Footer />
+      </Page>
     </>
   )
 }

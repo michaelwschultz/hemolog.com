@@ -12,7 +12,7 @@ export default function EmergencyCard(): JSX.Element {
   const { person, status, error } = useEmergencyUser(alertId)
 
   return (
-    <Page>
+    <Page size='large'>
       <Page.Header style={{ paddingTop: '24px' }}>
         <Row justify='space-between' align='middle'>
           <Text h4 type='error'>
@@ -25,11 +25,12 @@ export default function EmergencyCard(): JSX.Element {
             </NextLink>
           </Text>
         </Row>
-        <Text h6 type='secondary'>
-          This page shows the most recent medical logs for someone with
-          hemophilia. This data is <i>self reported</i> and used at the persons
-          discretion.
-        </Text>
+        <Note type='error' label='Important'>
+          If someone has been in an accident, please call{' '}
+          <a href='tel:911'>911</a> immediately. This page shows the most recent
+          medical logs for someone with hemophilia. This data is{' '}
+          <i>self reported</i> and may not be up-to-date.
+        </Note>
       </Page.Header>
       <Page.Content>
         {status === FirestoreStatusType.LOADING && (
@@ -39,8 +40,7 @@ export default function EmergencyCard(): JSX.Element {
         {error && (
           <Note type='error' label='Error'>
             Something went wrong. This could mean that this person no longer has
-            a Hemolog account or the app is broken. Please call 911 if this is
-            an emergency.
+            a Hemolog account or the app is broken.
           </Note>
         )}
 
