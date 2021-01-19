@@ -1,14 +1,11 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 import {
   Avatar,
   Link,
   Popover,
-  Page,
   Row,
   Button,
   useModal,
-  Tabs,
   Spacer,
 } from '@geist-ui/react'
 
@@ -17,10 +14,7 @@ import Logo from 'components/logo'
 import InfusionModal from 'components/infusionModal'
 
 export default function Header(): JSX.Element {
-  const router = useRouter()
   const { user, signout } = useAuth()
-
-  const changeHandler = (val) => router.push(val)
 
   const {
     visible: infusionModal,
@@ -51,7 +45,7 @@ export default function Header(): JSX.Element {
   )
 
   return (
-    <Page.Header style={{ paddingTop: '24px' }}>
+    <>
       <Row justify='space-between' align='middle'>
         <Logo />
         <Row>
@@ -63,34 +57,64 @@ export default function Header(): JSX.Element {
             Log infusion
           </Button>
           <Spacer />
-          <Popover
-            content={popoverContent}
-            // trigger='hover'
-            placement='bottomEnd'
-          >
+          <Popover content={popoverContent} placement='bottomEnd'>
             <Avatar
               src={user.photoUrl}
               text={user.displayName && user.displayName.charAt(0)}
               size={40}
+              style={{ cursor: 'pointer' }}
             />
           </Popover>
         </Row>
       </Row>
       <Spacer />
-      <Tabs value={router.route} onChange={changeHandler}>
-        <Tabs.Item label='home' value='/' />
-        <Tabs.Item label='profile' value='/profile' />
-        <Tabs.Item label='emergency' value={`/emergency/${user.alertId}`} />
-        {user && user.isAdmin && (
-          <Tabs.Item label='feedback' value='/feedback' />
-        )}
-      </Tabs>
+      {/* <StyledTabBar borderColor={palette.accents_2}>
+        <ul>
+          <StyledListItem active={router.route === '/home'}>
+            <NextLink href='/home'>Home</NextLink>
+          </StyledListItem>
+          <StyledListItem active={router.route === '/profile'}>
+            <NextLink href='/profile'>Profile</NextLink>
+          </StyledListItem>
+          <StyledListItem
+            active={router.route === `/emergency/${user.alertId}`}
+          >
+            <NextLink href={`/emergency/${user.alertId}`}>Emergency</NextLink>
+          </StyledListItem>
+          <StyledListItem active={router.route === '/feedback'}>
+            <NextLink href='/feedback'>Feedback</NextLink>
+          </StyledListItem>
+        </ul>
+      </StyledTabBar> */}
 
       <InfusionModal
         visible={infusionModal}
         setVisible={setInfusionModalVisible}
         bindings={infusionModalBindings}
       />
-    </Page.Header>
+    </>
   )
 }
+
+// const StyledTabBar = styled.div<{ borderColor: string }>`
+//   border-bottom: 1px solid ${({ borderColor }) => borderColor || 'black'};
+//   width: 100%;
+
+//   ul,
+//   li {
+//     list-style-type: none;
+//     display: inline;
+//     margin: 0;
+//   }
+//   li {
+//     padding-right: 24px;
+//   }
+// `
+
+// const StyledListItem = styled.li<{ active: boolean }>`
+//   a {
+//     color: black;
+//     font-weight: 500;
+//     border-bottom: 2px solid ${({ active }) => (active ? 'red' : 'transparent')};
+//   }
+// `

@@ -1018,7 +1018,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.8.4":
   version "7.12.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.5.tgz#410e7e487441e1b360c29be715d870d9b985882e"
   integrity sha512-plcc+hbExy3McchJCEQG3knOsuh3HH+Prx1P6cLIkET/0dLuQDEnrT+s27Axgc9bqfsmNUNHfscgMUdBpC9xfg==
@@ -1075,453 +1075,6 @@
     "@babel/helper-validator-identifier" "^7.10.4"
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
-
-"@bit/recharts.recharts.brush@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.brush/-/recharts.recharts.brush-1.6.2.tgz#f25055a8e3351be49e65c3dae1116d0b02b16a97"
-  integrity sha1-8lBVqOM1G+SeZcPa4RFtCwKxapc=
-  dependencies:
-    "@bit/recharts.recharts.chart-utils" "1.6.2"
-    "@bit/recharts.recharts.css-prefix-utils" "1.6.2"
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.layer" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.text" "1.6.2"
-    classnames "^2.2.5"
-    d3-scale "^2.1.0"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.cartesian-axis@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.cartesian-axis/-/recharts.recharts.cartesian-axis-1.6.2.tgz#cbb2fdd8c86152254e81da3bcd67c6116c6633ed"
-  integrity sha1-y7L92MhhUiVOgdo7zWfGEWxmM+0=
-  dependencies:
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.dom-utils" "1.6.2"
-    "@bit/recharts.recharts.label" "1.6.2"
-    "@bit/recharts.recharts.layer" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    "@bit/recharts.recharts.text" "1.6.2"
-    classnames "^2.2.5"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.cartesian-utils@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.cartesian-utils/-/recharts.recharts.cartesian-utils-1.6.2.tgz#a51da25f41b81221f686cf1c19acc7525d79a57e"
-  integrity sha1-pR2iX0G4EiH2hs8cGazHUl15pX4=
-  dependencies:
-    "@bit/recharts.recharts.chart-utils" "1.6.2"
-    lodash "^4.17.5"
-
-"@bit/recharts.recharts.cell@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.cell/-/recharts.recharts.cell-1.6.2.tgz#e7d0416976d91368502c2775498f829f203b930f"
-  integrity sha1-59BBaXbZE2hQLCd1SY+CnyA7kw8=
-  dependencies:
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-
-"@bit/recharts.recharts.chart-utils@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.chart-utils/-/recharts.recharts.chart-utils-1.6.2.tgz#a4dd534ce9784c9cc470fcd7a9541e490e07a284"
-  integrity sha1-pN1TTOl4TJzEcPzXqVQeSQ4HooQ=
-  dependencies:
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.error-bar" "1.6.2"
-    "@bit/recharts.recharts.legend" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    "@bit/recharts.recharts.reference-area" "1.6.2"
-    "@bit/recharts.recharts.reference-dot" "1.6.2"
-    "@bit/recharts.recharts.reference-line" "1.6.2"
-    d3-scale "^2.1.0"
-    d3-shape "^1.2.0"
-    lodash "^4.17.5"
-    recharts-scale "^0.4.2"
-
-"@bit/recharts.recharts.cross@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.cross/-/recharts.recharts.cross-1.6.2.tgz#308e5576f5a8dbbd721b6d456b44dd2a53aff6e0"
-  integrity sha1-MI5VdvWo271yG21Fa0TdKlOv9uA=
-  dependencies:
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    classnames "^2.2.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.css-prefix-utils@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.css-prefix-utils/-/recharts.recharts.css-prefix-utils-1.6.2.tgz#f10b1f0873a000b6bc654e03fb845b8de790155b"
-  integrity sha1-8QsfCHOgALa8ZU4D+4RbjeeQFVs=
-
-"@bit/recharts.recharts.curve@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.curve/-/recharts.recharts.curve-1.6.2.tgz#6d4819536494a7db30ec936d52c97dbc85fb3815"
-  integrity sha1-bUgZU2SUp9sw7JNtUsl9vIX7OBU=
-  dependencies:
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    classnames "^2.2.5"
-    d3-shape "^1.2.0"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.data-utils@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.data-utils/-/recharts.recharts.data-utils-1.6.2.tgz#655b53dd0b292ec1d6277d2fef0b7046e9da0eef"
-  integrity sha1-ZVtT3QspLsHWJ30v7wtwRunaDu8=
-  dependencies:
-    lodash "^4.17.5"
-
-"@bit/recharts.recharts.default-legend-content@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.default-legend-content/-/recharts.recharts.default-legend-content-1.6.2.tgz#8edbf0e9a85b2ac12c09c9ed09c911400c41b9c5"
-  integrity sha1-jtvw6ahbKsEsCcntCckRQAxBucU=
-  dependencies:
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    "@bit/recharts.recharts.surface" "1.6.2"
-    "@bit/recharts.recharts.symbols" "1.6.2"
-    classnames "^2.2.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.default-tooltip-content@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.default-tooltip-content/-/recharts.recharts.default-tooltip-content-1.6.2.tgz#9efea8e77000f14b2a40a702666b285d2e78d67f"
-  integrity sha1-nv6o53AA8UsqQKcCZmsoXS541n8=
-  dependencies:
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    classnames "^2.2.5"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.dom-utils@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.dom-utils/-/recharts.recharts.dom-utils-1.6.2.tgz#ba440fcf51ad2ea2e9cf61deb2c04478aa9fb0dd"
-  integrity sha1-ukQPz1GtLqLpz2HessBEeKqfsN0=
-  dependencies:
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-
-"@bit/recharts.recharts.dot@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.dot/-/recharts.recharts.dot-1.6.2.tgz#5895d150fda567da532dc7f2fc6dd8c3e1309684"
-  integrity sha1-WJXRUP2lZ9pTLcfy/G3Yw+EwloQ=
-  dependencies:
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    classnames "^2.2.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.error-bar@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.error-bar/-/recharts.recharts.error-bar-1.6.2.tgz#7f7a2345cf58e2f58a24e2485cd3bb246eef0dc9"
-  integrity sha1-f3ojRc9Y4vWKJOJIXNO7JG7vDck=
-  dependencies:
-    "@bit/recharts.recharts.layer" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.events@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.events/-/recharts.recharts.events-1.6.2.tgz#731f8c7e1338ab9b729fdba454ca6dbd8c887123"
-  integrity sha1-cx+MfhM4q5tyn9ukVMptvYyIcSM=
-
-"@bit/recharts.recharts.generate-categorical-chart@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.generate-categorical-chart/-/recharts.recharts.generate-categorical-chart-1.6.2.tgz#38452f436b62c683435f793fd02f6e4bfe1010b5"
-  integrity sha1-OEUvQ2tixoNDX3k/0C9uS/4QELU=
-  dependencies:
-    "@bit/recharts.recharts.brush" "1.6.2"
-    "@bit/recharts.recharts.cartesian-axis" "1.6.2"
-    "@bit/recharts.recharts.chart-utils" "1.6.2"
-    "@bit/recharts.recharts.cross" "1.6.2"
-    "@bit/recharts.recharts.curve" "1.6.2"
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.dom-utils" "1.6.2"
-    "@bit/recharts.recharts.dot" "1.6.2"
-    "@bit/recharts.recharts.events" "1.6.2"
-    "@bit/recharts.recharts.layer" "1.6.2"
-    "@bit/recharts.recharts.legend" "1.6.2"
-    "@bit/recharts.recharts.polar-utils" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    "@bit/recharts.recharts.rectangle" "1.6.2"
-    "@bit/recharts.recharts.sector" "1.6.2"
-    "@bit/recharts.recharts.surface" "1.6.2"
-    "@bit/recharts.recharts.tooltip" "1.6.2"
-    classnames "^2.2.5"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.label-list@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.label-list/-/recharts.recharts.label-list-1.6.2.tgz#863705271f24ba7659f9f5cc855fd7232ba87130"
-  integrity sha1-hjcFJx8kunZZ+fXMhV/XIyuocTA=
-  dependencies:
-    "@bit/recharts.recharts.chart-utils" "1.6.2"
-    "@bit/recharts.recharts.label" "1.6.2"
-    "@bit/recharts.recharts.layer" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.label@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.label/-/recharts.recharts.label-1.6.2.tgz#307f8cff863ee6a8cdce62ce48e72ce13574a6c8"
-  integrity sha1-MH+M/4Y+5qjNzmLOSOcs4TV0psg=
-  dependencies:
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.polar-utils" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    "@bit/recharts.recharts.text" "1.6.2"
-    classnames "^2.2.5"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.layer@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.layer/-/recharts.recharts.layer-1.6.2.tgz#8be41810ae72e369dd63646aa49462813c487eae"
-  integrity sha1-i+QYEK5y42ndY2RqpJRigTxIfq4=
-  dependencies:
-    classnames "^2.2.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.legend@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.legend/-/recharts.recharts.legend-1.6.2.tgz#f718a7f59f80fb996e822fd94fb0f0d065328b70"
-  integrity sha1-9xin9Z+A+5lugi/ZT7Dw0GUyi3A=
-  dependencies:
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.default-legend-content" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.log-utils@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.log-utils/-/recharts.recharts.log-utils-1.6.2.tgz#ac45e83912e4c58cae3c76ff42ebd44a26bc4286"
-  integrity sha1-rEXoORLkxYyuPHb/QuvUSia8QoY=
-
-"@bit/recharts.recharts.polar-angle-axis@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.polar-angle-axis/-/recharts.recharts.polar-angle-axis-1.6.2.tgz#6c83840f4061b18324508fac6892663a4b64e78c"
-  integrity sha1-bIOED0BhsYMkUI+saJJmOktk54w=
-  dependencies:
-    "@bit/recharts.recharts.dot" "1.6.2"
-    "@bit/recharts.recharts.layer" "1.6.2"
-    "@bit/recharts.recharts.polar-utils" "1.6.2"
-    "@bit/recharts.recharts.polygon" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    "@bit/recharts.recharts.text" "1.6.2"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.polar-radius-axis@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.polar-radius-axis/-/recharts.recharts.polar-radius-axis-1.6.2.tgz#58317dfb3f9d5a82af030a0b96539d7951f3a834"
-  integrity sha1-WDF9+z+dWoKvAwoLllOdeVHzqDQ=
-  dependencies:
-    "@bit/recharts.recharts.label" "1.6.2"
-    "@bit/recharts.recharts.layer" "1.6.2"
-    "@bit/recharts.recharts.polar-utils" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    "@bit/recharts.recharts.text" "1.6.2"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.polar-utils@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.polar-utils/-/recharts.recharts.polar-utils-1.6.2.tgz#862a1dcdcc260c542bbad9f2d15ac62f5293de71"
-  integrity sha1-hiodzcwmDFQrutny0VrGL1KT3nE=
-  dependencies:
-    "@bit/recharts.recharts.chart-utils" "1.6.2"
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    lodash "^4.17.5"
-
-"@bit/recharts.recharts.polygon@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.polygon/-/recharts.recharts.polygon-1.6.2.tgz#f161a73f7fdbbc00771d71154c413828f01755bd"
-  integrity sha1-8WGnP3/bvAB3HXEVTEE4KPAXVb0=
-  dependencies:
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    classnames "^2.2.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.pure-render@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.pure-render/-/recharts.recharts.pure-render-1.6.2.tgz#618f91f461ecf25aa8dfd9f9b9b0ac92edf31619"
-  integrity sha1-YY+R9GHs8lqo39n5ubCsku3zFhk=
-
-"@bit/recharts.recharts.radial-bar-chart@^1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.radial-bar-chart/-/recharts.recharts.radial-bar-chart-1.6.2.tgz#6369e5558813b6d837bc6c1a82c3679019cdb406"
-  integrity sha1-Y2nlVYgTttg3vGwagsNnkBnNtAY=
-  dependencies:
-    "@bit/recharts.recharts.generate-categorical-chart" "1.6.2"
-    "@bit/recharts.recharts.polar-angle-axis" "1.6.2"
-    "@bit/recharts.recharts.polar-radius-axis" "1.6.2"
-    "@bit/recharts.recharts.polar-utils" "1.6.2"
-    "@bit/recharts.recharts.radial-bar" "1.6.2"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.radial-bar@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.radial-bar/-/recharts.recharts.radial-bar-1.6.2.tgz#37f80d7cf0ef3bfa1fce52f2d2c3d8266f60f8b3"
-  integrity sha1-N/gNfPDvO/ofzlLy0sPYJm9g+LM=
-  dependencies:
-    "@bit/recharts.recharts.cell" "1.6.2"
-    "@bit/recharts.recharts.chart-utils" "1.6.2"
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.label-list" "1.6.2"
-    "@bit/recharts.recharts.layer" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    "@bit/recharts.recharts.sector" "1.6.2"
-    classnames "^2.2.5"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-    react-smooth "^1.0.0"
-
-"@bit/recharts.recharts.react-utils@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.react-utils/-/recharts.recharts.react-utils-1.6.2.tgz#38b8d21c022a44a643e21b50fce5c93622d89401"
-  integrity sha1-OLjSHAIqRKZD4htQ/OXJNiLYlAE=
-  dependencies:
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.rectangle@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.rectangle/-/recharts.recharts.rectangle-1.6.2.tgz#5a9151af86cfb6006c6bbf1262f6ff6869055283"
-  integrity sha1-WpFRr4bPtgBsa78SYvb/aGkFUoM=
-  dependencies:
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    classnames "^2.2.5"
-    prop-types "^15.6.0"
-    react-smooth "^1.0.0"
-
-"@bit/recharts.recharts.reference-area@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.reference-area/-/recharts.recharts.reference-area-1.6.2.tgz#785747cdaabe1ccfe6955ca8c345dde9eb642318"
-  integrity sha1-eFdHzaq+HM/mlVyow0Xd6etkIxg=
-  dependencies:
-    "@bit/recharts.recharts.cartesian-utils" "1.6.2"
-    "@bit/recharts.recharts.chart-utils" "1.6.2"
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.label" "1.6.2"
-    "@bit/recharts.recharts.layer" "1.6.2"
-    "@bit/recharts.recharts.log-utils" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    "@bit/recharts.recharts.rectangle" "1.6.2"
-    classnames "^2.2.5"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.reference-dot@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.reference-dot/-/recharts.recharts.reference-dot-1.6.2.tgz#718cbe787f0cee2d297601cae5c2adc1a75c8e1b"
-  integrity sha1-cYy+eH8M7i0pdgHK5cKtwadcjhs=
-  dependencies:
-    "@bit/recharts.recharts.cartesian-utils" "1.6.2"
-    "@bit/recharts.recharts.chart-utils" "1.6.2"
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.dot" "1.6.2"
-    "@bit/recharts.recharts.label" "1.6.2"
-    "@bit/recharts.recharts.layer" "1.6.2"
-    "@bit/recharts.recharts.log-utils" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    classnames "^2.2.5"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.reference-line@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.reference-line/-/recharts.recharts.reference-line-1.6.2.tgz#5b73d668ce3cc3ec3fa89e0b26a0edeafb3531cb"
-  integrity sha1-W3PWaM48w+w/qJ4LJqDt6vs1Mcs=
-  dependencies:
-    "@bit/recharts.recharts.cartesian-utils" "1.6.2"
-    "@bit/recharts.recharts.chart-utils" "1.6.2"
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.label" "1.6.2"
-    "@bit/recharts.recharts.layer" "1.6.2"
-    "@bit/recharts.recharts.log-utils" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    classnames "^2.2.5"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.sector@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.sector/-/recharts.recharts.sector-1.6.2.tgz#eea7869a503e9ef2224e2cb91bbf9a730995a47b"
-  integrity sha1-7qeGmlA+nvIiTiy5G7+acwmVpHs=
-  dependencies:
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.polar-utils" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    classnames "^2.2.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.surface@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.surface/-/recharts.recharts.surface-1.6.2.tgz#a1b3bac72ec55a1e97c8ae51707cfffaa3eefc9d"
-  integrity sha1-obO6xy7FWh6XyK5RcHz/+qPu/J0=
-  dependencies:
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    classnames "^2.2.5"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.symbols@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.symbols/-/recharts.recharts.symbols-1.6.2.tgz#24ad5d295d572fb5d49b9e3504f2bbeb8fe598d7"
-  integrity sha1-JK1dKV1XL7XUm541BPK764/lmNc=
-  dependencies:
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    classnames "^2.2.5"
-    d3-shape "^1.2.0"
-    prop-types "^15.6.0"
-
-"@bit/recharts.recharts.text@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.text/-/recharts.recharts.text-1.6.2.tgz#546fa294d808913298f44cc29e282703a22b2216"
-  integrity sha1-VG+ilNgIkTKY9EzCnignA6IrIhY=
-  dependencies:
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.dom-utils" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    classnames "^2.2.5"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-    reduce-css-calc "^1.3.0"
-
-"@bit/recharts.recharts.tooltip@1.6.2":
-  version "1.6.2"
-  resolved "https://node.bit.dev/recharts.recharts.tooltip/-/recharts.recharts.tooltip-1.6.2.tgz#127dab70fa8b73a3eab107afaec4aba72813381e"
-  integrity sha1-En2rcPqLc6PqsQevrsSrpygTOB4=
-  dependencies:
-    "@bit/recharts.recharts.data-utils" "1.6.2"
-    "@bit/recharts.recharts.default-tooltip-content" "1.6.2"
-    "@bit/recharts.recharts.pure-render" "1.6.2"
-    "@bit/recharts.recharts.react-utils" "1.6.2"
-    classnames "^2.2.5"
-    lodash "^4.17.5"
-    prop-types "^15.6.0"
-    react-smooth "^1.0.0"
 
 "@emotion/is-prop-valid@^0.8.8":
   version "0.8.8"
@@ -2518,11 +2071,6 @@ babel-plugin-transform-react-remove-prop-types@0.4.24:
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-react-remove-prop-types/-/babel-plugin-transform-react-remove-prop-types-0.4.24.tgz#f2edaf9b4c6a5fbe5c1d678bfb531078c1555f3a"
   integrity sha512-eqj0hVcJUR57/Ug2zE1Yswsw4LhuqqHhD+8v120T1cl3kjg76QwtyBrdIk4WVwK+lAhBJVYCd/v+4nc4y+8JsA==
 
-balanced-match@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-0.4.2.tgz#cb3f3e3c732dc0f01ee70b403f302e61d7709838"
-  integrity sha1-yz8+PHMtwPAe5wtAPzAuYddwmDg=
-
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
@@ -2953,7 +2501,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@2.2.6, classnames@^2.2.5:
+classnames@2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
@@ -3293,69 +2841,6 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-d3-array@^1.2.0:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.4.tgz#635ce4d5eea759f6f605863dbcfc30edc737f71f"
-  integrity sha512-KHW6M86R+FUPYGb3R5XiYjXPq7VzwxZ22buHhAEVG5ztoEcZZMLov530mmccaqA1GghZArjQV46fuc8kUqhhHw==
-
-d3-collection@1:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/d3-collection/-/d3-collection-1.0.7.tgz#349bd2aa9977db071091c13144d5e4f16b5b310e"
-  integrity sha512-ii0/r5f4sjKNTfh84Di+DpztYwqKhEyUlKoPrzUFfeSkWxjW49xU2QzO9qrPrNkpdI0XJkfzvmTu8V2Zylln6A==
-
-d3-color@1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-1.4.1.tgz#c52002bf8846ada4424d55d97982fef26eb3bc8a"
-  integrity sha512-p2sTHSLCJI2QKunbGb7ocOh7DgTAn8IrLx21QRc/BSnodXM4sv6aLQlnfpvehFMLZEfBc6g9pH9SWQccFYfJ9Q==
-
-d3-format@1:
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.4.5.tgz#374f2ba1320e3717eb74a9356c67daee17a7edb4"
-  integrity sha512-J0piedu6Z8iB6TbIGfZgDzfXxUFN3qQRMofy2oPdXzQibYGqPB/9iMcxr/TGalU+2RsyDO+U4f33id8tbnSRMQ==
-
-d3-interpolate@1:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/d3-interpolate/-/d3-interpolate-1.4.0.tgz#526e79e2d80daa383f9e0c1c1c7dcc0f0583e987"
-  integrity sha512-V9znK0zc3jOPV4VD2zZn0sDhZU3WAE2bmlxdIwwQPPzPjvyLkd8B3JUVdS1IDUFDkWZ72c9qnv1GK2ZagTZ8EA==
-  dependencies:
-    d3-color "1"
-
-d3-path@1:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/d3-path/-/d3-path-1.0.9.tgz#48c050bb1fe8c262493a8caf5524e3e9591701cf"
-  integrity sha512-VLaYcn81dtHVTjEHd8B+pbe9yHWpXKZUC87PzoFmsFrJqgFwDe/qxfp5MlfsfM1V5E/iVt0MmEbWQ7FVIXh/bg==
-
-d3-scale@^2.1.0:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-2.2.2.tgz#4e880e0b2745acaaddd3ede26a9e908a9e17b81f"
-  integrity sha512-LbeEvGgIb8UMcAa0EATLNX0lelKWGYDQiPdHj+gLblGVhGLyNbaCn3EvrJf0A3Y/uOOU5aD6MTh5ZFCdEwGiCw==
-  dependencies:
-    d3-array "^1.2.0"
-    d3-collection "1"
-    d3-format "1"
-    d3-interpolate "1"
-    d3-time "1"
-    d3-time-format "2"
-
-d3-shape@^1.2.0:
-  version "1.3.7"
-  resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.3.7.tgz#df63801be07bc986bc54f63789b4fe502992b5d7"
-  integrity sha512-EUkvKjqPFUAZyOlhY5gzCxCeI0Aep04LwIRpsZ/mLFelJiUfnK56jo5JMDSE7yyP2kLSb6LtF+S5chMk7uqPqw==
-  dependencies:
-    d3-path "1"
-
-d3-time-format@2:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/d3-time-format/-/d3-time-format-2.3.0.tgz#107bdc028667788a8924ba040faf1fbccd5a7850"
-  integrity sha512-guv6b2H37s2Uq/GefleCDtbe0XZAuy7Wa49VGkPVPMfLL9qObgBST3lEHJBMUp8S7NdLQAGIvr2KXk8Hc98iKQ==
-  dependencies:
-    d3-time "1"
-
-d3-time@1:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/d3-time/-/d3-time-1.1.0.tgz#b1e19d307dae9c900b7e5b25ffc5dcc249a8a0f1"
-  integrity sha512-Xh0isrZ5rPYYdqhAVk8VLnMEidhz5aP7htAADH6MfzgmmicPkTo8LhkLxci61/lCB7n7UmE3bN0leRt+qvkLxA==
-
 d@1, d@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/d/-/d-1.0.1.tgz#8698095372d58dbee346ffd0c7093f99f8f9eb5a"
@@ -3406,11 +2891,6 @@ decamelize@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
-
-decimal.js-light@^2.4.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/decimal.js-light/-/decimal.js-light-2.5.1.tgz#134fd32508f19e208f4fb2f8dac0d2626a867934"
-  integrity sha512-qIMFpTMZmny+MMIitAB6D7iVPEorVw6YQRWkvarTkT4tBeSLLiHzcwj6q0MmYSFCiVpiqPJTJEYIrpcPzVEIvg==
 
 decode-uri-component@^0.2.0:
   version "0.2.0"
@@ -3513,13 +2993,6 @@ diffie-hellman@^5.0.0:
     bn.js "^4.1.0"
     miller-rabin "^4.0.0"
     randombytes "^2.0.0"
-
-dom-helpers@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.4.0.tgz#e9b369700f959f62ecde5a6babde4bccd9169af8"
-  integrity sha512-LnuPJ+dwqKDIyotW1VzmOZ5TONUN7CwkCR5hrgawTUbkBGYdeoNLZo6nNfGkCrjtE1nXXaj7iMMpDa8/d9WoIA==
-  dependencies:
-    "@babel/runtime" "^7.1.2"
 
 dom-serializer@1.0.1:
   version "1.0.1"
@@ -4338,11 +3811,6 @@ hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.3.0:
   dependencies:
     react-is "^16.7.0"
 
-hotkeys-js@3.8.1:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/hotkeys-js/-/hotkeys-js-3.8.1.tgz#fa7051f73bf1dc92a8b8d580a40b247f91966376"
-  integrity sha512-YlhVQtyG9f1b7GhtzdhR0Pl+cImD1ZrKI6zYUa7QLd0zuThiL7RzZ+ANJyy7z+kmcCpNYBf5PjBa3CjiQ5PFpw==
-
 htmlparser2@4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-4.1.0.tgz#9a4ef161f2e4625ebf7dfbe6c0a2f52d18a59e78"
@@ -4911,7 +4379,7 @@ lodash.sortby@^4.7.0:
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
   integrity sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
 
-lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.19, lodash@^4.17.5, lodash@~4.17.4:
+lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.19:
   version "4.17.20"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
@@ -4973,11 +4441,6 @@ material-design-lite@^1.2.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/material-design-lite/-/material-design-lite-1.3.0.tgz#d004ce3fee99a1eeb74a78b8a325134a5f1171d3"
   integrity sha1-0ATOP+6Zoe63Sni4oyUTSl8RcdM=
-
-math-expression-evaluator@^1.2.14:
-  version "1.2.22"
-  resolved "https://registry.yarnpkg.com/math-expression-evaluator/-/math-expression-evaluator-1.2.22.tgz#c14dcb3d8b4d150e5dcea9c68c8dad80309b0d5e"
-  integrity sha512-L0j0tFVZBQQLeEjmWOvDLoRciIY8gQGWahvkztXUal8jH8R5Rlqo9GCvgqvXcy9LQhEWdQCVvzqAbxgYNt4blQ==
 
 md5.js@^1.3.4:
   version "1.3.5"
@@ -5611,11 +5074,6 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-performance-now@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
-  integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
-
 picomatch@^2.0.4, picomatch@^2.2.1:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.2.tgz#21f333e9b6b8eaff02468f5146ea406d345f4dad"
@@ -5790,7 +5248,7 @@ promise-polyfill@8.1.3:
   resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-8.1.3.tgz#8c99b3cf53f3a91c68226ffde7bde81d7f904116"
   integrity sha512-MG5r82wBzh7pSKDRa9y+vllNHz3e3d4CNj1PQE4BQYxLme0gKYYBm9YENq+UkEikyZ0XbiGWxYlVw3Rl9O/U8g==
 
-prop-types@15.7.2, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@15.7.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -5899,13 +5357,6 @@ querystring@0.2.0, querystring@^0.2.0:
   resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
   integrity sha1-sgmEkgO7Jd+CDadW50cAWHhSFiA=
 
-raf@^3.4.0:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
-  integrity sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==
-  dependencies:
-    performance-now "^2.1.0"
-
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5, randombytes@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/randombytes/-/randombytes-2.1.0.tgz#df6f84372f0270dc65cdf6291349ab7a473d4f2a"
@@ -5952,22 +5403,10 @@ react-firebaseui@^4.1.0:
   dependencies:
     firebaseui "^4.1.0"
 
-react-hotkeys-hook@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-2.4.0.tgz#becf941641bab04c8095917b5876ad8ed53b0dc6"
-  integrity sha512-Veh9FUe+iXab+lZ5shPoyGDnFBu5codQ15omOXiOvCC/Q5QfTY1lefLVx/Zi2NnYBSXfkfQbhnpE+Rnhi2+wBw==
-  dependencies:
-    hotkeys-js "3.8.1"
-
 react-is@16.13.1, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
-
-react-lifecycles-compat@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
-  integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
 react-qr-code@^1.0.5:
   version "1.0.5"
@@ -5982,26 +5421,6 @@ react-refresh@0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
-
-react-smooth@^1.0.0:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/react-smooth/-/react-smooth-1.0.5.tgz#94ae161d7951cdd893ccb7099d031d342cb762ad"
-  integrity sha512-eW057HT0lFgCKh8ilr0y2JaH2YbNcuEdFpxyg7Gf/qDKk9hqGMyXryZJ8iMGJEuKH0+wxS0ccSsBBB3W8yCn8w==
-  dependencies:
-    lodash "~4.17.4"
-    prop-types "^15.6.0"
-    raf "^3.4.0"
-    react-transition-group "^2.5.0"
-
-react-transition-group@^2.5.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.9.0.tgz#df9cdb025796211151a436c69a8f3b97b5b07c8d"
-  integrity sha512-+HzNTCHpeQyl4MJ/bdE0u6XRMe9+XG/+aL4mCxVN4DnPBQ0/5bfHWPDuOZUzYdMj94daZaZdCCc1Dzt9R/xSSg==
-  dependencies:
-    dom-helpers "^3.4.0"
-    loose-envify "^1.4.0"
-    prop-types "^15.6.2"
-    react-lifecycles-compat "^3.0.4"
 
 react@17.0.1:
   version "17.0.1"
@@ -6055,29 +5474,6 @@ readdirp@~3.5.0:
   integrity sha512-cMhu7c/8rdhkHXWsY+osBhfSy0JikwpHK/5+imo+LpeasTF8ouErHrlYkwT0++njiyuDvc7OFY5T3ukvZ8qmFQ==
   dependencies:
     picomatch "^2.2.1"
-
-recharts-scale@^0.4.2:
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/recharts-scale/-/recharts-scale-0.4.3.tgz#040b4f638ed687a530357292ecac880578384b59"
-  integrity sha512-t8p5sccG9Blm7c1JQK/ak9O8o95WGhNXD7TXg/BW5bYbVlr6eCeRBNpgyigD4p6pSSMehC5nSvBUPj6F68rbFA==
-  dependencies:
-    decimal.js-light "^2.4.1"
-
-reduce-css-calc@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/reduce-css-calc/-/reduce-css-calc-1.3.0.tgz#747c914e049614a4c9cfbba629871ad1d2927716"
-  integrity sha1-dHyRTgSWFKTJz7umKYca0dKSdxY=
-  dependencies:
-    balanced-match "^0.4.2"
-    math-expression-evaluator "^1.2.14"
-    reduce-function-call "^1.0.1"
-
-reduce-function-call@^1.0.1:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/reduce-function-call/-/reduce-function-call-1.0.3.tgz#60350f7fb252c0a67eb10fd4694d16909971300f"
-  integrity sha512-Hl/tuV2VDgWgCSEeWMLwxLZqX7OK59eU1guxXsRKTAyeYimivsKdtcV4fu3r710tpG5GmDKDhQ0HSZLExnNmyQ==
-  dependencies:
-    balanced-match "^1.0.0"
 
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"
@@ -6755,10 +6151,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-swr@^0.3.9:
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/swr/-/swr-0.3.9.tgz#a179a795244c7b68684af6a632f1ad579e6a69e0"
-  integrity sha512-lyN4SjBzpoW4+v3ebT7JUtpzf9XyzrFwXIFv+E8ZblvMa5enSNaUBs4EPkL8gGA/GDMLngEmB53o5LaNboAPfg==
+swr@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-0.4.0.tgz#e76da9f981fe6dee0e133289e9b582fc80d9c41d"
+  integrity sha512-70qd1FHYHwIdYXW0jTpm5ktitzvPBCtyKz8ZzynWlY/rMqe4drYPgcl/H9Ipuh+Xv6ZW5viNx13ro8EKIWZcoQ==
   dependencies:
     dequal "2.0.2"
 

@@ -6,7 +6,7 @@ import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
 import { updateUser } from 'lib/db/users'
 
-const SettingsForm = () => {
+const SettingsForm = (): JSX.Element => {
   const { user } = useAuth()
   const [, setToast] = useToasts()
   const { person } = useDbUser(user && user.uid)
@@ -39,7 +39,7 @@ const SettingsForm = () => {
             text: `Something went wrong: ${error}`,
             type: 'error',
             delay: 10000,
-          }),
+          })
         )
     },
   })

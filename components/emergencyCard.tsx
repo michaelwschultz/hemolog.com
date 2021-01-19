@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import Link from 'next/link'
-import { Row, Spacer } from '@geist-ui/react'
+import { Row, Spacer, Loading } from '@geist-ui/react'
 import styled, { ThemeContext } from 'styled-components'
 import QRCode from 'react-qr-code'
 
@@ -19,14 +19,6 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
 
   const themeContext = useContext(ThemeContext)
 
-  if (!person) {
-    return (
-      <>
-        <div>No user</div>
-      </>
-    )
-  }
-
   return (
     <StyledEmergencyCard className='emergency-card' forPrint={forPrint}>
       <StyledHeader forPrint={forPrint}>
@@ -38,37 +30,46 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
             <h2 style={{ color: themeContext.colors.text }}>Emergency</h2>
           </div>
 
-          <StyledAvatar src={user.photoUrl} forPrint={forPrint} />
+          <StyledAvatar src={user && user.photoUrl} forPrint={forPrint} />
         </Row>
       </StyledHeader>
       <Spacer y={forPrint ? 0.7 : 1} />
       <Row style={{ padding: forPrint ? '8px' : '16px' }}>
         <StyledQRCode forPrint={forPrint}>
-          <QRCode value={`https://${alertUrl}`} size={forPrint ? 80 : 124} />
+          {person ? (
+            <QRCode value={`https://${alertUrl}`} size={forPrint ? 80 : 124} />
+          ) : (
+            <Loading />
+          )}
           <StyledBloodDrop src='/images/blood-drop.png' forPrint={forPrint} />
         </StyledQRCode>
-        <StyledPersonalInfo forPrint={forPrint}>
-          <div>
-            <h3>{person.name}</h3>
-            <h5>
-              {person.severity} Hemophilia {person.hemophiliaType}
-            </h5>
-            <h5>
-              Treat with factor{' '}
-              {person.factor ? (
-                person.factor
-              ) : (
-                <Link href='/profile'>Update profile</Link>
-              )}
-            </h5>
-          </div>
-          <StyledScanLink forPrint={forPrint}>
-            <h6>
-              <b>Scan or visit link for treatment history & contacts</b>
-            </h6>
-            <h4 style={{ color: 'salmon' }}>{alertUrl}</h4>
-          </StyledScanLink>
-        </StyledPersonalInfo>
+        {person ? (
+          <StyledPersonalInfo forPrint={forPrint}>
+            <div>
+              <h3>{person && person.name}</h3>
+              <h5>
+                {person && person.severity} Hemophilia{' '}
+                {person && person.hemophiliaType}
+              </h5>
+              <h5>
+                Treat with factor{' '}
+                {person && person.factor ? (
+                  person.factor
+                ) : (
+                  <Link href='/profile'>Update profile</Link>
+                )}
+              </h5>
+            </div>
+            <StyledScanLink forPrint={forPrint}>
+              <h6>
+                <b>Scan or visit link for treatment history & contacts</b>
+              </h6>
+              <h4 style={{ color: 'salmon' }}>{alertUrl}</h4>
+            </StyledScanLink>
+          </StyledPersonalInfo>
+        ) : (
+          <Loading />
+        )}
       </Row>
     </StyledEmergencyCard>
   )
