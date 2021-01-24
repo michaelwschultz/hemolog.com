@@ -59,7 +59,7 @@ export default function Header(): JSX.Element {
           <Spacer />
           <Popover content={popoverContent} placement='bottomEnd'>
             <Avatar
-              src={user.photoUrl}
+              src={user.photoUrl || ''}
               text={user.displayName && user.displayName.charAt(0)}
               size={40}
               style={{ cursor: 'pointer' }}

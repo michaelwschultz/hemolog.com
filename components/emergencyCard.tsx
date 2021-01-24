@@ -30,7 +30,7 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
             <h2 style={{ color: themeContext.colors.text }}>Emergency</h2>
           </div>
 
-          <StyledAvatar src={user && user.photoUrl} forPrint={forPrint} />
+          <StyledAvatar src={user ? user.photoUrl : ''} forPrint={forPrint} />
         </Row>
       </StyledHeader>
       <Spacer y={forPrint ? 0.7 : 1} />

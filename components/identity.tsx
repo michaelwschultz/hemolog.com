@@ -15,7 +15,7 @@ export default function Identity(): JSX.Element {
         <>
           <Row justify='center'>
             <Avatar
-              src={user.photoUrl}
+              src={user.photoUrl || ''}
               text={user.displayName && user.displayName.charAt(0)}
               size='large'
             />

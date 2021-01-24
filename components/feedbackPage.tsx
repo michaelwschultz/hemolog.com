@@ -41,19 +41,19 @@ const FeedbackPage = () => {
       {data.map((feedback, index) => (
         <Row key={`feedback-card-${index}`} style={{ paddingBottom: '16px' }}>
           <Fieldset style={{ width: '100%' }}>
-            <Fieldset.Title>{feedback.user.name}</Fieldset.Title>
-            <Fieldset.Subtitle>{feedback.message}</Fieldset.Subtitle>
+            <Fieldset.Title>{feedback?.user?.name}</Fieldset.Title>
+            <Fieldset.Subtitle>{feedback?.message}</Fieldset.Subtitle>
             <Fieldset.Footer>
               <Fieldset.Footer.Status>
                 <Row align='middle'>
                   <Avatar
-                    src={feedback.user.photoUrl}
-                    text={feedback.user.name.charAt(0)}
+                    src={feedback?.user?.photoUrl}
+                    text={feedback?.user?.name.charAt(0)}
                     size='small'
                   />
                   <Spacer x={0.5} />
-                  {feedback.user.email} on{' '}
-                  {format(new Date(feedback.createdAt), 'PPp')}
+                  {feedback?.user?.email} on{' '}
+                  {format(new Date(feedback?.createdAt), 'PPp')}
                 </Row>
               </Fieldset.Footer.Status>
               <Fieldset.Footer.Actions>
