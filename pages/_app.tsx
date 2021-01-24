@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { GeistProvider, CssBaseline } from '@geist-ui/react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from 'lib/theme'
-import { AuthProvider, ProtectRoute } from 'lib/auth'
+import { AuthProvider } from 'lib/auth'
 
 export default function App({ Component, pageProps }): JSX.Element {
   return (
@@ -44,9 +44,7 @@ export default function App({ Component, pageProps }): JSX.Element {
         <AuthProvider>
           <GeistProvider>
             <CssBaseline />
-            <ProtectRoute>
-              <Component {...pageProps} />
-            </ProtectRoute>
+            <Component {...pageProps} />
           </GeistProvider>
         </AuthProvider>
       </ThemeProvider>

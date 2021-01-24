@@ -1,6 +1,6 @@
 import React from 'react'
-import { Text } from '@geist-ui/react'
-import Droplet from '@geist-ui/react-icons/droplet'
+import { Text, Image } from '@geist-ui/react'
+// import Droplet from '@geist-ui/react-icons/droplet'
 import Link from 'next/link'
 
 export default function Logo(): JSX.Element {
@@ -8,7 +8,12 @@ export default function Logo(): JSX.Element {
     <Text h4>
       <Link href='/'>
         <a style={{ color: 'black' }}>
-          Hemolog <Droplet color='salmon' />
+          {/* Hemolog <Droplet color='salmon' /> */}
+          <Image
+            width={122}
+            height={34}
+            src={'/images/hemolog-logo-small.png'}
+          />
         </a>
       </Link>
     </Text>

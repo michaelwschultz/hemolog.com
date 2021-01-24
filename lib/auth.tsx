@@ -144,7 +144,7 @@ const formatUser = async (user): Promise<UserType> => {
 // from seeing any protected pages. This could be handled better,
 // but this works for now
 export const ProtectRoute = ({ children }) => {
-  const { user, loading } = useAuth()
+  const { user, loading }: { user: UserType; loading: boolean } = useAuth()
 
   if (loading && !user) {
     return <LoadingScreen />

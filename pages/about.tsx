@@ -1,39 +1,25 @@
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { Page, Text, Row, Button, Divider } from '@geist-ui/react'
-
-import Logo from 'components/logo'
-import Footer from 'components/footer'
+import { Page, Text, Divider, Display, Image, Spacer } from '@geist-ui/react'
 import DescriptionCards from 'components/descriptionCards'
-import { useAuth } from 'lib/auth'
-import { UserType } from 'lib/types/users'
 
-export default function Landing(): JSX.Element {
-  const { user, loading }: { user: UserType; loading: boolean } = useAuth()
-  const router = useRouter()
-
+export default function About(): JSX.Element {
   return (
     <>
       <Head>
-        <title>Hemolog</title>
+        <title>Hemolog - About</title>
       </Head>
       <Page size='large'>
-        <Page.Header style={{ paddingTop: '24px' }}>
-          <Row justify='space-between' align='middle'>
-            <Logo />
-            <Button
-              type='success'
-              onClick={() => router.push(user ? '/home' : '/login')}
-              loading={loading}
-            >
-              {user ? 'Sign in' : 'Register'}
-            </Button>
-          </Row>
-        </Page.Header>
         <Page.Content>
-          <Text h2>Welcome to Hemolog</Text>
-          <Text h5>The last treatment tracker you'll ever need.</Text>
+          <Text h2>The story so far</Text>
+          <Text h5>More than you would ever want to know about Hemolog</Text>
           <Divider />
+
+          <Display
+            shadow
+            caption='High level stats that help you understand your habbits'
+          >
+            <Image width={765} height={400} src='/images/hemolog-2-hero.png' />
+          </Display>
 
           <Text>
             Let's face it, there are some exciting developments in the world of
@@ -60,9 +46,19 @@ export default function Landing(): JSX.Element {
             Stats are something that I always wanted to be apart of Hemolog, and
             now they're here.
           </Text>
+
+          <Spacer />
+
+          {/* <Display
+            shadow
+            caption='High level stats that help you understand your habbits'
+          >
+            <Image width={626} height={306} src='/images/stats-example.png' />
+          </Display> */}
+          <Divider />
+          <Spacer y={2} />
           <DescriptionCards />
         </Page.Content>
-        <Footer />
       </Page>
     </>
   )

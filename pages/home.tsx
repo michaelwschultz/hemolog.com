@@ -4,7 +4,7 @@ import { Page, Tabs } from '@geist-ui/react'
 
 import Header from 'components/header'
 import Footer from 'components/footer'
-import { useAuth } from 'lib/auth'
+import { useAuth, ProtectRoute } from 'lib/auth'
 import HomePage from 'components/homePage'
 import ProfilePage from 'components/profilePage'
 import FeedbackPage from 'components/feedbackPage'
@@ -41,7 +41,7 @@ const Home = (): JSX.Element => {
   const router = useRouter()
 
   return (
-    <>
+    <ProtectRoute>
       <Head>
         <title>Hemolog</title>
       </Head>
@@ -77,7 +77,7 @@ const Home = (): JSX.Element => {
           <Footer />
         </Page.Footer>
       </Page>
-    </>
+    </ProtectRoute>
   )
 }
 
