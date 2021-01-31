@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Page, Tabs } from '@geist-ui/react'
+import { Tabs } from '@geist-ui/react'
+import styled from 'styled-components'
 
 import Header from 'components/header'
 import Footer from 'components/footer'
@@ -45,40 +46,70 @@ const Home = (): JSX.Element => {
       <Head>
         <title>Hemolog</title>
       </Head>
-      <Page size='large'>
-        <Header />
-        <Tabs initialValue={router.route}>
-          <Tabs.Item label='home' value='/home'>
-            <Page.Content>
-              <HomePage />
-            </Page.Content>
-          </Tabs.Item>
-
-          <Tabs.Item label='profile' value='/profile'>
-            <Page.Content>
-              <ProfilePage />
-            </Page.Content>
-          </Tabs.Item>
-
-          <Tabs.Item
-            label='emergency'
-            value={`/emergency/${user && user.alertId}`}
-          />
-
-          {user && user.isAdmin && (
-            <Tabs.Item label='feedback' value='/feedback'>
-              <Page.Content>
-                <FeedbackPage />
-              </Page.Content>
+      <StyledPage>
+        <StyledPageHeader>
+          <Header />
+        </StyledPageHeader>
+        <StyledPageContent>
+          <Tabs initialValue={router.route}>
+            <Tabs.Item label='home' value='/home'>
+              <StyledPageSection>
+                <HomePage />
+              </StyledPageSection>
             </Tabs.Item>
-          )}
-        </Tabs>
-        <Page.Footer>
-          <Footer />
-        </Page.Footer>
-      </Page>
+
+            <Tabs.Item label='emergency profile' value='/emergency'>
+              <StyledPageSection>
+                <ProfilePage />
+              </StyledPageSection>
+            </Tabs.Item>
+            {/* 
+            <Tabs.Item
+              label='emergency'
+              value={`/emergency/${user && user.alertId}`}
+            /> */}
+
+            {user && user.isAdmin && (
+              <Tabs.Item label='feedback' value='/feedback'>
+                <StyledPageSection>
+                  <FeedbackPage />
+                </StyledPageSection>
+              </Tabs.Item>
+            )}
+          </Tabs>
+        </StyledPageContent>
+        <Footer />
+      </StyledPage>
     </ProtectRoute>
   )
 }
 
 export default Home
+
+const StyledPage = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: 850pt;
+  width: 100%;
+  margin: 0 auto;
+
+  main {
+    flex: 1 0 auto;
+  }
+  footer {
+    flex-shrink: 0;
+  }
+`
+
+const StyledPageHeader = styled.header`
+  padding: 24px;
+`
+
+const StyledPageContent = styled.main`
+  padding: 0 24px;
+`
+
+const StyledPageSection = styled.section`
+  padding: 40px 0 0 0;
+`

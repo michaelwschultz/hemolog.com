@@ -1,6 +1,14 @@
 import React from 'react'
 import { useFormik } from 'formik'
-import { Input, Button, Text, Spacer, useToasts, Row } from '@geist-ui/react'
+import {
+  Input,
+  Button,
+  Text,
+  Spacer,
+  useToasts,
+  Grid,
+  AutoComplete,
+} from '@geist-ui/react'
 
 import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
@@ -44,59 +52,84 @@ const SettingsForm = (): JSX.Element => {
     },
   })
 
+  const severityOptions = [
+    { label: 'Mild', value: 'Mild' },
+    { label: 'Moderate', value: 'Moderate' },
+    { label: 'Severe', value: 'Severe' },
+  ]
+
+  const hemophiliaTypeOptions = [
+    { label: 'A', value: 'A' },
+    { label: 'B', value: 'B' },
+    { label: 'Von Willebrand Disease', value: 'Von Willebrand Disease' },
+  ]
+
+  const factorOptions = [
+    { label: 'Advate', value: 'Advate' },
+    { label: 'Eloctate', value: 'Eloctate' },
+    { label: 'Eloctate', value: 'Eloctate' },
+    { label: 'Hemlibra', value: 'Hemlibra' },
+    { label: 'Jivi', value: 'Jivi' },
+    { label: 'NovoSeven', value: 'NovoSeven' },
+    { label: 'Recombinate', value: 'Recombinate' },
+    { label: 'Xyntha', value: 'Xyntha' },
+  ]
+
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div style={{ display: 'inline-block' }}>
-        <Row justify='space-between'>
-          <div style={{ paddingRight: '24px' }}>
-            <Text h5>Type of hemophilia</Text>
-            <Input
-              id='hemophiliaType'
-              name='hemophiliaType'
-              type='text'
-              onChange={formik.handleChange}
-              value={formik.values.hemophiliaType}
-            />
-          </div>
-          <div>
-            <Text h5>Severity</Text>
-            <Input
-              id='severity'
-              name='severity'
-              type='text'
-              onChange={formik.handleChange}
-              value={formik.values.severity}
-            />
-          </div>
-        </Row>
-        <Spacer />
-        <Row justify='space-between'>
-          <div style={{ paddingRight: '24px' }}>
-            <Text h5>Factor number</Text>
-            <Input
-              id='factor'
-              name='factor'
-              type='number'
-              onChange={formik.handleChange}
-              value={
-                formik.values.factor ? formik.values.factor.toString() : ''
-              }
-            />
-          </div>
-          <div>
-            <Text h5>Medication</Text>
-            <Input
-              id='medication'
-              name='medication'
-              type='text'
-              onChange={formik.handleChange}
-              value={formik.values.medication}
-            />
-          </div>
-        </Row>
-      </div>
-      <Spacer />
-
+      <Grid.Container gap={2}>
+        <Grid xs={24} md={12}>
+          <Text h5>Type of hemophilia</Text>
+          <AutoComplete
+            id='hemophiliaType'
+            name='hemophiliaType'
+            type='text'
+            width='100%'
+            placeholder='A'
+            onChange={formik.handleChange}
+            options={hemophiliaTypeOptions}
+            value={formik.values.hemophiliaType}
+          />
+        </Grid>
+        <Grid xs={24} md={12}>
+          <Text h5>Severity</Text>
+          <AutoComplete
+            id='severity'
+            name='severity'
+            type='text'
+            width='100%'
+            placeholder='Severe'
+            onChange={formik.handleChange}
+            options={severityOptions}
+            value={formik.values.severity}
+          />
+        </Grid>
+        <Grid xs={24} md={12}>
+          <Text h5>Factor number</Text>
+          <Input
+            id='factor'
+            name='factor'
+            type='number'
+            width='100%'
+            placeholder='8'
+            onChange={formik.handleChange}
+            value={formik.values.factor ? formik.values.factor.toString() : ''}
+          />
+        </Grid>
+        <Grid xs={24} md={12}>
+          <Text h5>Medication</Text>
+          <AutoComplete
+            id='medication'
+            name='medication'
+            type='text'
+            width='100%'
+            placeholder='Advate'
+            onChange={formik.handleChange}
+            options={factorOptions}
+            value={formik.values.medication}
+          />
+        </Grid>
+      </Grid.Container>
       {/* <Text h5>Emergency contacts</Text>
       <Text h5>Contact name</Text>
       <Input
@@ -116,16 +149,15 @@ const SettingsForm = (): JSX.Element => {
         value={formik.values.emergencyContacts[0].phone}
       />
       <Spacer /> */}
-      <div>
-        <Button
-          type='success'
-          onClick={formik.submitForm}
-          disabled={!formik.isValid || !formik.dirty}
-          loading={formik.isSubmitting}
-        >
-          Update
-        </Button>
-      </div>
+      <Spacer />
+      <Button
+        type='success'
+        onClick={formik.submitForm}
+        disabled={!formik.isValid || !formik.dirty}
+        loading={formik.isSubmitting}
+      >
+        Update
+      </Button>
     </form>
   )
 }

@@ -22,6 +22,13 @@ export default function Header(): JSX.Element {
     bindings: infusionModalBindings,
   } = useModal(false)
 
+  // const [themeType, setThemeType] = useState('dark')
+  // const switchThemes = () => {
+  //   setThemeType((lastThemeType) =>
+  //     lastThemeType === 'dark' ? 'light' : 'dark'
+  //   )
+  // }
+
   const popoverContent = () => (
     <div style={{ minWidth: '180px' }}>
       <Popover.Item title>

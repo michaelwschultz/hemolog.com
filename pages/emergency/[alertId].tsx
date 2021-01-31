@@ -6,7 +6,7 @@ import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
 import { Loading, Page, Note, Text, Row, Link } from '@geist-ui/react'
 import EmergencyInfo from 'components/emergencyInfo'
 
-export default function EmergencyCard(): JSX.Element {
+export default function Emergency(): JSX.Element {
   const router = useRouter()
   const { alertId } = router.query
   const { person, status, error } = useEmergencyUser(alertId)

@@ -1,8 +1,27 @@
+import { useState } from 'react'
 import Head from 'next/head'
-import { GeistProvider, CssBaseline } from '@geist-ui/react'
+import {
+  GeistProvider,
+  CssBaseline,
+  GeistUIThemesPalette,
+} from '@geist-ui/react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from 'lib/theme'
 import { AuthProvider } from 'lib/auth'
+
+const hemologPalette: Partial<GeistUIThemesPalette> = {
+  success: '#FF062C',
+  successLight: '#FF398F',
+  successDark: '#a3051d',
+  warning: '#0070F3',
+  warningLight: '#3291FF',
+  warningDark: '#0761D1',
+  error: '#48BB78',
+  errorLight: '#48BB78',
+  errorDark: '#48BB78',
+  link: '#FF062C',
+  secondary: '#48BB78',
+}
 
 export default function App({ Component, pageProps }): JSX.Element {
   return (
@@ -42,7 +61,7 @@ export default function App({ Component, pageProps }): JSX.Element {
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <AuthProvider>
-          <GeistProvider>
+          <GeistProvider theme={{ palette: hemologPalette }}>
             <CssBaseline />
             <Component {...pageProps} />
           </GeistProvider>
@@ -54,11 +73,16 @@ export default function App({ Component, pageProps }): JSX.Element {
 
 const GlobalStyle = createGlobalStyle`
   /* targets the empty div applied by nextjs so the sidebar follows the height of the page */
-  html {
+
+  html, body {
+    height: 100%;
+  }
+
+  /*  targets Nextjs empty div issue */
+  /* TODO(michael): remove scrollbar on mobile */
+  body > div:first-child {
     overflow: -moz-scrollbars-vertical; 
     overflow-y: scroll;
-  }
-  body > div {
     height: inherit;
   }
 
@@ -67,6 +91,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   a {
+    font-weight: 600;
     color: inherit;
   }
 

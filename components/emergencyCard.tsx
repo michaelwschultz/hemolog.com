@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import Link from 'next/link'
-import { Row, Spacer, Loading } from '@geist-ui/react'
+import { Row, Spacer, Loading, useTheme } from '@geist-ui/react'
 import styled, { ThemeContext } from 'styled-components'
 import QRCode from 'react-qr-code'
 
@@ -14,14 +14,14 @@ interface Props {
 export default function EmergencyCard({ forPrint }: Props): JSX.Element {
   const { user } = useAuth()
   const { person } = useDbUser(user && user.uid)
+  const theme = useTheme()
+  const themeContext = useContext(ThemeContext)
 
   const alertUrl = `hemolog.com/emergency/${person && person.alertId}`
 
-  const themeContext = useContext(ThemeContext)
-
   return (
     <StyledEmergencyCard className='emergency-card' forPrint={forPrint}>
-      <StyledHeader forPrint={forPrint}>
+      <StyledHeader forPrint={forPrint} accentColor={theme.palette.success}>
         <Row justify='space-between'>
           <div>
             <h5 style={{ color: themeContext.colors.text }}>
@@ -35,7 +35,7 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
       </StyledHeader>
       <Spacer y={forPrint ? 0.7 : 1} />
       <Row style={{ padding: forPrint ? '8px' : '16px' }}>
-        <StyledQRCode forPrint={forPrint}>
+        <StyledQRCode forPrint={forPrint} accentColor={theme.palette.success}>
           {person ? (
             <QRCode value={`https://${alertUrl}`} size={forPrint ? 80 : 124} />
           ) : (
@@ -64,7 +64,7 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
               <h6>
                 <b>Scan or visit link for treatment history & contacts</b>
               </h6>
-              <h4 style={{ color: 'salmon' }}>{alertUrl}</h4>
+              <h4 style={{ color: theme.palette.success }}>{alertUrl}</h4>
             </StyledScanLink>
           </StyledPersonalInfo>
         ) : (
@@ -99,8 +99,8 @@ const StyledEmergencyCard = styled.div<{ forPrint: boolean }>`
   }
 `
 
-const StyledHeader = styled.div<{ forPrint: boolean }>`
-  background-color: salmon;
+const StyledHeader = styled.div<{ forPrint: boolean; accentColor: string }>`
+  background-color: ${(props) => props.accentColor};
   height: ${(props) => (props.forPrint ? '56px' : '90px')};
   width: 100%;
   padding: ${(props) => (props.forPrint ? '16px' : '24px')};
@@ -110,13 +110,14 @@ const StyledPersonalInfo = styled.div<{ forPrint: boolean }>`
   padding-left: ${(props) => (props.forPrint ? '8px' : '16px')};
 `
 
-const StyledQRCode = styled.div<{ forPrint: boolean }>`
+const StyledQRCode = styled.div<{ forPrint: boolean; accentColor: string }>`
   position: relative;
   width: ${(props) => (props.forPrint ? '102px' : '148px')};
   height: ${(props) => (props.forPrint ? '96px' : '148px')};
   padding: ${(props) => (props.forPrint ? '5px' : '8px')};
   border-radius: 8px;
-  border: ${(props) => (props.forPrint ? '3px' : '4px')} solid salmon;
+  border: ${(props) => (props.forPrint ? '3px' : '4px')} solid
+    ${(props) => props.accentColor};
 `
 
 const StyledScanLink = styled.div<{ forPrint: boolean }>`
@@ -125,10 +126,10 @@ const StyledScanLink = styled.div<{ forPrint: boolean }>`
 
 const StyledBloodDrop = styled.img<{ forPrint: boolean }>`
   position: absolute;
-  left: ${(props) => (props.forPrint ? '36px' : '64px')};
-  top: ${(props) => (props.forPrint ? '-18px' : '-22px')};
-  width: ${(props) => (props.forPrint ? '16px' : '22px')};
-  height: ${(props) => (props.forPrint ? '22px' : '30px')};
+  left: ${(props) => (props.forPrint ? '34px' : '56px')};
+  top: ${(props) => (props.forPrint ? '-18px' : '-24px')};
+  width: ${(props) => (props.forPrint ? '24px' : '32px')};
+  height: ${(props) => (props.forPrint ? '24px' : '32px')};
   border: none !important;
 `
 

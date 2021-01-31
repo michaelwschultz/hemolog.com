@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Page, Text, Row, Button, Divider } from '@geist-ui/react'
+import { Text, Row, Button, Divider, Spacer, Link } from '@geist-ui/react'
+import styled from 'styled-components'
 
 import Logo from 'components/logo'
 import Footer from 'components/footer'
@@ -17,53 +18,64 @@ export default function Landing(): JSX.Element {
       <Head>
         <title>Hemolog</title>
       </Head>
-      <Page size='large'>
-        <Page.Header style={{ paddingTop: '24px' }}>
+      <StyledPage>
+        <StyledPageHeader>
           <Row justify='space-between' align='middle'>
             <Logo />
             <Button
               type='success'
-              onClick={() => router.push(user ? '/home' : '/login')}
+              onClick={() => router.push(user ? '/home' : '/signin')}
               loading={loading}
             >
               {user ? 'Sign in' : 'Register'}
             </Button>
           </Row>
-        </Page.Header>
-        <Page.Content>
+        </StyledPageHeader>
+        <StyledPageContent>
           <Text h2>Welcome to Hemolog</Text>
           <Text h5>The last treatment tracker you'll ever need.</Text>
           <Divider />
 
           <Text>
-            Let's face it, there are some exciting developments in the world of
-            Hemophilia research. Honestly, it's not <i>just</i> research
-            anymore. Clinical trials are happening now across the globe. Gene
-            threrapy is definitly going to change things for the better, it's
-            just a matter of when it's available to all of us.
+            Log your treatments, get fantastic insights that help you change
+            your habbits. What more could you want? Sign up for free and start
+            using the newest version of Hemolog today!
           </Text>
 
           <Text>
-            That being said, it's still important to keep track of you
-            treatments. Maybe even more now than ever. If getting on a trial is
-            something you re interested in, knowing how many bleeds you were
-            having before is really important.
+            <Link color href='/about'>
+              Learn more about the Hemolog story...
+            </Link>
           </Text>
-
-          <Text>
-            Trial or not, keeping track of your treatment habbits can be hard,
-            and the tools we have don't do a great job. Hemolog is simple. You
-            track your treatments, and Hemolog gives you instant feedback.
-          </Text>
-
-          <Text>
-            Stats are something that I always wanted to be apart of Hemolog, and
-            now they're here.
-          </Text>
+          <Spacer y={3} />
           <DescriptionCards />
-        </Page.Content>
+        </StyledPageContent>
         <Footer />
-      </Page>
+      </StyledPage>
     </>
   )
 }
+
+const StyledPage = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: 750pt;
+  width: 100%;
+  margin: 0 auto;
+
+  main {
+    flex: 1 0 auto;
+  }
+  footer {
+    flex-shrink: 0;
+  }
+`
+
+const StyledPageHeader = styled.header`
+  padding: 24px;
+`
+
+const StyledPageContent = styled.main`
+  padding: 40px 24px 0 24px;
+`

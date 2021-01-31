@@ -30,8 +30,8 @@ interface Props {
 }
 
 enum infusionTypeBadgeStyle {
-  BLEED = 'error',
-  PROPHY = 'success',
+  BLEED = 'success',
+  PROPHY = 'warning',
   PREVENTATIVE = 'secondary',
 }
 

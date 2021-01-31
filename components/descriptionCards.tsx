@@ -26,7 +26,7 @@ export default function DescrtipionCards(): JSX.Element {
           <Text h4>Free forever</Text>
           <Text>
             No need to worry about paying for Hemolog. It's free forever. No
-            sponsorships, pharma companies, or ads.
+            sponsorships, pharma companies, or ads. Promise!
           </Text>
         </Card>
       </Grid>

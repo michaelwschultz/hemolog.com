@@ -101,7 +101,7 @@ function useProvideAuth() {
   }
 
   const signout = () => {
-    Router.push('/login')
+    Router.push('/signin')
     return firebase
       .auth()
       .signOut()
@@ -152,8 +152,8 @@ export const ProtectRoute = ({ children }) => {
 
   const { pathname } = window.location
 
-  if (!user && pathname !== '/login' && !pathname.includes('emergency')) {
-    Router.push('/login')
+  if (!user && pathname !== '/signin' && !pathname.includes('emergency')) {
+    Router.push('/signin')
     return null
   }
 
