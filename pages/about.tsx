@@ -51,12 +51,6 @@ const About = (): JSX.Element => {
             <Image width={765} height={400} src='/images/stats-example.png' />
           </Display>
           <Spacer />
-          {/* <Display
-            shadow
-            caption='High level stats that help you understand your habbits'
-          >
-            <Image width={626} height={306} src='/images/stats-example.png' />
-          </Display> */}
           <Divider />
           <Spacer y={2} />
           <DescriptionCards />
@@ -85,14 +79,6 @@ const StyledPage = styled.div`
   }
 `
 
-const StyledPageHeader = styled.header`
-  padding: 24px;
-`
-
 const StyledPageContent = styled.main`
   padding: 0 24px;
-`
-
-const StyledPageSection = styled.section`
-  padding: 40px 0 0 0;
 `

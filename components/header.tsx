@@ -13,7 +13,12 @@ import { useAuth } from 'lib/auth'
 import Logo from 'components/logo'
 import InfusionModal from 'components/infusionModal'
 
-export default function Header(): JSX.Element {
+interface Props {
+  version?: string
+}
+
+const Header = (props: Props): JSX.Element => {
+  const { version } = props
   const { user, signout } = useAuth()
 
   const {
@@ -35,7 +40,7 @@ export default function Header(): JSX.Element {
         <span>{user.name}</span>
       </Popover.Item>
       <Popover.Item>
-        <span>News and updates will appear here</span>
+        <span>v{version}</span>
       </Popover.Item>
       <Popover.Item>
         <Link color href='https://github.com/michaelwschultz/hemolog.com'>
@@ -75,24 +80,6 @@ export default function Header(): JSX.Element {
         </Row>
       </Row>
       <Spacer />
-      {/* <StyledTabBar borderColor={palette.accents_2}>
-        <ul>
-          <StyledListItem active={router.route === '/home'}>
-            <NextLink href='/home'>Home</NextLink>
-          </StyledListItem>
-          <StyledListItem active={router.route === '/profile'}>
-            <NextLink href='/profile'>Profile</NextLink>
-          </StyledListItem>
-          <StyledListItem
-            active={router.route === `/emergency/${user.alertId}`}
-          >
-            <NextLink href={`/emergency/${user.alertId}`}>Emergency</NextLink>
-          </StyledListItem>
-          <StyledListItem active={router.route === '/feedback'}>
-            <NextLink href='/feedback'>Feedback</NextLink>
-          </StyledListItem>
-        </ul>
-      </StyledTabBar> */}
 
       <InfusionModal
         visible={infusionModal}
@@ -103,25 +90,4 @@ export default function Header(): JSX.Element {
   )
 }
 
-// const StyledTabBar = styled.div<{ borderColor: string }>`
-//   border-bottom: 1px solid ${({ borderColor }) => borderColor || 'black'};
-//   width: 100%;
-
-//   ul,
-//   li {
-//     list-style-type: none;
-//     display: inline;
-//     margin: 0;
-//   }
-//   li {
-//     padding-right: 24px;
-//   }
-// `
-
-// const StyledListItem = styled.li<{ active: boolean }>`
-//   a {
-//     color: black;
-//     font-weight: 500;
-//     border-bottom: 2px solid ${({ active }) => (active ? 'red' : 'transparent')};
-//   }
-// `
+export default Header

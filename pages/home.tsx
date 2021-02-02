@@ -10,7 +10,15 @@ import HomePage from 'components/homePage'
 import ProfilePage from 'components/profilePage'
 import FeedbackPage from 'components/feedbackPage'
 
-const Home = (): JSX.Element => {
+export async function getStaticProps() {
+  return {
+    props: {
+      version: process.env.npm_package_version,
+    },
+  }
+}
+
+const Home = (props: { version: string }): JSX.Element => {
   // TODO(michael) add welcome message by checking to see if this is the users
   // first time logging in. Still not sure how to accomplish this.
   //
@@ -40,6 +48,7 @@ const Home = (): JSX.Element => {
 
   const { user } = useAuth()
   const router = useRouter()
+  const { version } = props
 
   return (
     <ProtectRoute>
@@ -48,7 +57,7 @@ const Home = (): JSX.Element => {
       </Head>
       <StyledPage>
         <StyledPageHeader>
-          <Header />
+          <Header version={version} />
         </StyledPageHeader>
         <StyledPageContent>
           <Tabs initialValue={router.route}>

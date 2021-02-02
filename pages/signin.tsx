@@ -17,7 +17,16 @@ import Logo from 'components/logo'
 import DescriptionCards from 'components/descriptionCards'
 import Footer from 'components/footer'
 
-const Signin = () => {
+export async function getStaticProps() {
+  return {
+    props: {
+      version: process.env.npm_package_version,
+    },
+  }
+}
+
+const Signin = (pageProps: { version: string }) => {
+  const { version } = pageProps
   const auth = useAuth()
 
   return (
@@ -30,7 +39,7 @@ const Signin = () => {
           <Row align='middle' justify='space-between'>
             <Logo />
             <Link href='https://github.com/michaelwschultz/hemolog.com'>
-              <Tag>v2.0.0</Tag>
+              <Tag>v{version}</Tag>
             </Link>
           </Row>
         </StyledPageHeader>
@@ -82,7 +91,7 @@ const StyledPage = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  max-width: 750pt;
+  max-width: 850pt;
   width: 100%;
   margin: 0 auto;
 

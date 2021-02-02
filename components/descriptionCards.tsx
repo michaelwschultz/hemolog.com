@@ -5,7 +5,7 @@ export default function DescrtipionCards(): JSX.Element {
   return (
     <Grid.Container gap={2}>
       <Grid xs={24} sm={12}>
-        <Card shadow type='success'>
+        <Card shadow>
           <Text h4>Open source</Text>
           <Text>
             Hemolog is completely open source. We've got a limited number of
@@ -31,7 +31,7 @@ export default function DescrtipionCards(): JSX.Element {
         </Card>
       </Grid>
       <Grid xs={24} sm={12}>
-        <Card shadow type='success'>
+        <Card shadow>
           <Text h4>Wait...didn't Hemolog die?</Text>
           <Text>
             Hemolog's first incarnation was an iPhone app back in 2011. It was a

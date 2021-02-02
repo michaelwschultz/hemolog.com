@@ -20,7 +20,7 @@ const hemologPalette: Partial<GeistUIThemesPalette> = {
   errorLight: '#48BB78',
   errorDark: '#48BB78',
   link: '#FF062C',
-  secondary: '#48BB78',
+  // secondary: '#48BB78',
 }
 
 export default function App({ Component, pageProps }): JSX.Element {
@@ -42,20 +42,6 @@ export default function App({ Component, pageProps }): JSX.Element {
         />
         <meta name='mobile-web-app-capable' content='yes' />
         <meta name='apple-mobile-web-app-capable' content='yes' />
-        {/* TODO(michael): Remove - Testing UserSnap.com */}
-        {/* <script
-          dangerouslySetInnerHTML={{
-            __html: `
-                  window.onUsersnapCXLoad = function(api) {
-                    api.init();
-                  }
-                  var script = document.createElement('script');
-                  script.defer = 1;
-                  script.src = 'https://widget.usersnap.com/global/load/6ea08345-b2f7-49f4-8464-394143662980?onload=onUsersnapCXLoad';
-                  document.getElementsByTagName('head')[0].appendChild(script);
-                  `,
-          }}
-        /> */}
         <title>Hemolog</title>
       </Head>
       <GlobalStyle />

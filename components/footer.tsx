@@ -69,6 +69,6 @@ export default function Footer(): JSX.Element {
   )
 }
 
-const StyledFooter = styled.footer`
+const StyledFooter = styled.div`
   padding: 40px 24px;
 `
