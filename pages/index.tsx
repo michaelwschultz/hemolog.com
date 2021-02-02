@@ -1,36 +1,20 @@
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { Text, Row, Button, Divider, Spacer, Link } from '@geist-ui/react'
+import NextLink from 'next/link'
+import { Text, Divider, Spacer, Link } from '@geist-ui/react'
 import styled from 'styled-components'
 
-import Logo from 'components/logo'
 import Footer from 'components/footer'
+import StaticHeader from 'components/staticHeader'
 import DescriptionCards from 'components/descriptionCards'
-import { useAuth } from 'lib/auth'
-import { UserType } from 'lib/types/users'
 
 export default function Landing(): JSX.Element {
-  const { user, loading }: { user: UserType; loading: boolean } = useAuth()
-  const router = useRouter()
-
   return (
     <>
       <Head>
         <title>Hemolog</title>
       </Head>
       <StyledPage>
-        <StyledPageHeader>
-          <Row justify='space-between' align='middle'>
-            <Logo />
-            <Button
-              type='success'
-              onClick={() => router.push(user ? '/home' : '/signin')}
-              loading={loading}
-            >
-              {user ? 'Sign in' : 'Register'}
-            </Button>
-          </Row>
-        </StyledPageHeader>
+        <StaticHeader />
         <StyledPageContent>
           <Text h2>Welcome to Hemolog</Text>
           <Text h5>The last treatment tracker you'll ever need.</Text>
@@ -43,9 +27,11 @@ export default function Landing(): JSX.Element {
           </Text>
 
           <Text>
-            <Link color href='/about'>
-              Learn more about the Hemolog story...
-            </Link>
+            <NextLink href='/about'>
+              <Link color href='/about'>
+                Learn more about the Hemolog story...
+              </Link>
+            </NextLink>
           </Text>
           <Spacer y={3} />
           <DescriptionCards />
@@ -60,7 +46,7 @@ const StyledPage = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  max-width: 750pt;
+  max-width: 850pt;
   width: 100%;
   margin: 0 auto;
 
@@ -70,10 +56,6 @@ const StyledPage = styled.div`
   footer {
     flex-shrink: 0;
   }
-`
-
-const StyledPageHeader = styled.header`
-  padding: 24px;
 `
 
 const StyledPageContent = styled.main`

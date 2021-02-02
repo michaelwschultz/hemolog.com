@@ -1,9 +1,10 @@
 import Head from 'next/head'
-import { Page, Text, Divider, Display, Image, Spacer } from '@geist-ui/react'
+import { Text, Divider, Display, Image, Spacer } from '@geist-ui/react'
 import styled from 'styled-components'
 
-import Header from 'components/header'
+import StaticHeader from 'components/staticHeader'
 import DescriptionCards from 'components/descriptionCards'
+import Footer from 'components/footer'
 
 const About = (): JSX.Element => {
   return (
@@ -12,9 +13,7 @@ const About = (): JSX.Element => {
         <title>Hemolog - About</title>
       </Head>
       <StyledPage>
-        <StyledPageHeader>
-          <Header />
-        </StyledPageHeader>
+        <StaticHeader />
         <StyledPageContent>
           <Text h2>The story so far</Text>
           <Text h5>More than you would ever want to know about Hemolog</Text>
@@ -62,6 +61,7 @@ const About = (): JSX.Element => {
           <Spacer y={2} />
           <DescriptionCards />
         </StyledPageContent>
+        <Footer />
       </StyledPage>
     </>
   )
