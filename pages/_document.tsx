@@ -1,21 +1,20 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document'
-import { CssBaseline } from '@geist-ui/react'
+import Document from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
+import { CssBaseline } from '@geist-ui/react'
 
-class MyDocument extends Document {
+export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
-    const styles = CssBaseline.flush()
     const sheet = new ServerStyleSheet()
     const originalRenderPage = ctx.renderPage
-
     try {
       ctx.renderPage = () =>
         originalRenderPage({
           enhanceApp: (App) => (props) =>
             sheet.collectStyles(<App {...props} />),
         })
-
       const initialProps = await Document.getInitialProps(ctx)
+      const styles = CssBaseline.flush()
+
       return {
         ...initialProps,
         styles: (
@@ -30,18 +29,4 @@ class MyDocument extends Document {
       sheet.seal()
     }
   }
-
-  render() {
-    return (
-      <Html>
-        <Head />
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    )
-  }
 }
-
-export default MyDocument
