@@ -12,7 +12,6 @@ import {
 import styled from 'styled-components'
 
 import StaticHeader from 'components/staticHeader'
-import DescriptionCards from 'components/descriptionCards'
 import Footer from 'components/footer'
 
 const About = (): JSX.Element => {
@@ -51,23 +50,28 @@ const About = (): JSX.Element => {
             track your treatments, and Hemolog gives you instant feedback.
           </Text>
           <Text>
-            Stats are something that I always wanted to be apart of Hemolog, and
-            now they're finally here.
+            Insights are something that I always wanted to be apart of Hemolog,
+            and now they're finally here.
           </Text>
 
           <Display
             shadow
-            caption='High level stats that help you understand your habbits'
+            caption='High level insights that help you understand your habbits'
           >
-            <Image width={765} height={400} src='/images/stats-example.png' />
+            <Image
+              width={486}
+              height={377}
+              src='/images/insights-example.png'
+            />
           </Display>
 
           <Text>
-            These stats are calculated as you add more data. Filters will allow
-            you to choose different time frames for viewing your data down the
-            road giving you the best most comprehensive view into your treatment
-            history ever. I've chosen a few stats that are interesting for me.
-            If you have thoughts on what you would like to see just let me know.
+            These insights are calculated as you add more data. Filters will
+            allow you to choose different time frames for viewing your data down
+            the road giving you the best most comprehensive view into your
+            treatment history ever. I've chosen a few insights that are
+            interesting for me. If you have thoughts on what you would like to
+            see just let me know.
           </Text>
 
           <Spacer y={5} />
