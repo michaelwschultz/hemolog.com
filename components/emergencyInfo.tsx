@@ -60,6 +60,10 @@ export default function EmergencyInfo(props: Props): JSX.Element {
           </>
         )}
         <Spacer />
+        {/* NOTE(michael) remember when you implement this that you remember
+        to update the example logic on /emergency/alertId as to not
+        leak my actual emergency contact's info */}
+
         {/* <Grid.Container gap={2}>
           <Grid sm={12}>
             <Card>
@@ -97,7 +101,7 @@ export default function EmergencyInfo(props: Props): JSX.Element {
   }
 
   return (
-    <Note type='error' label='Error'>
+    <Note type='success' label='Error'>
       This person's information could not be found.
     </Note>
   )

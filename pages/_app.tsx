@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Head from 'next/head'
 import {
   GeistProvider,
@@ -20,7 +19,6 @@ const hemologPalette: Partial<GeistUIThemesPalette> = {
   errorLight: '#48BB78',
   errorDark: '#48BB78',
   link: '#FF062C',
-  // secondary: '#48BB78',
 }
 
 export default function App({ Component, pageProps }): JSX.Element {
@@ -87,6 +85,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .ellipsis {
+    display: block;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

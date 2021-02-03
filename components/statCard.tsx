@@ -24,15 +24,11 @@ export default function StatCard(props: Props): JSX.Element {
   return (
     <Card
       shadow={!loading && shadow}
-      style={{ minHeight: '116px', ...style }}
+      style={{ minHeight: '116px', height: '100%', ...style }}
       type={type}
     >
-      <Text h4 className='ellipsis'>
-        {value}
-      </Text>
-      <Text small className='ellipsis'>
-        {label}
-      </Text>
+      <Text h3>{value}</Text>
+      <Text small>{label}</Text>
       {loading && <Loading type='secondary' />}
     </Card>
   )

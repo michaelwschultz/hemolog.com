@@ -67,7 +67,7 @@ const Home = (props: { version: string }): JSX.Element => {
               </StyledPageSection>
             </Tabs.Item>
 
-            <Tabs.Item label='emergency profile' value='/emergency'>
+            <Tabs.Item label='Profile' value='/profile'>
               <StyledPageSection>
                 <ProfilePage />
               </StyledPageSection>

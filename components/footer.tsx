@@ -1,13 +1,6 @@
 import React from 'react'
-import {
-  Text,
-  Row,
-  Col,
-  Spacer,
-  useModal,
-  Link,
-  Divider,
-} from '@geist-ui/react'
+import NextLink from 'next/link'
+import { Text, Grid, Spacer, useModal, Link, Divider } from '@geist-ui/react'
 import styled from 'styled-components'
 
 import EmergencySnippet from 'components/emergencySnippet'
@@ -30,22 +23,33 @@ export default function Footer(): JSX.Element {
     if (user) {
       return user.alertId
     }
-    return 'Sign up to get yours'
+    return 'example'
   }
 
   return (
     <StyledFooter>
       <Divider />
       <Spacer y={2} />
-      <Row justify='space-between' align='middle'>
-        <Col>
+      <Grid.Container gap={2}>
+        <Grid xs={24} sm={12}>
           <Text h5>Hemolog 2</Text>
-          <a onClick={() => setFeedbackModalVisible(true)}>Give feedback</a>
+          {user && (
+            <Text>
+              <a onClick={() => setFeedbackModalVisible(true)}>Give feedback</a>
+            </Text>
+          )}
+          <Text>
+            <NextLink href='/about'>
+              <Link color href='/about'>
+                The story so far...
+              </Link>
+            </NextLink>
+          </Text>
           <Spacer />
           <Text h5>Emergency Link</Text>
           <EmergencySnippet alertId={alertId()} />
-        </Col>
-        <Col>
+        </Grid>
+        <Grid xs={12} sm={8} md={6}>
           <Text h5>Follow</Text>
           <Text>
             <Link color href='https://twitter.com/hemolog'>
@@ -57,9 +61,14 @@ export default function Footer(): JSX.Element {
               @MichaelSchultz
             </Link>
           </Text>
+          <Text>
+            <Link color href='https://github.com/michaelwschultz/hemolog.com'>
+              View source on Github
+            </Link>
+          </Text>
           <Text p>hemolog.com © {new Date().getFullYear()}</Text>
-        </Col>
-      </Row>
+        </Grid>
+      </Grid.Container>
       <FeedbackModal
         visible={feedbackModal}
         setVisible={setFeedbackModalVisible}

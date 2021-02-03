@@ -32,7 +32,7 @@ interface Props {
 enum infusionTypeBadgeStyle {
   BLEED = 'success',
   PROPHY = 'warning',
-  PREVENTATIVE = 'secondary',
+  PREVENTATIVE = 'error',
 }
 
 export default function InfusionTable(props: Props): JSX.Element {

@@ -1,5 +1,14 @@
 import Head from 'next/head'
-import { Text, Divider, Display, Image, Spacer } from '@geist-ui/react'
+import NextLink from 'next/link'
+import {
+  Text,
+  Divider,
+  Display,
+  Image,
+  Spacer,
+  Grid,
+  Link,
+} from '@geist-ui/react'
 import styled from 'styled-components'
 
 import StaticHeader from 'components/staticHeader'
@@ -21,18 +30,19 @@ const About = (): JSX.Element => {
           <Display>
             <Image width={765} height={400} src='/images/hemolog-2-hero.png' />
           </Display>
+
           <Text>
             Let's face it, there are some exciting developments in the world of
             Hemophilia research. Honestly, it's not <i>just</i> research
             anymore. Clinical trials are happening now across the globe. Gene
-            threrapy is definitly going to change things for the better, it's
+            threrapy is definitely going to change things for the better, it's
             just a matter of when it's available to all of us.
           </Text>
 
           <Text>
             That being said, it's still important to keep track of you
             treatments. Maybe even more now than ever. If getting on a trial is
-            something you re interested in, knowing how many bleeds you were
+            something you're interested in, knowing how many bleeds you were
             having before is really important.
           </Text>
           <Text>
@@ -42,18 +52,54 @@ const About = (): JSX.Element => {
           </Text>
           <Text>
             Stats are something that I always wanted to be apart of Hemolog, and
-            now they're here.
+            now they're finally here.
           </Text>
+
           <Display
             shadow
             caption='High level stats that help you understand your habbits'
           >
             <Image width={765} height={400} src='/images/stats-example.png' />
           </Display>
-          <Spacer />
-          <Divider />
-          <Spacer y={2} />
-          <DescriptionCards />
+
+          <Text>
+            These stats are calculated as you add more data. Filters will allow
+            you to choose different time frames for viewing your data down the
+            road giving you the best most comprehensive view into your treatment
+            history ever. I've chosen a few stats that are interesting for me.
+            If you have thoughts on what you would like to see just let me know.
+          </Text>
+
+          <Spacer y={5} />
+
+          <Grid.Container gap={2} alignItems='center'>
+            <Grid xs={24} sm={16}>
+              <Text h3 type='secondary'>
+                Now that Hemolog is back. I hope you enjoy using it as much as I
+                have. It's up to all of us to keep each other accountable. You
+                can{' '}
+                <NextLink href='/emergency/mike29'>
+                  <Link color href='/emergency/mike29' icon>
+                    view my emergency page
+                  </Link>
+                </NextLink>
+                at any time to verify I've been keeping up with my prophy
+                regimen.
+              </Text>
+              <br />
+              <Text h4>— Michael Schultz</Text>
+            </Grid>
+            <Grid xs={24} sm={8}>
+              <Spacer />
+              <Image
+                width={300}
+                height={300}
+                src='/images/michael-schultz.jpg'
+              />
+            </Grid>
+          </Grid.Container>
+
+          <Spacer y={5} />
         </StyledPageContent>
         <Footer />
       </StyledPage>

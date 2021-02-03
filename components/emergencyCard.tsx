@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import Link from 'next/link'
-import { Row, Spacer, Loading, useTheme } from '@geist-ui/react'
+import { Row, Spacer, Loading, useTheme, Tooltip, Text } from '@geist-ui/react'
 import styled, { ThemeContext } from 'styled-components'
 import QRCode from 'react-qr-code'
 
@@ -30,7 +30,9 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
             <h2 style={{ color: themeContext.colors.text }}>Emergency</h2>
           </div>
 
-          <StyledAvatar src={user ? user.photoUrl : ''} forPrint={forPrint} />
+          {user && user.photoUrl && (
+            <StyledAvatar src={user.photoUrl} forPrint={forPrint} />
+          )}
         </Row>
       </StyledHeader>
       <Spacer y={forPrint ? 0.7 : 1} />
@@ -51,20 +53,21 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
                 {person && person.severity} Hemophilia{' '}
                 {person && person.hemophiliaType}
               </h5>
-              <h5>
-                Treat with factor{' '}
-                {person && person.factor ? (
-                  person.factor
-                ) : (
-                  <Link href='/profile'>Update profile</Link>
-                )}
-              </h5>
+              {person && person.factor && (
+                <h5>Treat with factor {person.factor}</h5>
+              )}
             </div>
             <StyledScanLink forPrint={forPrint}>
-              <h6>
-                <b>Scan or visit link for treatment history & contacts</b>
-              </h6>
-              <h4 style={{ color: theme.palette.success }}>{alertUrl}</h4>
+              <Text h4>
+                <b>Scan or visit for treatment history</b>
+              </Text>
+              <Tooltip text='Visit your page to preview what others will see.'>
+                <Link href={`https://${alertUrl}`}>
+                  <a>
+                    <h4 style={{ color: theme.palette.success }}>{alertUrl}</h4>
+                  </a>
+                </Link>
+              </Tooltip>
             </StyledScanLink>
           </StyledPersonalInfo>
         ) : (
@@ -112,7 +115,7 @@ const StyledPersonalInfo = styled.div<{ forPrint: boolean }>`
 
 const StyledQRCode = styled.div<{ forPrint: boolean; accentColor: string }>`
   position: relative;
-  width: ${(props) => (props.forPrint ? '102px' : '148px')};
+  width: ${(props) => (props.forPrint ? '96px' : '148px')};
   height: ${(props) => (props.forPrint ? '96px' : '148px')};
   padding: ${(props) => (props.forPrint ? '5px' : '8px')};
   border-radius: 8px;

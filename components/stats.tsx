@@ -182,7 +182,10 @@ export default function Stats(): JSX.Element {
         <Grid xs={12} sm={8} md={6}>
           {/* I think this is between $1.19 and $1.66 per unit based on this article
               https://www.ashclinicalnews.org/spotlight/feature-articles/high-price-hemophilia/ */}
-          <Tooltip text={'Current'} style={{ display: 'block', width: '100%' }}>
+          <Tooltip
+            text={'Current'}
+            style={{ display: 'block', width: '100%', height: '100%' }}
+          >
             <StatCard
               style={{ display: 'block' }}
               value={`$${estimatedTotalCost.toLocaleString()}`}
@@ -191,11 +194,15 @@ export default function Stats(): JSX.Element {
           </Tooltip>
         </Grid>
         <Grid xs={12} sm={8} md={6}>
-          <Card style={{ minHeight: '116px' }}>
-            <Text>Missing something?</Text>
-            <Text>
-              <a onClick={() => setFeedbackModalVisible(true)}>Give feedback</a>
-            </Text>
+          <Card style={{ minHeight: '116px', height: '100%' }}>
+            <Text small>Missing something?</Text>
+            <Card.Footer>
+              <Text>
+                <a onClick={() => setFeedbackModalVisible(true)}>
+                  Give feedback
+                </a>
+              </Text>
+            </Card.Footer>
           </Card>
         </Grid>
         {/* <Grid xs={24} sm={12} md={6}>

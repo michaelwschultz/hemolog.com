@@ -40,7 +40,7 @@ const Header = (props: Props): JSX.Element => {
         <span>{user.name}</span>
       </Popover.Item>
       <Popover.Item>
-        <span>v{version}</span>
+        <span>Hemolog v{version}</span>
       </Popover.Item>
       <Popover.Item>
         <Link color href='https://github.com/michaelwschultz/hemolog.com'>
