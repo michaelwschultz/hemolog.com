@@ -22,7 +22,7 @@ export default function Landing(): JSX.Element {
 
           <Text>
             Log your treatments and get fantastic insights that help you change
-            your habbits. What more could you want?
+            your habits. What more could you want?
             <br />
             Sign up for free and start using the newest version of Hemolog
             today!

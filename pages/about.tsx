@@ -45,7 +45,7 @@ const About = (): JSX.Element => {
             having before is really important.
           </Text>
           <Text>
-            Trial or not, keeping track of your treatment habbits can be hard,
+            Trial or not, keeping track of your treatment habits can be hard,
             and the tools we have don't do a great job. Hemolog is simple. You
             track your treatments, and Hemolog gives you instant feedback.
           </Text>
@@ -56,7 +56,7 @@ const About = (): JSX.Element => {
 
           <Display
             shadow
-            caption='High level insights that help you understand your habbits'
+            caption='High level insights that help you understand your habits'
           >
             <Image
               width={486}
