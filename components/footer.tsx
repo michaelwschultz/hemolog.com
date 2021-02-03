@@ -31,7 +31,7 @@ export default function Footer(): JSX.Element {
       <Divider />
       <Spacer y={2} />
       <Grid.Container gap={2}>
-        <Grid xs={24} sm={12}>
+        <Grid xs={24} sm={14}>
           <Text h5>Hemolog 2</Text>
           {user && (
             <Text>
@@ -49,7 +49,7 @@ export default function Footer(): JSX.Element {
           <Text h5>Emergency Link</Text>
           <EmergencySnippet alertId={alertId()} />
         </Grid>
-        <Grid xs={12} sm={8} md={6}>
+        <Grid xs={24} sm={10}>
           <Text h5>Follow</Text>
           <Text>
             <Link color href='https://twitter.com/hemolog'>
@@ -63,8 +63,13 @@ export default function Footer(): JSX.Element {
           </Text>
           <Text>
             <Link color href='https://github.com/michaelwschultz/hemolog.com'>
-              View source on Github
-            </Link>
+              View source
+            </Link>{' '}
+            |{' '}
+            <Link color href='https://github.com/sponsors/michaelwschultz'>
+              Donate
+            </Link>{' '}
+            on Github
           </Text>
           <Text p>hemolog.com © {new Date().getFullYear()}</Text>
         </Grid>

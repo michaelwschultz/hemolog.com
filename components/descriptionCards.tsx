@@ -12,8 +12,8 @@ export default function DescrtipionCards(): JSX.Element {
             years to worry about logging. Check out the code on{' '}
             <Link
               href='https://github.com/michaelwschultz/hemolog.com'
-              underline
               icon
+              color
             >
               Github
             </Link>
