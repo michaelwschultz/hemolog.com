@@ -101,7 +101,7 @@ function useProvideAuth() {
   }
 
   const signout = () => {
-    Router.push('/login')
+    Router.push('/signin')
     return firebase
       .auth()
       .signOut()
@@ -144,7 +144,7 @@ const formatUser = async (user): Promise<UserType> => {
 // from seeing any protected pages. This could be handled better,
 // but this works for now
 export const ProtectRoute = ({ children }) => {
-  const { user, loading } = useAuth()
+  const { user, loading }: { user: UserType; loading: boolean } = useAuth()
 
   if (loading && !user) {
     return <LoadingScreen />
@@ -152,8 +152,8 @@ export const ProtectRoute = ({ children }) => {
 
   const { pathname } = window.location
 
-  if (!user && pathname !== '/login' && !pathname.includes('emergency')) {
-    Router.push('/login')
+  if (!user && pathname !== '/signin' && !pathname.includes('emergency')) {
+    Router.push('/signin')
     return null
   }
 

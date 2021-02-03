@@ -127,7 +127,7 @@ export default function InfusionModal(props): JSX.Element {
               style={{ width: '100%', marginRight: '8px' }}
               type={
                 formik.values.type === InfusionTypeEnum.PROPHY
-                  ? 'success-light'
+                  ? 'warning-light'
                   : 'default'
               }
             >
@@ -142,7 +142,7 @@ export default function InfusionModal(props): JSX.Element {
               style={{ width: '100%', marginRight: '8px' }}
               type={
                 formik.values.type === InfusionTypeEnum.BLEED
-                  ? 'error-light'
+                  ? 'success-light'
                   : 'default'
               }
             >
@@ -157,7 +157,7 @@ export default function InfusionModal(props): JSX.Element {
               style={{ width: '100%' }}
               type={
                 formik.values.type === InfusionTypeEnum.PREVENTATIVE
-                  ? 'warning-light'
+                  ? 'error-light'
                   : 'default'
               }
             >

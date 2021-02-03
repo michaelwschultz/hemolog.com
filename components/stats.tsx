@@ -1,10 +1,11 @@
 import React from 'react'
 import _ from 'underscore'
-import { Grid, Note } from '@geist-ui/react'
+import { Grid, Note, Card, useModal, Tooltip, Text } from '@geist-ui/react'
 import StatCard from 'components/statCard'
 import useInfusions from 'lib/hooks/useInfusions'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
 import { InfusionTypeEnum } from 'lib/db/infusions'
+import FeedbackModal from 'components/feedbackModal'
 
 // TODO(michael) move types to types file
 type Value = string[]
@@ -27,6 +28,15 @@ const COST_OF_FACTOR = 1.66
 
 export default function Stats(): JSX.Element {
   const { data, status, error } = useInfusions()
+
+  // TODO(michael): Remove the feedback modal from this component at some point
+  // since we already use it in the footer, maybe figure out a way to share
+  // the modal across multiple components my lifting it up into context.
+  const {
+    visible: feedbackModal,
+    setVisible: setFeedbackModalVisible,
+    bindings: feedbackModalBindings,
+  } = useModal(false)
 
   if (status === FirestoreStatusType.LOADING) {
     return (
@@ -137,57 +147,75 @@ export default function Stats(): JSX.Element {
   const estimatedTotalCost = totalUnits * COST_OF_FACTOR
 
   return (
-    <Grid.Container gap={2}>
-      <Grid xs={24} sm={12} md={6}>
-        <StatCard value={numberOfInfusions} label='Infusions' />
-      </Grid>
-      <Grid xs={24} sm={12} md={6}>
-        <StatCard value={numberOfBleeds} label='Bleeds' />
-      </Grid>
-      <Grid xs={24} sm={12} md={6}>
-        <StatCard
-          value={consecutiveProphyInfusions()}
-          label='Consecutive prophy infusions'
-        />
-      </Grid>
-      <Grid xs={24} sm={12} md={6}>
-        <StatCard
-          value={mostAffectedArea || 'Not enough data'}
-          label='Most affected area'
-        />
-      </Grid>
-      <Grid xs={24} sm={12} md={6}>
-        <StatCard
-          value={biggestCause || 'Not enough data'}
-          label='Biggest cause'
-        />
-      </Grid>
-      <Grid xs={24} sm={12} md={6}>
-        <StatCard
-          value={`~${totalUnits.toLocaleString()} iu`}
-          label='Units of factor'
-        />
-      </Grid>
-      <Grid xs={24} sm={12} md={6}>
-        {/* I think this is between $1.19 and $1.66 per unit based on this article
-            https://www.ashclinicalnews.org/spotlight/feature-articles/high-price-hemophilia/ */}
-        <StatCard
-          value={`$${estimatedTotalCost.toLocaleString()}`}
-          label='Estimated cost this year'
-        />
-      </Grid>
-      <Grid xs={24} sm={12} md={6}>
-        <StatCard
-          value='Missing something?'
-          label='Hit the feedback button below'
-          shadow={false}
-        />
-      </Grid>
-      {/* <Grid xs={24} sm={12} md={6}>
-          TODO(michael) could setup a separate collection for this data as well as a 
-          separate api call
-        <StatCard value='tk' label='Pharmacy Orders' />
-      </Grid> */}
-    </Grid.Container>
+    <>
+      <Grid.Container gap={2}>
+        <Grid xs={12} sm={8} md={6}>
+          <StatCard value={numberOfInfusions} label='Infusions' />
+        </Grid>
+        <Grid xs={12} sm={8} md={6}>
+          <StatCard value={numberOfBleeds} label='Bleeds' />
+        </Grid>
+        <Grid xs={12} sm={8} md={6}>
+          <StatCard
+            value={consecutiveProphyInfusions()}
+            label='Consecutive prophy infusions'
+          />
+        </Grid>
+        <Grid xs={12} sm={8} md={6}>
+          <StatCard
+            value={mostAffectedArea || 'Not enough data'}
+            label='Most affected area'
+          />
+        </Grid>
+        <Grid xs={12} sm={8} md={6}>
+          <StatCard
+            value={biggestCause || 'Not enough data'}
+            label='Biggest cause'
+          />
+        </Grid>
+        <Grid xs={12} sm={8} md={6}>
+          <StatCard
+            value={`~${totalUnits.toLocaleString()} iu`}
+            label='Units of factor'
+          />
+        </Grid>
+        <Grid xs={12} sm={8} md={6}>
+          {/* I think this is between $1.19 and $1.66 per unit based on this article
+              https://www.ashclinicalnews.org/spotlight/feature-articles/high-price-hemophilia/ */}
+          <Tooltip
+            text={'Current'}
+            style={{ display: 'block', width: '100%', height: '100%' }}
+          >
+            <StatCard
+              style={{ display: 'block' }}
+              value={`$${estimatedTotalCost.toLocaleString()}`}
+              label='Estimated cost this year'
+            />
+          </Tooltip>
+        </Grid>
+        <Grid xs={12} sm={8} md={6}>
+          <Card style={{ minHeight: '116px', height: '100%' }}>
+            <Text small>Missing something?</Text>
+            <Card.Footer>
+              <Text>
+                <a onClick={() => setFeedbackModalVisible(true)}>
+                  Give feedback
+                </a>
+              </Text>
+            </Card.Footer>
+          </Card>
+        </Grid>
+        {/* <Grid xs={24} sm={12} md={6}>
+            TODO(michael) could setup a separate collection for this data as well as a 
+            separate api call
+          <StatCard value='tk' label='Pharmacy Orders' />
+        </Grid> */}
+      </Grid.Container>
+      <FeedbackModal
+        visible={feedbackModal}
+        setVisible={setFeedbackModalVisible}
+        bindings={feedbackModalBindings}
+      />
+    </>
   )
 }

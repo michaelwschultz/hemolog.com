@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Text, Loading, Tooltip } from '@geist-ui/react'
+import { Card, Text, Loading } from '@geist-ui/react'
 import { CardTypes } from '@geist-ui/react/dist/utils/prop-types'
 
 interface Props {
@@ -8,6 +8,7 @@ interface Props {
   loading?: boolean
   type?: CardTypes
   shadow?: boolean
+  style?: React.CSSProperties
 }
 
 export default function StatCard(props: Props): JSX.Element {
@@ -17,20 +18,17 @@ export default function StatCard(props: Props): JSX.Element {
     loading = false,
     type = 'default',
     shadow = true,
+    style,
   } = props
 
   return (
     <Card
       shadow={!loading && shadow}
-      style={{ minHeight: '116px' }}
+      style={{ minHeight: '116px', height: '100%', ...style }}
       type={type}
     >
-      <Text h4 className='ellipsis'>
-        {value}
-      </Text>
-      <Text small className='ellipsis'>
-        {label}
-      </Text>
+      <Text h3>{value}</Text>
+      <Text small>{label}</Text>
       {loading && <Loading type='secondary' />}
     </Card>
   )
