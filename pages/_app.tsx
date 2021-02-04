@@ -70,13 +70,8 @@ const GlobalStyle = createGlobalStyle`
     height: inherit;
   }
 
-  b {
-    font-weight: 900;
-  }
-
   a {
     font-weight: 600;
-    color: inherit;
   }
 
   // overrides dumb geist-ui cssBaseline rules for unordered lists

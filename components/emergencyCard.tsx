@@ -58,9 +58,7 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
               )}
             </div>
             <StyledScanLink forPrint={forPrint}>
-              <Text h4>
-                <b>Scan or visit for treatment history</b>
-              </Text>
+              <Text h4>Scan or visit for treatment history</Text>
               <Tooltip text='Visit your page to preview what others will see.'>
                 <Link href={`https://${alertUrl}`}>
                   <a>

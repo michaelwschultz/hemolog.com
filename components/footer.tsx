@@ -33,11 +33,6 @@ export default function Footer(): JSX.Element {
       <Grid.Container gap={2}>
         <Grid xs={24} sm={14}>
           <Text h5>Hemolog 2</Text>
-          {user && (
-            <Text>
-              <a onClick={() => setFeedbackModalVisible(true)}>Give feedback</a>
-            </Text>
-          )}
           <Text>
             <NextLink href='/about'>
               <Link color href='/about'>
@@ -45,33 +40,41 @@ export default function Footer(): JSX.Element {
               </Link>
             </NextLink>
           </Text>
+          {user && (
+            <Text>
+              <a onClick={() => setFeedbackModalVisible(true)}>Give feedback</a>
+            </Text>
+          )}
           <Spacer />
-          <Text h5>Emergency Link</Text>
-          <EmergencySnippet alertId={alertId()} />
-        </Grid>
-        <Grid xs={24} sm={10}>
           <Text h5>Follow</Text>
           <Text>
-            <Link color href='https://twitter.com/hemolog'>
+            <Link color icon href='https://twitter.com/hemolog'>
               @Hemolog
             </Link>
           </Text>
           <Text>
-            <Link color href='https://twitter.com/michaelschultz'>
+            <Link color icon href='https://twitter.com/michaelschultz'>
               @MichaelSchultz
             </Link>
           </Text>
+        </Grid>
+        <Grid xs={24} sm={10}>
+          <Text h5>Get Involved</Text>
           <Text>
-            <Link color href='https://github.com/michaelwschultz/hemolog.com'>
+            <Link
+              color
+              icon
+              href='https://github.com/michaelwschultz/hemolog.com'
+            >
               View source
-            </Link>{' '}
-            |{' '}
-            <Link color href='https://github.com/sponsors/michaelwschultz'>
-              Donate
-            </Link>{' '}
-            on Github
+            </Link>
           </Text>
-          <Text p>hemolog.com © {new Date().getFullYear()}</Text>
+          <Link color icon href='https://github.com/sponsors/michaelwschultz'>
+            Donate
+          </Link>
+          <Spacer />
+          <Text h5>Emergency Link</Text>
+          <EmergencySnippet alertId={alertId()} />
         </Grid>
       </Grid.Container>
       <FeedbackModal
