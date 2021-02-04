@@ -10,6 +10,7 @@ import {
   Link,
   useToasts,
   useClipboard,
+  Note,
 } from '@geist-ui/react'
 import Share from '@geist-ui/react-icons/share'
 import styled from 'styled-components'
@@ -58,17 +59,19 @@ const Changelog = (): JSX.Element => {
         <StaticHeader />
         <StyledPageContent>
           <Text h2>Changelog</Text>
-          <Text h5>List of chronological changes to Hemolog</Text>
+          <Text h5>
+            Development blog of updates and changes made to Hemolog
+          </Text>
           <Divider />
 
           <StyledChangelogContent>
             <StyledPost id='post-2'>
+              <Spacer y={3} />
               <Text h4>Mobile enhancements</Text>
               <Text h6>
                 Looks great on your desktop <i>and</i> mobile!
               </Text>
               <Spacer />
-
               <Divider>February 3, 2021</Divider>
               <Text>
                 I designed Hemolog to be used anywhere. That meant building a
@@ -81,10 +84,7 @@ const Changelog = (): JSX.Element => {
                 store your infusion data and learn from it.
               </Text>
 
-              <Display
-                shadow
-                caption='High level insights that help you understand your habits'
-              >
+              <Display shadow caption='Hemolog running on an iPhone 12'>
                 <Image
                   width={640}
                   height={480}
@@ -92,14 +92,31 @@ const Changelog = (): JSX.Element => {
                 />
               </Display>
 
-              <Text>
-                These insights are calculated as you add more data. Filters will
-                allow you to choose different time frames for viewing your data
-                down the road giving you the best most comprehensive view into
-                your treatment history ever. I've chosen a few insights that are
-                interesting for me. If you have thoughts on what you would like
-                to see just let me know.
-              </Text>
+              <Note label='Pro tip'>
+                Visit Hemolog.com using Safari on your iPhone and click the{' '}
+                <Share size={16} /> icon, then scroll down to 'Add to Home
+                Screen' to create an app icon.
+              </Note>
+
+              <Display shadow caption='Hemolog app icon on iPhone'>
+                <Image
+                  width={640}
+                  height={180}
+                  src='/images/changelog/iphone-homescreen-app.jpg'
+                />
+              </Display>
+
+              <Spacer />
+              <Link
+                color
+                icon
+                href='https://github.com/michaelwschultz/hemolog.com/issues/9'
+              >
+                Sneak peak of what's coming next{' '}
+              </Link>
+              <span role='img' aria-label='sunglasses'>
+                😎
+              </span>
               <PostFooter postId='post-2' />
             </StyledPost>
 

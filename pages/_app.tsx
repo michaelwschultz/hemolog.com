@@ -40,6 +40,10 @@ export default function App({ Component, pageProps }): JSX.Element {
         />
         <meta name='mobile-web-app-capable' content='yes' />
         <meta name='apple-mobile-web-app-capable' content='yes' />
+        <meta
+          property='og:image'
+          content='https://hemolog.com/images/og-image.png'
+        ></meta>
         <title>Hemolog</title>
       </Head>
       <GlobalStyle />

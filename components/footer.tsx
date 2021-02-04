@@ -1,19 +1,12 @@
 import React from 'react'
 import NextLink from 'next/link'
-import { Text, Grid, Spacer, useModal, Link, Divider } from '@geist-ui/react'
+import { Text, Grid, Spacer, Link, Divider } from '@geist-ui/react'
 import styled from 'styled-components'
 
 import EmergencySnippet from 'components/emergencySnippet'
-import FeedbackModal from 'components/feedbackModal'
 import { useAuth } from 'lib/auth'
 
 export default function Footer(): JSX.Element {
-  const {
-    visible: feedbackModal,
-    setVisible: setFeedbackModalVisible,
-    bindings: feedbackModalBindings,
-  } = useModal(false)
-
   const { user, loading } = useAuth()
 
   const alertId = () => {
@@ -34,17 +27,15 @@ export default function Footer(): JSX.Element {
         <Grid xs={24} sm={14}>
           <Text h5>Hemolog 2</Text>
           <Text>
-            <NextLink href='/about'>
-              <Link color href='/about'>
-                The story so far...
-              </Link>
-            </NextLink>
+            <Link color href='/about'>
+              The story so far...
+            </Link>
           </Text>
-          {user && (
-            <Text>
-              <a onClick={() => setFeedbackModalVisible(true)}>Give feedback</a>
-            </Text>
-          )}
+          <Text>
+            <Link color href='/changelog'>
+              Development Blog
+            </Link>
+          </Text>
           <Spacer />
           <Text h5>Follow</Text>
           <Text>
@@ -77,11 +68,6 @@ export default function Footer(): JSX.Element {
           <EmergencySnippet alertId={alertId()} />
         </Grid>
       </Grid.Container>
-      <FeedbackModal
-        visible={feedbackModal}
-        setVisible={setFeedbackModalVisible}
-        bindings={feedbackModalBindings}
-      />
     </StyledFooter>
   )
 }
