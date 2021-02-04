@@ -10,7 +10,7 @@ import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
 
 const HomePage = (): JSX.Element => {
-  const smallerThanSmall = useMediaQuery('sm', { match: 'down' })
+  const smallerThanSmall = useMediaQuery('xs', { match: 'down' })
   const { user } = useAuth()
   const { person } = useDbUser(user && user.uid)
 

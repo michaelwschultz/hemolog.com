@@ -60,7 +60,7 @@ const Changelog = (): JSX.Element => {
         <StyledPageContent>
           <Text h2>Changelog</Text>
           <Text h5>
-            Development blog of updates and changes made to Hemolog
+            Development blog about new features, fixes, and updates to Hemolog
           </Text>
           <Divider />
 
@@ -69,10 +69,10 @@ const Changelog = (): JSX.Element => {
               <Spacer y={3} />
               <Text h4>Mobile enhancements</Text>
               <Text h6>
-                Looks great on your desktop <i>and</i> mobile!
+                Looks great on your desktop <i>and</i> mobile devices!
               </Text>
               <Spacer />
-              <Divider>February 3, 2021</Divider>
+              <Divider>Update #2</Divider>
               <Text>
                 I designed Hemolog to be used anywhere. That meant building a
                 web app verses an iPhone, Android, or some hybrid app.
@@ -83,7 +83,6 @@ const Changelog = (): JSX.Element => {
                 from the ground up with the purpose of being the best place to
                 store your infusion data and learn from it.
               </Text>
-
               <Display shadow caption='Hemolog running on an iPhone 12'>
                 <Image
                   width={640}
@@ -91,13 +90,11 @@ const Changelog = (): JSX.Element => {
                   src='/images/changelog/iphone-hemolog-light.png'
                 />
               </Display>
-
               <Note label='Pro tip'>
                 Visit Hemolog.com using Safari on your iPhone and click the{' '}
                 <Share size={16} /> icon, then scroll down to 'Add to Home
                 Screen' to create an app icon.
               </Note>
-
               <Display shadow caption='Hemolog app icon on iPhone'>
                 <Image
                   width={640}
@@ -105,18 +102,17 @@ const Changelog = (): JSX.Element => {
                   src='/images/changelog/iphone-homescreen-app.jpg'
                 />
               </Display>
-
               <Spacer />
+              <span role='img' aria-label='sunglasses'>
+                😎
+              </span>{' '}
               <Link
                 color
                 icon
                 href='https://github.com/michaelwschultz/hemolog.com/issues/9'
               >
-                Sneak peak of what's coming next{' '}
+                Sneak peak of what's coming next
               </Link>
-              <span role='img' aria-label='sunglasses'>
-                😎
-              </span>
               <PostFooter postId='post-2' />
             </StyledPost>
 
@@ -125,7 +121,7 @@ const Changelog = (): JSX.Element => {
               <Text h6>Hemolog is back and better than ever</Text>
               <Spacer />
 
-              <Divider>February 1, 2021</Divider>
+              <Divider>Update #1</Divider>
               <Text>
                 Hemolog is back! After 8 years, I've built a reincarnation of
                 the old iPhone app Hemolog. This time around, it does a bit more

@@ -8,7 +8,6 @@ export default function Logo(): JSX.Element {
         <img
           width='122px'
           height='36px'
-          style={{ display: 'block' }}
           src={'/images/hemolog-logo-2x-dark.png'}
         />
       </a>

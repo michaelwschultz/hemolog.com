@@ -12,7 +12,7 @@ interface Props {
 export default function EmergencyInfo(props: Props): JSX.Element {
   const { person } = props
   const { user } = useAuth()
-  const smallerThanSmall = useMediaQuery('sm', { match: 'down' })
+  const smallerThanSmall = useMediaQuery('xs', { match: 'down' })
 
   if (person) {
     return (

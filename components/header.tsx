@@ -7,7 +7,6 @@ import {
   Button,
   useModal,
   Spacer,
-  useMediaQuery,
 } from '@geist-ui/react'
 
 import { useAuth } from 'lib/auth'
@@ -21,7 +20,6 @@ interface Props {
 const Header = (props: Props): JSX.Element => {
   const { version } = props
   const { user, signout } = useAuth()
-  const smallerThanSmall = useMediaQuery('sm', { match: 'down' })
 
   const {
     visible: infusionModal,
@@ -45,14 +43,14 @@ const Header = (props: Props): JSX.Element => {
         <span>Hemolog v{version}</span>
       </Popover.Item>
       <Popover.Item>
-        <Link color href='https://github.com/michaelwschultz/hemolog.com'>
-          View source code
+        <Link color href='/changelog'>
+          Latest updates
         </Link>
       </Popover.Item>
       <Popover.Item line />
       <Popover.Item>
         <Link color onClick={() => signout()}>
-          Log out
+          Sign out
         </Link>
       </Popover.Item>
     </div>
@@ -65,9 +63,8 @@ const Header = (props: Props): JSX.Element => {
         <Row align='middle'>
           <Button
             onClick={() => setInfusionModalVisible(true)}
-            size={smallerThanSmall ? 'mini' : 'medium'}
+            size='small'
             auto
-            effect
             type='success-light'
           >
             Log infusion
