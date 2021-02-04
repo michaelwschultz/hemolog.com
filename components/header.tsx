@@ -7,6 +7,7 @@ import {
   Button,
   useModal,
   Spacer,
+  useMediaQuery,
 } from '@geist-ui/react'
 
 import { useAuth } from 'lib/auth'
@@ -20,6 +21,7 @@ interface Props {
 const Header = (props: Props): JSX.Element => {
   const { version } = props
   const { user, signout } = useAuth()
+  const smallerThanSmall = useMediaQuery('sm', { match: 'down' })
 
   const {
     visible: infusionModal,
@@ -60,10 +62,12 @@ const Header = (props: Props): JSX.Element => {
     <>
       <Row justify='space-between' align='middle'>
         <Logo />
-        <Row>
+        <Row align='middle'>
           <Button
             onClick={() => setInfusionModalVisible(true)}
+            size={smallerThanSmall ? 'mini' : 'medium'}
             auto
+            effect
             type='success-light'
           >
             Log infusion

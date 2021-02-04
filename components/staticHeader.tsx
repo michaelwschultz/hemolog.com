@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Button } from '@geist-ui/react'
+import { Grid, Button, useMediaQuery } from '@geist-ui/react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 
@@ -17,19 +17,27 @@ const StaticHeader = (): JSX.Element => {
   } = useAuth()
 
   const router = useRouter()
+  const smallerThanSmall = useMediaQuery('sm', { match: 'down' })
 
   return (
     <StyledPageHeader>
-      <Row justify='space-between' align='middle'>
-        <Logo />
-        <Button
-          type='success'
-          onClick={() => router.push(user ? '/home' : '/signin')}
-          loading={loading}
-        >
-          {user ? 'Sign in' : 'Register'}
-        </Button>
-      </Row>
+      <Grid.Container>
+        <Grid xs={12}>
+          <Logo />
+        </Grid>
+        <Grid xs={12}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button
+              size={smallerThanSmall ? 'mini' : 'medium'}
+              type='success'
+              onClick={() => router.push(user ? '/home' : '/signin')}
+              loading={loading}
+            >
+              {user ? 'Sign in' : 'Register'}
+            </Button>
+          </div>
+        </Grid>
+      </Grid.Container>
     </StyledPageHeader>
   )
 }

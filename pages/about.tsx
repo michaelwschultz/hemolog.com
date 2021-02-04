@@ -8,6 +8,7 @@ import {
   Spacer,
   Grid,
   Link,
+  Note,
 } from '@geist-ui/react'
 import styled from 'styled-components'
 
@@ -74,6 +75,16 @@ const About = (): JSX.Element => {
             see just let me know.
           </Text>
 
+          <Spacer y={2} />
+
+          <Note>
+            Development is ongoing. Check out the{' '}
+            <Link color href='/changelog'>
+              development blog
+            </Link>{' '}
+            for updates and changes.
+          </Note>
+
           <Spacer y={5} />
 
           <Grid.Container gap={2} alignItems='center'>
@@ -83,10 +94,10 @@ const About = (): JSX.Element => {
                 have. It's up to all of us to keep each other accountable. You
                 can{' '}
                 <NextLink href='/emergency/mike29'>
-                  <Link color href='/emergency/mike29' icon>
+                  <Link color href='/emergency/mike29'>
                     view my emergency page
                   </Link>
-                </NextLink>
+                </NextLink>{' '}
                 at any time to verify I've been keeping up with my prophy
                 regimen.
               </Text>
@@ -130,5 +141,5 @@ const StyledPage = styled.div`
 `
 
 const StyledPageContent = styled.main`
-  padding: 0 24px;
+  padding: 40px 24px 0 24px;
 `

@@ -1,19 +1,12 @@
 import React from 'react'
 import NextLink from 'next/link'
-import { Text, Grid, Spacer, useModal, Link, Divider } from '@geist-ui/react'
+import { Text, Grid, Spacer, Link, Divider } from '@geist-ui/react'
 import styled from 'styled-components'
 
 import EmergencySnippet from 'components/emergencySnippet'
-import FeedbackModal from 'components/feedbackModal'
 import { useAuth } from 'lib/auth'
 
 export default function Footer(): JSX.Element {
-  const {
-    visible: feedbackModal,
-    setVisible: setFeedbackModalVisible,
-    bindings: feedbackModalBindings,
-  } = useModal(false)
-
   const { user, loading } = useAuth()
 
   const alertId = () => {
@@ -33,52 +26,48 @@ export default function Footer(): JSX.Element {
       <Grid.Container gap={2}>
         <Grid xs={24} sm={14}>
           <Text h5>Hemolog 2</Text>
-          {user && (
-            <Text>
-              <a onClick={() => setFeedbackModalVisible(true)}>Give feedback</a>
-            </Text>
-          )}
           <Text>
-            <NextLink href='/about'>
-              <Link color href='/about'>
-                The story so far...
-              </Link>
-            </NextLink>
+            <Link color href='/about'>
+              The story so far...
+            </Link>
+          </Text>
+          <Text>
+            <Link color href='/changelog'>
+              Development Blog
+            </Link>
           </Text>
           <Spacer />
-          <Text h5>Emergency Link</Text>
-          <EmergencySnippet alertId={alertId()} />
-        </Grid>
-        <Grid xs={24} sm={10}>
           <Text h5>Follow</Text>
           <Text>
-            <Link color href='https://twitter.com/hemolog'>
+            <Link color icon href='https://twitter.com/hemolog'>
               @Hemolog
             </Link>
           </Text>
           <Text>
-            <Link color href='https://twitter.com/michaelschultz'>
+            <Link color icon href='https://twitter.com/michaelschultz'>
               @MichaelSchultz
             </Link>
           </Text>
+        </Grid>
+        <Grid xs={24} sm={10}>
+          <Text h5>Get Involved</Text>
           <Text>
-            <Link color href='https://github.com/michaelwschultz/hemolog.com'>
+            <Link
+              color
+              icon
+              href='https://github.com/michaelwschultz/hemolog.com'
+            >
               View source
-            </Link>{' '}
-            |{' '}
-            <Link color href='https://github.com/sponsors/michaelwschultz'>
-              Donate
-            </Link>{' '}
-            on Github
+            </Link>
           </Text>
-          <Text p>hemolog.com © {new Date().getFullYear()}</Text>
+          <Link color icon href='https://github.com/sponsors/michaelwschultz'>
+            Donate
+          </Link>
+          <Spacer />
+          <Text h5>Emergency Link</Text>
+          <EmergencySnippet alertId={alertId()} />
         </Grid>
       </Grid.Container>
-      <FeedbackModal
-        visible={feedbackModal}
-        setVisible={setFeedbackModalVisible}
-        bindings={feedbackModalBindings}
-      />
     </StyledFooter>
   )
 }
