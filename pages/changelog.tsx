@@ -212,7 +212,7 @@ const StyledPage = styled.div`
 `
 
 const StyledPageContent = styled.main`
-  padding: 0 24px;
+  padding: 40px 24px 0 24px;
 `
 
 const StyledChangelogContent = styled.div`

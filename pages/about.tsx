@@ -97,7 +97,7 @@ const About = (): JSX.Element => {
                   <Link color href='/emergency/mike29'>
                     view my emergency page
                   </Link>
-                </NextLink>
+                </NextLink>{' '}
                 at any time to verify I've been keeping up with my prophy
                 regimen.
               </Text>
@@ -141,5 +141,5 @@ const StyledPage = styled.div`
 `
 
 const StyledPageContent = styled.main`
-  padding: 0 24px;
+  padding: 40px 24px 0 24px;
 `

@@ -54,28 +54,25 @@ const Signin = (pageProps: { version: string }) => {
           </Note>
           <Spacer y={2} />
           <Row justify='center'>
-            <Fieldset style={{ width: '460px' }}>
+            <Fieldset style={{ maxWidth: '460px', width: '100%' }}>
               <Text h4>Register or sign in</Text>
               <Text p>
                 Signing in will create an account if you don't have one yet.
                 Don't worry, Hemolog will always be <i>free</i>.
               </Text>
-              <Spacer />
-              <Button
-                onClick={() => auth.signinWithGoogle('/home')}
-                loading={auth.loading}
-                type='success'
-              >
-                Continue with Google
-              </Button>
-              <Spacer />
+              <Fieldset.Footer>
+                <Button
+                  onClick={() => auth.signinWithGoogle('/home')}
+                  loading={auth.loading}
+                  type='success-light'
+                >
+                  Continue with Google
+                </Button>
+              </Fieldset.Footer>
             </Fieldset>
           </Row>
 
-          <Spacer />
-
-          <Divider />
-          <Spacer y={4} />
+          <Spacer y={3} />
           <DescriptionCards />
           <Spacer y={2} />
         </StyledPageContent>
