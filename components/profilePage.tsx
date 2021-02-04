@@ -1,5 +1,6 @@
 import React from 'react'
-import { Grid, Text, Spacer, Row, Link } from '@geist-ui/react'
+import { useRouter } from 'next/router'
+import { Grid, Text, Spacer, Button } from '@geist-ui/react'
 
 import EmergencyCard from 'components/emergencyCard'
 import EmergencySnippet from 'components/emergencySnippet'
@@ -8,6 +9,7 @@ import { useAuth } from 'lib/auth'
 
 const ProfilePage = (): JSX.Element => {
   const { user } = useAuth()
+  const router = useRouter()
 
   return (
     <>
@@ -26,16 +28,22 @@ const ProfilePage = (): JSX.Element => {
             and emergency contacts. These features aren’t available with Medic
             Alert.
           </Text>
-          <div style={{ display: 'inline-block' }}>
-            <Row justify='space-between' align='middle'>
+          <Grid.Container gap={2} alignItems='center'>
+            <Grid xs={24} sm={16}>
               <EmergencySnippet alertId={user.alertId} />
-              <Link color href='/emergency/print'>
+            </Grid>
+            <Grid xs={24} sm={8}>
+              <Button
+                type='secondary-light'
+                auto
+                onClick={() => router.push('/emergency/print')}
+              >
                 Print your card
-              </Link>
-            </Row>
-            <Spacer />
-            <EmergencyCard />
-          </div>
+              </Button>
+            </Grid>
+          </Grid.Container>
+          <Spacer />
+          <EmergencyCard />
         </Grid>
       </Grid.Container>
     </>

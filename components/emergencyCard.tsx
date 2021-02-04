@@ -1,6 +1,14 @@
 import React, { useContext } from 'react'
 import Link from 'next/link'
-import { Row, Spacer, Loading, useTheme, Tooltip, Text } from '@geist-ui/react'
+import {
+  Row,
+  Spacer,
+  Loading,
+  useTheme,
+  Tooltip,
+  Text,
+  useMediaQuery,
+} from '@geist-ui/react'
 import styled, { ThemeContext } from 'styled-components'
 import QRCode from 'react-qr-code'
 
@@ -16,6 +24,11 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
   const { person } = useDbUser(user && user.uid)
   const theme = useTheme()
   const themeContext = useContext(ThemeContext)
+  const isMobile = useMediaQuery('xs', { match: 'down' })
+
+  if (isMobile) {
+    forPrint = true
+  }
 
   const alertUrl = `hemolog.com/emergency/${person && person.alertId}`
 

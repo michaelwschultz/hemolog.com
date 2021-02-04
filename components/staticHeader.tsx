@@ -17,7 +17,6 @@ const StaticHeader = (): JSX.Element => {
   } = useAuth()
 
   const router = useRouter()
-  const smallerThanSmall = useMediaQuery('sm', { match: 'down' })
 
   return (
     <StyledPageHeader>
@@ -28,10 +27,11 @@ const StaticHeader = (): JSX.Element => {
         <Grid xs={12}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Button
-              size={smallerThanSmall ? 'mini' : 'medium'}
-              type='success'
+              size='small'
+              type='success-light'
               onClick={() => router.push(user ? '/home' : '/signin')}
               loading={loading}
+              auto
             >
               {user ? 'Sign in' : 'Register'}
             </Button>

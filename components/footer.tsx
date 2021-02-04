@@ -1,5 +1,4 @@
 import React from 'react'
-import NextLink from 'next/link'
 import { Text, Grid, Spacer, Link, Divider } from '@geist-ui/react'
 import styled from 'styled-components'
 
@@ -33,7 +32,7 @@ export default function Footer(): JSX.Element {
           </Text>
           <Text>
             <Link color href='/changelog'>
-              Development Blog
+              Development blog
             </Link>
           </Text>
           <Spacer />
