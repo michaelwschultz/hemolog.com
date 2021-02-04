@@ -75,6 +75,8 @@ const SettingsForm = (): JSX.Element => {
     { label: 'Xyntha', value: 'Xyntha' },
   ]
 
+  console.log(formik.values)
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid.Container gap={2}>
@@ -86,7 +88,7 @@ const SettingsForm = (): JSX.Element => {
             type='text'
             width='100%'
             placeholder='A'
-            onChange={formik.handleChange}
+            onChange={(value) => formik.setFieldValue('hemophiliaType', value)}
             options={hemophiliaTypeOptions}
             value={formik.values.hemophiliaType}
           />
@@ -99,7 +101,7 @@ const SettingsForm = (): JSX.Element => {
             type='text'
             width='100%'
             placeholder='Severe'
-            onChange={formik.handleChange}
+            onChange={(value) => formik.setFieldValue('severity', value)}
             options={severityOptions}
             value={formik.values.severity}
           />
@@ -124,7 +126,7 @@ const SettingsForm = (): JSX.Element => {
             type='text'
             width='100%'
             placeholder='Advate'
-            onChange={formik.handleChange}
+            onChange={(value) => formik.setFieldValue('medication', value)}
             options={factorOptions}
             value={formik.values.medication}
           />
@@ -151,7 +153,7 @@ const SettingsForm = (): JSX.Element => {
       <Spacer /> */}
       <Spacer />
       <Button
-        type='success'
+        type='success-light'
         onClick={formik.submitForm}
         disabled={!formik.isValid || !formik.dirty}
         loading={formik.isSubmitting}
