@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import type { AppProps } from 'next/app'
 import {
   GeistProvider,
   CssBaseline,
@@ -21,7 +22,7 @@ const hemologPalette: Partial<GeistUIThemesPalette> = {
   link: '#FF062C',
 }
 
-export default function App({ Component, pageProps }): JSX.Element {
+export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const description =
     'Back and better than ever! Hemolog 2 provides real-time insights on your hemophilia treatment regimen for free.'
   return (

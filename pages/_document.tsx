@@ -1,6 +1,7 @@
-import Document from 'next/document'
+import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 import { CssBaseline } from '@geist-ui/react'
+import splitbee from '@splitbee/web'
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -28,5 +29,20 @@ export default class MyDocument extends Document {
     } finally {
       sheet.seal()
     }
+  }
+
+  render() {
+    // initialize splitbee analytics
+    splitbee.init()
+
+    return (
+      <Html>
+        <Head></Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    )
   }
 }
