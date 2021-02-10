@@ -8,6 +8,7 @@ import {
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from 'lib/theme'
 import { AuthProvider } from 'lib/auth'
+import splitbee from '@splitbee/web'
 
 const hemologPalette: Partial<GeistUIThemesPalette> = {
   success: '#FF062C',
@@ -21,6 +22,8 @@ const hemologPalette: Partial<GeistUIThemesPalette> = {
   errorDark: '#48BB78',
   link: '#FF062C',
 }
+
+splitbee.init()
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const description =
@@ -69,9 +72,6 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         />
         <meta name='mobile-web-app-capable' content='yes' />
         <meta name='apple-mobile-web-app-capable' content='yes' />
-
-        {/* initialize splitbee analytics */}
-        <script async src='https://cdn.splitbee.io/sb.js'></script>
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
