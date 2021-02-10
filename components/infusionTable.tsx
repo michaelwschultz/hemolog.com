@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import useInfusions from 'lib/hooks/useInfusions'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
-import { format, compareDesc, parseISO } from 'date-fns'
+import { format, parse, compareDesc, parseISO } from 'date-fns'
 import {
   Note,
   Table,
@@ -45,7 +45,7 @@ export default function InfusionTable(props: Props): JSX.Element {
     return (
       <>
         <Table data={[]} width='100%'>
-          <Table.Column prop='createdAt' label='Date' />
+          <Table.Column prop='date' label='Date' />
           <Table.Column prop='type' label='Reason' />
           <Table.Column prop='sites' label='Bleed sites' />
           <Table.Column prop='cause' label='Cause' />
@@ -97,7 +97,10 @@ export default function InfusionTable(props: Props): JSX.Element {
 
   function formatInfusionRow(infusion: InfusionType) {
     const { cause, sites } = infusion
-    const createdAt = format(new Date(infusion.createdAt), 'MM/dd/yyyy')
+
+    const parsedDate = parseISO(infusion.date)
+    const date = format(parsedDate, 'MM/dd/yyyy')
+
     const type = (
       <Badge type={infusionTypeBadgeStyle[infusion.type]}>
         {InfusionTypeEnum[infusion.type]}
@@ -116,14 +119,12 @@ export default function InfusionTable(props: Props): JSX.Element {
       </>
     )
 
-    return { createdAt, type, sites, cause, factorBrand, units, remove }
+    return { date, type, sites, cause, factorBrand, units, remove }
   }
 
   // TODO(michael) add more sorting filters
   // sort by date, most recent at the top
-  infusions.sort((a, b) =>
-    compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
-  )
+  infusions.sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
 
   const rowData = infusions.map((infusion) => formatInfusionRow(infusion))
 
@@ -136,7 +137,7 @@ export default function InfusionTable(props: Props): JSX.Element {
         // TODO(michael) add the ability to update logs
         // onRow={(row) => updateRow(row.uid)}
       >
-        <Table.Column prop='createdAt' label='Date' />
+        <Table.Column prop='date' label='Date' />
         <Table.Column prop='type' label='Reason' />
         <Table.Column prop='sites' label='Bleed sites' />
         <Table.Column prop='cause' label='Cause' />

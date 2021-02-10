@@ -8,9 +8,11 @@ import {
   Row,
   useToasts,
 } from '@geist-ui/react'
+import splitbee from '@splitbee/web'
 import { useFormik } from 'formik'
 import { format, compareDesc, parseISO } from 'date-fns'
 
+import { UserType } from 'lib/types/users'
 import { useAuth } from 'lib/auth'
 import {
   createInfusion,
@@ -33,7 +35,7 @@ interface InfusionValues {
 
 export default function InfusionModal(props): JSX.Element {
   const { visible, setVisible, bindings } = props
-  const { user } = useAuth()
+  const { user }: { user: UserType } = useAuth()
   const [, setToast] = useToasts()
   const { data: infusions } = useInfusions()
 
@@ -111,6 +113,11 @@ export default function InfusionModal(props): JSX.Element {
       await handleCreateInfusion(values)
     },
   })
+
+  const handleSubmit = () => {
+    splitbee.track('Log treatment')
+    formik.submitForm()
+  }
 
   return (
     <Modal open={visible} {...bindings}>
@@ -241,7 +248,7 @@ export default function InfusionModal(props): JSX.Element {
         Cancel
       </Modal.Action>
       <Modal.Action
-        onClick={formik.submitForm}
+        onClick={handleSubmit}
         disabled={!formik.isValid}
         loading={formik.isSubmitting}
       >

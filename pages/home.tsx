@@ -1,11 +1,14 @@
+import { useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Tabs } from '@geist-ui/react'
 import styled from 'styled-components'
+import splitbee from '@splitbee/web'
 
 import Header from 'components/header'
 import Footer from 'components/footer'
 import { useAuth, ProtectRoute } from 'lib/auth'
+import { UserType } from 'lib/types/users'
 import HomePage from 'components/homePage'
 import ProfilePage from 'components/profilePage'
 import FeedbackPage from 'components/feedbackPage'
@@ -46,9 +49,19 @@ const Home = (props: { version: string }): JSX.Element => {
   // and redirecting before hitting this page. Similar to how Lee Robinson explains
   // it here https://www.youtube.com/watch?v=NSR_Y_rm_zU
 
-  const { user } = useAuth()
+  const { user }: { user: UserType } = useAuth()
   const router = useRouter()
   const { version } = props
+
+  useEffect(() => {
+    if (user) {
+      splitbee.user.set({
+        name: user.name,
+        email: user.email,
+        appVersion: version,
+      })
+    }
+  }, [user])
 
   return (
     <ProtectRoute>

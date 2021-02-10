@@ -1,6 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { Grid, Text, Spacer, Button } from '@geist-ui/react'
+import splitbee from '@splitbee/web'
 
 import EmergencyCard from 'components/emergencyCard'
 import EmergencySnippet from 'components/emergencySnippet'
@@ -10,6 +11,13 @@ import { useAuth } from 'lib/auth'
 const ProfilePage = (): JSX.Element => {
   const { user } = useAuth()
   const router = useRouter()
+
+  splitbee.track('Viewed profile page')
+
+  const handleOnPrintClick = () => {
+    splitbee.track('Clicked print button from profile page')
+    router.push('/emergency/print')
+  }
 
   return (
     <>
@@ -33,11 +41,7 @@ const ProfilePage = (): JSX.Element => {
               <EmergencySnippet alertId={user.alertId} />
             </Grid>
             <Grid xs={24} sm={8}>
-              <Button
-                type='secondary-light'
-                auto
-                onClick={() => router.push('/emergency/print')}
-              >
+              <Button type='secondary-light' auto onClick={handleOnPrintClick}>
                 Print your card
               </Button>
             </Grid>
