@@ -35,6 +35,8 @@ export default class MyDocument extends Document {
     // initialize splitbee analytics
     splitbee.init()
 
+    splitbee.track('Page loaded')
+
     return (
       <Html>
         <Head></Head>

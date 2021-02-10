@@ -69,6 +69,9 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         />
         <meta name='mobile-web-app-capable' content='yes' />
         <meta name='apple-mobile-web-app-capable' content='yes' />
+
+        {/* initialize splitbee analytics */}
+        <script async src='https://cdn.splitbee.io/sb.js'></script>
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
