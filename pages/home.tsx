@@ -56,7 +56,7 @@ const Home = (props: { version: string }): JSX.Element => {
   useEffect(() => {
     if (user) {
       splitbee.user.set({
-        name: user.name,
+        displayName: user.name,
         email: user.email,
         appVersion: version,
       })
