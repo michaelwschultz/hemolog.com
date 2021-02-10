@@ -115,7 +115,7 @@ export default function InfusionModal(props): JSX.Element {
   })
 
   const handleSubmit = () => {
-    splitbee.track('Log treatment')
+    splitbee.track('Logged Treatment')
     formik.submitForm()
   }
 

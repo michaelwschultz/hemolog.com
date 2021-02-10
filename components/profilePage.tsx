@@ -15,7 +15,7 @@ const ProfilePage = (): JSX.Element => {
   splitbee.track('Viewed profile page')
 
   const handleOnPrintClick = () => {
-    splitbee.track('Clicked print button from profile page')
+    splitbee.track('Clicked Print Button', { page: '/profile' })
     router.push('/emergency/print')
   }
 

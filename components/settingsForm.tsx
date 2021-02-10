@@ -9,6 +9,7 @@ import {
   Grid,
   AutoComplete,
 } from '@geist-ui/react'
+import splitbee from '@splitbee/web'
 
 import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
@@ -75,7 +76,10 @@ const SettingsForm = (): JSX.Element => {
     { label: 'Xyntha', value: 'Xyntha' },
   ]
 
-  console.log(formik.values)
+  const handleSubmitForm = () => {
+    splitbee.track('Updated Profile', { ...formik.values })
+    formik.submitForm
+  }
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -154,7 +158,7 @@ const SettingsForm = (): JSX.Element => {
       <Spacer />
       <Button
         type='success-light'
-        onClick={formik.submitForm}
+        onClick={handleSubmitForm}
         disabled={!formik.isValid || !formik.dirty}
         loading={formik.isSubmitting}
       >
