@@ -10,30 +10,31 @@ Hemolog is free but if you'd like to [Donate](https://github.com/sponsors/michae
 
 ## Features
 
-### Insights
+### Insights on your data
 
-Stats are something that I always wanted to be apart of Hemolog, and now they're finally here.
+Insights are something that I always wanted to be apart of Hemolog, and now they're finally here.
 
 These insights are calculated as you add more data. Filters will allow you to choose different time frames for viewing your data down the road giving you the best most comprehensive view into your treatment history ever. I've chosen a few stats that are interesting for me. If you have thoughts on what you would like to see just let me know.
 
-![Exmaple Emergency Card](public/images/insights-example.png)
+![Insights Example](public/images/insights-example.png)
 
 ### Emergency Card
 
-Allows emergency personel to scan or visit the link written on your emergency card to quickly get all the crutial information they need.
+Allows emergency personnel to scan or visit the link written on your emergency card to quickly get all the crucial information they need.
 
-![Exmaple Emergency Card](public/images/example-emergency-card.png)
+![Example Emergency Card](public/images/example-emergency-card.png)
 
 Create an account and fill out the profile before printing yours out today.
 
 ## History
 
-Hemolog was the first iPhone app available for hemophiliacs back in 2011. It has since been removed from the App Store.
+Hemolog was the first iPhone app available for hemophiliacs back in 2011. It has since been removed from the App Store since focusing on other projects meant that I couldn't keep it updated.
+
 I initially designed Hemolog for myself. I was in college at the time and had been building websites and web apps for friends and family, along with the odd job here and there.
 
-Hemolog ment the world to me and I'm glad it was able to serve people well for the 4 years it was on the App Store. But this year (2020), I decided to take another crack at it. The first version never really lived up to what it was suppose to be. The most important part of having data in a digital format is the ability to quickly gain insights from it. The first version didn't have any built in analytics or stats. This time around, I'm made that the number one priority.
+Hemolog meant the world to me and I'm glad it was able to serve people well for the 4 years it was on the App Store. But this year (2020), I decided to take another crack at it. The first version never really lived up to what it was suppose to be. The most important part of having data in a digital format is the ability to quickly gain insights from it. The first version didn't have any built in analytics or stats. This time around, I've made that the number one priority.
 
-I hope you find Hemolog useful and friendly to use. Or, if you don't have hemophilia, perhaps just a project that's interesting to you in some way.
+I hope you find Hemolog useful and friendly to use. Or, if you don't have a bleeding disorder like hemophilia, perhaps you find this project interesting none the less.
 
 ## Developers
 
@@ -41,9 +42,9 @@ I hope you find Hemolog useful and friendly to use. Or, if you don't have hemoph
 
 You'll need Node and Yarn installed before you can run the server. Check the package.json for corresponding version numbers.
 
-You'll also need your own Firebase instance. You can sign up for free at [firebase.google.com](https://firebase.google.com/).
+You'll also need your own Firebase Cloud Firestore and Authentication instances. You can sign up for free at [firebase.google.com](https://firebase.google.com/).
 
-Once you have your database credentials you'll need to add them to a local `.env` file.
+Once you've setup your Firebase account you'll need to add a number of keys to a local `.env` file.
 
 ```
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=""
