@@ -88,7 +88,7 @@ const About = (): JSX.Element => {
           <Spacer y={5} />
 
           <Grid.Container gap={2} alignItems='center'>
-            <Grid xs={24} sm={16}>
+            <Grid xs={24} sm={16} direction='column'>
               <Text h3 type='secondary'>
                 Now that Hemolog is back. I hope you enjoy using it as much as I
                 have. It's up to all of us to keep each other accountable. You
@@ -104,7 +104,7 @@ const About = (): JSX.Element => {
               <br />
               <Text h4>— Michael Schultz</Text>
             </Grid>
-            <Grid xs={24} sm={8}>
+            <Grid xs={24} sm={8} direction='column'>
               <Spacer />
               <Image
                 width={300}

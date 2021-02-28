@@ -21,6 +21,8 @@ const FeedbackPage = () => {
     fetcher
   )
 
+  console.log(data)
+
   const [, setToast] = useToasts()
 
   if (error) {

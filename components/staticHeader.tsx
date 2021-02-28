@@ -24,18 +24,22 @@ const StaticHeader = (): JSX.Element => {
         <Grid xs={12}>
           <Logo />
         </Grid>
-        <Grid xs={12}>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button
-              size='small'
-              type='success-light'
-              onClick={() => router.push(user ? '/home' : '/signin')}
-              loading={loading}
-              auto
-            >
-              {user ? 'Sign in' : 'Register'}
-            </Button>
-          </div>
+        <Grid
+          xs={12}
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <Button
+            size='small'
+            type='success-light'
+            onClick={() => router.push(user ? '/home' : '/signin')}
+            loading={loading}
+            auto
+          >
+            {user ? 'Sign in' : 'Register'}
+          </Button>
         </Grid>
       </Grid.Container>
     </StyledPageHeader>

@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import {
   GeistProvider,
   CssBaseline,
   GeistUIThemesPalette,
+  Themes,
 } from '@geist-ui/react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from 'lib/theme'
@@ -23,11 +25,22 @@ const hemologPalette: Partial<GeistUIThemesPalette> = {
   link: '#FF062C',
 }
 
+const hemologLight = Themes.createFromLight({
+  type: 'hemologLight',
+  palette: hemologPalette,
+})
+
 splitbee.init()
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const description =
     'Back and better than ever! Hemolog 2 provides real-time insights on your hemophilia treatment regimen for free.'
+
+  const [themeType, setThemeType] = useState('hemologLight')
+  const switchThemes = () => {
+    setThemeType((last) => (last === 'dark' ? 'hemologLight' : 'dark'))
+  }
+
   return (
     <>
       <Head>
@@ -76,9 +89,9 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <AuthProvider>
-          <GeistProvider theme={{ palette: hemologPalette }}>
+          <GeistProvider themes={[hemologLight]} themeType={themeType}>
             <CssBaseline />
-            <Component {...pageProps} />
+            <Component {...pageProps} switchTheme={switchThemes} />
           </GeistProvider>
         </AuthProvider>
       </ThemeProvider>

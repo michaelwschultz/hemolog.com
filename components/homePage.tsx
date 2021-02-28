@@ -29,7 +29,7 @@ const HomePage = (): JSX.Element => {
     return false
   }
 
-  const returnWelcomeHero = () => {
+  const welcomeHero = () => {
     return (
       <StyledHero>
         <Text h4>Getting started with Hemolog</Text>
@@ -58,7 +58,7 @@ const HomePage = (): JSX.Element => {
     <>
       {!hasAllInfo && (
         <>
-          {returnWelcomeHero()}
+          {welcomeHero()}
           <Spacer y={3} />
         </>
       )}
