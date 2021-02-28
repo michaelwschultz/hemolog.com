@@ -23,42 +23,32 @@ export default function Footer(): JSX.Element {
       <Divider />
       <Spacer y={2} />
       <Grid.Container gap={2}>
-        <Grid xs={24} sm={14}>
+        <Grid xs={24} sm={14} direction='column'>
           <Text h5>Hemolog 2</Text>
-          <Text>
-            <Link color href='/about'>
-              The story so far...
-            </Link>
-          </Text>
-          <Text>
-            <Link color href='/changelog'>
-              Development blog
-            </Link>
-          </Text>
+          <Link color href='/about'>
+            The story so far...
+          </Link>
+          <Link color href='/changelog'>
+            Development blog
+          </Link>
           <Spacer />
           <Text h5>Follow</Text>
-          <Text>
-            <Link color icon href='https://twitter.com/hemolog'>
-              @Hemolog
-            </Link>
-          </Text>
-          <Text>
-            <Link color icon href='https://twitter.com/michaelschultz'>
-              @MichaelSchultz
-            </Link>
-          </Text>
+          <Link color icon href='https://twitter.com/hemolog'>
+            @Hemolog
+          </Link>
+          <Link color icon href='https://twitter.com/michaelschultz'>
+            @MichaelSchultz
+          </Link>
         </Grid>
-        <Grid xs={24} sm={10}>
+        <Grid xs={24} sm={10} direction='column'>
           <Text h5>Get Involved</Text>
-          <Text>
-            <Link
-              color
-              icon
-              href='https://github.com/michaelwschultz/hemolog.com'
-            >
-              View source
-            </Link>
-          </Text>
+          <Link
+            color
+            icon
+            href='https://github.com/michaelwschultz/hemolog.com'
+          >
+            View source
+          </Link>
           <Link color icon href='https://github.com/sponsors/michaelwschultz'>
             Donate
           </Link>

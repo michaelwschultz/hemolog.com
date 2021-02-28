@@ -84,7 +84,7 @@ const SettingsForm = (): JSX.Element => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid.Container gap={2}>
-        <Grid xs={24} md={12}>
+        <Grid xs={24} md={12} direction='column'>
           <Text h5>Type of hemophilia</Text>
           <AutoComplete
             id='hemophiliaType'
@@ -97,7 +97,7 @@ const SettingsForm = (): JSX.Element => {
             value={formik.values.hemophiliaType}
           />
         </Grid>
-        <Grid xs={24} md={12}>
+        <Grid xs={24} md={12} direction='column'>
           <Text h5>Severity</Text>
           <AutoComplete
             id='severity'
@@ -110,7 +110,7 @@ const SettingsForm = (): JSX.Element => {
             value={formik.values.severity}
           />
         </Grid>
-        <Grid xs={24} md={12}>
+        <Grid xs={24} md={12} direction='column'>
           <Text h5>Factor number</Text>
           <Input
             id='factor'
@@ -122,7 +122,7 @@ const SettingsForm = (): JSX.Element => {
             value={formik.values.factor ? formik.values.factor.toString() : ''}
           />
         </Grid>
-        <Grid xs={24} md={12}>
+        <Grid xs={24} md={12} direction='column'>
           <Text h5>Medication</Text>
           <AutoComplete
             id='medication'
