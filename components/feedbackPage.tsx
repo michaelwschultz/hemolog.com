@@ -1,13 +1,6 @@
 import useSWR from 'swr'
 import { format } from 'date-fns'
-import {
-  Avatar,
-  Row,
-  Fieldset,
-  Button,
-  Spacer,
-  useToasts,
-} from '@geist-ui/react'
+import { Avatar, Row, Fieldset, Button, Spacer } from '@geist-ui/react'
 
 import fetcher from 'lib/fetcher'
 import { useAuth } from 'lib/auth'
@@ -21,15 +14,10 @@ const FeedbackPage = () => {
     fetcher
   )
 
-  const [, setToast] = useToasts()
-
   if (error) {
-    console.error(error)
+    console.error({ message: 'Feedback API failed' })
 
-    setToast({
-      type: 'error',
-      text: `Oops, something went wrong - ${error}`,
-    })
+    return <div>No data found</div>
   }
 
   if (!data) {

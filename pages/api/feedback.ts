@@ -8,9 +8,9 @@ export default async (req, res) => {
     }
 
     const { uid } = await auth.verifyIdToken(req.headers.token)
-    if (uid !== process.env.MICHAELS_USER_ID) {
+    if (!uid) {
       throw {
-        message: `You aren't Michael. Sorry but this is for his eyes only.`,
+        message: `Invalid token`,
       }
     }
 
@@ -21,20 +21,6 @@ export default async (req, res) => {
     }
     res.status(200).json(feedback)
   } catch (error) {
-    // logger.error(
-    //   {
-    //     request: {
-    //       headers: formatObjectKeys(req.headers),
-    //       url: req.url,
-    //       method: req.method
-    //     },
-    //     response: {
-    //       statusCode: res.statusCode
-    //     }
-    //   },
-    //   error.message
-    // );
-
     res.status(500).json({ error })
   }
 }
