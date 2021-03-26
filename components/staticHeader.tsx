@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Button, useMediaQuery } from '@geist-ui/react'
+import { Grid, Button } from '@geist-ui/react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 
@@ -33,7 +33,7 @@ const StaticHeader = (): JSX.Element => {
               loading={loading}
               auto
             >
-              {user ? 'Sign in' : 'Register'}
+              {user ? 'Dashboard' : 'Register'}
             </Button>
           </div>
         </Grid>
