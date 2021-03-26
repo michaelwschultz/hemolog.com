@@ -22,12 +22,12 @@ const ProfilePage = (): JSX.Element => {
   return (
     <>
       <Grid.Container>
-        <Grid xs={24} md={11}>
+        <Grid xs={24} md={11} direction='column'>
           <Text h4>About you</Text>
           <SettingsForm />
         </Grid>
         <Spacer y={3} />
-        <Grid xs={24} md={12}>
+        <Grid xs={24} md={12} direction='column'>
           <h4>In case of emergency</h4>
           <Text>
             A medical worker can simply type in the URL listed on the card, or

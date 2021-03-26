@@ -16,16 +16,19 @@ export default function BlogFooter(): JSX.Element {
 
   const router = useRouter()
   return (
-    <Grid.Container gap={2} alignItems='center'>
-      <Grid xs={24} sm={16}>
-        <Text h3></Text>
+    <Grid.Container alignItems='center'>
+      <Grid
+        xs={24}
+        sm={16}
+        style={{ display: 'flex', flexDirection: 'column' }}
+      >
         <Text h4>
           Designed and developed by Michael Schultz in Oakland, California.
         </Text>
         {user ? (
           <Text>Thanks for being part of the Hemolog community!</Text>
         ) : (
-          <>
+          <div>
             <Text>Start using Hemolog for free.</Text>
             <Button
               size='small'
@@ -36,7 +39,7 @@ export default function BlogFooter(): JSX.Element {
             >
               Register
             </Button>
-          </>
+          </div>
         )}
       </Grid>
       <Grid xs={24} sm={8}>
