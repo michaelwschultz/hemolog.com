@@ -1,11 +1,18 @@
 import useSWR from 'swr'
 import { format } from 'date-fns'
 import { Avatar, Row, Fieldset, Button, Spacer } from '@geist-ui/react'
+import styled from 'styled-components'
 
 import fetcher from 'lib/fetcher'
 import { useAuth } from 'lib/auth'
 import { FeedbackType } from 'lib/db/feedback'
 import LoadingScreen from 'components/loadingScreen'
+
+const handleReplyClick = (email: string) => {
+  window.location.assign(
+    `mailto:${email}?subject=Thanks for your feedback on Hemolog!`
+  )
+}
 
 const FeedbackPage = () => {
   const { user } = useAuth()
@@ -33,19 +40,24 @@ const FeedbackPage = () => {
             <Fieldset.Subtitle>{feedback?.message}</Fieldset.Subtitle>
             <Fieldset.Footer>
               <Fieldset.Footer.Status>
-                <Row align='middle'>
-                  <Avatar
-                    src={feedback?.user?.photoUrl}
-                    text={feedback?.user?.name.charAt(0)}
-                    size='small'
-                  />
+                <StyledRow>
+                  <span>
+                    <Avatar
+                      src={feedback?.user?.photoUrl}
+                      text={feedback?.user?.name.charAt(0)}
+                      size='small'
+                    />
+                  </span>
                   <Spacer x={0.5} />
-                  {feedback?.user?.email} on{' '}
                   {format(new Date(feedback?.createdAt), 'PPp')}
-                </Row>
+                </StyledRow>
               </Fieldset.Footer.Status>
               <Fieldset.Footer.Actions>
-                <Button auto size='mini'>
+                <Button
+                  auto
+                  size='mini'
+                  onClick={() => handleReplyClick(feedback?.user?.email)}
+                >
                   Reply
                 </Button>
               </Fieldset.Footer.Actions>
@@ -56,5 +68,20 @@ const FeedbackPage = () => {
     </>
   )
 }
+
+const StyledRow = styled.div`
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  span {
+    width: 1.875rem;
+  }
+`
 
 export default FeedbackPage

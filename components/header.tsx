@@ -7,6 +7,7 @@ import {
   Button,
   useModal,
   Spacer,
+  useMediaQuery,
 } from '@geist-ui/react'
 
 import { useAuth } from 'lib/auth'
@@ -26,6 +27,8 @@ const Header = (props: Props): JSX.Element => {
     setVisible: setInfusionModalVisible,
     bindings: infusionModalBindings,
   } = useModal(false)
+
+  const isMobile = useMediaQuery('xs', { match: 'down' })
 
   // const [themeType, setThemeType] = useState('dark')
   // const switchThemes = () => {
@@ -61,14 +64,16 @@ const Header = (props: Props): JSX.Element => {
       <Row justify='space-between' align='middle'>
         <Logo />
         <Row align='middle'>
-          <Button
-            onClick={() => setInfusionModalVisible(true)}
-            size='small'
-            auto
-            type='success-light'
-          >
-            Log infusion
-          </Button>
+          {!isMobile && (
+            <Button
+              onClick={() => setInfusionModalVisible(true)}
+              size='small'
+              auto
+              type='success-light'
+            >
+              Log infusion
+            </Button>
+          )}
           <Spacer />
           <Popover content={popoverContent} placement='bottomEnd'>
             <Avatar
@@ -81,6 +86,16 @@ const Header = (props: Props): JSX.Element => {
         </Row>
       </Row>
       <Spacer />
+
+      {isMobile && (
+        <Button
+          onClick={() => setInfusionModalVisible(true)}
+          style={{ width: '100%' }}
+          type='success-light'
+        >
+          Log infusion
+        </Button>
+      )}
 
       <InfusionModal
         visible={infusionModal}

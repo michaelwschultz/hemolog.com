@@ -28,22 +28,17 @@ const Emergency = (): JSX.Element => {
         <title>Emergency - from Hemolog</title>
       </Head>
       <StyledPage>
-        <Row
-          justify='space-between'
-          align='middle'
-          style={{ padding: '24px 0' }}
-        >
+        <Row justify='space-between' align='middle' style={{ padding: '24px' }}>
           <Text h4 type='success'>
-            Emergency Card
+            Emergency Info
           </Text>
           <Text h6>
-            Provided by{' '}
             <NextLink href='/'>
               <Link href='/'>Hemolog.com</Link>
             </NextLink>
           </Text>
         </Row>
-        <Note type='success' label='Important'>
+        <Note type='success' label='Important' style={{ margin: '0 24px' }}>
           If someone has been in an accident, please call{' '}
           <a href='tel:911'>911</a> immediately. This page shows the most recent
           medical logs for someone with hemophilia. This data is{' '}
