@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import NextLink from 'next/link'
-import { Text, Divider, Spacer, Link } from '@geist-ui/react'
+import { Text, Divider, Spacer, Link, Themes } from '@geist-ui/react'
 import styled from 'styled-components'
 
 import Footer from 'components/footer'

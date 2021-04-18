@@ -6,7 +6,7 @@ export interface AttachedUserType {
 }
 
 export interface UserType {
-  alertId: string
+  alertId?: string
   email: string
   isAdmin?: boolean
   name: string

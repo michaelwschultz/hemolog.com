@@ -1,13 +1,14 @@
 import { auth } from 'lib/firebase-admin'
 import { getAllFeedback } from 'lib/admin-db/feedback'
+import { NextApiRequest, NextApiResponse } from 'next'
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (!req.headers.token) {
       throw { message: 'Access denied. No user passed to endpoint.' }
     }
 
-    const { uid } = await auth.verifyIdToken(req.headers.token)
+    const { uid } = await auth.verifyIdToken(req.headers.token as string)
     if (!uid) {
       throw {
         message: `Invalid token`,
