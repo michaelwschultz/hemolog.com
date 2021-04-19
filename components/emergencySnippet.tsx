@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function EmergencySnippet(props: Props): JSX.Element {
-  const { alertId } = props
+  const { alertId = 'example' } = props
   const env = process.env.NODE_ENV
   const domain = env === 'development' ? 'localhost:3000' : 'hemolog.com'
 
