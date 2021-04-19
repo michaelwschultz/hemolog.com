@@ -38,7 +38,7 @@ const ProfilePage = (): JSX.Element => {
           </Text>
           <Grid.Container gap={2} alignItems='center'>
             <Grid xs={24} sm={16}>
-              <EmergencySnippet alertId={user!.alertId} />
+              <EmergencySnippet alertId={(user && user.alertId) || 'example'} />
             </Grid>
             <Grid xs={24} sm={8}>
               <Button type='secondary-light' auto onClick={handleOnPrintClick}>

@@ -45,7 +45,7 @@ function useProvideAuth() {
       if (dbUser.exists) {
         user.alertId = dbUser.data()!.alertId
         user.isAdmin = dbUser.data()!.isAdmin
-        userWithoutToken.alertId = ''
+        delete userWithoutToken.alertId
       }
 
       createUser(user.uid, userWithoutToken)

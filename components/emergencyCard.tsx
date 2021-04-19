@@ -21,7 +21,7 @@ interface Props {
 
 export default function EmergencyCard({ forPrint }: Props): JSX.Element {
   const { user } = useAuth()
-  const { person } = useDbUser(user?.uid || '')
+  const { person } = useDbUser((user && user.uid) || '')
   const theme = useTheme()
   const themeContext = useContext(ThemeContext)
   const isMobile = useMediaQuery('xs', { match: 'down' })
