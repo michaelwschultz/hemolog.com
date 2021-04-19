@@ -3,16 +3,9 @@ import { Text, Image, Spacer, Grid, Button } from '@geist-ui/react'
 import { useRouter } from 'next/router'
 
 import { useAuth } from 'lib/auth'
-import { UserType } from 'lib/types/users'
 
 export default function BlogFooter(): JSX.Element {
-  const {
-    user,
-    loading,
-  }: {
-    user: UserType
-    loading: boolean
-  } = useAuth()
+  const { user, loading } = useAuth()
 
   const router = useRouter()
   return (

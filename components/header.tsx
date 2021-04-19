@@ -40,7 +40,7 @@ const Header = (props: Props): JSX.Element => {
   const popoverContent = () => (
     <div style={{ minWidth: '180px' }}>
       <Popover.Item title>
-        <span>{user.name}</span>
+        <span>{user?.name}</span>
       </Popover.Item>
       <Popover.Item>
         <span>Hemolog v{version}</span>
@@ -59,51 +59,56 @@ const Header = (props: Props): JSX.Element => {
     </div>
   )
 
-  return (
-    <>
-      <Row justify='space-between' align='middle'>
-        <Logo />
-        <Row align='middle'>
-          {!isMobile && (
-            <Button
-              onClick={() => setInfusionModalVisible(true)}
-              size='small'
-              auto
-              type='success-light'
-            >
-              Log infusion
-            </Button>
-          )}
-          <Spacer />
-          <Popover content={popoverContent} placement='bottomEnd'>
-            <Avatar
-              src={user.photoUrl || ''}
-              text={user.displayName && user.displayName.charAt(0)}
-              size={40}
-              style={{ cursor: 'pointer' }}
-            />
-          </Popover>
+  if (user) {
+    return (
+      <>
+        <Row justify='space-between' align='middle'>
+          <Logo />
+          <Row align='middle'>
+            {!isMobile && (
+              <Button
+                onClick={() => setInfusionModalVisible(true)}
+                size='small'
+                auto
+                type='success-light'
+              >
+                Log infusion
+              </Button>
+            )}
+            <Spacer />
+            <Popover content={popoverContent} placement='bottomEnd'>
+              <Avatar
+                src={user.photoUrl || ''}
+                text={user.displayName && user.displayName.charAt(0)}
+                size={40}
+                style={{ cursor: 'pointer' }}
+              />
+            </Popover>
+          </Row>
         </Row>
-      </Row>
-      <Spacer />
 
-      {isMobile && (
-        <Button
-          onClick={() => setInfusionModalVisible(true)}
-          style={{ width: '100%' }}
-          type='success-light'
-        >
-          Log infusion
-        </Button>
-      )}
+        <Spacer />
 
-      <InfusionModal
-        visible={infusionModal}
-        setVisible={setInfusionModalVisible}
-        bindings={infusionModalBindings}
-      />
-    </>
-  )
+        {isMobile && (
+          <Button
+            onClick={() => setInfusionModalVisible(true)}
+            style={{ width: '100%' }}
+            type='success-light'
+          >
+            Log infusion
+          </Button>
+        )}
+
+        <InfusionModal
+          visible={infusionModal}
+          setVisible={setInfusionModalVisible}
+          bindings={infusionModalBindings}
+        />
+      </>
+    )
+  }
+
+  return <></>
 }
 
 export default Header

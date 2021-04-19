@@ -8,24 +8,29 @@ import { generateUniqueString } from 'lib/helpers'
 import LoadingScreen from 'components/loadingScreen'
 import { UserType } from 'lib/types/users'
 
-const authContext = createContext(undefined)
+type ContextProps = {
+  user: UserType | null
+  loading?: boolean
+  signout: any
+  signinWithGoogle: any
+}
 
-export function AuthProvider({ children }) {
+const authContext = createContext<Partial<ContextProps>>({})
+
+export function AuthProvider({ children }: { children: any }) {
   const auth = useProvideAuth()
   return <authContext.Provider value={auth}>{children}</authContext.Provider>
 }
 
-export const useAuth = () => {
-  return useContext(authContext)
-}
+export const useAuth = () => useContext(authContext)
 
 const firestore = firebase.firestore()
 
 function useProvideAuth() {
-  const [user, setUser] = useState<UserType>(null)
+  const [user, setUser] = useState<UserType | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const handleUser = async (rawUser) => {
+  const handleUser = async (rawUser: any) => {
     if (rawUser) {
       const user = await formatUser(rawUser)
       const dbUser = await firestore.collection('users').doc(user.uid).get()
@@ -38,15 +43,15 @@ function useProvideAuth() {
       // This needs to be cleaned up. isAdmin is also appended to
       // the user here.
       if (dbUser.exists) {
-        user.alertId = dbUser.data().alertId
-        user.isAdmin = dbUser.data().isAdmin
-        delete userWithoutToken.alertId
+        user.alertId = dbUser.data()!.alertId
+        user.isAdmin = dbUser.data()!.isAdmin
+        userWithoutToken.alertId = ''
       }
 
       createUser(user.uid, userWithoutToken)
       setUser(user)
 
-      cookie.set('hemolog-auth', true, {
+      cookie.set('hemolog-auth', {
         expires: 1,
       })
 
@@ -86,7 +91,7 @@ function useProvideAuth() {
   //       })
   //   }
 
-  const signinWithGoogle = (redirect) => {
+  const signinWithGoogle = (redirect: string) => {
     setLoading(true)
     return firebase
       .auth()
@@ -124,27 +129,27 @@ function useProvideAuth() {
   }
 }
 
-const formatUser = async (user): Promise<UserType> => {
-  const idTokenResult = await user.getIdTokenResult()
+const formatUser = async (rawUser: any): Promise<UserType> => {
+  const idTokenResult = await rawUser.getIdTokenResult()
   const token = idTokenResult.token
   const alertId = await generateUniqueString(6)
 
   return {
     alertId,
-    email: user.email,
-    name: user.displayName,
-    photoUrl: user.photoURL,
-    provider: user.providerData[0].providerId,
+    email: rawUser.email,
+    name: rawUser.displayName,
+    photoUrl: rawUser.photoURL,
+    provider: rawUser.providerData[0].providerId,
     token,
-    uid: user.uid,
+    uid: rawUser.uid,
   }
 }
 
 // NOTE(michael) This takes care of protecting unauthed users
 // from seeing any protected pages. This could be handled better,
 // but this works for now
-export const ProtectRoute = ({ children }) => {
-  const { user, loading }: { user: UserType; loading: boolean } = useAuth()
+export const ProtectRoute = ({ children }: { children: any }) => {
+  const { user, loading } = useAuth()
 
   if (loading && !user) {
     return <LoadingScreen />

@@ -2,7 +2,7 @@
 // exploration of the HUE api.
 const REQUEST_URL = `${process.env.HUE_BRIDGE_URL}/lights/3`
 
-export default (req, res) => {
+export default (req: any, res: any) => {
   const { query } = req
   let on = query.on
 

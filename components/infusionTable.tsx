@@ -115,7 +115,7 @@ export default function InfusionTable(props: Props): JSX.Element {
           text='This is permanent and cannot be undone.'
           placement='left'
         >
-          <Button size='mini' onClick={() => deleteRow(infusion.uid)} auto>
+          <Button size='mini' onClick={() => deleteRow(infusion.uid!)} auto>
             Delete
           </Button>
         </Tooltip>

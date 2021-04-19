@@ -51,7 +51,7 @@ function deleteInfusion(uid: string) {
     .set({ deletedAt: new Date().toISOString() }, { merge: true })
 }
 
-async function updateInfusion(uid: string, newValues) {
+async function updateInfusion(uid: string, newValues: Partial<InfusionType>) {
   return firestore.collection('infusions').doc(uid).update(newValues)
 }
 

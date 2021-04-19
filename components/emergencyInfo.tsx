@@ -46,7 +46,7 @@ export default function EmergencyInfo(props: Props): JSX.Element {
         <Note label='Note'>
           Pay attention to the date on each of these logs. We're only showing
           you the <Text b>3</Text> most recent logs. If you want to see more,{' '}
-          <Text i>{person.name.split(' ')[0]}</Text> will have to give you
+          <Text i>{person.name?.split(' ')[0]}</Text> will have to give you
           permission.
         </Note>
 
