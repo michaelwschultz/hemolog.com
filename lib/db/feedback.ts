@@ -17,7 +17,7 @@ function deleteFeedback(uid: string) {
   return firestore.collection('feedback').doc(uid).delete()
 }
 
-function updateFeedback(uid: string, newValues) {
+function updateFeedback(uid: string, newValues: any) {
   return firestore.collection('feedback').doc(uid).update(newValues)
 }
 

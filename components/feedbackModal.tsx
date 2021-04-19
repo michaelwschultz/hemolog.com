@@ -10,17 +10,23 @@ interface FeedbackValues {
   message: string
 }
 
-export default function FeedbackModal(props): JSX.Element {
+interface FeedbackModalProps {
+  visible: boolean
+  setVisible: (flag: boolean) => void
+  bindings: any
+}
+
+export default function FeedbackModal(props: FeedbackModalProps): JSX.Element {
   const { visible, setVisible, bindings } = props
   const [, setToast] = useToasts()
   const { user } = useAuth()
 
   const handleCreateFeedback = async (feedback: FeedbackValues) => {
     const feedbackUser: AttachedUserType = {
-      email: user.email,
-      name: user.name,
-      photoUrl: user.photoUrl,
-      uid: user.uid,
+      email: user!.email,
+      name: user!.name,
+      photoUrl: user!.photoUrl,
+      uid: user!.uid,
     }
 
     const feedbackPayload: FeedbackType = {

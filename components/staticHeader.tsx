@@ -1,20 +1,13 @@
 import React from 'react'
-import { Grid, Button, useMediaQuery } from '@geist-ui/react'
+import { Grid, Button } from '@geist-ui/react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 
 import { useAuth } from 'lib/auth'
-import { UserType } from 'lib/types/users'
 import Logo from 'components/logo'
 
 const StaticHeader = (): JSX.Element => {
-  const {
-    user,
-    loading,
-  }: {
-    user: UserType
-    loading: boolean
-  } = useAuth()
+  const { user, loading } = useAuth()
 
   const router = useRouter()
 

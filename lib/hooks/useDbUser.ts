@@ -8,7 +8,7 @@ import { Person } from 'lib/types/person'
 type FirestoreStatusTypes = FirestoreStatusType
 
 interface FirestoreUserResponse {
-  person: Person
+  person: Person | null
   status: FirestoreStatusTypes
   error: Error
 }
@@ -19,13 +19,10 @@ export default function useDbUser(
   const db = firebase.firestore()
 
   const { data, status, error } = useFirestoreQuery(
-    db
-      .collection('users')
-      .where('uid', '==', uid || '')
-      .limit(1)
+    db.collection('users').where('uid', '==', uid).limit(1)
   )
 
-  let person: Person
+  let person: Person | null = null
   if (data) {
     person = data[0]
   }

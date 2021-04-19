@@ -11,8 +11,6 @@ import {
 import splitbee from '@splitbee/web'
 import { useFormik } from 'formik'
 import { format, compareDesc, parseISO } from 'date-fns'
-
-import { UserType } from 'lib/types/users'
 import { useAuth } from 'lib/auth'
 import {
   createInfusion,
@@ -27,15 +25,21 @@ interface InfusionValues {
   brand: string
   cause: string
   date: string
-  lot: string
+  lot?: string
   sites: string
   type: InfusionTypeOptions
   units: string
 }
 
-export default function InfusionModal(props): JSX.Element {
+interface ModalProps {
+  visible: boolean
+  setVisible: (flag: boolean) => void
+  bindings: any
+}
+
+export default function InfusionModal(props: ModalProps): JSX.Element {
   const { visible, setVisible, bindings } = props
-  const { user }: { user: UserType } = useAuth()
+  const { user } = useAuth()
   const [, setToast] = useToasts()
   const { data: infusions } = useInfusions()
 
@@ -50,10 +54,10 @@ export default function InfusionModal(props): JSX.Element {
 
   const handleCreateInfusion = async (infusion: InfusionValues) => {
     const infusionUser: AttachedUserType = {
-      email: user.email,
-      name: user.name,
-      photoUrl: user.photoUrl,
-      uid: user.uid,
+      email: user!.email,
+      name: user!.name,
+      photoUrl: user!.photoUrl,
+      uid: user!.uid,
     }
 
     const { date, brand, lot, units, cause, sites, type } = infusion

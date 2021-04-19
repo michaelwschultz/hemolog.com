@@ -39,7 +39,9 @@ export default function useInfusions(
 
   // NOTE(Michael) sorts infusions by date (newest to oldest)
   if (data) {
-    data.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
+    data.sort((a: any, b: any) =>
+      compareDesc(new Date(a.date), new Date(b.date))
+    )
 
     // For now, I've moved the limiting into the useFirestoreQuery
     // method, this works ok but would be better to fix here long term

@@ -9,7 +9,12 @@ export enum FirestoreStatusType {
   ERROR = 'error',
 }
 
-const reducer = (_state, action) => {
+interface Action {
+  type: FirestoreStatusType
+  payload?: any
+}
+
+const reducer = (_state: any, action: Action) => {
   switch (action.type) {
     case FirestoreStatusType.IDLE:
       return {
@@ -41,7 +46,7 @@ const reducer = (_state, action) => {
 }
 
 // Hook
-export default function useFirestoreQuery(query) {
+export default function useFirestoreQuery(query: any) {
   // Our initial state
   // Start with an "idle" status if query is falsy, as that means hook consumer is
   // waiting on required data before creating the query object.
@@ -59,7 +64,7 @@ export default function useFirestoreQuery(query) {
   // Needed because firestore.collection("profiles").doc(uid) will always being a new object reference
   // causing effect to run -> state change -> rerender -> effect runs -> etc ...
   // This is nicer than requiring hook consumer to always memoize query with useMemo.
-  const queryCached = useMemoCompare(query, (prevQuery) => {
+  const queryCached = useMemoCompare(query, (prevQuery: any) => {
     // Use built-in Firestore isEqual method to determine if "equal"
     return prevQuery && query && query.isEqual(prevQuery)
   })
@@ -77,7 +82,7 @@ export default function useFirestoreQuery(query) {
     // Subscribe to query with onSnapshot
     // Will unsubscribe on cleanup since this returns an unsubscribe function
     return queryCached.onSnapshot(
-      (response) => {
+      (response: any) => {
         // Get data for collection or doc
         const data = response.docs
           ? getCollectionData(response)
@@ -85,7 +90,7 @@ export default function useFirestoreQuery(query) {
 
         dispatch({ type: FirestoreStatusType.SUCCESS, payload: data })
       },
-      (error) => {
+      (error: any) => {
         dispatch({ type: FirestoreStatusType.ERROR, payload: error })
       }
     )
@@ -95,11 +100,11 @@ export default function useFirestoreQuery(query) {
 }
 
 // Get doc data and merge doc.id
-function getDocData(doc) {
+function getDocData(doc: any) {
   return doc.exists === true ? { id: doc.id, ...doc.data() } : null
 }
 
 // Get array of doc data from collection
-function getCollectionData(collection) {
+function getCollectionData(collection: any) {
   return collection.docs.map(getDocData)
 }

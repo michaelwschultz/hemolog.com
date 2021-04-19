@@ -4,7 +4,7 @@ import { compareDesc, parseISO } from 'date-fns'
 async function getAllInfusions() {
   const snapshot = await adminFirestore.collection('infusions').get()
 
-  const infusions = []
+  const infusions: any = []
 
   snapshot.forEach((doc) => {
     infusions.push({ id: doc.id, ...doc.data() })
@@ -18,13 +18,13 @@ async function getInfusion(infusionId: string) {
     .collection('infusions')
     .where('uid', '==', infusionId)
     .get()
-  const infusions = []
+  const infusions: any = []
 
   snapshot.forEach((doc) => {
     infusions.push({ id: doc.id, ...doc.data() })
   })
 
-  infusions.sort((a, b) =>
+  infusions.sort((a: any, b: any) =>
     compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
   )
 
@@ -37,13 +37,13 @@ async function getAllUserInfusions(uid: string) {
     .where('userId', '==', uid)
     .get()
 
-  const infusions = []
+  const infusions: any = []
 
   snapshot.forEach((doc) => {
     infusions.push({ id: doc.id, ...doc.data() })
   })
 
-  infusions.sort((a, b) =>
+  infusions.sort((a: any, b: any) =>
     compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
   )
 

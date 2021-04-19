@@ -2,14 +2,14 @@ import firebase from 'lib/firebase'
 
 const firestore = firebase.firestore()
 
-function createUser(uid, data) {
+function createUser(uid: string, data: any) {
   return firestore
     .collection('users')
     .doc(uid)
     .set({ uid, ...data }, { merge: true })
 }
 
-async function deleteUser(uid) {
+async function deleteUser(uid: string) {
   firestore.collection('users').doc(uid).delete()
   const snapshot = await firestore
     .collection('infusions')
@@ -25,7 +25,7 @@ async function deleteUser(uid) {
   return batch.commit()
 }
 
-async function updateUser(uid, newValues) {
+async function updateUser(uid: string, newValues: any) {
   return firestore.collection('users').doc(uid).update(newValues)
 }
 

@@ -21,7 +21,7 @@ interface Props {
 
 export default function EmergencyCard({ forPrint }: Props): JSX.Element {
   const { user } = useAuth()
-  const { person } = useDbUser(user && user.uid)
+  const { person } = useDbUser(user?.uid || '')
   const theme = useTheme()
   const themeContext = useContext(ThemeContext)
   const isMobile = useMediaQuery('xs', { match: 'down' })
@@ -89,7 +89,7 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
   )
 }
 
-const StyledEmergencyCard = styled.div<{ forPrint: boolean }>`
+const StyledEmergencyCard = styled.div<{ forPrint?: boolean }>`
   position: relative;
   width: ${(props) => (props.forPrint ? '308px' : '525px')};
   height: ${(props) => (props.forPrint ? '192px' : '300px')};
@@ -113,18 +113,18 @@ const StyledEmergencyCard = styled.div<{ forPrint: boolean }>`
   }
 `
 
-const StyledHeader = styled.div<{ forPrint: boolean; accentColor: string }>`
+const StyledHeader = styled.div<{ forPrint?: boolean; accentColor: string }>`
   background-color: ${(props) => props.accentColor};
   height: ${(props) => (props.forPrint ? '56px' : '90px')};
   width: 100%;
   padding: ${(props) => (props.forPrint ? '16px' : '24px')};
 `
 
-const StyledPersonalInfo = styled.div<{ forPrint: boolean }>`
+const StyledPersonalInfo = styled.div<{ forPrint?: boolean }>`
   padding-left: ${(props) => (props.forPrint ? '8px' : '16px')};
 `
 
-const StyledQRCode = styled.div<{ forPrint: boolean; accentColor: string }>`
+const StyledQRCode = styled.div<{ forPrint?: boolean; accentColor: string }>`
   position: relative;
   width: ${(props) => (props.forPrint ? '96px' : '148px')};
   height: ${(props) => (props.forPrint ? '96px' : '148px')};
@@ -134,11 +134,11 @@ const StyledQRCode = styled.div<{ forPrint: boolean; accentColor: string }>`
     ${(props) => props.accentColor};
 `
 
-const StyledScanLink = styled.div<{ forPrint: boolean }>`
+const StyledScanLink = styled.div<{ forPrint?: boolean }>`
   padding-top: ${(props) => (props.forPrint ? '8px' : '16px')}; ;
 `
 
-const StyledBloodDrop = styled.img<{ forPrint: boolean }>`
+const StyledBloodDrop = styled.img<{ forPrint?: boolean }>`
   position: absolute;
   left: ${(props) => (props.forPrint ? '34px' : '56px')};
   top: ${(props) => (props.forPrint ? '-18px' : '-24px')};
@@ -147,7 +147,7 @@ const StyledBloodDrop = styled.img<{ forPrint: boolean }>`
   border: none !important;
 `
 
-const StyledAvatar = styled.img<{ forPrint: boolean }>`
+const StyledAvatar = styled.img<{ forPrint?: boolean }>`
   width: ${(props) => (props.forPrint ? '60px' : '100px')};
   height: ${(props) => (props.forPrint ? '60px' : '100px')};
   border-radius: 50%;

@@ -1692,6 +1692,11 @@
     "@types/react-native" "*"
     csstype "^3.0.2"
 
+"@types/underscore@^1.11.1":
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/@types/underscore/-/underscore-1.11.1.tgz#5b773d04c44897137485615dbef56a2919b9fa5a"
+  integrity sha512-mW23Xkp9HYgdMV7gnwuzqnPx6aG0J7xg/b7erQszOcyOizWylwCr9cgYM/BVVJHezUDxwyigG6+wCFQwCvyMBw==
+
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.9.0.tgz#bd850604b4042459a5a41cd7d338cbed695ed964"

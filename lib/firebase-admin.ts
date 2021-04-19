@@ -5,7 +5,7 @@
 import admin from 'firebase-admin'
 
 const firebasePrivateKey = process.env.FIREBASE_PRIVATE_KEY
-const privateKey = firebasePrivateKey.replace(/\\n/g, '\n')
+const privateKey = firebasePrivateKey?.replace(/\\n/g, '\n')
 
 if (!admin.apps.length) {
   admin.initializeApp({

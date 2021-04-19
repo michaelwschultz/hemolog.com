@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import useInfusions from 'lib/hooks/useInfusions'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
-import { format, parse, compareDesc, parseISO } from 'date-fns'
+import { format, compareDesc, parseISO } from 'date-fns'
 import {
   Note,
   Table,
@@ -112,7 +112,7 @@ export default function InfusionTable(props: Props): JSX.Element {
     const remove = (
       <>
         <Tooltip text="Hope you're sure about this." placement='left'>
-          <Button size='mini' onClick={() => deleteRow(infusion.uid)} auto>
+          <Button size='mini' onClick={() => deleteRow(infusion.uid!)} auto>
             Delete
           </Button>
         </Tooltip>

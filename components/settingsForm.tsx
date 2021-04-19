@@ -18,7 +18,7 @@ import { updateUser } from 'lib/db/users'
 const SettingsForm = (): JSX.Element => {
   const { user } = useAuth()
   const [, setToast] = useToasts()
-  const { person } = useDbUser(user && user.uid)
+  const { person } = useDbUser(user!.uid)
 
   const formik = useFormik({
     initialValues: {
@@ -35,7 +35,7 @@ const SettingsForm = (): JSX.Element => {
     },
     enableReinitialize: true,
     onSubmit: (values) => {
-      updateUser(user.uid, values)
+      updateUser(user!.uid, values)
         .then(() => {
           setToast({
             text: 'Profile updated!',
@@ -77,7 +77,7 @@ const SettingsForm = (): JSX.Element => {
   ]
 
   const handleSubmitForm = () => {
-    splitbee.track('Updated Profile', { ...formik.values })
+    splitbee.track('Updated Profile', { ...formik.values } as any)
     formik.submitForm
   }
 

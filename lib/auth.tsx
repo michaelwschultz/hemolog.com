@@ -11,11 +11,13 @@ import { UserType } from 'lib/types/users'
 type ContextProps = {
   user: UserType | null
   loading?: boolean
+  signout: any
+  signinWithGoogle: any
 }
 
 const authContext = createContext<Partial<ContextProps>>({})
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: any }) {
   const auth = useProvideAuth()
   return <authContext.Provider value={auth}>{children}</authContext.Provider>
 }
@@ -43,7 +45,7 @@ function useProvideAuth() {
       if (dbUser.exists) {
         user.alertId = dbUser.data()!.alertId
         user.isAdmin = dbUser.data()!.isAdmin
-        delete userWithoutToken.alertId
+        userWithoutToken.alertId = ''
       }
 
       createUser(user.uid, userWithoutToken)
@@ -146,7 +148,7 @@ const formatUser = async (rawUser: any): Promise<UserType> => {
 // NOTE(michael) This takes care of protecting unauthed users
 // from seeing any protected pages. This could be handled better,
 // but this works for now
-export const ProtectRoute = ({ children }: { children: React.ReactNode }) => {
+export const ProtectRoute = ({ children }: { children: any }) => {
   const { user, loading } = useAuth()
 
   if (loading && !user) {
