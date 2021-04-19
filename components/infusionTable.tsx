@@ -111,7 +111,10 @@ export default function InfusionTable(props: Props): JSX.Element {
 
     const remove = (
       <>
-        <Tooltip text="Hope you're sure about this." placement='left'>
+        <Tooltip
+          text='This is permanent and cannot be undone.'
+          placement='left'
+        >
           <Button size='mini' onClick={() => deleteRow(infusion.uid!)} auto>
             Delete
           </Button>
@@ -128,6 +131,18 @@ export default function InfusionTable(props: Props): JSX.Element {
 
   const rowData = infusions.map((infusion) => formatInfusionRow(infusion))
 
+  // only shows delete when the logged in user is viewing their own data
+  let isLoggedInUser = false
+  if (user) {
+    if (!uid) {
+      isLoggedInUser = true
+    }
+
+    if (uid && uid === user.uid) {
+      isLoggedInUser = true
+    }
+  }
+
   return (
     <StyledTableWrapper>
       <Table
@@ -143,7 +158,7 @@ export default function InfusionTable(props: Props): JSX.Element {
         <Table.Column prop='cause' label='Cause' />
         <Table.Column prop='factorBrand' label='Factor' />
         <Table.Column prop='units' label='Amount' />
-        {user && <Table.Column prop='remove' />}
+        {isLoggedInUser && <Table.Column prop='remove' />}
       </Table>
       {infusions.length === 0 && (
         <>

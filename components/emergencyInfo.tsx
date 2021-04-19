@@ -1,5 +1,6 @@
 import React from 'react'
 import { Avatar, Note, Row, Spacer, Text, useMediaQuery } from '@geist-ui/react'
+import styled from 'styled-components'
 
 import InfusionTable from 'components/infusionTable'
 import { Person } from 'lib/types/person'
@@ -17,24 +18,24 @@ export default function EmergencyInfo(props: Props): JSX.Element {
   if (person) {
     return (
       <>
-        <Row justify='space-between' align='middle'>
-          <Row align='middle'>
+        <StyledRow>
+          <span>
             <Avatar
               src={person.photoUrl}
               text={person.name && person.name.charAt(0)}
               size='large'
-              style={{ marginRight: '24px' }}
             />
-            <Spacer x={0.5} />
-            <div>
-              <Text h3>{person.name}</Text>
-              <Text h5 type='secondary'>
-                {person.severity} Hemophilia {person.hemophiliaType}, treat with
-                factor {person.factor}
-              </Text>
-            </div>
-          </Row>
-        </Row>
+          </span>
+
+          <div>
+            <Text h3>{person.name}</Text>
+            <Text h5 type='secondary'>
+              {person.severity} Hemophilia {person.hemophiliaType}, treat with
+              factor {person.factor}
+            </Text>
+          </div>
+        </StyledRow>
+
         <Spacer y={2} />
         <Row justify='space-between' align='middle'>
           <Text h5>Most recent infusions</Text>
@@ -106,3 +107,24 @@ export default function EmergencyInfo(props: Props): JSX.Element {
     </Note>
   )
 }
+
+const StyledRow = styled.div`
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  span {
+    width: 5.625rem;
+  }
+
+  h3,
+  h5 {
+    margin: 0;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    padding-left: 16px;
+  }
+`

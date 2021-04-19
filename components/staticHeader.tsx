@@ -31,7 +31,7 @@ const StaticHeader = (): JSX.Element => {
             loading={loading}
             auto
           >
-            {user ? 'Sign in' : 'Register'}
+            {user ? 'Dashboard' : 'Register'}
           </Button>
         </Grid>
       </Grid.Container>

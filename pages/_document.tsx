@@ -31,9 +31,23 @@ export default class MyDocument extends Document {
   }
 
   render() {
+    const googleRichResultsSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      url: 'https://hemolog.com',
+      logo: 'https://hemolog.com/images/hemolog-logo.png',
+    }
+
     return (
       <Html>
-        <Head></Head>
+        <Head>
+          <script
+            type='application/ld+json'
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(googleRichResultsSchema),
+            }}
+          />
+        </Head>
         <body>
           <Main />
           <NextScript />
