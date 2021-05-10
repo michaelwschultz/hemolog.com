@@ -8,6 +8,7 @@ import SettingsForm from 'components/settingsForm'
 import EmergencyCard from 'components/emergencyCard'
 import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
+import Chart from 'components/chart'
 
 const HomePage = (): JSX.Element => {
   const smallerThanSmall = useMediaQuery('xs', { match: 'down' })
@@ -56,7 +57,7 @@ const HomePage = (): JSX.Element => {
 
   return (
     <>
-      {!hasAllInfo && (
+      {!hasAllInfo() && (
         <>
           {welcomeHero()}
           <Spacer y={3} />
@@ -70,6 +71,7 @@ const HomePage = (): JSX.Element => {
         <Text h4>Infusions</Text>
         {smallerThanSmall && <Text>Swipe →</Text>}
       </Row>
+      <Chart />
       <InfusionTable />
     </>
   )
