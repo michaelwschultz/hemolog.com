@@ -149,37 +149,37 @@ export default function Stats(): JSX.Element {
   return (
     <>
       <Grid.Container gap={2}>
-        <Grid xs={12} sm={8} md={6}>
+        <Grid xs={12} sm={12} md={6}>
           <StatCard value={numberOfInfusions} label='Infusions' />
         </Grid>
-        <Grid xs={12} sm={8} md={6}>
+        <Grid xs={12} sm={12} md={6}>
           <StatCard value={numberOfBleeds} label='Bleeds' />
         </Grid>
-        <Grid xs={12} sm={8} md={6}>
+        <Grid xs={24} sm={12} md={6}>
           <StatCard
             value={consecutiveProphyInfusions()}
             label='Consecutive prophy infusions'
           />
         </Grid>
-        <Grid xs={12} sm={8} md={6}>
+        <Grid xs={24} sm={12} md={6}>
           <StatCard
             value={mostAffectedArea || 'Not enough data'}
             label='Most affected area'
           />
         </Grid>
-        <Grid xs={12} sm={8} md={6}>
+        <Grid xs={24} sm={12} md={6}>
           <StatCard
             value={biggestCause || 'Not enough data'}
             label='Biggest cause'
           />
         </Grid>
-        <Grid xs={12} sm={8} md={6}>
+        <Grid xs={24} sm={12} md={6}>
           <StatCard
             value={`~${totalUnits.toLocaleString()} iu`}
             label='Units of factor'
           />
         </Grid>
-        <Grid xs={12} sm={8} md={6}>
+        <Grid xs={24} sm={12} md={6}>
           {/* I think this is between $1.19 and $1.66 per unit based on this article
               https://www.ashclinicalnews.org/spotlight/feature-articles/high-price-hemophilia/ */}
           <Tooltip
@@ -193,7 +193,7 @@ export default function Stats(): JSX.Element {
             />
           </Tooltip>
         </Grid>
-        <Grid xs={12} sm={8} md={6}>
+        <Grid xs={24} sm={12} md={6}>
           <Card style={{ minHeight: '116px', height: '100%' }}>
             <Text small>Missing something?</Text>
             <Card.Footer>

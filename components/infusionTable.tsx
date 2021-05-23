@@ -163,9 +163,10 @@ export default function InfusionTable(props: Props): JSX.Element {
       {infusions.length === 0 && (
         <>
           <Spacer />
-          <Note type='success' filled>
+          <Note type='success'>
             No infusions found. Add one by clicking 'Log Infusion' above.
           </Note>
+          <Spacer />
         </>
       )}
       {infusions.length >= 25 && (
