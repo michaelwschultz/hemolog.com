@@ -3,7 +3,6 @@
 
 import firebase from 'firebase/app'
 import 'firebase/auth'
-import 'firebase/functions'
 import 'firebase/firestore'
 
 const config = {
@@ -14,6 +13,13 @@ const config = {
 
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
+}
+
+export const firestore = firebase.firestore()
+
+// use emulator if developing locally
+if (process.env.NODE_ENV === 'development') {
+  firestore.useEmulator('localhost', 8080)
 }
 
 export default firebase

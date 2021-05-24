@@ -1,5 +1,4 @@
 import firebase from 'lib/firebase'
-// import usePagination from "firestore-pagination-hook";
 import { useAuth } from 'lib/auth'
 import { compareDesc } from 'date-fns'
 

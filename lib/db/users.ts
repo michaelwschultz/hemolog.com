@@ -1,6 +1,4 @@
-import firebase from 'lib/firebase'
-
-const firestore = firebase.firestore()
+import firebase, { firestore } from 'lib/firebase'
 
 function createUser(uid: string, data: any) {
   return firestore
