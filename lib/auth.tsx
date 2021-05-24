@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, createContext } from 'react'
 import Router from 'next/router'
 import cookie from 'js-cookie'
 
-import firebase from 'lib/firebase'
+import firebase, { firestore } from 'lib/firebase'
 import { createUser } from 'lib/db/users'
 import { generateUniqueString } from 'lib/helpers'
 import LoadingScreen from 'components/loadingScreen'
@@ -23,8 +23,6 @@ export function AuthProvider({ children }: { children: any }) {
 }
 
 export const useAuth = () => useContext(authContext)
-
-const firestore = firebase.firestore()
 
 function useProvideAuth() {
   const [user, setUser] = useState<UserType | null>(null)
