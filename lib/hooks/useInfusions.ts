@@ -1,4 +1,5 @@
-import firebase from 'lib/firebase'
+import { firestore } from 'lib/firebase'
+import { doc, query, collection, where } from 'firebase/firestore'
 // import usePagination from "firestore-pagination-hook";
 import { useAuth } from 'lib/auth'
 import { compareDesc } from 'date-fns'
@@ -24,18 +25,27 @@ export default function useInfusions(
   limit?: number,
   uid?: string
 ): InfusionResponse {
-  const db = firebase.firestore()
   const { user } = useAuth()
+
+  // TODO: add a query here instead of a ref
+  const infusionRef = doc(firestore, 'infusions', user ? user.uid : uid)
+
+  const q = query(
+    collection(firestore, 'infusions'),
+    where('capital', '==', true)
+  )
+
+  const infusionSnapshot = await getDoc(userRef)
 
   // TODO(michael) orderBy createdAt
   // this isn't working right now becuase Firebase
   // can't read the isostring format
-  const query = db
+  const oldq = firestore
     .collection('infusions')
     .where('user.uid', '==', user ? user.uid : uid)
     .where('deletedAt', '==', null)
 
-  const { data, status, error } = useFirestoreQuery(query)
+  const { data, status, error } = useFirestoreQuery(infusionSnapshot)
 
   // NOTE(Michael) sorts infusions by date (newest to oldest)
   if (data) {

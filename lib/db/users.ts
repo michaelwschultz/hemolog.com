@@ -1,32 +1,44 @@
-import firebase from 'lib/firebase'
+import { firestore } from 'lib/firebase'
+import {
+  collection,
+  doc,
+  getDocs,
+  setDoc,
+  deleteDoc,
+  query,
+  where,
+  writeBatch,
+  updateDoc,
+} from 'firebase/firestore'
 
-const firestore = firebase.firestore()
-
-function createUser(uid: string, data: any) {
-  return firestore
-    .collection('users')
-    .doc(uid)
-    .set({ uid, ...data }, { merge: true })
+// TODO: add typing
+async function createUser(uid: string, data: any) {
+  const userRef = doc(firestore, 'users', uid)
+  await setDoc(userRef, data, { merge: true })
 }
 
 async function deleteUser(uid: string) {
-  firestore.collection('users').doc(uid).delete()
-  const snapshot = await firestore
-    .collection('infusions')
-    .where('userId', '==', uid)
-    .get()
+  await deleteDoc(doc(firestore, 'users', uid))
 
-  const batch = firestore.batch()
+  const userInfusions = query(
+    collection(firestore, 'infusions'),
+    where('userId', '==', uid)
+  )
+
+  const snapshot = await getDocs(userInfusions)
+  const batch = writeBatch(firestore)
 
   snapshot.forEach((doc) => {
     batch.delete(doc.ref)
   })
 
-  return batch.commit()
+  await batch.commit()
 }
 
+// TODO: add typing
 async function updateUser(uid: string, newValues: any) {
-  return firestore.collection('users').doc(uid).update(newValues)
+  const userRef = doc(firestore, 'users', uid)
+  await updateDoc(userRef, newValues)
 }
 
 export { createUser, deleteUser, updateUser }
