@@ -2,11 +2,14 @@ import React, { useState, useEffect, useContext, createContext } from 'react'
 import Router from 'next/router'
 import cookie from 'js-cookie'
 
-import firebase from 'lib/firebase'
+import { firestore, firebaseAuth } from 'lib/firebase'
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { doc, getDoc } from 'firebase/firestore'
 import { createUser } from 'lib/db/users'
 import { generateUniqueString } from 'lib/helpers'
 import LoadingScreen from 'components/loadingScreen'
 import { UserType } from 'lib/types/users'
+import { Person } from './types/person'
 
 type ContextProps = {
   user: UserType | null
@@ -24,16 +27,16 @@ export function AuthProvider({ children }: { children: any }) {
 
 export const useAuth = () => useContext(authContext)
 
-const firestore = firebase.firestore()
-
 function useProvideAuth() {
   const [user, setUser] = useState<UserType | null>(null)
   const [loading, setLoading] = useState(true)
 
+  // TODO: add typing
   const handleUser = async (rawUser: any) => {
     if (rawUser) {
       const user = await formatUser(rawUser)
-      const dbUser = await firestore.collection('users').doc(user.uid).get()
+      const userRef = doc(firestore, 'users', rawUser.id)
+      const userSnapshot = await getDoc(userRef)
 
       const { token, ...userWithoutToken } = user
 
@@ -42,9 +45,10 @@ function useProvideAuth() {
       // and overwrite the alertId created in the formatter.
       // This needs to be cleaned up. isAdmin is also appended to
       // the user here.
-      if (dbUser.exists) {
-        user.alertId = dbUser.data()!.alertId
-        user.isAdmin = dbUser.data()!.isAdmin
+      if (userSnapshot.exists()) {
+        const dbUser = userSnapshot.data() as Person
+        user.alertId = dbUser.alertId
+        user.isAdmin = dbUser.isAdmin
         delete userWithoutToken.alertId
       }
 
@@ -66,6 +70,7 @@ function useProvideAuth() {
     }
   }
 
+  // TODO: add ability to use email
   //   const signinWithEmail = (email, password) => {
   //     setLoading(true)
   //     return firebase
@@ -77,44 +82,41 @@ function useProvideAuth() {
   //       })
   //   }
 
-  //   const signinWithGitHub = (redirect) => {
-  //     setLoading(true)
-  //     return firebase
-  //       .auth()
-  //       .signInWithPopup(new firebase.auth.GithubAuthProvider())
-  //       .then((response) => {
-  //         handleUser(response.user)
-
-  //         if (redirect) {
-  //           Router.push(redirect)
-  //         }
-  //       })
-  //   }
-
   const signinWithGoogle = (redirect: string) => {
+    const provider = new GoogleAuthProvider()
     setLoading(true)
-    return firebase
-      .auth()
-      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then((response) => {
-        handleUser(response.user)
+    signInWithPopup(firebaseAuth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result)
 
-        if (redirect) {
-          Router.push(redirect)
+        if (credential) {
+          // const token = credential.accessToken
+          const user = result.user
+          handleUser(user)
+
+          if (redirect) {
+            Router.push(redirect)
+          }
         }
+      })
+      .catch((error) => {
+        console.log(
+          error.message,
+          error.code,
+          error.email,
+          GoogleAuthProvider.credentialFromError(error)
+        )
       })
   }
 
   const signout = () => {
     Router.push('/signin')
-    return firebase
-      .auth()
-      .signOut()
-      .then(() => handleUser(false))
+    firebaseAuth.signOut().then(() => handleUser(false))
   }
 
   useEffect(() => {
-    const unsubscribe = firebase.auth().onIdTokenChanged(handleUser)
+    const unsubscribe = firebaseAuth.onIdTokenChanged(handleUser)
 
     return () => unsubscribe()
   }, [])
@@ -123,7 +125,6 @@ function useProvideAuth() {
     user,
     loading,
     // signinWithEmail,
-    // signinWithGitHub,
     signinWithGoogle,
     signout,
   }

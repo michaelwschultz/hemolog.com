@@ -1,7 +1,12 @@
-import firebase from 'lib/firebase'
+import {
+  addDoc,
+  collection,
+  doc,
+  deleteDoc,
+  updateDoc,
+} from 'firebase/firestore'
+import { firestore } from 'lib/firebase'
 import { AttachedUserType } from 'lib/types/users'
-
-const firestore = firebase.firestore()
 
 export interface FeedbackType {
   createdAt: string
@@ -9,16 +14,18 @@ export interface FeedbackType {
   user: AttachedUserType
 }
 
-function createFeedback(data: FeedbackType) {
-  return firestore.collection('feedback').add(data)
+async function createFeedback(data: FeedbackType) {
+  await addDoc(collection(firestore, 'feedback'), data)
 }
 
-function deleteFeedback(uid: string) {
-  return firestore.collection('feedback').doc(uid).delete()
+async function deleteFeedback(uid: string) {
+  const feedbackRef = doc(firestore, 'feedback', uid)
+  await deleteDoc(feedbackRef)
 }
 
-function updateFeedback(uid: string, newValues: any) {
-  return firestore.collection('feedback').doc(uid).update(newValues)
+async function updateFeedback(uid: string, newValues: any) {
+  const feedbackRef = doc(firestore, 'feedback', uid)
+  await updateDoc(feedbackRef, newValues)
 }
 
 export { createFeedback, deleteFeedback, updateFeedback }

@@ -1,7 +1,6 @@
-import firebase from 'lib/firebase'
+import { setDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
+import { firestore } from 'lib/firebase'
 import { AttachedUserType } from 'lib/types/users'
-
-const firestore = firebase.firestore()
 
 export enum InfusionTypeEnum {
   PROPHY = 'PROPHY',
@@ -33,26 +32,27 @@ export interface InfusionType {
   user: AttachedUserType
 }
 
-// NOTE(michael) this might be a bad way of adding the doc id.
-// Probably worth searching for another solution.
-function createInfusion(data: InfusionType) {
-  return firestore
-    .collection('infusions')
-    .add(data)
-    .then((docRef) => {
-      docRef.set({ uid: docRef.id, ...data }, { merge: true })
-    })
+async function createOrUpdateInfusion(data: InfusionType) {
+  if (data.uid) {
+    const infusionRef = doc(firestore, 'infusions', data.uid)
+    const exisitingInfusion = await getDoc(infusionRef)
+
+    if (exisitingInfusion.exists()) {
+      const infusionRef = doc(firestore, 'infusions', data.uid)
+      // update the existing infusion
+      await setDoc(infusionRef, data, { merge: true })
+    }
+  } else {
+    // create a new infusion
+    await setDoc(doc(firestore, 'infusions'), data)
+  }
 }
 
-function deleteInfusion(uid: string) {
-  return firestore
-    .collection('infusions')
-    .doc(uid)
-    .set({ deletedAt: new Date().toISOString() }, { merge: true })
+async function deleteInfusion(uid: string) {
+  const infusionRef = doc(firestore, 'infusions', uid)
+  await updateDoc(infusionRef, {
+    deletedAt: new Date().toISOString(),
+  })
 }
 
-async function updateInfusion(uid: string, newValues: Partial<InfusionType>) {
-  return firestore.collection('infusions').doc(uid).update(newValues)
-}
-
-export { createInfusion, deleteInfusion, updateInfusion }
+export { createOrUpdateInfusion, deleteInfusion }
