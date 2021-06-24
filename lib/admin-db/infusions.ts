@@ -31,23 +31,34 @@ async function getInfusion(infusionId: string) {
   return { infusions }
 }
 
-async function getAllUserInfusions(uid: string) {
-  const snapshot = await adminFirestore
-    .collection('infusions')
-    .where('userId', '==', uid)
-    .get()
+async function getRecentUserInfusions(uid: string) {
+  try {
+    const snapshot = await adminFirestore
+      .collection('infusions')
+      .where('user.uid', '==', uid)
+      .where('deletedAt', '==', null)
+      // TODO: Need to add a timestamp value to each infusion and replace createdAt
+      // .orderBy('timestamp', 'asc')
+      // .limitToLast(3)
+      .get()
 
-  const infusions: any = []
+    const infusions: any = []
 
-  snapshot.forEach((doc) => {
-    infusions.push({ id: doc.id, ...doc.data() })
-  })
+    snapshot.forEach((doc) => {
+      infusions.push({ id: doc.id, ...doc.data() })
+    })
 
-  infusions.sort((a: any, b: any) =>
-    compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
-  )
+    // TODO: remove this hack after fixing the orderBy issue above
+    infusions.sort((a: any, b: any) =>
+      compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
+    )
+    infusions.length = 3
 
-  return { infusions }
+    return { infusions }
+  } catch (error) {
+    console.log('lower', error)
+    return { error }
+  }
 }
 
-export { getAllInfusions, getInfusion, getAllUserInfusions }
+export { getAllInfusions, getInfusion, getRecentUserInfusions }
