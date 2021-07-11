@@ -1,14 +1,16 @@
-import { getRecentUserInfusions } from 'lib/admin-db/infusions'
+import { getRecentUserInfusionsByApiKey } from 'lib/admin-db/infusions'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { token } = req.headers
-    if (!token) {
-      throw { message: 'Access denied. Missing valid token.' }
+    const { apikey } = req.headers
+    if (!apikey) {
+      throw { message: 'Access denied. Missing api key.' }
     }
 
-    const { infusions, error } = await getRecentUserInfusions(token as string)
+    const { infusions, error } = await getRecentUserInfusionsByApiKey(
+      apikey as string
+    )
 
     if (error) {
       throw error

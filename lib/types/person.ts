@@ -7,4 +7,5 @@ export interface Person {
   severity?: string
   medication?: string
   factor?: number
+  apiKey?: string
 }

@@ -31,11 +31,24 @@ async function getInfusion(infusionId: string) {
   return { infusions }
 }
 
-async function getRecentUserInfusions(uid: string) {
+async function getRecentUserInfusionsByApiKey(apiKey: string) {
   try {
+    const userSnapshot = await adminFirestore
+      .collection('users')
+      .where('apiKey', '==', apiKey)
+      .limit(1)
+      .get()
+
+    if (!userSnapshot.docs[0]) {
+      throw new Error(
+        'Invalid API key. Reset your key on your profile page at Hemolog.com'
+      )
+    }
+    const user = userSnapshot.docs[0].data()
+
     const snapshot = await adminFirestore
       .collection('infusions')
-      .where('user.uid', '==', uid)
+      .where('user.uid', '==', user.uid)
       .where('deletedAt', '==', null)
       // TODO: Need to add a timestamp value to each infusion and replace createdAt
       // .orderBy('timestamp', 'asc')
@@ -56,9 +69,8 @@ async function getRecentUserInfusions(uid: string) {
 
     return { infusions }
   } catch (error) {
-    console.log('lower', error)
     return { error }
   }
 }
 
-export { getAllInfusions, getInfusion, getRecentUserInfusions }
+export { getAllInfusions, getInfusion, getRecentUserInfusionsByApiKey }
