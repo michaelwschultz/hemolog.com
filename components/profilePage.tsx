@@ -1,16 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Grid, Text, Spacer, Button } from '@geist-ui/react'
+import { Grid, Text, Spacer, Snippet, Button, useToasts } from '@geist-ui/react'
 import splitbee from '@splitbee/web'
 
 import EmergencyCard from 'components/emergencyCard'
 import EmergencySnippet from 'components/emergencySnippet'
 import SettingsForm from 'components/settingsForm'
 import { useAuth } from 'lib/auth'
+import { updateUser } from 'lib/db/users'
+import { generateUniqueString } from 'lib/helpers'
+import useDbUser from 'lib/hooks/useDbUser'
+import { FlexibleHeightXYPlot } from 'react-vis'
 
 const ProfilePage = (): JSX.Element => {
   const { user } = useAuth()
+  const { person } = useDbUser(user?.uid || '')
   const router = useRouter()
+  const [, setToast] = useToasts()
 
   splitbee.track('Viewed profile page')
 
@@ -19,12 +25,65 @@ const ProfilePage = (): JSX.Element => {
     router.push('/emergency/print')
   }
 
+  const handleUpdateUserApiKey = async () => {
+    const newApiKey = await generateUniqueString(20)
+    updateUser(user!.uid, { apiKey: newApiKey })
+      .then(() => {
+        setToast({
+          text: 'API key updated!',
+          type: 'success',
+          delay: 5000,
+        })
+      })
+      .catch((error) =>
+        setToast({
+          text: `Something went wrong: ${error}`,
+          type: 'error',
+          delay: 10000,
+        })
+      )
+  }
+
+  useEffect(() => {
+    if (person && !person.apiKey) {
+      handleUpdateUserApiKey()
+    }
+  }, [user, person])
+
   return (
     <>
       <Grid.Container>
         <Grid xs={24} md={11} direction='column'>
           <Text h4>About you</Text>
           <SettingsForm />
+
+          <Spacer y={3} />
+          <Text h4>API key</Text>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
+            <Snippet
+              style={{ width: '100%' }}
+              symbol=''
+              text={person?.apiKey || ' '}
+            />
+            <Spacer />
+            <Button
+              type='secondary-light'
+              auto
+              onClick={handleUpdateUserApiKey}
+            >
+              Reset key
+            </Button>
+          </div>
+          <Text>
+            Used to access the (limited) Hemolog API. No documenation exists yet
+            but you can find more info inside the readme on Github.
+          </Text>
         </Grid>
         <Spacer y={3} />
         <Grid xs={24} md={12} direction='column'>

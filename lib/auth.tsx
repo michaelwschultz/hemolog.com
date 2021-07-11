@@ -40,11 +40,12 @@ function useProvideAuth() {
       // TODO(michael) If user already exist then remove alertId
       // so it isn't overwritten when the user is updated on `createUser`
       // and overwrite the alertId created in the formatter.
-      // This needs to be cleaned up. isAdmin is also appended to
+      // This needs to be cleaned up. isAdmin, an dapiKey is also appended to
       // the user here.
       if (dbUser.exists) {
         user.alertId = dbUser.data()!.alertId
         user.isAdmin = dbUser.data()!.isAdmin
+        user.apiKey = dbUser.data()!.apiKey
         delete userWithoutToken.alertId
       }
 
