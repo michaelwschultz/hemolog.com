@@ -30,7 +30,9 @@ const hemologLight = Themes.createFromLight({
   palette: hemologPalette,
 })
 
-splitbee.init()
+if (process.env.NODE_ENV === 'production') {
+  splitbee.init()
+}
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const description =

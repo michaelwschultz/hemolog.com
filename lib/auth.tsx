@@ -89,6 +89,15 @@ function useProvideAuth() {
   //       })
   //   }
 
+  const auth = firebase.auth()
+  // use emulator if developing locally
+  if (
+    process.env.NODE_ENV === 'development' &&
+    process.env.NEXT_PUBLIC_TEST_AGAINST_PROD !== 'true'
+  ) {
+    auth.useEmulator('http://localhost:9099')
+  }
+
   const signinWithGoogle = (redirect: string) => {
     setLoading(true)
     return firebase
@@ -112,7 +121,7 @@ function useProvideAuth() {
   }
 
   useEffect(() => {
-    const unsubscribe = firebase.auth().onIdTokenChanged(handleUser)
+    const unsubscribe = auth.onIdTokenChanged(handleUser)
 
     return () => unsubscribe()
   }, [])
