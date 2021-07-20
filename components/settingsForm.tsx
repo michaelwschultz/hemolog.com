@@ -14,7 +14,6 @@ import splitbee from '@splitbee/web'
 import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
 import { updateUser } from 'lib/db/users'
-import { ContinuousColorLegend } from 'react-vis'
 
 const SettingsForm = (): JSX.Element => {
   const { user } = useAuth()

@@ -8,6 +8,8 @@ A rebirth of my popular medication tracking app for people living with hemophili
 
 Hemolog is free but if you'd like to [Donate](https://github.com/sponsors/michaelwschultz), that would be awesome.
 
+<br />
+
 ## Features
 
 ### Insights on your data
@@ -26,6 +28,8 @@ Allows emergency personnel to scan or visit the link written on your emergency c
 
 Create an account and fill out the profile before printing yours out today.
 
+<br />
+
 ## History
 
 Hemolog was the first iPhone app available for hemophiliacs back in 2011. It has since been removed from the App Store since focusing on other projects meant that I couldn't keep it updated.
@@ -35,6 +39,8 @@ I initially designed Hemolog for myself. I was in college at the time and had be
 Hemolog meant the world to me and I'm glad it was able to serve people well for the 4 years it was on the App Store. But this year (2020), I decided to take another crack at it. The first version never really lived up to what it was suppose to be. The most important part of having data in a digital format is the ability to quickly gain insights from it. The first version didn't have any built in analytics or stats. This time around, I've made that the number one priority.
 
 I hope you find Hemolog useful and friendly to use. Or, if you don't have a bleeding disorder like hemophilia, perhaps you find this project interesting none the less.
+
+<br />
 
 ## Developers
 
@@ -73,3 +79,21 @@ To learn more about Next.js, take a look at the following resources:
 ### Deployed on Vercel (you can do the same)
 
 The easiest way to deploy Hemolog is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+<br />
+
+## API
+
+Added in June 2021. The Hemolog.com API allows anyone with an account to access their data via REST endpoints.
+
+Right now, the only endpoint available is https://hemolog.com/api/recent-infusions
+
+This endpoint returns the API key holders most recent 3 infusion logs. Same as what is shown on the public emergency page for each user.
+
+#### Example cURL request
+```
+curl -X GET \
+  'https://hemolog.com/api/recent-infusions' \
+  -H 'Accept: */*' \
+  -H 'apikey: <your-api-key>'
+```

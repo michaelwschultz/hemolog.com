@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (!req.headers.token) {
-      throw { message: 'Access denied. No user passed to endpoint.' }
+      throw { message: 'Access denied. Missing valid token.' }
     }
 
     const { uid } = await auth.verifyIdToken(req.headers.token as string)
@@ -20,8 +20,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (error) {
       throw error
     }
-    res.status(200).json(feedback)
+
+    return res.status(200).json(feedback)
   } catch (error) {
-    res.status(500).json({ error })
+    return res.status(500).send(error.message)
   }
 }

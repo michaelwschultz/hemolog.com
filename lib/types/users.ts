@@ -15,4 +15,5 @@ export interface UserType {
   provider: string
   token: string
   uid: string
+  apiKey?: string
 }

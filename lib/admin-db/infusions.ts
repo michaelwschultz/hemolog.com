@@ -31,23 +31,46 @@ async function getInfusion(infusionId: string) {
   return { infusions }
 }
 
-async function getAllUserInfusions(uid: string) {
-  const snapshot = await adminFirestore
-    .collection('infusions')
-    .where('userId', '==', uid)
-    .get()
+async function getRecentUserInfusionsByApiKey(apiKey: string) {
+  try {
+    const userSnapshot = await adminFirestore
+      .collection('users')
+      .where('apiKey', '==', apiKey)
+      .limit(1)
+      .get()
 
-  const infusions: any = []
+    if (!userSnapshot.docs[0]) {
+      throw new Error(
+        'Invalid API key. Reset your key on your profile page at Hemolog.com'
+      )
+    }
+    const user = userSnapshot.docs[0].data()
 
-  snapshot.forEach((doc) => {
-    infusions.push({ id: doc.id, ...doc.data() })
-  })
+    const snapshot = await adminFirestore
+      .collection('infusions')
+      .where('user.uid', '==', user.uid)
+      .where('deletedAt', '==', null)
+      // TODO: Need to add a timestamp value to each infusion and replace createdAt
+      // .orderBy('timestamp', 'asc')
+      // .limitToLast(3)
+      .get()
 
-  infusions.sort((a: any, b: any) =>
-    compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
-  )
+    const infusions: any = []
 
-  return { infusions }
+    snapshot.forEach((doc) => {
+      infusions.push({ id: doc.id, ...doc.data() })
+    })
+
+    // TODO: remove this hack after fixing the orderBy issue above
+    infusions.sort((a: any, b: any) =>
+      compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
+    )
+    infusions.length = 3
+
+    return { infusions }
+  } catch (error) {
+    return { error }
+  }
 }
 
-export { getAllInfusions, getInfusion, getAllUserInfusions }
+export { getAllInfusions, getInfusion, getRecentUserInfusionsByApiKey }
