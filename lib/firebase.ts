@@ -3,17 +3,26 @@
 
 import firebase from 'firebase/app'
 import 'firebase/auth'
-import 'firebase/functions'
 import 'firebase/firestore'
 
 const config = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY || 'development',
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || 'localhost',
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'hemolog',
 }
 
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
+}
+
+export const firestore = firebase.firestore()
+
+// use emulator if developing locally
+if (
+  process.env.NODE_ENV === 'development' &&
+  process.env.NEXT_PUBLIC_TEST_AGAINST_PROD !== 'true'
+) {
+  firestore.useEmulator('localhost', 8080)
 }
 
 export default firebase

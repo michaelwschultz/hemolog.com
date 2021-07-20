@@ -1,7 +1,5 @@
-import firebase from 'lib/firebase'
+import firebase, { firestore } from 'lib/firebase'
 import { AttachedUserType } from 'lib/types/users'
-
-const firestore = firebase.firestore()
 
 export enum InfusionTypeEnum {
   PROPHY = 'PROPHY',

@@ -46,22 +46,16 @@ I hope you find Hemolog useful and friendly to use. Or, if you don't have a blee
 
 ### Getting Started
 
-You'll need Node and Yarn installed before you can run the server. Check the package.json for corresponding version numbers.
+You'll need Node and Yarn installed before you can run the app. Check the package.json for corresponding version numbers.
 
-You'll also need your own Firebase Cloud Firestore and Authentication instances. You can sign up for free at [firebase.google.com](https://firebase.google.com/).
+You'll also need to start the Firebase emulators which run in a separate process. Open up a
+terminal window and run
 
-Once you've setup your Firebase account you'll need to add a number of keys to a local `.env` file.
-
-```
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=""
-NEXT_PUBLIC_FIREBASE_DATABASE_URL=""
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=""
-NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY=""
-FIREBASE_CLIENT_EMAIL=""
-FIREBASE_PRIVATE_KEY=""
+```bash
+yarn firebase
 ```
 
-Then run the development server.
+Then open another terminal window/tab and run the development server (Nextjs).
 
 ```bash
 yarn dev
@@ -69,7 +63,11 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+You can also open http://localhost:8081 to see the Firebase emulators and the corresponding data.
+Hemolog uses Auth for authentication via Google (which is faked when running locally) and
+Firestore for hosting your data. You can manipulate your data via this interface as well.
+
+After you're up and running, start editing the landing page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
 ### Learn More about Next.js
 
