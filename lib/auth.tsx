@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
 import Router from 'next/router'
 import cookie from 'js-cookie'
+import { useToasts } from '@geist-ui/react'
 
 import firebase, { firestore } from 'lib/firebase'
 import { createUser } from 'lib/db/users'
@@ -101,8 +102,7 @@ function useProvideAuth() {
 
   const signinWithGoogle = (redirect: string) => {
     setLoading(true)
-    return firebase
-      .auth()
+    return auth
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then((response) => {
         handleUser(response.user)
@@ -111,14 +111,14 @@ function useProvideAuth() {
           Router.push(redirect)
         }
       })
+      .catch(() => {
+        setLoading(false)
+      })
   }
 
   const signout = () => {
     Router.push('/signin')
-    return firebase
-      .auth()
-      .signOut()
-      .then(() => handleUser(false))
+    return auth.signOut().then(() => handleUser(false))
   }
 
   useEffect(() => {
