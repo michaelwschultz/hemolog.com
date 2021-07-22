@@ -40,8 +40,8 @@ const About = (): JSX.Element => {
           </Text>
 
           <Text>
-            That being said, it's still important to keep track of you
-            treatments. Maybe even more now than ever. If getting on a trial is
+            That being said, it's still important to keep track of your
+            treatments, maybe even now more than ever. If getting on a trial is
             something you're interested in, knowing how many bleeds you were
             having before is really important.
           </Text>
@@ -51,7 +51,7 @@ const About = (): JSX.Element => {
             track your treatments, and Hemolog gives you instant feedback.
           </Text>
           <Text>
-            Insights are something that I always wanted to be apart of Hemolog,
+            Insights are something that I always wanted to be a part of Hemolog,
             and now they're finally here.
           </Text>
 

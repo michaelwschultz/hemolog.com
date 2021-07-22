@@ -5,11 +5,7 @@ import {
   Display,
   Image,
   Spacer,
-  Grid,
-  User,
   Link,
-  useToasts,
-  useClipboard,
   Note,
 } from '@geist-ui/react'
 import Share from '@geist-ui/react-icons/share'
@@ -19,15 +15,9 @@ import styled from 'styled-components'
 import StaticHeader from 'components/staticHeader'
 import Footer from 'components/footer'
 import BlogFooter from 'components/blogFooter'
+import BlogPostFooter from 'components/blogPostFooter'
 
 const Changelog = (): JSX.Element => {
-  const [, setToast] = useToasts()
-  const { copy } = useClipboard()
-  const handleCopy = (postId: string) => {
-    copy(`https://hemolog.com/changelog#${postId}`)
-    setToast({ type: 'success', text: 'Link copied!' })
-  }
-
   const articleRichResults = {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
@@ -35,30 +25,6 @@ const Changelog = (): JSX.Element => {
     image: ['https://hemolog.com/images/changelog/iphone-hemolog-light.png'],
     datePublished: '2020-02-05T08:00:00+08:00',
     dateModified: '2020-02-05T09:20:00+08:00',
-  }
-
-  const PostFooter = ({ postId }: { postId: string }) => {
-    return (
-      <>
-        <Spacer y={2} />
-        <Grid.Container gap={2} alignItems='center'>
-          <Grid xs={22}>
-            <User src='/images/michael-avatar.jpg' name='Michael Schultz'>
-              <User.Link href='https://twitter.com/michaelschultz'>
-                @michaelschultz
-              </User.Link>
-            </User>
-          </Grid>
-          <Grid xs={2}>
-            <div style={{ cursor: 'pointer' }}>
-              <Share color='#FF062C' onClick={() => handleCopy(postId)} />
-            </div>
-          </Grid>
-        </Grid.Container>
-        <Divider />
-        <Spacer y={2} />
-      </>
-    )
   }
 
   return (
@@ -133,7 +99,7 @@ const Changelog = (): JSX.Element => {
               >
                 Sneak peak of what's coming next
               </Link>
-              <PostFooter postId='post-2' />
+              <BlogPostFooter postSlug='mobile-enhancements' />
             </StyledPost>
           </StyledChangelogContent>
 
