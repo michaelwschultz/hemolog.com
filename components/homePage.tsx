@@ -91,6 +91,7 @@ const HomePage = (): JSX.Element => {
           <Spacer x={0.5} />
           <Select
             placeholder='Choose one'
+            disabled={infusionYears.length < 1}
             initialValue={filterYear}
             onChange={(value) => setFilterYear(value as string)}
           >
