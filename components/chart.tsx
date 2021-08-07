@@ -6,39 +6,38 @@ import {
   XAxis,
   YAxis,
 } from 'react-vis'
-import { getMonth, getYear } from 'date-fns'
+import { getMonth } from 'date-fns'
 import useInfusions from 'lib/hooks/useInfusions'
-import { Text } from '@geist-ui/react'
+import { filterInfusions } from 'lib/helpers'
 
 type ChartEntry = {
   x: string
   y: number
 }
 
-export default function Chart(): JSX.Element {
+interface ChartProps {
+  filterYear: string
+}
+
+export default function Chart(props: ChartProps): JSX.Element {
+  const { filterYear } = props
   const { data } = useInfusions()
 
   if (!data) {
     return <></>
   }
 
-  const today = new Date()
-  const thisYear = getYear(today)
+  const filteredInfusions = filterInfusions(data, filterYear)
 
-  // filter out data from past years
-  const filteredData = data.filter(
-    (entry) => getYear(new Date(entry.date)) === thisYear
-  )
-
-  const bleeds = filteredData
+  const bleeds = filteredInfusions
     .filter((entry) => entry.type === 'BLEED')
     .map((bleed) => bleed.date)
 
-  const preventative = filteredData
+  const preventative = filteredInfusions
     .filter((entry) => entry.type === 'PREVENTATIVE')
     .map((preventitive) => preventitive.date)
 
-  const prophy = filteredData
+  const prophy = filteredInfusions
     .filter((entry) => entry.type === 'PROPHY')
     .map((prophy) => prophy.date)
 

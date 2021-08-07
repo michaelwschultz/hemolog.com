@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
 import Router from 'next/router'
 import cookie from 'js-cookie'
-import { useToasts } from '@geist-ui/react'
 
 import firebase, { firestore } from 'lib/firebase'
 import { createUser } from 'lib/db/users'
