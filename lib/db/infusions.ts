@@ -1,4 +1,4 @@
-import firebase, { firestore } from 'lib/firebase'
+import { firestore } from 'lib/firebase'
 import { AttachedUserType } from 'lib/types/users'
 
 export enum InfusionTypeEnum {

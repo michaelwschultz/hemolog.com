@@ -23,10 +23,12 @@ import {
   deleteInfusion,
 } from 'lib/db/infusions'
 import { useAuth } from 'lib/auth'
+import { filterInfusions } from 'lib/helpers'
 
-interface Props {
+interface InfusionTableProps {
   limit?: number
   uid?: string
+  filterYear: string
 }
 
 enum infusionTypeBadgeStyle {
@@ -35,11 +37,13 @@ enum infusionTypeBadgeStyle {
   PREVENTATIVE = 'error',
 }
 
-export default function InfusionTable(props: Props): JSX.Element {
-  const { limit, uid } = props
+export default function InfusionTable(props: InfusionTableProps): JSX.Element {
+  const { limit, uid, filterYear } = props
   const { data: infusions, status, error } = useInfusions(limit, uid)
   const [, setToast] = useToasts()
   const { user } = useAuth()
+
+  const filteredInfusions = filterInfusions(infusions, filterYear)
 
   if (status === FirestoreStatusType.LOADING) {
     return (
@@ -127,9 +131,13 @@ export default function InfusionTable(props: Props): JSX.Element {
 
   // TODO(michael) add more sorting filters
   // sort by date, most recent at the top
-  infusions.sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
+  filteredInfusions.sort((a, b) =>
+    compareDesc(parseISO(a.date), parseISO(b.date))
+  )
 
-  const rowData = infusions.map((infusion) => formatInfusionRow(infusion))
+  const rowData = filteredInfusions.map((infusion) =>
+    formatInfusionRow(infusion)
+  )
 
   // only shows delete when the logged in user is viewing their own data
   let isLoggedInUser = false
@@ -160,7 +168,7 @@ export default function InfusionTable(props: Props): JSX.Element {
         <Table.Column prop='units' label='Amount' />
         {isLoggedInUser && <Table.Column prop='remove' />}
       </Table>
-      {infusions.length === 0 && (
+      {filteredInfusions.length === 0 && (
         <>
           <Spacer />
           <Note type='success'>
@@ -169,7 +177,7 @@ export default function InfusionTable(props: Props): JSX.Element {
           <Spacer />
         </>
       )}
-      {infusions.length >= 25 && (
+      {filteredInfusions.length >= 25 && (
         <>
           <Spacer y={0.5} />
           <Row justify='end'>

@@ -1,11 +1,13 @@
 import React from 'react'
 import _ from 'underscore'
 import { Grid, Note, Card, useModal, Tooltip, Text } from '@geist-ui/react'
+
 import StatCard from 'components/statCard'
 import useInfusions from 'lib/hooks/useInfusions'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
 import { InfusionTypeEnum } from 'lib/db/infusions'
 import FeedbackModal from 'components/feedbackModal'
+import { filterInfusions } from 'lib/helpers'
 
 // TODO(michael) move types to types file
 type Value = string[]
@@ -26,8 +28,15 @@ export interface InfusionSheet {
 // const PHARMACY_ORDERS = 6
 const COST_OF_FACTOR = 1.66
 
-export default function Stats(): JSX.Element {
+interface StatsProps {
+  filterYear: string
+}
+
+export default function Stats(props: StatsProps): JSX.Element {
+  const { filterYear } = props
   const { data, status, error } = useInfusions()
+
+  const filteredInfusions = filterInfusions(data, filterYear)
 
   // TODO(michael): Remove the feedback modal from this component at some point
   // since we already use it in the footer, maybe figure out a way to share
@@ -93,10 +102,10 @@ export default function Stats(): JSX.Element {
   // Another idea could be to make all these cards individual components as the logic
   // could get a lot more complicated for some of them.
 
-  const numberOfInfusions = data.length
-  const affectedAreas = data.map((entry) => entry.sites)
-  const causes = data.map((entry) => entry.cause)
-  const numberOfBleeds = data.filter(
+  const numberOfInfusions = filteredInfusions.length
+  const affectedAreas = filteredInfusions.map((entry) => entry.sites)
+  const causes = filteredInfusions.map((entry) => entry.cause)
+  const numberOfBleeds = filteredInfusions.filter(
     (entry) => entry.type === InfusionTypeEnum.BLEED
   ).length
   const mostAffectedArea = _.chain(affectedAreas)
@@ -119,7 +128,7 @@ export default function Stats(): JSX.Element {
     let longestStreak = 0
     let currentStreak = 0
 
-    data.forEach((entry) => {
+    filteredInfusions.forEach((entry) => {
       const isProphy = entry.type === InfusionTypeEnum.PROPHY
 
       if (isProphy) {
@@ -138,7 +147,9 @@ export default function Stats(): JSX.Element {
 
   const getTotalUnits = () => {
     let units = 0
-    data.forEach((entry) => (units = entry.medication.units + units))
+    filteredInfusions.forEach(
+      (entry) => (units = entry.medication.units + units)
+    )
 
     return units
   }
