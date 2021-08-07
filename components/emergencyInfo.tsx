@@ -41,7 +41,7 @@ export default function EmergencyInfo(props: Props): JSX.Element {
           <Text h5>Most recent infusions</Text>
           {smallerThanSmall && <Text>Swipe →</Text>}
         </Row>
-        <InfusionTable limit={3} uid={person.uid} />
+        <InfusionTable limit={3} uid={person.uid} filterYear='All time' />
         <Spacer />
         <Note label='Note'>
           Pay attention to the date on each of these logs. We're only showing
