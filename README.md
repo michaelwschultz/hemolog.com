@@ -91,9 +91,9 @@ Right now, the only endpoint available is https://hemolog.com/api/recent-infusio
 This endpoint returns the API key holders most recent 3 infusion logs. Same as what is shown on the public emergency page for each user.
 
 #### Example cURL request
+
 ```
 curl -X GET \
-  'https://hemolog.com/api/recent-infusions' \
-  -H 'Accept: */*' \
-  -H 'apikey: <your-api-key>'
+  'https://hemolog.com/api/recent-infusions?apikey=<your-api-key>' \
+  -H 'Accept: */*'
 ```
