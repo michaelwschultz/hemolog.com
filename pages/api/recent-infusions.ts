@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { apikey } = req.headers
+    const { apikey } = req.query
     if (!apikey) {
       throw { message: 'Access denied. Missing api key.' }
     }
