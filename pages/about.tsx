@@ -40,18 +40,18 @@ const About = (): JSX.Element => {
           </Text>
 
           <Text>
-            That being said, it's still important to keep track of you
+            That being said, it's still important to keep track of your
             treatments. Maybe even more now than ever. If getting on a trial is
             something you're interested in, knowing how many bleeds you were
             having before is really important.
           </Text>
           <Text>
-            Trial or not, keeping track of your treatment habits can be hard,
-            and the tools we have don't do a great job. Hemolog is simple. You
-            track your treatments, and Hemolog gives you instant feedback.
+            Trial or not, keeping track of your treatment habits can be hard and
+            the tools we have aren't great. Hemolog is simple. You track your
+            treatments and Hemolog gives you instant feedback.
           </Text>
           <Text>
-            Insights are something that I always wanted to be apart of Hemolog,
+            Insights are something that I always wanted to be a part of Hemolog
             and now they're finally here.
           </Text>
 
@@ -67,12 +67,10 @@ const About = (): JSX.Element => {
           </Display>
 
           <Text>
-            These insights are calculated as you add more data. Filters will
-            allow you to choose different time frames for viewing your data down
-            the road giving you the best most comprehensive view into your
-            treatment history ever. I've chosen a few insights that are
-            interesting for me. If you have thoughts on what you would like to
-            see just let me know.
+            These insights are calculated as you log your treatments. Filter by
+            year for a comprehensive view into your treatment history. I've
+            chosen a few insights that are interesting to me. If you have
+            thoughts on what you would like to see, just let me know.
           </Text>
 
           <Spacer y={2} />
@@ -90,7 +88,7 @@ const About = (): JSX.Element => {
           <Grid.Container gap={2} alignItems='center'>
             <Grid xs={24} sm={16} direction='column'>
               <Text h3 type='secondary'>
-                Now that Hemolog is back. I hope you enjoy using it as much as I
+                Now that Hemolog is back, I hope you enjoy using it as much as I
                 have. It's up to all of us to keep each other accountable. You
                 can{' '}
                 <NextLink href='/emergency/mike29'>
