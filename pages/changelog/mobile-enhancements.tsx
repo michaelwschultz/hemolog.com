@@ -105,8 +105,6 @@ const Changelog = (): JSX.Element => {
               </Text>
               <Display shadow caption='Hemolog running on an iPhone 12'>
                 <Image
-                  width={640}
-                  height={480}
                   src='/images/changelog/iphone-hemolog-light.png'
                   alt='Hemolog for iPhone'
                 />
@@ -118,8 +116,6 @@ const Changelog = (): JSX.Element => {
               </Note>
               <Display shadow caption='Hemolog app icon on iPhone'>
                 <Image
-                  width={640}
-                  height={180}
                   src='/images/changelog/iphone-homescreen-app.jpg'
                   alt='Hemolog app icon on iPhone'
                 />

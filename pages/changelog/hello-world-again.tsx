@@ -103,12 +103,7 @@ const Changelog = (): JSX.Element => {
                 shadow
                 caption='High level insights that help you understand your habits'
               >
-                <Image
-                  width={486}
-                  height={377}
-                  src='/images/insights-example.png'
-                  alt='Insights'
-                />
+                <Image src='/images/insights-example.png' alt='Insights' />
               </Display>
 
               <Text>

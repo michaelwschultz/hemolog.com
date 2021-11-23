@@ -37,7 +37,6 @@ export default function BlogFooter(): JSX.Element {
         <Spacer />
         <Image
           width={300}
-          height={300}
           src='/images/michael-schultz.jpg'
           alt='Michael Schultz'
         />
