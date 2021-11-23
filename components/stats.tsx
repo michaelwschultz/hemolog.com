@@ -1,4 +1,3 @@
-import React from 'react'
 import _ from 'underscore'
 import { Grid, Note, Card, useModal, Tooltip, Text } from '@geist-ui/react'
 
@@ -81,7 +80,7 @@ export default function Stats(props: StatsProps): JSX.Element {
   if (error) {
     return (
       <Note type='error' label='Error'>
-        Oops, the database didn't respond. Refresh the page to try again.
+        Oops, the database didn’t respond. Refresh the page to try again.
       </Note>
     )
   }
@@ -205,7 +204,7 @@ export default function Stats(props: StatsProps): JSX.Element {
           </Tooltip>
         </Grid>
         <Grid xs={24} sm={12} md={6}>
-          <Card style={{ minHeight: '116px', height: '100%' }}>
+          <Card width='100%' style={{ minHeight: '116px', height: '100%' }}>
             <Text small>Missing something?</Text>
             <Card.Footer>
               <Text>

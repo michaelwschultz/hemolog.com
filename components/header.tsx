@@ -1,9 +1,8 @@
-import React from 'react'
 import {
   Avatar,
   Link,
   Popover,
-  Row,
+  Grid,
   Button,
   useModal,
   Spacer,
@@ -62,30 +61,37 @@ const Header = (props: Props): JSX.Element => {
   if (user) {
     return (
       <>
-        <Row justify='space-between' align='middle'>
-          <Logo />
-          <Row align='middle'>
-            {!isMobile && (
-              <Button
-                onClick={() => setInfusionModalVisible(true)}
-                size='small'
-                auto
-                type='success-light'
-              >
-                Log infusion
-              </Button>
-            )}
-            <Spacer />
-            <Popover content={popoverContent} placement='bottomEnd'>
-              <Avatar
-                src={user.photoUrl || ''}
-                text={user.displayName && user.displayName.charAt(0)}
-                size={40}
-                style={{ cursor: 'pointer' }}
-              />
-            </Popover>
-          </Row>
-        </Row>
+        <Grid.Container justify='space-between' alignItems='center'>
+          <Grid>
+            <Logo />
+          </Grid>
+          <Grid>
+            <Grid.Container gap={2} alignItems='center'>
+              <Grid>
+                {!isMobile && (
+                  <Button
+                    onClick={() => setInfusionModalVisible(true)}
+                    auto
+                    type='success-light'
+                    scale={3 / 4}
+                  >
+                    Log infusion
+                  </Button>
+                )}
+              </Grid>
+              <Grid>
+                <Popover content={popoverContent} placement='bottomEnd'>
+                  <Avatar
+                    src={user.photoUrl || '/images/favicon-32x32.png'}
+                    text={user.displayName && user.displayName.charAt(0)}
+                    style={{ cursor: 'pointer' }}
+                    scale={2}
+                  />
+                </Popover>
+              </Grid>
+            </Grid.Container>
+          </Grid>
+        </Grid.Container>
 
         <Spacer />
 

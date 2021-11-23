@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import useInfusions from 'lib/hooks/useInfusions'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
@@ -6,7 +5,7 @@ import { format, compareDesc, parseISO } from 'date-fns'
 import {
   Note,
   Table,
-  Row,
+  Grid,
   Loading,
   Badge,
   Spacer,
@@ -56,10 +55,10 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
           <Table.Column prop='factorBrand' label='Factor' />
           <Table.Column prop='units' label='Amount' />
         </Table>
-        <Spacer y={2} />
-        <Row>
+        <Spacer h={2} />
+        <Grid.Container>
           <Loading>Loading infusion data</Loading>
-        </Row>
+        </Grid.Container>
       </>
     )
   }
@@ -67,7 +66,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
   if (error) {
     return (
       <Note type='error' label='Error'>
-        Oops, the database didn't respond. Refresh the page to try again.
+        Oops, the database didn’t respond. Refresh the page to try again.
       </Note>
     )
   }
@@ -119,7 +118,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
           text='This is permanent and cannot be undone.'
           placement='left'
         >
-          <Button size='mini' onClick={() => deleteRow(infusion.uid!)} auto>
+          <Button scale={0.25} onClick={() => deleteRow(infusion.uid!)} auto>
             Delete
           </Button>
         </Tooltip>
@@ -172,15 +171,15 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
         <>
           <Spacer />
           <Note type='success'>
-            No infusions found. Add one by clicking 'Log Infusion' above.
+            No infusions found. Add one by clicking ’Log Infusion’ above.
           </Note>
           <Spacer />
         </>
       )}
       {filteredInfusions.length >= 25 && (
         <>
-          <Spacer y={0.5} />
-          <Row justify='end'>
+          <Spacer h={0.5} />
+          <Grid.Container justify='flex-end'>
             <Pagination count={1}>
               <Pagination.Next>
                 <ChevronRight />
@@ -189,7 +188,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
                 <ChevronLeft />
               </Pagination.Previous>
             </Pagination>
-          </Row>
+          </Grid.Container>
         </>
       )}
     </StyledTableWrapper>

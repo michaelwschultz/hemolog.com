@@ -3,7 +3,7 @@ import Head from 'next/head'
 import {
   Text,
   Fieldset,
-  Row,
+  Grid,
   Spacer,
   Link,
   Button,
@@ -35,12 +35,12 @@ const Signin = (pageProps: { version: string }) => {
       </Head>
       <StyledPage>
         <StyledPageHeader>
-          <Row align='middle' justify='space-between'>
+          <Grid.Container alignItems='center' justify='space-between'>
             <Logo />
             <Link href='https://github.com/michaelwschultz/hemolog.com'>
               <Tag>v{version}</Tag>
             </Link>
-          </Row>
+          </Grid.Container>
         </StyledPageHeader>
         <StyledPageContent>
           <Note type='default' label='Important'>
@@ -51,29 +51,31 @@ const Signin = (pageProps: { version: string }) => {
             </b>{' '}
             HIPAA compliant... yada yada yada.
           </Note>
-          <Spacer y={2} />
-          <Row justify='center'>
+          <Spacer h={2} />
+          <Grid.Container justify='center'>
             <Fieldset style={{ maxWidth: '460px', width: '100%' }}>
               <Text h4>Register or sign in</Text>
               <Text p>
-                Signing in will create an account if you don't have one yet.
-                Don't worry, Hemolog will always be <i>free</i>.
+                Signing in will create an account if you don’t have one yet.
+                Don’t worry, Hemolog will always be <i>free</i>.
               </Text>
               <Fieldset.Footer>
+                <Text></Text>
                 <Button
                   onClick={() => auth.signinWithGoogle('/home')}
                   loading={auth.loading}
                   type='success-light'
+                  scale={3 / 4}
                 >
                   Continue with Google
                 </Button>
               </Fieldset.Footer>
             </Fieldset>
-          </Row>
+          </Grid.Container>
 
-          <Spacer y={3} />
+          <Spacer h={3} />
           <DescriptionCards />
-          <Spacer y={2} />
+          <Spacer h={2} />
         </StyledPageContent>
         <Footer />
       </StyledPage>

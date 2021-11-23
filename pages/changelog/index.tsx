@@ -30,7 +30,7 @@ const Changelog = (): JSX.Element => {
   const PostFooter = ({ postId }: { postId: string }) => {
     return (
       <>
-        <Spacer y={2} />
+        <Spacer h={2} />
         <Grid.Container gap={2} alignItems='center'>
           <Grid xs={22}>
             <User src='/images/michael-avatar.jpg' name='Michael Schultz'>
@@ -46,7 +46,7 @@ const Changelog = (): JSX.Element => {
           </Grid>
         </Grid.Container>
         <Divider />
-        <Spacer y={2} />
+        <Spacer h={2} />
       </>
     )
   }
@@ -67,7 +67,7 @@ const Changelog = (): JSX.Element => {
             <Divider />
 
             <StyledPost id='post-2'>
-              <Spacer y={3} />
+              <Spacer h={3} />
               <Text h4>Mobile enhancements</Text>
               <Text h6>
                 Looks great on your desktop <i>and</i> mobile devices!
@@ -87,6 +87,7 @@ const Changelog = (): JSX.Element => {
                   width={240}
                   height={180}
                   src='/images/changelog/iphone-hemolog-light.png'
+                  alt='Hemolog for iPhone'
                 />
               </StyledRow>
 
@@ -100,7 +101,7 @@ const Changelog = (): JSX.Element => {
 
               <Divider>Update #1</Divider>
               <Text>
-                Hemolog is back! After 8 years, I've built a reincarnation of
+                Hemolog is back! After 8 years, I’ve built a reincarnation of
                 the old iPhone app Hemolog. This time around, it does a bit more
                 than just storing your treatment logs. In this incarnation,
                 Hemolog is now a web app and helps you understand your logs by
@@ -108,7 +109,7 @@ const Changelog = (): JSX.Element => {
               </Text>
               <Text>
                 The original Hemolog was built with the help of a contract
-                developer. This time around I've designed and built everything
+                developer. This time around I’ve designed and built everything
                 from the ground up with the purpose of being the best place to
                 store your infusion data and learn from it.
               </Text>
@@ -122,6 +123,7 @@ const Changelog = (): JSX.Element => {
                   width={240}
                   height={166}
                   src='/images/insights-example.png'
+                  alt='Insights'
                 />
               </StyledRow>
 
@@ -129,11 +131,11 @@ const Changelog = (): JSX.Element => {
             </StyledPost>
           </StyledChangelogContent>
 
-          <Spacer y={2} />
+          <Spacer h={2} />
 
           <BlogFooter />
 
-          <Spacer y={5} />
+          <Spacer h={5} />
         </StyledPageContent>
         <Footer />
       </StyledPage>

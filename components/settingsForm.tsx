@@ -1,4 +1,3 @@
-import React from 'react'
 import { useFormik } from 'formik'
 import {
   Input,
@@ -89,7 +88,6 @@ const SettingsForm = (): JSX.Element => {
           <AutoComplete
             id='hemophiliaType'
             name='hemophiliaType'
-            type='text'
             width='100%'
             placeholder='A'
             onChange={(value) => formik.setFieldValue('hemophiliaType', value)}
@@ -102,7 +100,6 @@ const SettingsForm = (): JSX.Element => {
           <AutoComplete
             id='severity'
             name='severity'
-            type='text'
             width='100%'
             placeholder='Severe'
             onChange={(value) => formik.setFieldValue('severity', value)}
@@ -115,7 +112,7 @@ const SettingsForm = (): JSX.Element => {
           <Input
             id='factor'
             name='factor'
-            type='number'
+            htmlType='number'
             width='100%'
             placeholder='8'
             onChange={formik.handleChange}
@@ -127,7 +124,6 @@ const SettingsForm = (): JSX.Element => {
           <AutoComplete
             id='medication'
             name='medication'
-            type='text'
             width='100%'
             placeholder='Advate'
             onChange={(value) => formik.setFieldValue('medication', value)}

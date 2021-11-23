@@ -1,11 +1,10 @@
-import React from 'react'
 import {
   Modal,
   Input,
   Text,
   Spacer,
   Button,
-  Row,
+  Grid,
   useToasts,
 } from '@geist-ui/react'
 import splitbee from '@splitbee/web'
@@ -128,58 +127,63 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
       <Modal.Title>Log infusion</Modal.Title>
       <Modal.Content>
         <form onSubmit={formik.handleSubmit}>
-          <Row justify='space-between'>
-            <Button
-              auto
-              name='type'
-              onClick={() =>
-                formik.setFieldValue('type', InfusionTypeEnum.PROPHY)
-              }
-              style={{ width: '100%', marginRight: '8px' }}
-              type={
-                formik.values.type === InfusionTypeEnum.PROPHY
-                  ? 'warning-light'
-                  : 'default'
-              }
-            >
-              Prophy
-            </Button>
-            <Button
-              auto
-              name='type'
-              onClick={() =>
-                formik.setFieldValue('type', InfusionTypeEnum.BLEED)
-              }
-              style={{ width: '100%', marginRight: '8px' }}
-              type={
-                formik.values.type === InfusionTypeEnum.BLEED
-                  ? 'success-light'
-                  : 'default'
-              }
-            >
-              Bleed
-            </Button>
-            <Button
-              auto
-              name='type'
-              onClick={() =>
-                formik.setFieldValue('type', InfusionTypeEnum.PREVENTATIVE)
-              }
-              style={{ width: '100%' }}
-              type={
-                formik.values.type === InfusionTypeEnum.PREVENTATIVE
-                  ? 'error-light'
-                  : 'default'
-              }
-            >
-              Preventative
-            </Button>
-          </Row>
+          <Grid.Container gap={1}>
+            <Grid xs={8}>
+              <Button
+                width='100%'
+                name='type'
+                onClick={() =>
+                  formik.setFieldValue('type', InfusionTypeEnum.PROPHY)
+                }
+                style={{ marginRight: '8px' }}
+                type={
+                  formik.values.type === InfusionTypeEnum.PROPHY
+                    ? 'warning-light'
+                    : 'default'
+                }
+              >
+                Prophy
+              </Button>
+            </Grid>
+            <Grid xs={8}>
+              <Button
+                width='100%'
+                name='type'
+                onClick={() =>
+                  formik.setFieldValue('type', InfusionTypeEnum.BLEED)
+                }
+                style={{ marginRight: '8px' }}
+                type={
+                  formik.values.type === InfusionTypeEnum.BLEED
+                    ? 'success-light'
+                    : 'default'
+                }
+              >
+                Bleed
+              </Button>
+            </Grid>
+            <Grid xs={8}>
+              <Button
+                width='100%'
+                name='type'
+                onClick={() =>
+                  formik.setFieldValue('type', InfusionTypeEnum.PREVENTATIVE)
+                }
+                type={
+                  formik.values.type === InfusionTypeEnum.PREVENTATIVE
+                    ? 'error-light'
+                    : 'default'
+                }
+              >
+                Preventative
+              </Button>
+            </Grid>
+          </Grid.Container>
           <Spacer />
           <Input
             id='date'
             name='date'
-            type='date'
+            htmlType='date'
             onChange={formik.handleChange}
             placeholder='Date'
             value={formik.values.date}
@@ -198,18 +202,18 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
           >
             <Text h6>Medication</Text>
           </Input>
-          <Spacer y={0.5} />
+          <Spacer h={0.8} />
           <Input
             id='units'
             name='units'
-            type='number'
+            htmlType='number'
             labelRight='units'
             onChange={formik.handleChange}
             placeholder='3000'
             value={formik.values.units}
             width='100%'
           />
-          <Spacer y={0.5} />
+          <Spacer h={0.5} />
           <Input
             id='lot'
             name='lot'

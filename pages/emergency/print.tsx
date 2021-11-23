@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Page, Text, Row } from '@geist-ui/react'
+import { Page, Text, Grid } from '@geist-ui/react'
 import styled from 'styled-components'
 
 import Logo from 'components/logo'
@@ -15,11 +15,11 @@ export default function Print(): JSX.Element {
       <Head>
         <title>Hemolog - Print</title>
       </Head>
-      <Page size='large'>
+      <Page>
         <Page.Header style={{ paddingTop: '24px' }}>
-          <Row align='middle'>
+          <Grid.Container alignItems='center'>
             <Logo />
-          </Row>
+          </Grid.Container>
         </Page.Header>
         <Page.Content>
           <Text h4 className='hide-from-printer'>

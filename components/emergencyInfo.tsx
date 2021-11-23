@@ -1,5 +1,11 @@
-import React from 'react'
-import { Avatar, Note, Row, Spacer, Text, useMediaQuery } from '@geist-ui/react'
+import {
+  Grid,
+  Avatar,
+  Note,
+  Spacer,
+  Text,
+  useMediaQuery,
+} from '@geist-ui/react'
 import styled from 'styled-components'
 
 import InfusionTable from 'components/infusionTable'
@@ -23,7 +29,6 @@ export default function EmergencyInfo(props: Props): JSX.Element {
             <Avatar
               src={person.photoUrl}
               text={person.name && person.name.charAt(0)}
-              size='large'
             />
           </span>
 
@@ -36,27 +41,27 @@ export default function EmergencyInfo(props: Props): JSX.Element {
           </div>
         </StyledRow>
 
-        <Spacer y={2} />
-        <Row justify='space-between' align='middle'>
+        <Spacer h={2} />
+        <Grid.Container justify='space-between' alignItems='center'>
           <Text h5>Most recent infusions</Text>
           {smallerThanSmall && <Text>Swipe →</Text>}
-        </Row>
+        </Grid.Container>
         <InfusionTable limit={3} uid={person.uid} filterYear='All time' />
         <Spacer />
         <Note label='Note'>
-          Pay attention to the date on each of these logs. We're only showing
+          Pay attention to the date on each of these logs. We’re only showing
           you the <Text b>3</Text> most recent logs. If you want to see more,{' '}
           <Text i>{person.name?.split(' ')[0]}</Text> will have to give you
           permission.
         </Note>
 
-        <Spacer y={3} />
+        <Spacer h={3} />
 
         {user && (
           <>
             <Text h5>Emergency contacts (coming soon)</Text>
             <Text>
-              Soon you'll be able to add these from your settings page.
+              Soon you’ll be able to add these from your settings page.
             </Text>
           </>
         )}
@@ -103,7 +108,7 @@ export default function EmergencyInfo(props: Props): JSX.Element {
 
   return (
     <Note type='success' label='Error'>
-      This person's information could not be found.
+      This person’s information could not be found.
     </Note>
   )
 }
