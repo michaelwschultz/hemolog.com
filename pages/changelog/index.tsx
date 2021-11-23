@@ -67,7 +67,7 @@ const Changelog = (): JSX.Element => {
             <Divider />
 
             <StyledPost id='post-2'>
-              <Spacer h={1} />
+              <Spacer h={3} />
               <Text h4>Mobile enhancements</Text>
               <Text h6>
                 Looks great on your desktop <i>and</i> mobile devices!
