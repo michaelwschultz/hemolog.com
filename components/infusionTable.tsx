@@ -44,6 +44,15 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
 
   const filteredInfusions = filterInfusions(infusions, filterYear)
 
+  // useEffect(() => {
+  //   // TODO: Replace this with lodash solution
+  //   // chunk data in sets of 25
+  //   if (filteredInfusions) {
+  //     const chunkedInfusions = chunk(filteredInfusions, 25)
+  //     setChunkedInfusions(chunkedInfusions)
+  //   }
+  // }, [filteredInfusions])
+
   if (status === FirestoreStatusType.LOADING) {
     return (
       <>
