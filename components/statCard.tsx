@@ -1,4 +1,3 @@
-import React from 'react'
 import { Card, Text, Loading } from '@geist-ui/react'
 import { CardTypes } from '@geist-ui/react/dist/utils/prop-types'
 
@@ -23,6 +22,7 @@ export default function StatCard(props: Props): JSX.Element {
 
   return (
     <Card
+      width='100%'
       shadow={!loading && shadow}
       style={{ minHeight: '116px', height: '100%', ...style }}
       type={type}

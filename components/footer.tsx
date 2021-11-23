@@ -1,4 +1,3 @@
-import React from 'react'
 import { Text, Grid, Spacer, Link, Divider } from '@geist-ui/react'
 import styled from 'styled-components'
 
@@ -21,7 +20,7 @@ export default function Footer(): JSX.Element {
   return (
     <StyledFooter>
       <Divider />
-      <Spacer y={2} />
+      <Spacer h={2} />
       <Grid.Container gap={2}>
         <Grid xs={24} sm={14} direction='column'>
           <Text h5>Hemolog 2</Text>

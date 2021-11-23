@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { Grid, Text, Spacer, Snippet, Button, useToasts } from '@geist-ui/react'
 import splitbee from '@splitbee/web'
@@ -57,7 +57,7 @@ const ProfilePage = (): JSX.Element => {
           <Text h4>About you</Text>
           <SettingsForm />
 
-          <Spacer y={3} />
+          <Spacer h={3} />
           <Text h4>API key</Text>
           <div
             style={{
@@ -85,7 +85,7 @@ const ProfilePage = (): JSX.Element => {
             but you can find more info inside the readme on Github.
           </Text>
         </Grid>
-        <Spacer y={3} />
+        <Spacer h={3} />
         <Grid xs={24} md={12} direction='column'>
           <h4>In case of emergency</h4>
           <Text>
@@ -95,16 +95,32 @@ const ProfilePage = (): JSX.Element => {
             and emergency contacts. These features aren’t available with Medic
             Alert.
           </Text>
-          <Grid.Container gap={2} alignItems='center'>
-            <Grid xs={24} sm={16}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
+            <EmergencySnippet
+              alertId={(user && user.alertId) || 'example'}
+              style={{ width: '100%' }}
+            />
+            <Spacer />
+            <Button type='secondary-light' auto onClick={handleOnPrintClick}>
+              Print your card
+            </Button>
+          </div>
+          {/* <Grid.Container gap={2} alignItems='center'>
+            <Grid xs={24}>
               <EmergencySnippet alertId={(user && user.alertId) || 'example'} />
             </Grid>
-            <Grid xs={24} sm={8}>
+            <Grid xs={24}>
               <Button type='secondary-light' auto onClick={handleOnPrintClick}>
                 Print your card
               </Button>
             </Grid>
-          </Grid.Container>
+          </Grid.Container> */}
           <Spacer />
           <EmergencyCard />
         </Grid>

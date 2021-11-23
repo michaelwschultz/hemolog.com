@@ -1,4 +1,3 @@
-import React from 'react'
 import { Text, Image, Spacer, Grid, Button } from '@geist-ui/react'
 import { useRouter } from 'next/router'
 
@@ -24,7 +23,6 @@ export default function BlogFooter(): JSX.Element {
           <div>
             <Text>Start using Hemolog for free.</Text>
             <Button
-              size='small'
               type='success-light'
               onClick={() => router.push('/signin')}
               loading={loading}

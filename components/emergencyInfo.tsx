@@ -1,5 +1,11 @@
-import React from 'react'
-import { Avatar, Note, Row, Spacer, Text, useMediaQuery } from '@geist-ui/react'
+import {
+  Grid,
+  Avatar,
+  Note,
+  Spacer,
+  Text,
+  useMediaQuery,
+} from '@geist-ui/react'
 import styled from 'styled-components'
 
 import InfusionTable from 'components/infusionTable'
@@ -23,7 +29,6 @@ export default function EmergencyInfo(props: Props): JSX.Element {
             <Avatar
               src={person.photoUrl}
               text={person.name && person.name.charAt(0)}
-              size='large'
             />
           </span>
 
@@ -36,11 +41,11 @@ export default function EmergencyInfo(props: Props): JSX.Element {
           </div>
         </StyledRow>
 
-        <Spacer y={2} />
-        <Row justify='space-between' align='middle'>
+        <Spacer h={2} />
+        <Grid.Container justify='space-between' alignItems='center'>
           <Text h5>Most recent infusions</Text>
           {smallerThanSmall && <Text>Swipe →</Text>}
-        </Row>
+        </Grid.Container>
         <InfusionTable limit={3} uid={person.uid} filterYear='All time' />
         <Spacer />
         <Note label='Note'>
@@ -50,7 +55,7 @@ export default function EmergencyInfo(props: Props): JSX.Element {
           permission.
         </Note>
 
-        <Spacer y={3} />
+        <Spacer h={3} />
 
         {user && (
           <>

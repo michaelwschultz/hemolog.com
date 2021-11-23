@@ -1,4 +1,3 @@
-import React from 'react'
 import { Grid, Button } from '@geist-ui/react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
@@ -25,7 +24,6 @@ const StaticHeader = (): JSX.Element => {
           }}
         >
           <Button
-            size='small'
             type='success-light'
             onClick={() => router.push(user ? '/home' : '/signin')}
             loading={loading}

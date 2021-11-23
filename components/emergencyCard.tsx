@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import Link from 'next/link'
 import {
-  Row,
+  Grid,
   Spacer,
   Loading,
   useTheme,
@@ -35,56 +35,67 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
   return (
     <StyledEmergencyCard className='emergency-card' forPrint={forPrint}>
       <StyledHeader forPrint={forPrint} accentColor={theme.palette.success}>
-        <Row justify='space-between'>
-          <div>
+        <Grid.Container justify='space-between'>
+          <Grid>
             <h5 style={{ color: themeContext.colors.text }}>
               Bleeding disorder
             </h5>
             <h2 style={{ color: themeContext.colors.text }}>Emergency</h2>
-          </div>
+          </Grid>
 
           {user && user.photoUrl && (
-            <StyledAvatar src={user.photoUrl} forPrint={forPrint} />
+            <Grid>
+              <StyledAvatar src={user.photoUrl} forPrint={forPrint} />
+            </Grid>
           )}
-        </Row>
+        </Grid.Container>
       </StyledHeader>
-      <Spacer y={forPrint ? 0.7 : 1} />
-      <Row style={{ padding: forPrint ? '8px' : '16px' }}>
-        <StyledQRCode forPrint={forPrint} accentColor={theme.palette.success}>
+      <Spacer h={forPrint ? 0.7 : 1} />
+      <Grid.Container style={{ padding: forPrint ? '8px' : '16px' }} gap={3}>
+        <Grid xs={7}>
+          <StyledQRCode forPrint={forPrint} accentColor={theme.palette.success}>
+            {person ? (
+              <QRCode
+                value={`https://${alertUrl}`}
+                size={forPrint ? 80 : 124}
+              />
+            ) : (
+              <Loading />
+            )}
+            <StyledBloodDrop src='/images/blood-drop.png' forPrint={forPrint} />
+          </StyledQRCode>
+        </Grid>
+        <Grid xs={17}>
           {person ? (
-            <QRCode value={`https://${alertUrl}`} size={forPrint ? 80 : 124} />
+            <StyledPersonalInfo forPrint={forPrint}>
+              <div>
+                <h3>{person && person.name}</h3>
+                <h5>
+                  {person && person.severity} Hemophilia{' '}
+                  {person && person.hemophiliaType}
+                </h5>
+                {person && person.factor && (
+                  <h5>Treat with factor {person.factor}</h5>
+                )}
+              </div>
+              <StyledScanLink forPrint={forPrint}>
+                <Text h4>Scan or visit for treatment history</Text>
+                <Tooltip text='Visit your page to preview what others will see.'>
+                  <Link href={`https://${alertUrl}`}>
+                    <a>
+                      <h4 style={{ color: theme.palette.success }}>
+                        {alertUrl}
+                      </h4>
+                    </a>
+                  </Link>
+                </Tooltip>
+              </StyledScanLink>
+            </StyledPersonalInfo>
           ) : (
             <Loading />
           )}
-          <StyledBloodDrop src='/images/blood-drop.png' forPrint={forPrint} />
-        </StyledQRCode>
-        {person ? (
-          <StyledPersonalInfo forPrint={forPrint}>
-            <div>
-              <h3>{person && person.name}</h3>
-              <h5>
-                {person && person.severity} Hemophilia{' '}
-                {person && person.hemophiliaType}
-              </h5>
-              {person && person.factor && (
-                <h5>Treat with factor {person.factor}</h5>
-              )}
-            </div>
-            <StyledScanLink forPrint={forPrint}>
-              <Text h4>Scan or visit for treatment history</Text>
-              <Tooltip text='Visit your page to preview what others will see.'>
-                <Link href={`https://${alertUrl}`}>
-                  <a>
-                    <h4 style={{ color: theme.palette.success }}>{alertUrl}</h4>
-                  </a>
-                </Link>
-              </Tooltip>
-            </StyledScanLink>
-          </StyledPersonalInfo>
-        ) : (
-          <Loading />
-        )}
-      </Row>
+        </Grid>
+      </Grid.Container>
     </StyledEmergencyCard>
   )
 }

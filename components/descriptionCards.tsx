@@ -1,4 +1,3 @@
-import React from 'react'
 import { Text, Grid, Link, Card } from '@geist-ui/react'
 
 export default function DescrtipionCards(): JSX.Element {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, createContext } from 'react'
+import { useState, useEffect, useContext, createContext } from 'react'
 import Router from 'next/router'
 import cookie from 'js-cookie'
 

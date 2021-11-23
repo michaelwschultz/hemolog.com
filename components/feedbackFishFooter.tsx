@@ -1,14 +1,13 @@
-import React from 'react'
-import { Text, Page, Row, Button, Link } from '@geist-ui/react'
+import { Text, Page, Grid, Link } from '@geist-ui/react'
 // import { FeedbackFish } from '@feedback-fish/react'
 
 export default function Footer(): JSX.Element {
   // NOTE(michael): testing out https://feedback.fish.
-  const PROJECT_ID = process.env.FEEDBACK_FISH_PROJECT_ID
+  // const PROJECT_ID = process.env.FEEDBACK_FISH_PROJECT_ID
 
   return (
     <Page.Footer>
-      <Row justify='space-between' align='middle'>
+      <Grid.Container justify='space-between' alignItems='center'>
         {/* <FeedbackFish projectId={PROJECT_ID}>
           <Button auto type='secondary-light'>
             Feedback
@@ -21,7 +20,7 @@ export default function Footer(): JSX.Element {
             Michael Schultz
           </Link>
         </Text>
-      </Row>
+      </Grid.Container>
     </Page.Footer>
   )
 }

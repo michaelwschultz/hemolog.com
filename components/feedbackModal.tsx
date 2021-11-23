@@ -1,4 +1,3 @@
-import React from 'react'
 import { Modal, Textarea, Text, Spacer, useToasts } from '@geist-ui/react'
 import { useFormik } from 'formik'
 

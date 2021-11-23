@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import useEmergencyUser from 'lib/hooks/useEmergencyUser'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
-import { Loading, Note, Text, Row, Link, Spacer } from '@geist-ui/react'
+import { Loading, Note, Text, Grid, Link, Spacer } from '@geist-ui/react'
 import EmergencyInfo from 'components/emergencyInfo'
 import Footer from 'components/footer'
 
@@ -28,7 +28,11 @@ const Emergency = (): JSX.Element => {
         <title>Emergency - from Hemolog</title>
       </Head>
       <StyledPage>
-        <Row justify='space-between' align='middle' style={{ padding: '24px' }}>
+        <Grid.Container
+          justify='space-between'
+          alignItems='center'
+          style={{ padding: '24px' }}
+        >
           <Text h4 type='success'>
             Emergency Info
           </Text>
@@ -37,7 +41,7 @@ const Emergency = (): JSX.Element => {
               <Link href='/'>Hemolog.com</Link>
             </NextLink>
           </Text>
-        </Row>
+        </Grid.Container>
         <Note type='success' label='Important' style={{ margin: '0 24px' }}>
           If someone has been in an accident, please call{' '}
           <a href='tel:911'>911</a> immediately. This page shows the most recent

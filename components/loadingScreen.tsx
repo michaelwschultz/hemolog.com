@@ -1,4 +1,3 @@
-import React from 'react'
 import { Loading } from '@geist-ui/react'
 import styled from 'styled-components'
 
