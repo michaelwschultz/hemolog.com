@@ -60,7 +60,7 @@ const Home = (props: { version: string }): JSX.Element => {
         appVersion: version,
       })
     }
-  }, [user])
+  }, [user, version])
 
   return (
     <ProtectRoute>

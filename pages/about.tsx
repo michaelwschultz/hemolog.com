@@ -28,31 +28,36 @@ const About = (): JSX.Element => {
           <Text h5>More than you would ever want to know about Hemolog</Text>
           <Divider />
           <Display>
-            <Image width={765} height={400} src='/images/hemolog-2-hero.png' />
+            <Image
+              width={765}
+              height={400}
+              src='/images/hemolog-2-hero.png'
+              alt='Hemolog 2'
+            />
           </Display>
 
           <Text>
-            Let's face it, there are some exciting developments in the world of
-            Hemophilia research. Honestly, it's not <i>just</i> research
+            Let’s face it, there are some exciting developments in the world of
+            Hemophilia research. Honestly, it’s not <i>just</i> research
             anymore. Clinical trials are happening now across the globe. Gene
-            threrapy is definitely going to change things for the better, it's
-            just a matter of when it's available to all of us.
+            threrapy is definitely going to change things for the better, it’s
+            just a matter of when it’s available to all of us.
           </Text>
 
           <Text>
-            That being said, it's still important to keep track of your
+            That being said, it’s still important to keep track of your
             treatments. Maybe even more now than ever. If getting on a trial is
-            something you're interested in, knowing how many bleeds you were
+            something you’re interested in, knowing how many bleeds you were
             having before is really important.
           </Text>
           <Text>
             Trial or not, keeping track of your treatment habits can be hard and
-            the tools we have aren't great. Hemolog is simple. You track your
+            the tools we have aren’t great. Hemolog is simple. You track your
             treatments and Hemolog gives you instant feedback.
           </Text>
           <Text>
             Insights are something that I always wanted to be a part of Hemolog
-            and now they're finally here.
+            and now they’re finally here.
           </Text>
 
           <Display
@@ -63,17 +68,18 @@ const About = (): JSX.Element => {
               width={486}
               height={377}
               src='/images/insights-example.png'
+              alt='Insights example'
             />
           </Display>
 
           <Text>
             These insights are calculated as you log your treatments. Filter by
-            year for a comprehensive view into your treatment history. I've
+            year for a comprehensive view into your treatment history. I’ve
             chosen a few insights that are interesting to me. If you have
             thoughts on what you would like to see, just let me know.
           </Text>
 
-          <Spacer y={2} />
+          <Spacer h={2} />
 
           <Note>
             Development is ongoing. Check out the{' '}
@@ -83,20 +89,20 @@ const About = (): JSX.Element => {
             for updates and changes.
           </Note>
 
-          <Spacer y={5} />
+          <Spacer h={5} />
 
           <Grid.Container gap={2} alignItems='center'>
             <Grid xs={24} sm={16} direction='column'>
               <Text h3 type='secondary'>
                 Now that Hemolog is back, I hope you enjoy using it as much as I
-                have. It's up to all of us to keep each other accountable. You
+                have. It’s up to all of us to keep each other accountable. You
                 can{' '}
                 <NextLink href='/emergency/mike29'>
                   <Link color href='/emergency/mike29'>
                     view my emergency page
                   </Link>
                 </NextLink>{' '}
-                at any time to verify I've been keeping up with my prophy
+                at any time to verify I’ve been keeping up with my prophy
                 regimen.
               </Text>
               <br />
@@ -108,11 +114,12 @@ const About = (): JSX.Element => {
                 width={300}
                 height={300}
                 src='/images/michael-schultz.jpg'
+                alt='Michael Schultz'
               />
             </Grid>
           </Grid.Container>
 
-          <Spacer y={5} />
+          <Spacer h={5} />
         </StyledPageContent>
         <Footer />
       </StyledPage>

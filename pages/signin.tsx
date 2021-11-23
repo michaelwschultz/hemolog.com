@@ -56,8 +56,8 @@ const Signin = (pageProps: { version: string }) => {
             <Fieldset style={{ maxWidth: '460px', width: '100%' }}>
               <Text h4>Register or sign in</Text>
               <Text p>
-                Signing in will create an account if you don't have one yet.
-                Don't worry, Hemolog will always be <i>free</i>.
+                Signing in will create an account if you don’t have one yet.
+                Don’t worry, Hemolog will always be <i>free</i>.
               </Text>
               <Fieldset.Footer>
                 <Text></Text>

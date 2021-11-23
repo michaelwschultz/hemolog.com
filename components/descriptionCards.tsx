@@ -7,7 +7,7 @@ export default function DescrtipionCards(): JSX.Element {
         <Card>
           <Text h4>Open source</Text>
           <Text>
-            Hemolog is completely open source. We've got a limited number of
+            Hemolog is completely open source. We’ve got a limited number of
             years to worry about logging. Check out the code on{' '}
             <Link
               href='https://github.com/michaelwschultz/hemolog.com'
@@ -24,17 +24,17 @@ export default function DescrtipionCards(): JSX.Element {
         <Card>
           <Text h4>Free forever</Text>
           <Text>
-            No need to worry about paying for Hemolog. It's free forever. No
+            No need to worry about paying for Hemolog. It’s free forever. No
             sponsorships, pharma companies, or ads. Promise!
           </Text>
         </Card>
       </Grid>
       <Grid xs={24} sm={12}>
         <Card>
-          <Text h4>Wait...didn't Hemolog die?</Text>
+          <Text h4>Wait...didn’t Hemolog die?</Text>
           <Text>
-            Hemolog's first incarnation was an iPhone app back in 2011. It was a
-            great start but didn't do <i>most</i> of what Hemolog 2 can do!
+            Hemolog’s first incarnation was an iPhone app back in 2011. It was a
+            great start but didn’t do <i>most</i> of what Hemolog 2 can do!
           </Text>
         </Card>
       </Grid>

@@ -49,7 +49,7 @@ export default function EmergencyInfo(props: Props): JSX.Element {
         <InfusionTable limit={3} uid={person.uid} filterYear='All time' />
         <Spacer />
         <Note label='Note'>
-          Pay attention to the date on each of these logs. We're only showing
+          Pay attention to the date on each of these logs. We’re only showing
           you the <Text b>3</Text> most recent logs. If you want to see more,{' '}
           <Text i>{person.name?.split(' ')[0]}</Text> will have to give you
           permission.
@@ -61,7 +61,7 @@ export default function EmergencyInfo(props: Props): JSX.Element {
           <>
             <Text h5>Emergency contacts (coming soon)</Text>
             <Text>
-              Soon you'll be able to add these from your settings page.
+              Soon you’ll be able to add these from your settings page.
             </Text>
           </>
         )}
@@ -108,7 +108,7 @@ export default function EmergencyInfo(props: Props): JSX.Element {
 
   return (
     <Note type='success' label='Error'>
-      This person's information could not be found.
+      This person’s information could not be found.
     </Note>
   )
 }

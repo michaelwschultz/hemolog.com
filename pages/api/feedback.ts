@@ -2,7 +2,7 @@ import { auth } from 'lib/firebase-admin'
 import { getAllFeedback } from 'lib/admin-db/feedback'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const feedback = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (!req.headers.token) {
       throw { message: 'Access denied. Missing valid token.' }
@@ -22,7 +22,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     return res.status(200).json(feedback)
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).send(error.message)
   }
 }
+
+export default feedback

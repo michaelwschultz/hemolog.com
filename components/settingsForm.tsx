@@ -88,7 +88,6 @@ const SettingsForm = (): JSX.Element => {
           <AutoComplete
             id='hemophiliaType'
             name='hemophiliaType'
-            htmlType='text'
             width='100%'
             placeholder='A'
             onChange={(value) => formik.setFieldValue('hemophiliaType', value)}

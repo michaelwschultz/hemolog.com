@@ -80,7 +80,7 @@ export default function Stats(props: StatsProps): JSX.Element {
   if (error) {
     return (
       <Note type='error' label='Error'>
-        Oops, the database didn't respond. Refresh the page to try again.
+        Oops, the database didn’t respond. Refresh the page to try again.
       </Note>
     )
   }

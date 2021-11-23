@@ -35,7 +35,12 @@ export default function BlogFooter(): JSX.Element {
       </Grid>
       <Grid xs={24} sm={8}>
         <Spacer />
-        <Image width={300} height={300} src='/images/michael-schultz.jpg' />
+        <Image
+          width={300}
+          height={300}
+          src='/images/michael-schultz.jpg'
+          alt='Michael Schultz'
+        />
       </Grid>
     </Grid.Container>
   )

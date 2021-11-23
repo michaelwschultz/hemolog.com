@@ -66,7 +66,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
   if (error) {
     return (
       <Note type='error' label='Error'>
-        Oops, the database didn't respond. Refresh the page to try again.
+        Oops, the database didn’t respond. Refresh the page to try again.
       </Note>
     )
   }
@@ -171,7 +171,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
         <>
           <Spacer />
           <Note type='success'>
-            No infusions found. Add one by clicking 'Log Infusion' above.
+            No infusions found. Add one by clicking ’Log Infusion’ above.
           </Note>
           <Spacer />
         </>

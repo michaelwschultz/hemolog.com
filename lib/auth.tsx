@@ -122,9 +122,8 @@ function useProvideAuth() {
 
   useEffect(() => {
     const unsubscribe = auth.onIdTokenChanged(handleUser)
-
     return () => unsubscribe()
-  }, [])
+  }, [auth])
 
   return {
     user,

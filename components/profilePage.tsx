@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { Grid, Text, Spacer, Snippet, Button, useToasts } from '@geist-ui/react'
 import splitbee from '@splitbee/web'
@@ -10,7 +10,6 @@ import { useAuth } from 'lib/auth'
 import { updateUser } from 'lib/db/users'
 import { generateUniqueString } from 'lib/helpers'
 import useDbUser from 'lib/hooks/useDbUser'
-import { FlexibleHeightXYPlot } from 'react-vis'
 
 const ProfilePage = (): JSX.Element => {
   const { user } = useAuth()
@@ -25,30 +24,33 @@ const ProfilePage = (): JSX.Element => {
     router.push('/emergency/print')
   }
 
-  const handleUpdateUserApiKey = async () => {
-    const newApiKey = await generateUniqueString(20)
-    updateUser(user!.uid, { apiKey: newApiKey })
-      .then(() => {
-        setToast({
-          text: 'API key updated!',
-          type: 'success',
-          delay: 5000,
+  const handleUpdateUserApiKey = useCallback(
+    () => async () => {
+      const newApiKey = await generateUniqueString(20)
+      updateUser(user!.uid, { apiKey: newApiKey })
+        .then(() => {
+          setToast({
+            text: 'API key updated!',
+            type: 'success',
+            delay: 5000,
+          })
         })
-      })
-      .catch((error) =>
-        setToast({
-          text: `Something went wrong: ${error}`,
-          type: 'error',
-          delay: 10000,
-        })
-      )
-  }
+        .catch((error) =>
+          setToast({
+            text: `Something went wrong: ${error}`,
+            type: 'error',
+            delay: 10000,
+          })
+        )
+    },
+    [setToast, user]
+  )
 
   useEffect(() => {
     if (person && !person.apiKey) {
       handleUpdateUserApiKey()
     }
-  }, [user, person])
+  }, [user, person, handleUpdateUserApiKey])
 
   return (
     <>

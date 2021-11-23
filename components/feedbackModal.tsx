@@ -72,7 +72,7 @@ export default function FeedbackModal(props: FeedbackModalProps): JSX.Element {
       <Modal.Subtitle>Hemolog.com</Modal.Subtitle>
       <Modal.Content>
         <p>
-          If you've run into a bug or have an idea for how Hemolog could work
+          If you’ve run into a bug or have an idea for how Hemolog could work
           better for you, let me know.
         </p>
         <Spacer />

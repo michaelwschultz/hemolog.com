@@ -1,7 +1,7 @@
 import { getRecentUserInfusionsByApiKey } from 'lib/admin-db/infusions'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const recentInfusions = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { apikey } = req.query
     if (!apikey) {
@@ -17,7 +17,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     return res.status(200).json(infusions)
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).send(error.message)
   }
 }
+
+export default recentInfusions

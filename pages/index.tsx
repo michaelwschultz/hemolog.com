@@ -17,7 +17,7 @@ export default function Landing(): JSX.Element {
         <StaticHeader />
         <StyledPageContent>
           <Text h2>Welcome to Hemolog</Text>
-          <Text h5>The last treatment tracker you'll ever need.</Text>
+          <Text h5>The last treatment tracker you’ll ever need.</Text>
           <Divider />
 
           <Text>
@@ -35,7 +35,7 @@ export default function Landing(): JSX.Element {
               </Link>
             </NextLink>
           </Text>
-          <Spacer y={3} />
+          <Spacer h={3} />
           <DescriptionCards />
         </StyledPageContent>
         <Footer />

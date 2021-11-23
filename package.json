@@ -2,10 +2,11 @@
   "name": "hemolog",
   "version": "2.5.0",
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "firebase": "npx firebase emulators:start"
+    "dev": "next dev",
+    "firebase": "npx firebase emulators:start",
+    "lint": "next lint",
+    "start": "next start"
   },
   "dependencies": {
     "@geist-ui/react": "^2.2.0",
@@ -36,6 +37,8 @@
     "@types/styled-components": "^5.1.4",
     "@types/underscore": "^1.11.1",
     "babel-plugin-styled-components": "^1.12.0",
+    "eslint": "<8.0.0",
+    "eslint-config-next": "12.0.4",
     "firebase-tools": "^9.11.0",
     "typescript": "^4.3.4"
   }

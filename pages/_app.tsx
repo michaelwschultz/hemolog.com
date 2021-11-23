@@ -4,7 +4,7 @@ import type { AppProps } from 'next/app'
 import {
   GeistProvider,
   CssBaseline,
-  GeistUIThemesPalette,
+  GeistUserTheme,
   Themes,
 } from '@geist-ui/react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
@@ -12,7 +12,7 @@ import { theme } from 'lib/theme'
 import { AuthProvider } from 'lib/auth'
 import splitbee from '@splitbee/web'
 
-const hemologPalette: Partial<GeistUIThemesPalette> = {
+const hemologPalette: Partial<GeistUserTheme> = {
   success: '#FF062C',
   successLight: '#FF398F',
   successDark: '#a3051d',
