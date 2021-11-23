@@ -29,8 +29,7 @@ const About = (): JSX.Element => {
           <Divider />
           <Display>
             <Image
-              width={765}
-              height={400}
+              height={15}
               src='/images/hemolog-2-hero.png'
               alt='Hemolog 2'
             />
@@ -64,12 +63,7 @@ const About = (): JSX.Element => {
             shadow
             caption='High level insights that help you understand your habits'
           >
-            <Image
-              width={486}
-              height={377}
-              src='/images/insights-example.png'
-              alt='Insights example'
-            />
+            <Image src='/images/insights-example.png' alt='Insights example' />
           </Display>
 
           <Text>
@@ -111,8 +105,7 @@ const About = (): JSX.Element => {
             <Grid xs={24} sm={8} direction='column'>
               <Spacer />
               <Image
-                width={300}
-                height={300}
+                width={15}
                 src='/images/michael-schultz.jpg'
                 alt='Michael Schultz'
               />

@@ -84,8 +84,7 @@ const Changelog = (): JSX.Element => {
                 </Link>
 
                 <Image
-                  width={240}
-                  height={180}
+                  width={40}
                   src='/images/changelog/iphone-hemolog-light.png'
                   alt='Hemolog for iPhone'
                 />
@@ -120,8 +119,7 @@ const Changelog = (): JSX.Element => {
                 </Link>
 
                 <Image
-                  width={240}
-                  height={166}
+                  width={40}
                   src='/images/insights-example.png'
                   alt='Insights'
                 />
