@@ -1,6 +1,6 @@
 {
   "name": "hemolog",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
