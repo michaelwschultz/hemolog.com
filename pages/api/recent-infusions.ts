@@ -2,6 +2,9 @@ import { getRecentUserInfusionsByApiKey } from 'lib/admin-db/infusions'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 const recentInfusions = async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method !== 'GET') {
+    return res.status(405).send('Requires GET method.')
+  }
   try {
     const { apikey } = req.query
     if (!apikey) {
