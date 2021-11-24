@@ -24,27 +24,24 @@ const ProfilePage = (): JSX.Element => {
     router.push('/emergency/print')
   }
 
-  const handleUpdateUserApiKey = useCallback(
-    () => async () => {
-      const newApiKey = await generateUniqueString(20)
-      updateUser(user!.uid, { apiKey: newApiKey })
-        .then(() => {
-          setToast({
-            text: 'API key updated!',
-            type: 'success',
-            delay: 5000,
-          })
+  const handleUpdateUserApiKey = useCallback(async () => {
+    const newApiKey = await generateUniqueString(20)
+    updateUser(user!.uid, { apiKey: newApiKey })
+      .then(() => {
+        setToast({
+          text: 'API key updated!',
+          type: 'success',
+          delay: 5000,
         })
-        .catch((error) =>
-          setToast({
-            text: `Something went wrong: ${error}`,
-            type: 'error',
-            delay: 10000,
-          })
-        )
-    },
-    [setToast, user]
-  )
+      })
+      .catch((error) =>
+        setToast({
+          text: `Something went wrong: ${error}`,
+          type: 'error',
+          delay: 10000,
+        })
+      )
+  }, [setToast, user])
 
   useEffect(() => {
     if (person && !person.apiKey) {
