@@ -1,7 +1,7 @@
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import useInfusions from 'lib/hooks/useInfusions'
-import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
 import { format, compareDesc, parseISO } from 'date-fns'
+import { chunk } from 'underscore'
 import {
   Note,
   Table,
@@ -16,6 +16,9 @@ import {
 } from '@geist-ui/react'
 import ChevronRight from '@geist-ui/react-icons/chevronRight'
 import ChevronLeft from '@geist-ui/react-icons/chevronLeft'
+
+import useInfusions from 'lib/hooks/useInfusions'
+import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
 import {
   InfusionType,
   InfusionTypeEnum,
@@ -41,19 +44,32 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
   const { data: infusions, status, error } = useInfusions(limit, uid)
   const [, setToast] = useToasts()
   const { user } = useAuth()
+  const [pageNumber, setPageNumber] = useState(0)
 
   const filteredInfusions = filterInfusions(infusions, filterYear)
 
-  // useEffect(() => {
-  //   // TODO: Replace this with lodash solution
-  //   // chunk data in sets of 25
-  //   if (filteredInfusions) {
-  //     const chunkedInfusions = chunk(filteredInfusions, 25)
-  //     setChunkedInfusions(chunkedInfusions)
-  //   }
-  // }, [filteredInfusions])
+  let chunkedInfusions: InfusionType[][] | null = null
 
-  if (status === FirestoreStatusType.LOADING) {
+  // TODO: fix this so that the page updates correctly
+  if (filteredInfusions) {
+    if (filteredInfusions.length) {
+      chunkedInfusions = chunk(filteredInfusions, 10)
+    } else {
+      chunkedInfusions = [[]]
+    }
+  }
+
+  // NOTE: If user removes enough infusions to empty the current chunk,
+  // change the page number to prevent pageNumber being out of bounds.
+  useEffect(() => {
+    if (chunkedInfusions) {
+      if (pageNumber >= chunkedInfusions.length) {
+        setPageNumber(chunkedInfusions.length - 1)
+      }
+    }
+  }, [chunkedInfusions, pageNumber])
+
+  if (status === FirestoreStatusType.LOADING || !chunkedInfusions) {
     return (
       <>
         <Table data={[]} width='100%'>
@@ -139,11 +155,11 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
 
   // TODO(michael) add more sorting filters
   // sort by date, most recent at the top
-  filteredInfusions.sort((a, b) =>
+  chunkedInfusions[pageNumber]?.sort((a, b) =>
     compareDesc(parseISO(a.date), parseISO(b.date))
   )
 
-  const rowData = filteredInfusions.map((infusion) =>
+  const rowData = chunkedInfusions[pageNumber]?.map((infusion) =>
     formatInfusionRow(infusion)
   )
 
@@ -176,7 +192,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
         <Table.Column prop='units' label='Amount' />
         {isLoggedInUser && <Table.Column prop='remove' />}
       </Table>
-      {filteredInfusions.length === 0 && (
+      {chunkedInfusions && !chunkedInfusions.length && (
         <>
           <Spacer />
           <Note type='success'>
@@ -185,21 +201,34 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
           <Spacer />
         </>
       )}
-      {filteredInfusions.length >= 25 && (
-        <>
-          <Spacer h={0.5} />
-          <Grid.Container justify='flex-end'>
-            <Pagination count={1}>
-              <Pagination.Next>
-                <ChevronRight />
-              </Pagination.Next>
-              <Pagination.Previous>
-                <ChevronLeft />
-              </Pagination.Previous>
-            </Pagination>
-          </Grid.Container>
-        </>
-      )}
+      <>
+        <Spacer h={0.5} />
+        <Grid.Container justify='flex-end'>
+          <Pagination
+            count={chunkedInfusions.length}
+            initialPage={1}
+            page={
+              pageNumber + 1 > chunkedInfusions.length
+                ? chunkedInfusions.length
+                : pageNumber + 1
+            }
+            onChange={(page) => setPageNumber(page - 1)}
+          >
+            <Pagination.Next
+              disabled={pageNumber + 1 >= chunkedInfusions.length}
+              onClick={() => setPageNumber(pageNumber + 1)}
+            >
+              <ChevronRight />
+            </Pagination.Next>
+            <Pagination.Previous
+              disabled={pageNumber + 1 <= 1}
+              onClick={() => setPageNumber(pageNumber - 1)}
+            >
+              <ChevronLeft />
+            </Pagination.Previous>
+          </Pagination>
+        </Grid.Container>
+      </>
     </StyledTableWrapper>
   )
 }

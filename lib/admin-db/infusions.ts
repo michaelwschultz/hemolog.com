@@ -52,9 +52,8 @@ async function getRecentUserInfusionsByApiKey(apiKey: string) {
       .collection('infusions')
       .where('user.uid', '==', user.uid)
       .where('deletedAt', '==', null)
-      // TODO: Need to add a timestamp value to each infusion and replace createdAt
-      // .orderBy('timestamp', 'asc')
-      // .limitToLast(3)
+      .orderBy('date', 'desc')
+      .limit(3)
       .get()
 
     const infusions: any = []
@@ -67,11 +66,9 @@ async function getRecentUserInfusionsByApiKey(apiKey: string) {
       infusions.push({ ...doc.data() })
     })
 
-    // TODO: remove this hack after fixing the orderBy issue above
     infusions.sort((a: any, b: any) =>
-      compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
+      compareDesc(parseISO(a.date), parseISO(b.date))
     )
-    infusions.length = 3
 
     return { infusions }
   } catch (error) {
