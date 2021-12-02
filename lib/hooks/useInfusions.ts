@@ -26,13 +26,20 @@ export default function useInfusions(
   const db = firebase.firestore()
   const { user } = useAuth()
 
-  // TODO(michael) orderBy createdAt
-  // this isn't working right now becuase Firebase
-  // can't read the isostring format
-  const query = db
+  let query = db
     .collection('infusions')
     .where('user.uid', '==', user ? user.uid : uid)
     .where('deletedAt', '==', null)
+    .orderBy('date', 'desc')
+
+  if (limit) {
+    query = db
+      .collection('infusions')
+      .where('user.uid', '==', user ? user.uid : uid)
+      .where('deletedAt', '==', null)
+      .orderBy('date', 'desc')
+      .limit(limit)
+  }
 
   const { data, status, error } = useFirestoreQuery(query)
 
@@ -41,12 +48,6 @@ export default function useInfusions(
     data.sort((a: any, b: any) =>
       compareDesc(new Date(a.date), new Date(b.date))
     )
-
-    // For now, I've moved the limiting into the useFirestoreQuery
-    // method, this works ok but would be better to fix here long term
-    if (limit) {
-      data.length = limit
-    }
   }
 
   return {

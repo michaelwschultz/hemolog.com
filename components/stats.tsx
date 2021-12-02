@@ -1,4 +1,4 @@
-import _ from 'underscore'
+import { chain, last } from 'underscore'
 import { Grid, Note, Card, useModal, Tooltip, Text } from '@geist-ui/react'
 
 import StatCard from 'components/statCard'
@@ -107,19 +107,19 @@ export default function Stats(props: StatsProps): JSX.Element {
   const numberOfBleeds = filteredInfusions.filter(
     (entry) => entry.type === InfusionTypeEnum.BLEED
   ).length
-  const mostAffectedArea = _.chain(affectedAreas)
+  const mostAffectedArea = chain(affectedAreas)
     .compact()
     .countBy()
     .pairs()
-    .max(_.last)
+    .max(last)
     .head()
     .value()
 
-  const biggestCause = _.chain(causes)
+  const biggestCause = chain(causes)
     .compact()
     .countBy()
     .pairs()
-    .max(_.last)
+    .max(last)
     .head()
     .value()
 
