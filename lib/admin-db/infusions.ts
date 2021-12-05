@@ -33,6 +33,40 @@ async function getInfusion(infusionId: string) {
   return { infusions }
 }
 
+async function getAllInfusionsByApiKey(apiKey: string) {
+  try {
+    const userSnapshot = await adminFirestore
+      .collection('users')
+      .where('apiKey', '==', apiKey)
+      .limit(1)
+      .get()
+
+    if (!userSnapshot.docs[0]) {
+      throw new Error(
+        'Invalid API key. Reset your key on your profile page at Hemolog.com'
+      )
+    }
+    const user = userSnapshot.docs[0].data()
+
+    const snapshot = await adminFirestore
+      .collection('infusions')
+      .where('user.uid', '==', user.uid)
+      .where('deletedAt', '==', null)
+      .orderBy('createdAt', 'desc')
+      .get()
+
+    const infusions: any = []
+
+    snapshot.forEach((doc) => {
+      infusions.push({ id: doc.id, ...doc.data() })
+    })
+
+    return { infusions }
+  } catch (error) {
+    return { error }
+  }
+}
+
 async function getRecentUserInfusionsByApiKey(apiKey: string) {
   try {
     const userSnapshot = await adminFirestore
@@ -127,6 +161,7 @@ async function postInfusionByApiKey(
 
 export {
   getAllInfusions,
+  getAllInfusionsByApiKey,
   getInfusion,
   getRecentUserInfusionsByApiKey,
   postInfusionByApiKey,
