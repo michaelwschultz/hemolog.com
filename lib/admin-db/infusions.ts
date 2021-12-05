@@ -52,7 +52,7 @@ async function getAllInfusionsByApiKey(apiKey: string) {
       .collection('infusions')
       .where('user.uid', '==', user.uid)
       .where('deletedAt', '==', null)
-      .orderBy('createdAt', 'desc')
+      .orderBy('date', 'desc')
       .get()
 
     const infusions: any = []
