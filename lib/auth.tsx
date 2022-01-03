@@ -33,6 +33,7 @@ function useProvideAuth() {
       const user = await formatUser(rawUser)
       const dbUser = await firestore.collection('users').doc(user.uid).get()
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { token, ...userWithoutToken } = user
 
       // TODO(michael) If user already exist then remove alertId

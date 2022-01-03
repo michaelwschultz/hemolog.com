@@ -1,12 +1,14 @@
 {
   "name": "hemolog",
-  "version": "2.5.2",
+  "version": "2.6.0",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
     "firebase": "npx firebase emulators:start",
-    "lint": "next lint",
-    "start": "next start"
+    "lint": "eslint --cache \"**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "eslint --cache --fix \"**/*.{js,jsx,ts,tsx}\"",
+    "start": "next start",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@geist-ui/react": "^2.2.0",
@@ -19,7 +21,7 @@
     "isomorphic-unfetch": "^3.1.0",
     "js-cookie": "^2.2.1",
     "nanoid": "^3.1.18",
-    "next": "^12.0.4",
+    "next": "^12.0.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-firebaseui": "^4.1.0",
@@ -36,10 +38,22 @@
     "@types/react-vis": "^1.11.6",
     "@types/styled-components": "^5.1.4",
     "@types/underscore": "^1.11.1",
+    "@typescript-eslint/eslint-plugin": "^5.8.1",
+    "@typescript-eslint/parser": "^5.8.1",
     "babel-plugin-styled-components": "^1.12.0",
     "eslint": "<8.0.0",
     "eslint-config-next": "12.0.4",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "firebase-tools": "^9.11.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.5",
+    "prettier": "^2.5.1",
     "typescript": "^4.3.4"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "yarn lint:fix"
   }
 }

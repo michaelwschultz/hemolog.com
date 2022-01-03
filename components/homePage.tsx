@@ -7,7 +7,6 @@ import InfusionTable from 'components/infusionTable'
 import Stats from 'components/stats'
 import Chart from 'components/chart'
 import useInfusions from 'lib/hooks/useInfusions'
-import { AlignJustify } from '@geist-ui/react-icons'
 
 const HomePage = (): JSX.Element => {
   const smallerThanSmall = useMediaQuery('xs', { match: 'down' })
@@ -101,6 +100,11 @@ const HomePage = (): JSX.Element => {
                 onChange={(value) => setFilterYear(value as string)}
               >
                 <Select.Option value={ALL_TIME}>{ALL_TIME}</Select.Option>
+                {!infusionYears.includes(parseInt(THIS_YEAR, 10)) && (
+                  <Select.Option value={THIS_YEAR} key={THIS_YEAR}>
+                    {THIS_YEAR}
+                  </Select.Option>
+                )}
                 {infusionYears.map((year) => (
                   <Select.Option value={year.toString()} key={year}>
                     {year}

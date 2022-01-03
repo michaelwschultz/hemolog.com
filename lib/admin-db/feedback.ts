@@ -23,7 +23,7 @@ async function getAllFeedback() {
 
 async function getUserFeedback(userId: string) {
   try {
-    let ref = adminFirestore
+    const ref = adminFirestore
       .collection('feedback')
       .where('user.uid', '==', userId)
     const snapshot = await ref.get()
