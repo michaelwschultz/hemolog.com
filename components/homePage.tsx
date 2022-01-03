@@ -106,6 +106,11 @@ const HomePage = (): JSX.Element => {
                     {year}
                   </Select.Option>
                 ))}
+                {!infusionYears.includes(parseInt(THIS_YEAR, 10)) && (
+                  <Select.Option value={THIS_YEAR} key={THIS_YEAR}>
+                    {THIS_YEAR}
+                  </Select.Option>
+                )}
               </Select>
             </Grid>
           </Grid.Container>
