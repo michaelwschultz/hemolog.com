@@ -1,4 +1,4 @@
-import firebase, { firestore } from 'lib/firebase'
+import { firestore } from 'lib/firebase'
 
 function createUser(uid: string, data: any) {
   return firestore
