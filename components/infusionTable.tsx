@@ -13,9 +13,12 @@ import {
   useToasts,
   Button,
   Tooltip,
+  useModal,
+  Popover,
 } from '@geist-ui/react'
 import ChevronRight from '@geist-ui/react-icons/chevronRight'
 import ChevronLeft from '@geist-ui/react-icons/chevronLeft'
+import MoreHorizontal from '@geist-ui/react-icons/moreHorizontal'
 import {
   InfusionType,
   InfusionTypeEnum,
@@ -23,6 +26,8 @@ import {
 } from 'lib/db/infusions'
 import { useAuth } from 'lib/auth'
 import { filterInfusions } from 'lib/helpers'
+import InfusionModal from './infusionModal'
+import { useState } from 'react'
 
 interface InfusionTableProps {
   limit?: number
@@ -41,6 +46,13 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
   const { data: infusions, status, error } = useInfusions(limit, uid)
   const [, setToast] = useToasts()
   const { user } = useAuth()
+  const [selectedInfusion, setSelectedInfusion] = useState<InfusionType>()
+
+  const {
+    visible: infusionModal,
+    setVisible: setInfusionModalVisible,
+    bindings: infusionModalBindings,
+  } = useModal(false)
 
   const filteredInfusions = filterInfusions(infusions, filterYear)
 
@@ -108,7 +120,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
   }
 
   function formatInfusionRow(infusion: InfusionType) {
-    const { cause, sites } = infusion
+    const { cause, sites, uid } = infusion
 
     const parsedDate = parseISO(infusion.date)
     const date = format(parsedDate, 'MM/dd/yyyy')
@@ -121,20 +133,55 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
     const factorBrand = infusion.medication.brand
     const units = infusion.medication.units && `${infusion.medication.units} iu`
 
-    const remove = (
-      <>
-        <Tooltip
-          text='This is permanent and cannot be undone.'
-          placement='left'
-        >
-          <Button scale={0.25} onClick={() => deleteRow(infusion.uid!)} auto>
-            Delete
-          </Button>
-        </Tooltip>
-      </>
-    )
+    const moreMenu = () => {
+      const content = (
+        <>
+          <Popover.Item>
+            <Button
+              scale={0.5}
+              onClick={() => (
+                setSelectedInfusion(infusion), setInfusionModalVisible(true)
+              )}
+              auto
+            >
+              Update
+            </Button>
+          </Popover.Item>
+          <Popover.Item>
+            <Tooltip
+              text='This is permanent and cannot be undone.'
+              placement='left'
+            >
+              <Button
+                scale={0.5}
+                onClick={() => deleteRow(infusion.uid!)}
+                auto
+                type='success-light'
+              >
+                Delete
+              </Button>
+            </Tooltip>
+          </Popover.Item>
+        </>
+      )
 
-    return { date, type, sites, cause, factorBrand, units, remove }
+      return (
+        <Popover content={content} style={{ cursor: 'pointer' }}>
+          <MoreHorizontal />
+        </Popover>
+      )
+    }
+
+    return {
+      uid,
+      date,
+      type,
+      sites,
+      cause,
+      factorBrand,
+      units,
+      moreMenu: moreMenu(),
+    }
   }
 
   // TODO(michael) add more sorting filters
@@ -160,47 +207,49 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
   }
 
   return (
-    <StyledTableWrapper>
-      <Table
-        data={rowData}
-        width='100%'
-        hover={false}
-        // TODO(michael) add the ability to update logs
-        // onRow={(row) => updateRow(row.uid)}
-      >
-        <Table.Column prop='date' label='Date' />
-        <Table.Column prop='type' label='Reason' />
-        <Table.Column prop='sites' label='Bleed sites' />
-        <Table.Column prop='cause' label='Cause' />
-        <Table.Column prop='factorBrand' label='Factor' />
-        <Table.Column prop='units' label='Amount' />
-        {isLoggedInUser && <Table.Column prop='remove' />}
-      </Table>
-      {filteredInfusions.length === 0 && (
-        <>
-          <Spacer />
-          <Note type='success'>
-            No infusions found. Add one by clicking ’Log Infusion’ above.
-          </Note>
-          <Spacer />
-        </>
-      )}
-      {filteredInfusions.length >= 25 && (
-        <>
-          <Spacer h={0.5} />
-          <Grid.Container justify='flex-end'>
-            <Pagination count={1}>
-              <Pagination.Next>
-                <ChevronRight />
-              </Pagination.Next>
-              <Pagination.Previous>
-                <ChevronLeft />
-              </Pagination.Previous>
-            </Pagination>
-          </Grid.Container>
-        </>
-      )}
-    </StyledTableWrapper>
+    <>
+      <StyledTableWrapper>
+        <Table data={rowData} width='100%' hover={false}>
+          <Table.Column prop='date' label='Date' />
+          <Table.Column prop='type' label='Reason' />
+          <Table.Column prop='sites' label='Bleed sites' />
+          <Table.Column prop='cause' label='Cause' />
+          <Table.Column prop='factorBrand' label='Factor' />
+          <Table.Column prop='units' label='Amount' />
+          {isLoggedInUser && <Table.Column prop='moreMenu' />}
+        </Table>
+        {filteredInfusions.length === 0 && (
+          <>
+            <Spacer />
+            <Note type='success'>
+              No infusions found. Add one by clicking ’Log Infusion’ above.
+            </Note>
+            <Spacer />
+          </>
+        )}
+        {filteredInfusions.length >= 25 && (
+          <>
+            <Spacer h={0.5} />
+            <Grid.Container justify='flex-end'>
+              <Pagination count={1}>
+                <Pagination.Next>
+                  <ChevronRight />
+                </Pagination.Next>
+                <Pagination.Previous>
+                  <ChevronLeft />
+                </Pagination.Previous>
+              </Pagination>
+            </Grid.Container>
+          </>
+        )}
+      </StyledTableWrapper>
+      <InfusionModal
+        infusion={selectedInfusion}
+        visible={infusionModal}
+        setVisible={setInfusionModalVisible}
+        bindings={infusionModalBindings}
+      />
+    </>
   )
 }
 

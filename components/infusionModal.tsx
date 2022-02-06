@@ -16,6 +16,7 @@ import {
   InfusionType,
   InfusionTypeEnum,
   InfusionTypeOptions,
+  updateInfusion,
 } from 'lib/db/infusions'
 import { AttachedUserType } from 'lib/types/users'
 import useInfusions from 'lib/hooks/useInfusions'
@@ -28,16 +29,18 @@ interface InfusionValues {
   sites: string
   type: InfusionTypeOptions
   units: string
+  uid?: string | null
 }
 
 interface ModalProps {
   visible: boolean
   setVisible: (flag: boolean) => void
   bindings: any
+  infusion?: InfusionType
 }
 
 export default function InfusionModal(props: ModalProps): JSX.Element {
-  const { visible, setVisible, bindings } = props
+  const { visible, setVisible, bindings, infusion } = props
   const { user } = useAuth()
   const [, setToast] = useToasts()
   const { data: infusions } = useInfusions()
@@ -45,9 +48,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
   // TODO(michael) limit the firebase call instead of having
   // to return all the infusions and filtering them here
   infusions &&
-    infusions.sort((a, b) =>
-      compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
-    )
+    infusions.sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
 
   const previousInfusion = infusions && infusions[0]
 
@@ -93,27 +94,84 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
       )
   }
 
+  const handleUpdateInfusion = async (infusion: InfusionValues) => {
+    const infusionUser: AttachedUserType = {
+      email: user!.email,
+      name: user!.name,
+      photoUrl: user!.photoUrl,
+      uid: user!.uid,
+    }
+
+    const { uid, date, brand, lot, units, cause, sites, type } = infusion
+    const payload: InfusionType = {
+      cause,
+      createdAt: new Date().toISOString(),
+      deletedAt: null,
+      date,
+      medication: {
+        brand,
+        lot,
+        units: units ? parseInt(units, 10) : 0,
+      },
+      sites,
+      type,
+      user: infusionUser,
+    }
+
+    uid
+      ? updateInfusion(uid, payload)
+          .then(() => {
+            setToast({
+              text: 'Infusion updated!',
+              type: 'success',
+              delay: 5000,
+            })
+            closeModal()
+          })
+          .catch((error) =>
+            setToast({
+              text: `Something went wrong: ${error}`,
+              type: 'error',
+              delay: 10000,
+            })
+          )
+      : setToast({
+          text: `Infusion database entry not found`,
+          type: 'error',
+          delay: 10000,
+        })
+  }
+
   const closeModal = () => {
     setVisible(false)
     formik.resetForm()
   }
 
+  const displayInfusion = infusion ? infusion : previousInfusion
+
   // TODO(michael) Add formik validation
   const formik = useFormik({
     initialValues: {
-      brand: previousInfusion ? previousInfusion.medication.brand : '',
-      cause: '',
-      date: format(new Date(), 'yyyy-MM-dd'),
-      lot: previousInfusion ? previousInfusion.medication.lot : '',
-      sites: '',
-      type: InfusionTypeEnum.PROPHY as InfusionTypeOptions,
-      units: previousInfusion
-        ? previousInfusion.medication.units.toString()
-        : '',
+      brand: displayInfusion ? displayInfusion.medication.brand : '',
+      cause: displayInfusion ? displayInfusion.cause : '',
+      date: displayInfusion
+        ? displayInfusion.date
+        : format(new Date(), 'yyyy-MM-dd'),
+      lot: displayInfusion ? displayInfusion.medication.lot : '',
+      sites: displayInfusion ? displayInfusion.sites : '',
+      type: displayInfusion
+        ? displayInfusion.type
+        : (InfusionTypeEnum.PROPHY as InfusionTypeOptions),
+      units: displayInfusion ? displayInfusion.medication.units.toString() : '',
+      uid: displayInfusion ? displayInfusion.uid : null,
     },
     enableReinitialize: true,
     onSubmit: async (values) => {
-      await handleCreateInfusion(values)
+      if (infusion) {
+        await handleUpdateInfusion(values)
+      } else {
+        await handleCreateInfusion(values)
+      }
     },
   })
 
@@ -260,7 +318,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
         disabled={!formik.isValid}
         loading={formik.isSubmitting}
       >
-        Log infusion
+        {infusion ? 'Update infusion' : 'Log infusion'}
       </Modal.Action>
     </Modal>
   )
