@@ -25,12 +25,10 @@ export default function EmergencyInfo(props: Props): JSX.Element {
     return (
       <>
         <StyledRow>
-          <span>
-            <Avatar
-              src={person.photoUrl}
-              text={person.name && person.name.charAt(0)}
-            />
-          </span>
+          <Avatar
+            src={person.photoUrl}
+            text={person.name && person.name.charAt(0)}
+          />
 
           <div>
             <Text h3>{person.name}</Text>
@@ -117,10 +115,6 @@ const StyledRow = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
-
-  span {
-    width: 5.625rem;
-  }
 
   h3,
   h5 {

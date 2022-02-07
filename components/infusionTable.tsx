@@ -194,16 +194,16 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
     formatInfusionRow(infusion)
   )
 
-  // only shows delete when the logged in user is viewing their own data
+  // only shows more menu when the logged in user is viewing their own data
   let isLoggedInUser = false
   if (user) {
     if (!uid) {
       isLoggedInUser = true
     }
 
-    if (uid && uid === user.uid) {
-      isLoggedInUser = true
-    }
+    // if (uid && uid === user.uid) {
+    //   isLoggedInUser = true
+    // }
   }
 
   return (
@@ -243,12 +243,14 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
           </>
         )}
       </StyledTableWrapper>
-      <InfusionModal
-        infusion={selectedInfusion}
-        visible={infusionModal}
-        setVisible={setInfusionModalVisible}
-        bindings={infusionModalBindings}
-      />
+      {isLoggedInUser && (
+        <InfusionModal
+          infusion={selectedInfusion}
+          visible={infusionModal}
+          setVisible={setInfusionModalVisible}
+          bindings={infusionModalBindings}
+        />
+      )}
     </>
   )
 }

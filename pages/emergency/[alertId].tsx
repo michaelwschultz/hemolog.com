@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import useEmergencyUser from 'lib/hooks/useEmergencyUser'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
-import { Loading, Note, Text, Grid, Link, Spacer } from '@geist-ui/react'
+import { Loading, Note, Text, Grid, Link } from '@geist-ui/react'
 import EmergencyInfo from 'components/emergencyInfo'
 import Footer from 'components/footer'
 
@@ -31,7 +31,7 @@ const Emergency = (): JSX.Element => {
         <Grid.Container
           justify='space-between'
           alignItems='center'
-          style={{ padding: '24px' }}
+          style={{ padding: '24px', paddingBottom: '0' }}
         >
           <Text h4 type='success'>
             Emergency Info
@@ -42,14 +42,27 @@ const Emergency = (): JSX.Element => {
             </NextLink>
           </Text>
         </Grid.Container>
-        <Note type='success' label='Important' style={{ margin: '0 24px' }}>
-          If someone has been in an accident, please call{' '}
-          <a href='tel:911'>911</a> immediately. This page shows the most recent
-          medical logs for someone with hemophilia. This data is{' '}
-          <i>self reported</i> and may not be up-to-date.
-        </Note>
 
-        <Spacer />
+        <Grid.Container
+          justify='space-between'
+          alignItems='center'
+          style={{
+            paddingLeft: '24px',
+            paddingRight: '24px',
+            paddingBottom: '32px',
+          }}
+        >
+          <Text h6 type='secondary'>
+            This page shows the most recent medical logs for someone with
+            hemophilia. <br />
+            This data is <i>self reported</i> and may not be up-to-date.
+          </Text>
+
+          <Note type='success' label='Important' style={{ maxWidth: '360px' }}>
+            If someone has been in an accident, please call{' '}
+            <a href='tel:911'>911</a> immediately.
+          </Note>
+        </Grid.Container>
 
         <StyledPageContent>
           {status === FirestoreStatusType.LOADING && (

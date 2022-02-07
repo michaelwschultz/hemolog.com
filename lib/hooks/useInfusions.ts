@@ -29,6 +29,8 @@ export default function useInfusions(
   // TODO(michael) orderBy createdAt
   // this isn't working right now becuase Firebase
   // can't read the isostring format
+
+  console.log(user, uid)
   const query = db
     .collection('infusions')
     .where('user.uid', '==', user ? user.uid : uid)
