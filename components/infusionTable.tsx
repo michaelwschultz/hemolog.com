@@ -222,7 +222,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
           <>
             <Spacer />
             <Note type='success'>
-              No infusions found. Add one by clicking ’Log Infusion’ above.
+              No treatments found. Add one by clicking ’Log Treatment’ above.
             </Note>
             <Spacer />
           </>

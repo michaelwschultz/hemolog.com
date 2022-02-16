@@ -120,13 +120,13 @@ const HomePage = (): JSX.Element => {
 
       <Text h4>Annual overview ({filterYear})</Text>
       <Text h6 type='secondary'>
-        Infusions are stacked by type (bleed, preventative, or prophy)
+        Treatments are stacked by type (bleed, preventative, or prophy)
       </Text>
       <Chart filterYear={filterYear} />
 
       <Spacer h={3} />
       <Grid justify='space-between' alignItems='center'>
-        <Text h4>Infusions</Text>
+        <Text h4>Treatments</Text>
         {smallerThanSmall && <Text>Swipe →</Text>}
       </Grid>
       <InfusionTable filterYear={filterYear} />

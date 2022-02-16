@@ -25,6 +25,7 @@ const SettingsForm = (): JSX.Element => {
       severity: person ? person.severity : '',
       factor: person ? person.factor : '',
       medication: person ? person.medication : '',
+      monoclonalAntibody: person ? person.monoclonalAntibody : '',
       // emergencyContacts: [
       //   {
       //     name: '',
@@ -65,14 +66,31 @@ const SettingsForm = (): JSX.Element => {
   ]
 
   const factorOptions = [
+    { label: 'None', value: '' },
     { label: 'Advate', value: 'Advate' },
+    { label: 'Adynovate', value: 'Adynovate' },
+    { label: 'Afstyla', value: 'Afstyla' },
+    { label: 'Alprolix', value: 'Alprolix' },
+    { label: 'Benefix', value: 'Benefix' },
     { label: 'Eloctate', value: 'Eloctate' },
-    { label: 'Eloctate', value: 'Eloctate' },
-    { label: 'Hemlibra', value: 'Hemlibra' },
+    { label: 'Esperoct', value: 'Esperoct' },
+    { label: 'Idelvion', value: 'Idelvion' },
+    { label: 'Ixinity', value: 'Ixinity' },
     { label: 'Jivi', value: 'Jivi' },
+    { label: 'Kogenate FS', value: 'Kogenate FS' },
+    { label: 'Kovaltry', value: 'Kovaltry' },
+    { label: 'NovoEight', value: 'NovoEight' },
     { label: 'NovoSeven', value: 'NovoSeven' },
+    { label: 'NUWIQ', value: 'NUWIQ' },
+    { label: 'Rebinyn', value: 'Rebinyn' },
     { label: 'Recombinate', value: 'Recombinate' },
+    { label: 'Rixubis', value: 'Rixubis' },
     { label: 'Xyntha', value: 'Xyntha' },
+  ]
+
+  const monoclonalAntibodyOptions = [
+    { label: 'None', value: '' },
+    { label: 'Hemlibra', value: 'Hemlibra' },
   ]
 
   const handleSubmitForm = () => {
@@ -120,7 +138,7 @@ const SettingsForm = (): JSX.Element => {
           />
         </Grid>
         <Grid xs={24} md={12} direction='column'>
-          <Text h5>Medication</Text>
+          <Text h5>Factor</Text>
           <AutoComplete
             id='medication'
             name='medication'
@@ -129,6 +147,20 @@ const SettingsForm = (): JSX.Element => {
             onChange={(value) => formik.setFieldValue('medication', value)}
             options={factorOptions}
             value={formik.values.medication}
+          />
+        </Grid>
+        <Grid xs={24} md={12} direction='column'>
+          <Text h5>Monoclonal antibody</Text>
+          <AutoComplete
+            id='monoclonalAntibody'
+            name='monoclonalAntibody'
+            width='100%'
+            placeholder='Hemlibra'
+            onChange={(value) =>
+              formik.setFieldValue('monoclonalAntibody', value)
+            }
+            options={monoclonalAntibodyOptions}
+            value={formik.values.monoclonalAntibody}
           />
         </Grid>
       </Grid.Container>

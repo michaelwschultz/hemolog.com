@@ -6,6 +6,7 @@ export interface Person {
   hemophiliaType?: string
   severity?: string
   medication?: string
+  monoclonalAntibody?: string
   factor?: number
   apiKey?: string
 }

@@ -182,7 +182,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
 
   return (
     <Modal open={visible} {...bindings}>
-      <Modal.Title>Log infusion</Modal.Title>
+      <Modal.Title>Treatment</Modal.Title>
       <Modal.Content>
         <form onSubmit={formik.handleSubmit}>
           <Grid.Container gap={1}>
@@ -318,7 +318,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
         disabled={!formik.isValid}
         loading={formik.isSubmitting}
       >
-        {infusion ? 'Update infusion' : 'Log infusion'}
+        Save
       </Modal.Action>
     </Modal>
   )
