@@ -1,7 +1,7 @@
 import { getAllInfusionsByApiKey } from 'lib/admin-db/infusions'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-const recentInfusions = async (req: NextApiRequest, res: NextApiResponse) => {
+const infusions = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'GET') {
     return res.status(405).send('Requires GET method.')
   }
@@ -23,4 +23,4 @@ const recentInfusions = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default recentInfusions
+export default infusions
