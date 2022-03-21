@@ -67,11 +67,14 @@ async function getAllInfusionsByApiKey(apiKey: string) {
   }
 }
 
-async function getRecentUserInfusionsByApiKey(apiKey: string) {
+async function getRecentUserInfusionsByApiKey(
+  apiKey?: string,
+  alertId?: string
+) {
   try {
     const userSnapshot = await adminFirestore
       .collection('users')
-      .where('apiKey', '==', apiKey)
+      .where(alertId ? 'alertId' : 'apiKey', '==', alertId || apiKey)
       .limit(1)
       .get()
 

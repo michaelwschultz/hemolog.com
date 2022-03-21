@@ -6,13 +6,14 @@ const recentTreatments = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(405).send('Requires GET method.')
   }
   try {
-    const { apikey } = req.query
-    if (!apikey) {
+    const { apikey, alertid } = req.query
+    if (!apikey && !alertid) {
       throw { message: 'Access denied. Missing api key.' }
     }
 
     const { infusions, error } = await getRecentUserInfusionsByApiKey(
-      apikey as string
+      apikey as string,
+      alertid as string
     )
 
     if (error) {
