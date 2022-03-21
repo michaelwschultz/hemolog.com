@@ -5,7 +5,7 @@ import { compareDesc } from 'date-fns'
 import useFirestoreQuery, {
   FirestoreStatusType,
 } from 'lib/hooks/useFirestoreQuery'
-import { InfusionType } from 'lib/db/infusions'
+import { TreatmentType } from 'lib/db/infusions'
 
 type FirestoreStatusTypes =
   | FirestoreStatusType.IDLE
@@ -14,7 +14,7 @@ type FirestoreStatusTypes =
   | FirestoreStatusType.LOADING
 
 interface InfusionResponse {
-  data: InfusionType[]
+  data: TreatmentType[]
   status: FirestoreStatusTypes
   error: Error
 }
@@ -29,8 +29,6 @@ export default function useInfusions(
   // TODO(michael) orderBy createdAt
   // this isn't working right now becuase Firebase
   // can't read the isostring format
-
-  console.log(user, uid)
   const query = db
     .collection('infusions')
     .where('user.uid', '==', user ? user.uid : uid)

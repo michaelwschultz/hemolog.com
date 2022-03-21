@@ -12,6 +12,8 @@ export interface UserType {
   isAdmin?: boolean
   name: string
   photoUrl?: string
+  medication?: string
+  monoclonalAntibody?: string
   provider: string
   token: string
   uid: string

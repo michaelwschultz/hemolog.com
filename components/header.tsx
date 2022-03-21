@@ -75,7 +75,7 @@ const Header = (props: Props): JSX.Element => {
                     type='success-light'
                     scale={3 / 4}
                   >
-                    Log treatment
+                    New treatment
                   </Button>
                 )}
               </Grid>

@@ -45,6 +45,8 @@ function useProvideAuth() {
         user.alertId = dbUser.data()!.alertId
         user.isAdmin = dbUser.data()!.isAdmin
         user.apiKey = dbUser.data()!.apiKey
+        user.medication = dbUser.data()!.medication || ''
+        user.monoclonalAntibody = dbUser.data()!.monoclonalAntibody || ''
         delete userWithoutToken.alertId
       }
 

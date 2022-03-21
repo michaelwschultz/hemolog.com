@@ -1,16 +1,18 @@
 import { firestore } from 'lib/firebase'
 import { AttachedUserType } from 'lib/types/users'
 
-export enum InfusionTypeEnum {
+export enum TreatmentTypeEnum {
   PROPHY = 'PROPHY',
   BLEED = 'BLEED',
   PREVENTATIVE = 'PREVENTATIVE',
+  ANTIBODY = 'ANTIBODY',
 }
 
-export type InfusionTypeOptions =
-  | InfusionTypeEnum.PROPHY
-  | InfusionTypeEnum.BLEED
-  | InfusionTypeEnum.PREVENTATIVE
+export type TreatmentTypeOptions =
+  | TreatmentTypeEnum.PROPHY
+  | TreatmentTypeEnum.BLEED
+  | TreatmentTypeEnum.PREVENTATIVE
+  | TreatmentTypeEnum.ANTIBODY
 
 export interface Medication {
   brand: string
@@ -19,7 +21,7 @@ export interface Medication {
   units: number
 }
 
-export interface InfusionType {
+export interface TreatmentType {
   deletedAt: string | null
   uid?: string
   cause: string
@@ -27,13 +29,13 @@ export interface InfusionType {
   date: string
   medication: Medication
   sites: string
-  type: InfusionTypeOptions
+  type: TreatmentTypeOptions
   user: AttachedUserType
 }
 
 // NOTE(michael) this might be a bad way of adding the doc id.
 // Probably worth searching for another solution.
-function createInfusion(data: InfusionType) {
+function createInfusion(data: TreatmentType) {
   return firestore
     .collection('infusions')
     .add(data)
@@ -49,7 +51,7 @@ function deleteInfusion(uid: string) {
     .set({ deletedAt: new Date().toISOString() }, { merge: true })
 }
 
-async function updateInfusion(uid: string, newValues: Partial<InfusionType>) {
+async function updateInfusion(uid: string, newValues: Partial<TreatmentType>) {
   return firestore.collection('infusions').doc(uid).update(newValues)
 }
 

@@ -1,7 +1,7 @@
 import { adminFirestore } from 'lib/firebase-admin'
 import { compareDesc, parseISO } from 'date-fns'
 
-import type { InfusionType } from '../db/infusions'
+import type { TreatmentType } from '../db/infusions'
 
 async function getAllInfusions() {
   const snapshot = await adminFirestore.collection('infusions').get()
@@ -115,8 +115,8 @@ async function getRecentUserInfusionsByApiKey(apiKey: string) {
 
 async function postInfusionByApiKey(
   apiKey: string,
-  lastInfusion: InfusionType,
-  newInfusion: Partial<InfusionType>
+  lastInfusion: TreatmentType,
+  newInfusion: Partial<TreatmentType>
 ) {
   try {
     const userSnapshot = await adminFirestore

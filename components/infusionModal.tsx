@@ -9,13 +9,13 @@ import {
 } from '@geist-ui/react'
 import splitbee from '@splitbee/web'
 import { useFormik } from 'formik'
-import { format, compareDesc, parseISO } from 'date-fns'
+import { compareDesc, parseISO } from 'date-fns'
 import { useAuth } from 'lib/auth'
 import {
   createInfusion,
-  InfusionType,
-  InfusionTypeEnum,
-  InfusionTypeOptions,
+  TreatmentType,
+  TreatmentTypeEnum,
+  TreatmentTypeOptions,
   updateInfusion,
 } from 'lib/db/infusions'
 import { AttachedUserType } from 'lib/types/users'
@@ -27,7 +27,7 @@ interface InfusionValues {
   date: string
   lot?: string
   sites: string
-  type: InfusionTypeOptions
+  type: TreatmentTypeOptions
   units: string
   uid?: string | null
 }
@@ -36,7 +36,7 @@ interface ModalProps {
   visible: boolean
   setVisible: (flag: boolean) => void
   bindings: any
-  infusion?: InfusionType
+  infusion?: TreatmentType
 }
 
 export default function InfusionModal(props: ModalProps): JSX.Element {
@@ -45,7 +45,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
   const [, setToast] = useToasts()
   const { data: infusions } = useInfusions()
 
-  // TODO(michael) limit the firebase call instead of having
+  // TODO:(michael) limit the firebase call instead of having
   // to return all the infusions and filtering them here
   infusions &&
     infusions.sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
@@ -60,8 +60,9 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
       uid: user!.uid,
     }
 
+    // TODO:(michael) should probably move to toLocaleString()
     const { date, brand, lot, units, cause, sites, type } = infusion
-    const payload: InfusionType = {
+    const payload: TreatmentType = {
       cause,
       createdAt: new Date().toISOString(),
       deletedAt: null,
@@ -103,7 +104,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
     }
 
     const { uid, date, brand, lot, units, cause, sites, type } = infusion
-    const payload: InfusionType = {
+    const payload: TreatmentType = {
       cause,
       createdAt: new Date().toISOString(),
       deletedAt: null,
@@ -154,14 +155,12 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
     initialValues: {
       brand: displayInfusion ? displayInfusion.medication.brand : '',
       cause: displayInfusion ? displayInfusion.cause : '',
-      date: displayInfusion
-        ? displayInfusion.date
-        : format(new Date(), 'yyyy-MM-dd'),
+      date: '',
       lot: displayInfusion ? displayInfusion.medication.lot : '',
       sites: displayInfusion ? displayInfusion.sites : '',
       type: displayInfusion
         ? displayInfusion.type
-        : (InfusionTypeEnum.PROPHY as InfusionTypeOptions),
+        : (TreatmentTypeEnum.PROPHY as TreatmentTypeOptions),
       units: displayInfusion ? displayInfusion.medication.units.toString() : '',
       uid: displayInfusion ? displayInfusion.uid : null,
     },
@@ -191,11 +190,15 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
                 width='100%'
                 name='type'
                 onClick={() =>
-                  formik.setFieldValue('type', InfusionTypeEnum.PROPHY)
+                  formik.setFieldValue('type', TreatmentTypeEnum.PROPHY)
                 }
-                style={{ marginRight: '8px' }}
+                style={{
+                  marginRight: '8px',
+                  paddingLeft: '4px',
+                  paddingRight: '4px',
+                }}
                 type={
-                  formik.values.type === InfusionTypeEnum.PROPHY
+                  formik.values.type === TreatmentTypeEnum.PROPHY
                     ? 'warning-light'
                     : 'default'
                 }
@@ -208,11 +211,15 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
                 width='100%'
                 name='type'
                 onClick={() =>
-                  formik.setFieldValue('type', InfusionTypeEnum.BLEED)
+                  formik.setFieldValue('type', TreatmentTypeEnum.BLEED)
                 }
-                style={{ marginRight: '8px' }}
+                style={{
+                  marginRight: '8px',
+                  paddingLeft: '4px',
+                  paddingRight: '4px',
+                }}
                 type={
-                  formik.values.type === InfusionTypeEnum.BLEED
+                  formik.values.type === TreatmentTypeEnum.BLEED
                     ? 'success-light'
                     : 'default'
                 }
@@ -225,10 +232,14 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
                 width='100%'
                 name='type'
                 onClick={() =>
-                  formik.setFieldValue('type', InfusionTypeEnum.PREVENTATIVE)
+                  formik.setFieldValue('type', TreatmentTypeEnum.PREVENTATIVE)
                 }
+                style={{
+                  paddingLeft: '4px',
+                  paddingRight: '4px',
+                }}
                 type={
-                  formik.values.type === InfusionTypeEnum.PREVENTATIVE
+                  formik.values.type === TreatmentTypeEnum.PREVENTATIVE
                     ? 'error-light'
                     : 'default'
                 }
@@ -237,6 +248,30 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
               </Button>
             </Grid>
           </Grid.Container>
+          {user!.monoclonalAntibody && (
+            <Grid.Container gap={1}>
+              <Grid xs={24}>
+                <Button
+                  width='100%'
+                  name='type'
+                  onClick={() =>
+                    formik.setFieldValue('type', TreatmentTypeEnum.ANTIBODY)
+                  }
+                  style={{
+                    paddingLeft: '4px',
+                    paddingRight: '4px',
+                  }}
+                  type={
+                    formik.values.type === TreatmentTypeEnum.ANTIBODY
+                      ? 'secondary-light'
+                      : 'default'
+                  }
+                >
+                  Monoclonal antibody
+                </Button>
+              </Grid>
+            </Grid.Container>
+          )}
           <Spacer />
           <Input
             id='date'
@@ -255,53 +290,62 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
             name='brand'
             onChange={formik.handleChange}
             placeholder='Brand name'
-            value={formik.values.brand}
+            disabled={formik.values.type === TreatmentTypeEnum.ANTIBODY}
+            value={
+              formik.values.type === TreatmentTypeEnum.ANTIBODY
+                ? user!.monoclonalAntibody
+                : formik.values.brand
+            }
             width='100%'
           >
             <Text h6>Medication</Text>
           </Input>
           <Spacer h={0.8} />
-          <Input
-            id='units'
-            name='units'
-            htmlType='number'
-            labelRight='units'
-            onChange={formik.handleChange}
-            placeholder='3000'
-            value={formik.values.units}
-            width='100%'
-          />
-          <Spacer h={0.5} />
-          <Input
-            id='lot'
-            name='lot'
-            onChange={formik.handleChange}
-            placeholder='Lot number'
-            value={formik.values.lot}
-            width='100%'
-          />
-          <Spacer />
-          <Input
-            id='sites'
-            name='sites'
-            onChange={formik.handleChange}
-            placeholder='Left ankle, right knee'
-            value={formik.values.sites}
-            width='100%'
-          >
-            <Text h6>Affected areas</Text>
-          </Input>
-          <Spacer />
-          <Input
-            id='cause'
-            name='cause'
-            onChange={formik.handleChange}
-            placeholder='Ran into a door 🤦‍♂️'
-            value={formik.values.cause}
-            width='100%'
-          >
-            <Text h6>Cause of bleed</Text>
-          </Input>
+          {formik.values.type !== TreatmentTypeEnum.ANTIBODY && (
+            <>
+              <Input
+                id='units'
+                name='units'
+                htmlType='number'
+                labelRight='units'
+                onChange={formik.handleChange}
+                placeholder='3000'
+                value={formik.values.units}
+                width='100%'
+              />
+              <Spacer h={0.5} />
+              <Input
+                id='lot'
+                name='lot'
+                onChange={formik.handleChange}
+                placeholder='Lot number'
+                value={formik.values.lot}
+                width='100%'
+              />
+              <Spacer />
+              <Input
+                id='sites'
+                name='sites'
+                onChange={formik.handleChange}
+                placeholder='Left ankle, right knee'
+                value={formik.values.sites}
+                width='100%'
+              >
+                <Text h6>Affected areas</Text>
+              </Input>
+              <Spacer />
+              <Input
+                id='cause'
+                name='cause'
+                onChange={formik.handleChange}
+                placeholder='Ran into a door 🤦‍♂️'
+                value={formik.values.cause}
+                width='100%'
+              >
+                <Text h6>Cause of bleed</Text>
+              </Input>
+            </>
+          )}
 
           {/* <Text h6>Notes</Text>
           <Textarea
@@ -318,7 +362,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
         disabled={!formik.isValid}
         loading={formik.isSubmitting}
       >
-        Save
+        Log Treatment
       </Modal.Action>
     </Modal>
   )

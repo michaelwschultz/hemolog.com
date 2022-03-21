@@ -4,7 +4,7 @@ import { Grid, Note, Card, useModal, Tooltip, Text } from '@geist-ui/react'
 import StatCard from 'components/statCard'
 import useInfusions from 'lib/hooks/useInfusions'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
-import { InfusionTypeEnum } from 'lib/db/infusions'
+import { TreatmentTypeEnum } from 'lib/db/infusions'
 import FeedbackModal from 'components/feedbackModal'
 import { filterInfusions } from 'lib/helpers'
 
@@ -88,7 +88,7 @@ export default function Stats(props: StatsProps): JSX.Element {
   if (status === FirestoreStatusType.ERROR && !error) {
     return (
       <Note type='error' label='Error'>
-        Something went wrong accessing your infusion data. Refresh the page to
+        Something went wrong accessing your treatment data. Refresh the page to
         try again.
       </Note>
     )
@@ -105,7 +105,7 @@ export default function Stats(props: StatsProps): JSX.Element {
   const affectedAreas = filteredInfusions.map((entry) => entry.sites)
   const causes = filteredInfusions.map((entry) => entry.cause)
   const numberOfBleeds = filteredInfusions.filter(
-    (entry) => entry.type === InfusionTypeEnum.BLEED
+    (entry) => entry.type === TreatmentTypeEnum.BLEED
   ).length
   const mostAffectedArea = _.chain(affectedAreas)
     .compact()
@@ -128,7 +128,7 @@ export default function Stats(props: StatsProps): JSX.Element {
     let currentStreak = 0
 
     filteredInfusions.forEach((entry) => {
-      const isProphy = entry.type === InfusionTypeEnum.PROPHY
+      const isProphy = entry.type === TreatmentTypeEnum.PROPHY
 
       if (isProphy) {
         currentStreak++
@@ -160,7 +160,7 @@ export default function Stats(props: StatsProps): JSX.Element {
     <>
       <Grid.Container gap={2}>
         <Grid xs={12} sm={12} md={6}>
-          <StatCard value={numberOfInfusions} label='Infusions' />
+          <StatCard value={numberOfInfusions} label='Treatments' />
         </Grid>
         <Grid xs={12} sm={12} md={6}>
           <StatCard value={numberOfBleeds} label='Bleeds' />
@@ -168,7 +168,7 @@ export default function Stats(props: StatsProps): JSX.Element {
         <Grid xs={24} sm={12} md={6}>
           <StatCard
             value={consecutiveProphyInfusions()}
-            label='Consecutive prophy infusions'
+            label='Consecutive prophy treatments'
           />
         </Grid>
         <Grid xs={24} sm={12} md={6}>
