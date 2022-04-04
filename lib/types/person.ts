@@ -7,6 +7,7 @@ export interface Person {
   severity?: string
   medication?: string
   monoclonalAntibody?: string
+  injectionFrequency?: string
   factor?: number
   apiKey?: string
 }

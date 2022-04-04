@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useFormik } from 'formik'
 import {
   Input,
@@ -26,6 +27,7 @@ const SettingsForm = (): JSX.Element => {
       factor: person ? person.factor : '',
       medication: person ? person.medication : '',
       monoclonalAntibody: person ? person.monoclonalAntibody : '',
+      injectionFrequency: person ? person.injectionFrequency : '',
       // emergencyContacts: [
       //   {
       //     name: '',
@@ -35,6 +37,7 @@ const SettingsForm = (): JSX.Element => {
     },
     enableReinitialize: true,
     onSubmit: (values) => {
+      console.log('submit', values)
       updateUser(user!.uid, values)
         .then(() => {
           setToast({
@@ -43,13 +46,14 @@ const SettingsForm = (): JSX.Element => {
             delay: 5000,
           })
         })
-        .catch((error) =>
+        .catch((error) => {
+          console.error(error)
           setToast({
             text: `Something went wrong: ${error}`,
             type: 'error',
             delay: 10000,
           })
-        )
+        })
     },
   })
 
@@ -66,7 +70,6 @@ const SettingsForm = (): JSX.Element => {
   ]
 
   const factorOptions = [
-    { label: 'None', value: '' },
     { label: 'Advate', value: 'Advate' },
     { label: 'Adynovate', value: 'Adynovate' },
     { label: 'Afstyla', value: 'Afstyla' },
@@ -88,14 +91,46 @@ const SettingsForm = (): JSX.Element => {
     { label: 'Xyntha', value: 'Xyntha' },
   ]
 
-  const monoclonalAntibodyOptions = [
-    { label: 'None', value: '' },
-    { label: 'Hemlibra', value: 'Hemlibra' },
+  const monoclonalAntibodyOptions = [{ label: 'Hemlibra', value: 'Hemlibra' }]
+
+  const injectionFrequencyOptions = [
+    {
+      label: 'Weekly',
+      value: 'Weekly',
+    },
+    {
+      label: 'Every other week',
+      value: 'Every other week',
+    },
+    {
+      label: 'Monthly',
+      value: 'Monthly',
+    },
   ]
 
   const handleSubmitForm = () => {
     splitbee.track('Updated Profile', { ...formik.values } as any)
     formik.submitForm()
+  }
+
+  const [filteredFactorOptions, setFilteredFactorOptions] =
+    useState(factorOptions)
+
+  interface Option {
+    label: string
+    value: string
+  }
+
+  const searchHandler = (
+    currentValue: string,
+    allOptions: Option[],
+    setOptions: (options: Option[]) => void
+  ) => {
+    if (!currentValue) return setOptions(allOptions)
+    const relatedOptions = allOptions.filter((item) =>
+      item.value.toLowerCase().startsWith(currentValue.toLowerCase())
+    )
+    setOptions(relatedOptions)
   }
 
   return (
@@ -119,6 +154,7 @@ const SettingsForm = (): JSX.Element => {
             id='severity'
             name='severity'
             width='100%'
+            disableFreeSolo
             placeholder='Severe'
             onChange={(value) => formik.setFieldValue('severity', value)}
             options={severityOptions}
@@ -142,11 +178,15 @@ const SettingsForm = (): JSX.Element => {
           <AutoComplete
             id='medication'
             name='medication'
+            clearable
             width='100%'
             placeholder='Advate'
             onChange={(value) => formik.setFieldValue('medication', value)}
-            options={factorOptions}
+            options={filteredFactorOptions}
             value={formik.values.medication}
+            onSearch={(value) =>
+              searchHandler(value, factorOptions, setFilteredFactorOptions)
+            }
           />
         </Grid>
         <Grid xs={24} md={12} direction='column'>
@@ -154,6 +194,7 @@ const SettingsForm = (): JSX.Element => {
           <AutoComplete
             id='monoclonalAntibody'
             name='monoclonalAntibody'
+            clearable
             width='100%'
             placeholder='Hemlibra'
             onChange={(value) =>
@@ -161,6 +202,26 @@ const SettingsForm = (): JSX.Element => {
             }
             options={monoclonalAntibodyOptions}
             value={formik.values.monoclonalAntibody}
+          />
+        </Grid>
+        <Grid xs={24} md={12} direction='column'>
+          <Text h5>Injection frequency</Text>
+          <AutoComplete
+            id='injectionFrequency'
+            name='injectionFrequency'
+            disableFreeSolo
+            clearable
+            width='100%'
+            placeholder='Every other week'
+            onChange={(value) => {
+              formik.setFieldValue('injectionFrequency', value)
+            }}
+            options={injectionFrequencyOptions}
+            value={
+              injectionFrequencyOptions.find(
+                (option) => option.value === formik.values.injectionFrequency
+              )?.label
+            }
           />
         </Grid>
       </Grid.Container>

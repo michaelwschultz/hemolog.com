@@ -14,6 +14,7 @@ export interface UserType {
   photoUrl?: string
   medication?: string
   monoclonalAntibody?: string
+  injectionFrequency?: string
   provider: string
   token: string
   uid: string
