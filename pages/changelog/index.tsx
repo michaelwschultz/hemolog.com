@@ -1,55 +1,14 @@
 import Head from 'next/head'
-import {
-  Text,
-  Divider,
-  Image,
-  Spacer,
-  Grid,
-  User,
-  Link,
-  useToasts,
-  useClipboard,
-  useTheme,
-} from '@geist-ui/react'
-import Share from '@geist-ui/react-icons/share'
+import { Text, Divider, Image, Spacer, Link, useTheme } from '@geist-ui/react'
 import styled from 'styled-components'
 
 import StaticHeader from 'components/staticHeader'
 import Footer from 'components/footer'
-import BlogFooter from 'components/blogFooter'
+import BlogFooter from 'components/blog/blogFooter'
+import PostFooter from 'components/blog/postFooter'
 
 const Changelog = (): JSX.Element => {
-  const [, setToast] = useToasts()
-  const { copy } = useClipboard()
-  const handleCopy = (postId: string) => {
-    copy(`https://hemolog.com/changelog#${postId}`)
-    setToast({ type: 'success', text: 'Link copied!' })
-  }
   const theme = useTheme()
-
-  const PostFooter = ({ postId }: { postId: string }) => {
-    return (
-      <>
-        <Spacer h={2} />
-        <Grid.Container gap={2} alignItems='center'>
-          <Grid xs={22}>
-            <User src='/images/michael-avatar.jpg' name='Michael Schultz'>
-              <User.Link href='https://twitter.com/michaelschultz'>
-                @michaelschultz
-              </User.Link>
-            </User>
-          </Grid>
-          <Grid xs={2}>
-            <div style={{ cursor: 'pointer' }}>
-              <Share color='#FF062C' onClick={() => handleCopy(postId)} />
-            </div>
-          </Grid>
-        </Grid.Container>
-        <Divider />
-        <Spacer h={2} />
-      </>
-    )
-  }
 
   return (
     <>
@@ -65,6 +24,43 @@ const Changelog = (): JSX.Element => {
               Development blog about new features, fixes, and updates to Hemolog
             </Text>
             <Divider />
+
+            <StyledPost id='post-3'>
+              <Spacer h={3} />
+              <Text h4>A brand new treatment type</Text>
+              <Text h6>
+                It’s finally here. Monoclonal antibodies officially can treat
+                hemophilia, giving us a new method of getting our medicine in
+                our body and a whole lot more.
+              </Text>
+              <Spacer />
+              <Divider>Update #3</Divider>
+              <Text>
+                I never thought I’d say this, but I no longer simply{' '}
+                <b>infuse</b> to treat bleeds. I also <b>inject</b>.
+              </Text>
+              <Text>
+                That might not sound like a huge difference off the bat, but I
+                can assure you it is. Having to find a vein all the time is now
+                a thing of the past, finally we can inject subcutaneously under
+                the skin, like so many other people. I’m so excited for what
+                this means for people with bad or damage veins and kids! It’s
+                just lessens the burden so much.
+              </Text>
+              <StyledRow>
+                <Link href='/changelog/monoclonal-antibodies' color>
+                  Continue reading
+                </Link>
+
+                <Image
+                  width={40}
+                  src='/images/changelog/about-you.png'
+                  alt='About you section of the profile page'
+                />
+              </StyledRow>
+
+              <PostFooter postId='post-3' />
+            </StyledPost>
 
             <StyledPost id='post-2'>
               <Spacer h={3} />

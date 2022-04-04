@@ -53,6 +53,10 @@ export default class MyDocument extends Document {
               __html: JSON.stringify(googleRichResultsSchema),
             }}
           />
+          <link
+            rel='stylesheet'
+            href='https://unpkg.com/react-vis/dist/style.css'
+          />
         </Head>
         <body>
           <Main />
