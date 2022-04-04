@@ -87,10 +87,6 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         />
         <meta name='mobile-web-app-capable' content='yes' />
         <meta name='apple-mobile-web-app-capable' content='yes' />
-        <link
-          rel='stylesheet'
-          href='https://unpkg.com/react-vis/dist/style.css'
-        ></link>
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>

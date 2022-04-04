@@ -20,8 +20,8 @@ import ChevronRight from '@geist-ui/react-icons/chevronRight'
 import ChevronLeft from '@geist-ui/react-icons/chevronLeft'
 import MoreHorizontal from '@geist-ui/react-icons/moreHorizontal'
 import {
-  InfusionType,
-  InfusionTypeEnum,
+  TreatmentType,
+  TreatmentTypeEnum,
   deleteInfusion,
 } from 'lib/db/infusions'
 import { useAuth } from 'lib/auth'
@@ -39,6 +39,7 @@ enum infusionTypeBadgeStyle {
   BLEED = 'success',
   PROPHY = 'warning',
   PREVENTATIVE = 'error',
+  ANTIBODY = 'secondary',
 }
 
 export default function InfusionTable(props: InfusionTableProps): JSX.Element {
@@ -46,7 +47,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
   const { data: infusions, status, error } = useInfusions(limit, uid)
   const [, setToast] = useToasts()
   const { user } = useAuth()
-  const [selectedInfusion, setSelectedInfusion] = useState<InfusionType>()
+  const [selectedInfusion, setSelectedInfusion] = useState<TreatmentType>()
 
   const {
     visible: infusionModal,
@@ -119,7 +120,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
       )
   }
 
-  function formatInfusionRow(infusion: InfusionType) {
+  function formatInfusionRow(infusion: TreatmentType) {
     const { cause, sites, uid } = infusion
 
     const parsedDate = parseISO(infusion.date)
@@ -127,7 +128,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
 
     const type = (
       <Badge type={infusionTypeBadgeStyle[infusion.type]}>
-        {InfusionTypeEnum[infusion.type]}
+        {TreatmentTypeEnum[infusion.type]}
       </Badge>
     )
     const factorBrand = infusion.medication.brand
@@ -222,7 +223,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
           <>
             <Spacer />
             <Note type='success'>
-              No infusions found. Add one by clicking ’Log Infusion’ above.
+              No treatments found. Add one by clicking ’New Treatment’ above.
             </Note>
             <Spacer />
           </>

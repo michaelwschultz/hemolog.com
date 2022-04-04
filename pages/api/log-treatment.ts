@@ -4,7 +4,7 @@ import {
 } from 'lib/admin-db/infusions'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-const logInfusion = async (req: NextApiRequest, res: NextApiResponse) => {
+const logTreatment = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
     return res.status(405).send('Requires POST method.')
   }
@@ -43,4 +43,4 @@ const logInfusion = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default logInfusion
+export default logTreatment
