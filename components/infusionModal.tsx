@@ -9,7 +9,7 @@ import {
 } from '@geist-ui/react'
 import splitbee from '@splitbee/web'
 import { useFormik } from 'formik'
-import { compareDesc, parseISO } from 'date-fns'
+import { compareDesc, format, parseISO } from 'date-fns'
 import { useAuth } from 'lib/auth'
 import {
   createInfusion,
@@ -155,7 +155,9 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
     initialValues: {
       brand: displayInfusion ? displayInfusion.medication.brand : '',
       cause: displayInfusion ? displayInfusion.cause : '',
-      date: '',
+      date: displayInfusion
+        ? displayInfusion.date
+        : format(new Date(), 'yyyy-MM-dd'),
       lot: displayInfusion ? displayInfusion.medication.lot : '',
       sites: displayInfusion ? displayInfusion.sites : '',
       type: displayInfusion
