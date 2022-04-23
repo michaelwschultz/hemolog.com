@@ -80,7 +80,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
     createInfusion(payload)
       .then(() => {
         setToast({
-          text: 'Infusion logged! Hope all is well.',
+          text: 'Treatment logged! Hope all is well.',
           type: 'success',
           delay: 5000,
         })
@@ -123,7 +123,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
       ? updateInfusion(uid, payload)
           .then(() => {
             setToast({
-              text: 'Infusion updated!',
+              text: 'Treatment updated!',
               type: 'success',
               delay: 5000,
             })
@@ -137,7 +137,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
             })
           )
       : setToast({
-          text: `Infusion database entry not found`,
+          text: `Treatment database entry not found`,
           type: 'error',
           delay: 10000,
         })
@@ -155,9 +155,10 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
     initialValues: {
       brand: displayInfusion ? displayInfusion.medication.brand : '',
       cause: displayInfusion ? displayInfusion.cause : '',
-      date: displayInfusion
-        ? displayInfusion.date
-        : format(new Date(), 'yyyy-MM-dd'),
+      date:
+        displayInfusion && infusion
+          ? displayInfusion.date
+          : format(new Date(), 'yyyy-MM-dd'),
       lot: displayInfusion ? displayInfusion.medication.lot : '',
       sites: displayInfusion ? displayInfusion.sites : '',
       type: displayInfusion
@@ -177,7 +178,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
   })
 
   const handleSubmit = () => {
-    splitbee.track('Logged Treatment')
+    splitbee.track('Logged Infusion')
     formik.submitForm()
   }
 
@@ -364,7 +365,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
         disabled={!formik.isValid}
         loading={formik.isSubmitting}
       >
-        Log Treatment
+        {infusion ? 'Update Treatment' : 'Log Treatment'}
       </Modal.Action>
     </Modal>
   )
