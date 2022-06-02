@@ -8,7 +8,9 @@
     "lint": "eslint --cache \"**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --cache --fix \"**/*.{js,jsx,ts,tsx}\"",
     "start": "next start",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
   },
   "dependencies": {
     "@geist-ui/react": "^2.2.0",
@@ -41,6 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.8.1",
     "babel-plugin-styled-components": "^1.12.0",
+    "cypress": "^10.0.1",
     "eslint": "<8.0.0",
     "eslint-config-next": "12.0.4",
     "eslint-config-prettier": "^8.3.0",
