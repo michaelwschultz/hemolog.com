@@ -41,3 +41,4 @@ firebase-debug.log*
 
 # cypress
 cypress/videos/
+cypress/screenshots/

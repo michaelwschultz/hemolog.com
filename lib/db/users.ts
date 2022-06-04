@@ -1,10 +1,14 @@
 import { firestore } from 'lib/firebase'
 
-function createUser(uid: string, data: any) {
-  return firestore
-    .collection('users')
-    .doc(uid)
-    .set({ uid, ...data }, { merge: true })
+async function createUser(uid: string, data: any) {
+  try {
+    await firestore
+      .collection('users')
+      .doc(uid)
+      .set({ uid, ...data }, { merge: true })
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 async function deleteUser(uid: string) {
