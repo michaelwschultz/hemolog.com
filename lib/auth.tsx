@@ -153,7 +153,7 @@ function useProvideAuth() {
           uid: authResponse.localId,
           displayName: 'Michael',
           photoURL: null,
-          providerData: [{ providerId: 'test user' }],
+          providerData: 'password',
         }
 
         return auth
@@ -203,7 +203,7 @@ const formatUser = async (rawUser: any): Promise<UserType> => {
     email: rawUser.email,
     name: rawUser.displayName,
     photoUrl: rawUser.photoURL,
-    provider: rawUser.providerData?.[0].providerId || 'test user',
+    provider: rawUser.providerData?.[0].providerId || 'password',
     token,
     uid: rawUser.uid,
   }
