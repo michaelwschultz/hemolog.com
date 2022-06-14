@@ -4,7 +4,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "firebase": "npx firebase emulators:start",
+    "firebase": "firebase emulators:start",
     "lint": "eslint --cache \"**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --cache --fix \"**/*.{js,jsx,ts,tsx}\"",
     "start": "next start",

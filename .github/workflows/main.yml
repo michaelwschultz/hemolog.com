@@ -24,8 +24,19 @@ jobs:
     runs-on: ubuntu-latest
     needs: [install-dependencies]
     steps:
-      - name: Run Firebase
-        run: firebase emulators:exec
+      - name: Run firebase
+        run: yarn firebase
+
+      - name: Cache firebase emulators
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/firebase/emulators
+          key:
+            ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
+        continue-on-error: true
+        
+      - name: Start app
+        run: yarn dev
         env: 
           FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
           FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
@@ -35,17 +46,6 @@ jobs:
           NEXT_PUBLIC_FIREBASE_DATABASE_URL: "https://hemolog.firebaseio.com"
           NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "hemolog.firebaseapp.com"
           NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY: "AIzaSyAPx5LT_hLOlxw9FiTa9TaEL9SxcZJV5Ks"
-
-      - name: Cache firebase emulators
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/firebase/emulators
-          key:
-            ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
-        continue-on-error: true
-
-      - name: Start app
-        run: yarn dev
 
   cypress-run:
     runs-on: ubuntu-latest
