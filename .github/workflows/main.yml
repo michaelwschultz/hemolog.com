@@ -9,6 +9,9 @@ on:
 jobs:
   test-app:
     runs-on: ubuntu-latest
+    env:
+      FIREBASE_EMULATORS_PATH: ${{ github.workspace }}/emulator-cache
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -18,7 +21,7 @@ jobs:
         with:
           node-version: 16
           cache: 'yarn'
-      # - run: yarn install --frozen-lockfile # optional, --immutable
+      - run: yarn install --frozen-lockfile # optional, --immutable
 
       - name: Start firebase in background
         run: yarn firebase &
@@ -30,9 +33,9 @@ jobs:
       - name: Cache firebase emulators
         uses: actions/cache@v3
         with:
-          path: ~/.cache/firebase/emulators
+          path: ${{ env.FIREBASE_EMULATORS_PATH }}
           key:
-            ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
+            ${{ runner.os }}-firebase-emulators-${{ hashFiles('emulator-cache/**') }}
         continue-on-error: true
 
       - name: Start app and run tests
