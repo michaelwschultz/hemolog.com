@@ -95,7 +95,7 @@ function useProvideAuth() {
 
   const auth = firebase.auth()
   // use emulator if developing locally
-  if (process.env.NEXT_PUBLIC_TEST_AGAINST_PROD !== 'true') {
+  if (process.env.NEXT_PUBLIC_USE_EMULATORS === 'true') {
     auth.useEmulator('http://localhost:9099')
   }
 
