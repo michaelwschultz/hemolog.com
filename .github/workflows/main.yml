@@ -45,16 +45,14 @@ jobs:
     requires:
       - build-app
     runs-on: ubuntu-latest
-    env: FIREBASE_EMULATORS_PATH: ${{ github.workspace }}/emulator-cache
 
     steps:
       - name: Cache firebase emulators
         uses: actions/cache@v3
         with:
-          path: ${{ env.FIREBASE_EMULATORS_PATH }}
+          path: ~/.cache/firebase/emulators
           key:
-            ${{ runner.os }}-firebase-emulators-${{
-            hashFiles('emulator-cache/**') }}
+            ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
         continue-on-error: true
 
     cypress-run:
