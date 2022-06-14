@@ -22,7 +22,7 @@ jobs:
 
       - name: Start firebase in background
         run: yarn firebase &
-        
+
       - name: sleep for 30 seconds
         run: sleep 30
         shell: bash
@@ -40,7 +40,6 @@ jobs:
         with:
           start: yarn dev
           wait-on: 'http://localhost:8080, http://localhost:8081'
-          wait-on-timeout: 120
         env: 
           FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
           FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
