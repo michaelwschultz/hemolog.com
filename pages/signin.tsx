@@ -69,7 +69,7 @@ const Signin = (pageProps: { version: string }) => {
                 >
                   Continue with Google
                 </Button>
-                {process.env.NODE_ENV !== 'production' && (
+                {process.env.NEXT_PUBLIC_USE_EMULATORS && (
                   <Button
                     onClick={() => auth.signinWithTestUser()}
                     loading={auth.loading}

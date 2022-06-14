@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export default defineConfig({
+  video: false,
   retries: 3,
   e2e: {
     baseUrl: 'http://localhost:3000',
