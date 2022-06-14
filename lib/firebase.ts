@@ -18,10 +18,7 @@ if (!firebase.apps.length) {
 export const firestore = firebase.firestore()
 
 // use emulator if developing locally
-if (
-  process.env.NODE_ENV === 'development' &&
-  process.env.NEXT_PUBLIC_TEST_AGAINST_PROD !== 'true'
-) {
+if (process.env.NEXT_PUBLIC_TEST_AGAINST_PROD !== 'true') {
   // !!! Removing this line will break Cypress tests !!!
   // https://github.com/firebase/firebase-js-sdk/issues/1674
   // Comment this line if having issues when developing using the emulator locally.
