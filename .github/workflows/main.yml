@@ -22,6 +22,10 @@ jobs:
 
       - name: Start firebase in background
         run: yarn firebase &
+        
+      - name: sleep for 30 seconds
+        run: sleep 30
+        shell: bash
 
       # - name: Cache firebase emulators
       #   uses: actions/cache@v3
