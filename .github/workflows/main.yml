@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  install-dependencies:
+  test-app:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -20,11 +20,7 @@ jobs:
           cache: 'yarn'
       - run: yarn install --frozen-lockfile # optional, --immutable
 
-  run-app:
-    runs-on: ubuntu-latest
-    needs: [install-dependencies]
-    steps:
-      - name: Run firebase
+      - name: Start firebase emulators
         run: yarn firebase
 
       - name: Cache firebase emulators
@@ -34,7 +30,7 @@ jobs:
           key:
             ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
         continue-on-error: true
-        
+
       - name: Start app
         run: yarn dev
         env: 
@@ -47,16 +43,5 @@ jobs:
           NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "hemolog.firebaseapp.com"
           NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY: "AIzaSyAPx5LT_hLOlxw9FiTa9TaEL9SxcZJV5Ks"
 
-  cypress-run:
-    runs-on: ubuntu-latest
-    needs: [run-app]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
+      - name: Run Cypress
         uses: cypress-io/github-action@v4
-
-
-      
