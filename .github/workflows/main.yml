@@ -1,0 +1,80 @@
+name: CI
+on:
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build-app:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile # optional, --immutable
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run Firebase
+        run: firebase emulators:exec
+        env: 
+          FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+          FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+          FIRESTORE_EMULATOR_HOST: "localhost:8080"
+          NEXT_PUBLIC_TEST_AGAINST_PROD: false
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: "hemolog"
+          NEXT_PUBLIC_FIREBASE_DATABASE_URL: "https://hemolog.firebaseio.com"
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "hemolog.firebaseapp.com"
+          NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY: "AIzaSyAPx5LT_hLOlxw9FiTa9TaEL9SxcZJV5Ks"
+
+      - name: Start app
+        run: yarn dev
+
+  build-firebase:
+    requires:
+      - build-app
+    runs-on: ubuntu-latest
+    env: FIREBASE_EMULATORS_PATH: ${{ github.workspace }}/emulator-cache
+
+    steps:
+      - name: Cache firebase emulators
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.FIREBASE_EMULATORS_PATH }}
+          key:
+            ${{ runner.os }}-firebase-emulators-${{
+            hashFiles('emulator-cache/**') }}
+        continue-on-error: true
+
+    cypress-run:
+      runs-on: ubuntu-latest
+      # requires:
+      #   - build-firebase
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        # Install NPM dependencies, cache them correctly
+        # and run all Cypress tests
+        - name: Cypress run
+          uses: cypress-io/github-action@v4
+
+    # test:
+    #   runs-on: ubuntu-latest
+    #   requires:
+    #     - cypress-run
+    #   steps:
+    #     - name: Test
+    #       run: yarn test
+
+      
