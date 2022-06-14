@@ -27,18 +27,19 @@ jobs:
         run: sleep 30
         shell: bash
 
-      # - name: Cache firebase emulators
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ~/.cache/firebase/emulators
-      #     key:
-      #       ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
-      #   continue-on-error: true
+      - name: Cache firebase emulators
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/firebase/emulators
+          key:
+            ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
+        continue-on-error: true
 
       - name: Start app and run tests
         uses: cypress-io/github-action@v4
         with:
-          start: yarn dev
+          build: yarn build
+          start: yarn start
           wait-on: 'http://localhost:8080, http://localhost:8081'
         env: 
           FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
