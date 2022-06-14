@@ -23,16 +23,16 @@ jobs:
     needs: [install-dependencies]
     steps:
       - name: Run Firebase
-          run: firebase emulators:exec
-          env: 
-            FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
-            FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
-            FIRESTORE_EMULATOR_HOST: "localhost:8080"
-            NEXT_PUBLIC_TEST_AGAINST_PROD: false
-            NEXT_PUBLIC_FIREBASE_PROJECT_ID: "hemolog"
-            NEXT_PUBLIC_FIREBASE_DATABASE_URL: "https://hemolog.firebaseio.com"
-            NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "hemolog.firebaseapp.com"
-            NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY: "AIzaSyAPx5LT_hLOlxw9FiTa9TaEL9SxcZJV5Ks"
+        run: firebase emulators:exec
+        env: 
+          FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+          FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+          FIRESTORE_EMULATOR_HOST: "localhost:8080"
+          NEXT_PUBLIC_TEST_AGAINST_PROD: false
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: "hemolog"
+          NEXT_PUBLIC_FIREBASE_DATABASE_URL: "https://hemolog.firebaseio.com"
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "hemolog.firebaseapp.com"
+          NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY: "AIzaSyAPx5LT_hLOlxw9FiTa9TaEL9SxcZJV5Ks"
 
       - name: Cache firebase emulators
         uses: actions/cache@v3
