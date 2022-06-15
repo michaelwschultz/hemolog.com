@@ -106,7 +106,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
     deleteInfusion(uid)
       .then(() => {
         setToast({
-          text: 'Infusion deleted.',
+          text: 'Treatment deleted.',
           type: 'success',
           delay: 5000,
         })
