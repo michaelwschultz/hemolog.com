@@ -18,7 +18,7 @@ describe('Pages render', () => {
       .contains('/emergency/')
       .scrollIntoView()
       .invoke('text')
-      .should('include', '/example')
+      .should('include', '/emergency/')
     cy.get('.copy').click()
 
     cy.contains('#geist-ui-toast .message', 'Copied to clipboard!').should(
