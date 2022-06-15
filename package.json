@@ -4,11 +4,13 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "firebase": "npx firebase emulators:start",
+    "firebase": "firebase emulators:start",
     "lint": "eslint --cache \"**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --cache --fix \"**/*.{js,jsx,ts,tsx}\"",
     "start": "next start",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
   },
   "dependencies": {
     "@geist-ui/react": "^2.2.0",
@@ -32,6 +34,7 @@
     "underscore": "^1.11.0"
   },
   "devDependencies": {
+    "@testing-library/cypress": "^8.0.3",
     "@types/js-cookie": "^2.2.6",
     "@types/node": "^14.14.7",
     "@types/react": "^17.0.33",
@@ -41,6 +44,7 @@
     "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.8.1",
     "babel-plugin-styled-components": "^1.12.0",
+    "cypress": "^10.0.2",
     "eslint": "<8.0.0",
     "eslint-config-next": "12.0.4",
     "eslint-config-prettier": "^8.3.0",

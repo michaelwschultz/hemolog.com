@@ -13,6 +13,7 @@ type ContextProps = {
   loading?: boolean
   signout: any
   signinWithGoogle: any
+  signinWithTestUser: any
 }
 
 const authContext = createContext<Partial<ContextProps>>({})
@@ -49,7 +50,7 @@ function useProvideAuth() {
         delete userWithoutToken.alertId
       }
 
-      createUser(user.uid, userWithoutToken)
+      await createUser(user.uid, userWithoutToken)
       setUser(user)
 
       cookie.set('hemolog-auth', {
@@ -94,10 +95,7 @@ function useProvideAuth() {
 
   const auth = firebase.auth()
   // use emulator if developing locally
-  if (
-    process.env.NODE_ENV === 'development' &&
-    process.env.NEXT_PUBLIC_TEST_AGAINST_PROD !== 'true'
-  ) {
+  if (process.env.NEXT_PUBLIC_USE_EMULATORS) {
     auth.useEmulator('http://localhost:9099')
   }
 
@@ -117,6 +115,57 @@ function useProvideAuth() {
       })
   }
 
+  const signinWithTestUser = async () => {
+    setLoading(true)
+
+    try {
+      const authResponse = await fetch(
+        `http://localhost:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=testing-key`,
+        {
+          body: JSON.stringify({
+            email: 'michael+test@hemolog.com',
+            password: 'test123',
+          }),
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        }
+      ).then((response) => response.json())
+
+      // stricktly for testing purposes
+      if (authResponse.error?.message === 'EMAIL_EXISTS') {
+        return auth
+          .signInWithEmailAndPassword('michael+test@hemolog.com', 'test123')
+          .then((response) => {
+            handleUser(response.user)
+            Router.push('/home')
+          })
+
+          .catch(() => {
+            setLoading(false)
+          })
+      } else {
+        const testUser = {
+          email: authResponse.email,
+          token: authResponse.idToken,
+          uid: authResponse.localId,
+          displayName: 'Michael',
+          photoURL: null,
+          providerData: 'password',
+        }
+
+        return auth
+          .signInWithEmailAndPassword('michael+test@hemolog.com', 'test123')
+          .then(() => {
+            handleUser(testUser)
+            Router.push('/home')
+          })
+      }
+    } catch (e) {
+      console.error(e)
+      setLoading(false)
+    }
+  }
+
   const signout = () => {
     Router.push('/signin')
     return auth.signOut().then(() => handleUser(false))
@@ -133,13 +182,17 @@ function useProvideAuth() {
     // signinWithEmail,
     // signinWithGitHub,
     signinWithGoogle,
+    signinWithTestUser,
     signout,
   }
 }
 
 const formatUser = async (rawUser: any): Promise<UserType> => {
-  const idTokenResult = await rawUser.getIdTokenResult()
-  const token = idTokenResult.token
+  let idTokenResult
+  if (rawUser.getIdTokenResult) {
+    idTokenResult = await rawUser.getIdTokenResult()
+  }
+  const token = idTokenResult?.token || rawUser.token
   const alertId = await generateUniqueString(6)
 
   return {
@@ -147,7 +200,7 @@ const formatUser = async (rawUser: any): Promise<UserType> => {
     email: rawUser.email,
     name: rawUser.displayName,
     photoUrl: rawUser.photoURL,
-    provider: rawUser.providerData[0].providerId,
+    provider: rawUser.providerData?.[0].providerId || 'password',
     token,
     uid: rawUser.uid,
   }

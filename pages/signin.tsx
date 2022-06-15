@@ -69,6 +69,16 @@ const Signin = (pageProps: { version: string }) => {
                 >
                   Continue with Google
                 </Button>
+                {process.env.NEXT_PUBLIC_USE_EMULATORS && (
+                  <Button
+                    onClick={() => auth.signinWithTestUser()}
+                    loading={auth.loading}
+                    type='success-light'
+                    scale={3 / 4}
+                  >
+                    Continue with Test User
+                  </Button>
+                )}
               </Fieldset.Footer>
             </Fieldset>
           </Grid.Container>

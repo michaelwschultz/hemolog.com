@@ -37,7 +37,6 @@ const SettingsForm = (): JSX.Element => {
     },
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log('submit', values)
       updateUser(user!.uid, values)
         .then(() => {
           setToast({

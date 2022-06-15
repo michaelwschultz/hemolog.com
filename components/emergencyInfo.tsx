@@ -41,7 +41,7 @@ export default function EmergencyInfo(props: Props): JSX.Element {
 
         <Spacer h={2} />
         <Grid.Container justify='space-between' alignItems='center'>
-          <Text h5>Most recent infusions</Text>
+          <Text h5>Most recent treatments</Text>
           {smallerThanSmall && <Text>Swipe →</Text>}
         </Grid.Container>
         <InfusionTable limit={3} uid={person.uid} filterYear='All time' />

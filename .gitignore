@@ -38,3 +38,8 @@ firebase-debug.log*
 
 # vercel
 .vercel
+
+# cypress
+cypress/downloads/
+cypress/videos/
+cypress/screenshots/
