@@ -87,6 +87,13 @@ const StyledPage = styled.div`
 
 const StyledPageContent = styled.main`
   padding: 40px 24px 0 24px;
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 50px !important;
+      line-height: 50px !important;
+    }
+  }
 `
 
 const StyledImage = styled.div`
