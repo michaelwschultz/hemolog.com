@@ -1,18 +1,13 @@
 import { useState } from 'react'
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
-import {
-  GeistProvider,
-  CssBaseline,
-  GeistUserTheme,
-  Themes,
-} from '@geist-ui/react'
+import { GeistProvider, CssBaseline, Themes } from '@geist-ui/react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from 'lib/theme'
 import { AuthProvider } from 'lib/auth'
 import splitbee from '@splitbee/web'
 
-const hemologPalette: Partial<GeistUserTheme> = {
+const hemologPalette = {
   success: '#FF062C',
   successLight: '#FF398F',
   successDark: '#a3051d',
@@ -93,6 +88,8 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         <AuthProvider>
           <GeistProvider themes={[hemologLight]} themeType={themeType}>
             <CssBaseline />
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/* @ts-ignore */}
             <Component {...pageProps} switchTheme={switchThemes} />
           </GeistProvider>
         </AuthProvider>

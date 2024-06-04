@@ -37,10 +37,10 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
       <StyledHeader forPrint={forPrint} accentColor={theme.palette.success}>
         <Grid.Container justify='space-between'>
           <Grid>
-            <h5 style={{ color: themeContext.colors.text }}>
+            <h5 style={{ color: themeContext?.colors.text }}>
               Bleeding disorder
             </h5>
-            <h2 style={{ color: themeContext.colors.text }}>Emergency</h2>
+            <h2 style={{ color: themeContext?.colors.text }}>Emergency</h2>
           </Grid>
 
           {user && user.photoUrl && (

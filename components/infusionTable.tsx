@@ -167,7 +167,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
       )
 
       return (
-        <Popover content={content} style={{ cursor: 'pointer' }}>
+        <Popover content={content as any} style={{ cursor: 'pointer' }}>
           <MoreHorizontal />
         </Popover>
       )

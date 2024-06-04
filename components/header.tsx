@@ -80,7 +80,7 @@ const Header = (props: Props): JSX.Element => {
                 )}
               </Grid>
               <Grid>
-                <Popover content={popoverContent} placement='bottomEnd'>
+                <Popover content={popoverContent as any} placement='bottomEnd'>
                   <Avatar
                     src={user.photoUrl || '/images/favicon-32x32.png'}
                     text={user.displayName && user.displayName.charAt(0)}

@@ -13,7 +13,7 @@
     "cy:run": "cypress run"
   },
   "dependencies": {
-    "@geist-ui/react": "^2.2.0",
+    "@geist-ui/react": "2.2.5",
     "@geist-ui/react-icons": "^1.0.1",
     "@splitbee/web": "^0.3.0",
     "date-fns": "^2.16.1",
@@ -27,16 +27,16 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-firebaseui": "^4.1.0",
-    "react-qr-code": "^1.0.5",
+    "react-qr-code": "^2.0.14",
     "react-vis": "^1.11.7",
-    "styled-components": "^5.3.3",
+    "styled-components": "^6.1.11",
     "swr": "^1.2.1",
     "underscore": "^1.11.0"
   },
   "devDependencies": {
     "@testing-library/cypress": "^8.0.3",
     "@types/js-cookie": "^2.2.6",
-    "@types/node": "^14.14.7",
+    "@types/node": "^20.14.1",
     "@types/react": "^17.0.33",
     "@types/react-vis": "^1.11.6",
     "@types/styled-components": "^5.1.4",

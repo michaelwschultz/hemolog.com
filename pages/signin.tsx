@@ -13,7 +13,6 @@ import {
 import styled from 'styled-components'
 
 import Logo from 'components/logo'
-import DescriptionCards from 'components/descriptionCards'
 import Footer from 'components/footer'
 
 export async function getStaticProps() {

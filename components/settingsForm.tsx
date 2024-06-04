@@ -138,6 +138,7 @@ const SettingsForm = (): JSX.Element => {
         <Grid xs={24} md={12} direction='column'>
           <Text h5>Type of hemophilia</Text>
           <AutoComplete
+            crossOrigin={undefined}
             id='hemophiliaType'
             name='hemophiliaType'
             width='100%'
@@ -150,6 +151,7 @@ const SettingsForm = (): JSX.Element => {
         <Grid xs={24} md={12} direction='column'>
           <Text h5>Severity</Text>
           <AutoComplete
+            crossOrigin={undefined}
             id='severity'
             name='severity'
             width='100%'
@@ -163,6 +165,7 @@ const SettingsForm = (): JSX.Element => {
         <Grid xs={24} md={12} direction='column'>
           <Text h5>Factor number</Text>
           <Input
+            crossOrigin={undefined}
             id='factor'
             name='factor'
             htmlType='number'
@@ -175,6 +178,7 @@ const SettingsForm = (): JSX.Element => {
         <Grid xs={24} md={12} direction='column'>
           <Text h5>Factor</Text>
           <AutoComplete
+            crossOrigin={undefined}
             id='medication'
             name='medication'
             clearable
@@ -191,6 +195,7 @@ const SettingsForm = (): JSX.Element => {
         <Grid xs={24} md={12} direction='column'>
           <Text h5>Monoclonal antibody</Text>
           <AutoComplete
+            crossOrigin={undefined}
             id='monoclonalAntibody'
             name='monoclonalAntibody'
             clearable
@@ -206,6 +211,7 @@ const SettingsForm = (): JSX.Element => {
         <Grid xs={24} md={12} direction='column'>
           <Text h5>Injection frequency</Text>
           <AutoComplete
+            crossOrigin={undefined}
             id='injectionFrequency'
             name='injectionFrequency'
             disableFreeSolo

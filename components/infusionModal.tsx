@@ -284,6 +284,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
             placeholder='Date'
             value={formik.values.date}
             width='100%'
+            crossOrigin={undefined}
           >
             <Text h6>Date</Text>
           </Input>
@@ -294,6 +295,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
             onChange={formik.handleChange}
             placeholder='Brand name'
             disabled={formik.values.type === TreatmentTypeEnum.ANTIBODY}
+            crossOrigin={undefined}
             value={
               formik.values.type === TreatmentTypeEnum.ANTIBODY
                 ? user!.monoclonalAntibody
@@ -307,6 +309,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
           {formik.values.type !== TreatmentTypeEnum.ANTIBODY && (
             <>
               <Input
+                crossOrigin={undefined}
                 id='units'
                 name='units'
                 htmlType='number'
@@ -318,6 +321,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
               />
               <Spacer h={0.5} />
               <Input
+                crossOrigin={undefined}
                 id='lot'
                 name='lot'
                 onChange={formik.handleChange}
@@ -327,6 +331,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
               />
               <Spacer />
               <Input
+                crossOrigin={undefined}
                 id='sites'
                 name='sites'
                 onChange={formik.handleChange}
@@ -338,6 +343,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
               </Input>
               <Spacer />
               <Input
+                crossOrigin={undefined}
                 id='cause'
                 name='cause'
                 onChange={formik.handleChange}
