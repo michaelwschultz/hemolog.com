@@ -83,9 +83,9 @@ const Signin = (pageProps: { version: string }) => {
             </Fieldset>
           </Grid.Container>
 
-          <Spacer h={3} />
+          {/* <Spacer h={3} />
           <DescriptionCards />
-          <Spacer h={2} />
+          <Spacer h={2} /> */}
         </StyledPageContent>
         <Footer />
       </StyledPage>

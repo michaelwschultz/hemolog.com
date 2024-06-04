@@ -54,6 +54,10 @@ export default class MyDocument extends Document {
             }}
           />
           <link
+            href='https://fonts.googleapis.com/css?family=Nanum+Pen+Script&display=swap'
+            rel='stylesheet'
+          />
+          <link
             rel='stylesheet'
             href='https://unpkg.com/react-vis/dist/style.css'
           />

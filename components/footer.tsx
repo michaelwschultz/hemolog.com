@@ -11,7 +11,7 @@ export default function Footer(): JSX.Element {
     if (loading) {
       return ''
     }
-    if (user && user.alertId) {
+    if (user?.alertId) {
       return user.alertId
     }
     return 'example'

@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import NextLink from 'next/link'
-import { Text, Divider, Spacer, Link } from '@geist-ui/react'
+import Image from 'next/image'
+import { Text, Spacer, Grid } from '@geist-ui/react'
 import styled from 'styled-components'
 
 import Footer from 'components/footer'
@@ -13,30 +14,54 @@ export default function Landing(): JSX.Element {
       <Head>
         <title>Hemolog</title>
       </Head>
-      <StyledPage>
+      <StyledPage style={{ position: 'relative' }}>
         <StaticHeader />
         <StyledPageContent>
-          <Text h2>Welcome to Hemolog</Text>
-          <Text h5>The last treatment tracker you’ll ever need.</Text>
-          <Divider />
+          <StyledImage>
+            <Image
+              alt='logging infusion illustration'
+              src='/images/logging-infusion-illustration.png'
+              width={925 / 2}
+              height={989 / 2}
+              className=''
+            />
+          </StyledImage>
+          <span style={{ position: 'relative', zIndex: 2 }}>
+            <Text
+              h1
+              style={{
+                fontFamily: 'Nanum Pen Script, cursive',
+                fontSize: 100,
+                width: '75%',
+                lineHeight: '80px',
+              }}
+            >
+              TREATMENT INSIGHTS <br />
+              THAT MATTER
+            </Text>
+            <Text h5>The last treatment log you’ll ever need.</Text>
 
-          <Text>
-            Log your treatments and get fantastic insights that help you change
-            your habits. What more could you want?
-            <br />
-            Sign up for free and start using the newest version of Hemolog
-            today!
-          </Text>
+            <Spacer h={3} />
+            <Text>
+              Log your treatments and get fantastic insights that help you
+              change your habits.
+              <br />
+              Sign up for free and start using the newest version of Hemolog
+              today!
+            </Text>
 
-          <Text>
-            <NextLink href='/about'>
-              <Link color href='/about'>
+            <Text>
+              <NextLink href='/about'>
                 Learn more about the Hemolog story...
-              </Link>
-            </NextLink>
-          </Text>
-          <Spacer h={3} />
-          <DescriptionCards />
+              </NextLink>
+            </Text>
+            <Spacer h={3} />
+            <Grid.Container gap={2}>
+              <Grid sm={12}>
+                <DescriptionCards />
+              </Grid>
+            </Grid.Container>
+          </span>
         </StyledPageContent>
         <Footer />
       </StyledPage>
@@ -62,4 +87,10 @@ const StyledPage = styled.div`
 
 const StyledPageContent = styled.main`
   padding: 40px 24px 0 24px;
+`
+
+const StyledImage = styled.div`
+  position: absolute;
+  right: 0;
+  width: 50%;
 `
