@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/michaelwschultz/hemolog.com/badge)](https://www.codefactor.io/repository/github/michaelwschultz/hemolog.com)
+
 ![Hemolog Banner](public/images/github-banner.png)
 
 A rebirth of my popular medication tracking app for people living with hemophilia. Available for free at hemolog.com

@@ -146,7 +146,7 @@ const StyledQRCode = styled.div<{ forPrint?: boolean; accentColor: string }>`
 `
 
 const StyledScanLink = styled.div<{ forPrint?: boolean }>`
-  padding-top: ${(props) => (props.forPrint ? '8px' : '16px')}; ;
+  padding-top: ${(props) => (props.forPrint ? '8px' : '16px')};
 `
 
 const StyledBloodDrop = styled.img<{ forPrint?: boolean }>`
