@@ -54,6 +54,7 @@
     "firebase-tools": "^9.11.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.1.5",
+    "next-swagger-doc": "^0.4.0",
     "prettier": "^2.5.1",
     "typescript": "^4.3.4"
   },

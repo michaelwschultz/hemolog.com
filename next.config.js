@@ -1,4 +1,10 @@
-module.exports = {
+/* eslint-disable @typescript-eslint/no-var-requires */
+const withSwagger = require('next-swagger-doc')
+const swaggerConfig = require('./swagger.config')
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
   images: {
     domains: ['lh3.googleusercontent.com'],
   },
@@ -24,3 +30,8 @@ module.exports = {
     ]
   },
 }
+
+module.exports = withSwagger({
+  swaggerConfig,
+  ...nextConfig,
+})
