@@ -58,6 +58,11 @@
     "typescript": "^4.3.4"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "yarn lint:fix"
-  }
+    "*.{js,jsx,ts,tsx}": "bun lint:fix"
+  },
+  "trustedDependencies": [
+    "core-js",
+    "es5-ext",
+    "protobufjs"
+  ]
 }
