@@ -10,7 +10,7 @@ A rebirth of my popular medication tracking app for people living with hemophili
 
 Hemolog is free but if you'd like to [Donate](https://github.com/sponsors/michaelwschultz), that would be awesome.
 
-<br />
+![Alt](https://repobeats.axiom.co/api/embed/21de8fa02c11c73c8fa032c74256b60f712d90f7.svg "Repobeats analytics image")
 
 ## Features
 
