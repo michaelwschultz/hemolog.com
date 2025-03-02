@@ -14,8 +14,10 @@ const HomePage = (): JSX.Element => {
 
   const infusionYears = data
     ? data
+        .filter((d) => d?.date)
         .map((d) => getYear(new Date(d.date)))
         .filter((item, index, arr) => arr.indexOf(item) === index)
+        .sort((a, b) => b - a)
     : []
 
   // TODO(michaelwschultz): enable once Firebase caching is removed
@@ -100,7 +102,7 @@ const HomePage = (): JSX.Element => {
                 onChange={(value) => setFilterYear(value as string)}
               >
                 <Select.Option value={ALL_TIME}>{ALL_TIME}</Select.Option>
-                {!infusionYears.includes(parseInt(THIS_YEAR, 10)) && (
+                {!infusionYears.includes(Number.parseInt(THIS_YEAR, 10)) && (
                   <Select.Option value={THIS_YEAR} key={THIS_YEAR}>
                     {THIS_YEAR}
                   </Select.Option>

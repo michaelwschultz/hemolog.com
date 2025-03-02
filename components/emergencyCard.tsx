@@ -30,7 +30,7 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
     forPrint = true
   }
 
-  const alertUrl = `hemolog.com/emergency/${person && person.alertId}`
+  const alertUrl = `hemolog.com/emergency/${person?.alertId}`
 
   return (
     <StyledEmergencyCard className='emergency-card' forPrint={forPrint}>
@@ -43,7 +43,7 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
             <h2 style={{ color: themeContext?.colors.text }}>Emergency</h2>
           </Grid>
 
-          {user && user.photoUrl && (
+          {user?.photoUrl && (
             <Grid>
               <StyledAvatar src={user.photoUrl} forPrint={forPrint} />
             </Grid>
@@ -69,20 +69,17 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
           {person ? (
             <StyledPersonalInfo forPrint={forPrint}>
               <div>
-                <h3>{person && person.name}</h3>
+                <h3>{person?.name}</h3>
                 <h5>
-                  {person && person.severity} Hemophilia{' '}
-                  {person && person.hemophiliaType}
+                  {person?.severity} Hemophilia {person?.hemophiliaType}
                 </h5>
-                {person && person.factor && (
-                  <h5>Treat with factor {person.factor}</h5>
-                )}
+                {person?.factor && <h5>Treat with factor {person.factor}</h5>}
               </div>
               <StyledScanLink forPrint={forPrint}>
                 <Text h4>Scan or visit for treatment history</Text>
                 <Tooltip text='Visit your page to preview what others will see.'>
                   <Link href={`https://${alertUrl}`}>
-                    <a>
+                    <a href={`https://${alertUrl}`}>
                       <h4 style={{ color: theme.palette.success }}>
                         {alertUrl}
                       </h4>

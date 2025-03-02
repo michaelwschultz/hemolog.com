@@ -90,7 +90,7 @@ const Home = (props: { version: string }): JSX.Element => {
               value={`/emergency/${user && user.alertId}`}
             /> */}
 
-            {user && user.isAdmin && (
+            {user?.isAdmin && (
               <Tabs.Item label='feedback' value='/feedback'>
                 <StyledPageSection>
                   <FeedbackPage />

@@ -20,7 +20,7 @@ import ChevronRight from '@geist-ui/react-icons/chevronRight'
 import ChevronLeft from '@geist-ui/react-icons/chevronLeft'
 import MoreHorizontal from '@geist-ui/react-icons/moreHorizontal'
 import {
-  TreatmentType,
+  type TreatmentType,
   TreatmentTypeEnum,
   deleteInfusion,
 } from 'lib/db/infusions'
@@ -140,9 +140,10 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
           <Popover.Item>
             <Button
               scale={0.5}
-              onClick={() => (
-                setSelectedInfusion(infusion), setInfusionModalVisible(true)
-              )}
+              onClick={() => {
+                setSelectedInfusion(infusion)
+                setInfusionModalVisible(true)
+              }}
               auto
             >
               Update
@@ -155,7 +156,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
             >
               <Button
                 scale={0.5}
-                onClick={() => deleteRow(infusion.uid!)}
+                onClick={() => infusion.uid && deleteRow(infusion.uid)}
                 auto
                 type='success-light'
               >

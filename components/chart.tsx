@@ -5,7 +5,6 @@ import {
   XAxis,
   YAxis,
 } from 'react-vis'
-import { getMonth } from 'date-fns'
 import useInfusions from 'lib/hooks/useInfusions'
 import { filterInfusions } from 'lib/helpers'
 import { TreatmentTypeEnum } from 'lib/db/infusions'
@@ -68,11 +67,11 @@ export default function Chart(props: ChartProps): JSX.Element {
 
   // distribute infusions into months
   const distributeInfusions = (infusions: string[], data: ChartEntry[]) => {
-    infusions.forEach((infusion) => {
-      const date = new Date(infusion)
-      const monthIndex = getMonth(date)
+    for (const infusion of infusions) {
+      // Extract month from YYYY-MM-DD format (zero-based index)
+      const monthIndex = Number.parseInt(infusion.split('-')[1]) - 1
       data[monthIndex].y = data[monthIndex].y + 1
-    })
+    }
   }
 
   distributeInfusions(bleeds, bleedData)

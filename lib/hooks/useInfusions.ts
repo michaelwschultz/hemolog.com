@@ -3,15 +3,11 @@ import { useAuth } from 'lib/auth'
 import { compareDesc } from 'date-fns'
 
 import useFirestoreQuery, {
-  FirestoreStatusType,
+  type FirestoreStatusType,
 } from 'lib/hooks/useFirestoreQuery'
-import { TreatmentType } from 'lib/db/infusions'
+import type { TreatmentType } from 'lib/db/infusions'
 
-type FirestoreStatusTypes =
-  | FirestoreStatusType.IDLE
-  | FirestoreStatusType.ERROR
-  | FirestoreStatusType.SUCCESS
-  | FirestoreStatusType.LOADING
+type FirestoreStatusTypes = FirestoreStatusType
 
 interface InfusionResponse {
   data: TreatmentType[]
@@ -34,11 +30,13 @@ export default function useInfusions(
     .where('user.uid', '==', user ? user.uid : uid)
     .where('deletedAt', '==', null)
 
-  const { data, status, error } = useFirestoreQuery(query)
+  const { data: unsortedData, status, error } = useFirestoreQuery(query)
 
   // NOTE(Michael) sorts infusions by date (newest to oldest)
+  const data = unsortedData
+
   if (data) {
-    data.sort((a: any, b: any) =>
+    data.sort((a: TreatmentType, b: TreatmentType) =>
       compareDesc(new Date(a.date), new Date(b.date))
     )
 
