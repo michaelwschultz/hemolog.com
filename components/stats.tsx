@@ -127,7 +127,7 @@ export default function Stats(props: StatsProps): JSX.Element {
     let longestStreak = 0
     let currentStreak = 0
 
-    filteredInfusions.forEach((entry) => {
+    for (const entry of filteredInfusions) {
       const isProphy = entry.type === TreatmentTypeEnum.PROPHY
 
       if (isProphy) {
@@ -139,16 +139,16 @@ export default function Stats(props: StatsProps): JSX.Element {
       if (currentStreak > longestStreak) {
         longestStreak = currentStreak
       }
-    })
+    }
 
     return longestStreak
   }
 
   const getTotalUnits = () => {
     let units = 0
-    filteredInfusions.forEach(
-      (entry) => (units = entry.medication.units + units)
-    )
+    for (const entry of filteredInfusions) {
+      units += entry.medication.units
+    }
 
     return units
   }

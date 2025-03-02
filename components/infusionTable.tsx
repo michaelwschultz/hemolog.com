@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import useInfusions from 'lib/hooks/useInfusions'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
-import { format, compareDesc, parseISO } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import {
   Note,
   Table,
@@ -188,9 +188,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
 
   // TODO(michael) add more sorting filters
   // sort by date, most recent at the top
-  filteredInfusions.sort((a, b) =>
-    compareDesc(parseISO(a.date), parseISO(b.date))
-  )
+  filteredInfusions.sort((a, b) => b.date.localeCompare(a.date))
 
   const rowData = filteredInfusions.map((infusion) =>
     formatInfusionRow(infusion)
