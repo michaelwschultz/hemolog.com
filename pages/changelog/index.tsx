@@ -25,6 +25,37 @@ const Changelog = (): JSX.Element => {
             </Text>
             <Divider />
 
+            <StyledPost id='post-4'>
+              <Spacer h={3} />
+              <Text h4>Log treatments at the speed of light</Text>
+              <Text h6>
+                A brand new way to log treatments, directly from your keyboard.
+                Now available on Mac and Windows (beta) via{' '}
+                <a href='https://raycast.com'>Raycast</a>.
+              </Text>
+              <Spacer />
+              <Divider>Update #4</Divider>
+              <Text>
+                One of my favorite tools to use on my Mac is{' '}
+                <a href='https://raycast.com'>Raycast</a>. It’s a productivity
+                tool that lets you quickly launch apps, search the web, and run
+                commands all from your keyboard.
+              </Text>
+              <StyledRow>
+                <Link href='/changelog/raycast-extension' color>
+                  Continue reading
+                </Link>
+
+                <Image
+                  width={40}
+                  src='/images/changelog/log-treatment.png'
+                  alt='Raycast extension for Hemolog'
+                />
+              </StyledRow>
+
+              <PostFooter postId='post-4' />
+            </StyledPost>
+
             <StyledPost id='post-3'>
               <Spacer h={3} />
               <Text h4>A brand new treatment type</Text>
