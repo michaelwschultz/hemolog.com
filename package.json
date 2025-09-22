@@ -62,7 +62,9 @@
   },
   "trustedDependencies": [
     "core-js",
+    "cypress",
     "es5-ext",
-    "protobufjs"
+    "protobufjs",
+    "re2"
   ]
 }
