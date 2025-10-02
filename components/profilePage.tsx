@@ -1,14 +1,13 @@
 import { useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { Grid, Text, Spacer, Snippet, Button, useToasts } from '@geist-ui/react'
-import splitbee from '@splitbee/web'
 
 import EmergencyCard from 'components/emergencyCard'
 import EmergencySnippet from 'components/emergencySnippet'
 import SettingsForm from 'components/settingsForm'
 import { useAuth } from 'lib/auth'
 import { updateUser } from 'lib/db/users'
-import { generateUniqueString } from 'lib/helpers'
+import { generateUniqueString, track } from 'lib/helpers'
 import useDbUser from 'lib/hooks/useDbUser'
 
 const ProfilePage = (): JSX.Element => {
@@ -17,10 +16,10 @@ const ProfilePage = (): JSX.Element => {
   const router = useRouter()
   const [, setToast] = useToasts()
 
-  splitbee.track('Viewed profile page')
+  track('Viewed Profile Page')
 
   const handleOnPrintClick = () => {
-    splitbee.track('Clicked Print Button', { page: '/profile' })
+    track('Clicked Print Button', { page: '/profile' })
     router.push('/emergency/print')
   }
 

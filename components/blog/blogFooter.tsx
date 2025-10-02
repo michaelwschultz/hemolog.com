@@ -20,7 +20,7 @@ export default function BlogFooter(): JSX.Element {
         {user ? (
           <Text>Thanks for being part of the Hemolog community!</Text>
         ) : (
-          <div>
+          <>
             <Text>Start using Hemolog for free.</Text>
             <Button
               type='success-light'
@@ -30,7 +30,7 @@ export default function BlogFooter(): JSX.Element {
             >
               Register
             </Button>
-          </div>
+          </>
         )}
       </Grid>
       <Grid xs={24} sm={8}>

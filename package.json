@@ -1,8 +1,9 @@
 {
   "name": "hemolog",
   "version": "2.9.0",
+  "type": "module",
   "scripts": {
-    "build": "next build",
+    "build": "bun run lint:fix; next build",
     "dev": "next dev",
     "firebase": "firebase emulators:start",
     "lint": "eslint --cache \"**/*.{js,jsx,ts,tsx}\"",
@@ -15,8 +16,8 @@
   "dependencies": {
     "@geist-ui/react": "2.2.5",
     "@geist-ui/react-icons": "^1.0.1",
-    "@splitbee/web": "^0.3.0",
     "date-fns": "^2.16.1",
+    "dotenv": "^17.2.3",
     "firebase": "^8.6.2",
     "firebase-admin": "^9.8.0",
     "formik": "^2.2.5",
@@ -35,6 +36,7 @@
   },
   "devDependencies": {
     "@testing-library/cypress": "^8.0.3",
+    "@types/dotenv": "^8.2.3",
     "@types/js-cookie": "^2.2.6",
     "@types/node": "^20.14.1",
     "@types/react": "^17.0.33",

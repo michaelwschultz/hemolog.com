@@ -23,3 +23,18 @@ const filterInfusions = (data: TreatmentType[], filterYear: string) =>
     : data
 
 export { generateUniqueString, filterInfusions }
+
+/**
+ * Track an event using the onedollarstats.com client.
+ * Internally uses category "Event".
+ * @param action - The event action (e.g., "Logged Infusion")
+ * @param properties - Optional event properties
+ */
+export const track = (
+  action: string,
+  properties: Record<string, unknown> = {}
+): void => {
+  if (typeof window !== 'undefined' && window.stonks) {
+    window.stonks.event('Event', action, properties)
+  }
+}

@@ -9,11 +9,11 @@ import {
   Grid,
   AutoComplete,
 } from '@geist-ui/react'
-import splitbee from '@splitbee/web'
 
 import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
 import { updateUser } from 'lib/db/users'
+import { track } from 'lib/helpers'
 
 const SettingsForm = (): JSX.Element => {
   const { user } = useAuth()
@@ -108,7 +108,7 @@ const SettingsForm = (): JSX.Element => {
   ]
 
   const handleSubmitForm = () => {
-    splitbee.track('Updated Profile', { ...formik.values } as any)
+    track('Updated Profile', { ...formik.values })
     formik.submitForm()
   }
 

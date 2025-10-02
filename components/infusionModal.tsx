@@ -7,10 +7,11 @@ import {
   Grid,
   useToasts,
 } from '@geist-ui/react'
-import splitbee from '@splitbee/web'
 import { useFormik } from 'formik'
 import { compareDesc, format, parseISO } from 'date-fns'
+
 import { useAuth } from 'lib/auth'
+import { track } from 'lib/helpers'
 import {
   createInfusion,
   TreatmentType,
@@ -178,7 +179,9 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
   })
 
   const handleSubmit = () => {
-    splitbee.track('Logged Infusion')
+    track('Logged Infusion', {
+      type: formik.values.type,
+    })
     formik.submitForm()
   }
 

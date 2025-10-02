@@ -3,7 +3,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Tabs } from '@geist-ui/react'
 import styled from 'styled-components'
-import splitbee from '@splitbee/web'
 
 import Header from 'components/header'
 import Footer from 'components/footer'
@@ -11,6 +10,7 @@ import { useAuth, ProtectRoute } from 'lib/auth'
 import HomePage from 'components/homePage'
 import ProfilePage from 'components/profilePage'
 import FeedbackPage from 'components/feedbackPage'
+import { track } from 'lib/helpers'
 
 export async function getStaticProps() {
   return {
@@ -54,9 +54,9 @@ const Home = (props: { version: string }): JSX.Element => {
 
   useEffect(() => {
     if (user) {
-      splitbee.user.set({
-        displayName: user.name,
+      track('Logged In', {
         uid: user.uid,
+        email: user.email,
         appVersion: version,
       })
     }

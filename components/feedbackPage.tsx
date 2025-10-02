@@ -17,7 +17,7 @@ const handleReplyClick = (email: string) => {
 const FeedbackPage = () => {
   const { user } = useAuth()
   const { data, error } = useSWR<FeedbackType[]>(
-    user && user.isAdmin ? ['/api/feedback', user.token] : null,
+    user?.isAdmin ? ['/api/feedback', user.token] : null,
     fetcher
   )
 
