@@ -1,5 +1,5 @@
 import Document, {
-  DocumentContext,
+  type DocumentContext,
   Html,
   Head,
   Main,
@@ -49,6 +49,7 @@ export default class MyDocument extends Document {
         <Head>
           <script
             type='application/ld+json'
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: okay here
             dangerouslySetInnerHTML={{
               __html: JSON.stringify(googleRichResultsSchema),
             }}

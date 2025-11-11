@@ -25,6 +25,7 @@ const Changelog = (): JSX.Element => {
         <title>Hemolog - Changelog</title>
         <script
           type='application/ld+json'
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: okay here
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(articleRichResults),
           }}

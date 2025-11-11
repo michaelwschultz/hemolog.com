@@ -1,8 +1,8 @@
 import firebase from 'lib/firebase'
 import useFirestoreQuery, {
-  FirestoreStatusType,
+  type FirestoreStatusType,
 } from 'lib/hooks/useFirestoreQuery'
-import { Person } from 'lib/types/person'
+import type { Person } from 'lib/types/person'
 
 // TODO(michaelwschultz): move FirestoreStatusTypes to a more general place
 type FirestoreStatusTypes = FirestoreStatusType

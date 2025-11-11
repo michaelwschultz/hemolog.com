@@ -23,7 +23,8 @@ if (process.env.NEXT_PUBLIC_USE_EMULATORS) {
   // Comment this line if having issues when developing using the emulator locally.
   // !!! Removing this line will break Cypress tests !!!
   firestore.settings({ experimentalForceLongPolling: true })
-  firestore.useEmulator('localhost', 8080)
+  // biome-ignore lint/correctness/useHookAtTopLevel: this is not a react hook
+  firestore.useEmulator('localhost', 8082)
 }
 
 export default firebase

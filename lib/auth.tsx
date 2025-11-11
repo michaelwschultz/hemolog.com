@@ -78,6 +78,7 @@ function useProvideAuth() {
   const auth = firebase.auth()
   // use emulator if developing locally
   if (process.env.NEXT_PUBLIC_USE_EMULATORS) {
+    // biome-ignore lint/correctness/useHookAtTopLevel: this is not a react hook
     auth.useEmulator('http://localhost:9099')
   }
 
@@ -178,6 +179,7 @@ function useProvideAuth() {
 }
 
 const formatUser = async (rawUser: Record<string, any>): Promise<UserType> => {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: okay for now
   let idTokenResult
   if (rawUser.getIdTokenResult) {
     idTokenResult = await rawUser.getIdTokenResult()

@@ -2,8 +2,8 @@ import { Modal, Textarea, Text, Spacer, useToasts } from '@geist-ui/react'
 import { useFormik } from 'formik'
 
 import { useAuth } from 'lib/auth'
-import { createFeedback, FeedbackType } from 'lib/db/feedback'
-import { AttachedUserType } from 'lib/types/users'
+import { createFeedback, type FeedbackType } from 'lib/db/feedback'
+import type { AttachedUserType } from 'lib/types/users'
 
 interface FeedbackValues {
   message: string
@@ -22,10 +22,10 @@ export default function FeedbackModal(props: FeedbackModalProps): JSX.Element {
 
   const handleCreateFeedback = async (feedback: FeedbackValues) => {
     const feedbackUser: AttachedUserType = {
-      email: user!.email,
-      name: user!.name,
-      photoUrl: user!.photoUrl,
-      uid: user!.uid,
+      email: user?.email || '',
+      name: user?.name || '',
+      photoUrl: user?.photoUrl || '',
+      uid: user?.uid || '',
     }
 
     const feedbackPayload: FeedbackType = {

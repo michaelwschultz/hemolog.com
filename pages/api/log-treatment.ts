@@ -2,7 +2,7 @@ import {
   getRecentUserInfusionsByApiKey,
   postInfusionByApiKey,
 } from 'lib/admin-db/infusions'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 const logTreatment = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {

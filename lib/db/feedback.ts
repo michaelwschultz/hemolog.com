@@ -1,5 +1,5 @@
 import { firestore } from 'lib/firebase'
-import { AttachedUserType } from 'lib/types/users'
+import type { AttachedUserType } from 'lib/types/users'
 
 export interface FeedbackType {
   createdAt: string

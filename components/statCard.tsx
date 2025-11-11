@@ -1,5 +1,5 @@
 import { Card, Text, Loading } from '@geist-ui/react'
-import { CardTypes } from '@geist-ui/react/dist/utils/prop-types'
+import type { CardTypes } from '@geist-ui/react/dist/utils/prop-types'
 
 interface Props {
   value: string | number

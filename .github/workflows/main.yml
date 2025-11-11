@@ -43,11 +43,11 @@ jobs:
         with:
           build: yarn build
           start: yarn start
-          wait-on: 'http://localhost:8080, http://localhost:8081'
+          wait-on: 'http://localhost:8082, http://localhost:8081'
         env: 
           FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
           FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
-          FIRESTORE_EMULATOR_HOST: "localhost:8080"
+          FIRESTORE_EMULATOR_HOST: "localhost:8082"
           NEXT_PUBLIC_USE_EMULATORS: true
           NEXT_PUBLIC_FIREBASE_PROJECT_ID: "hemolog"
           NEXT_PUBLIC_FIREBASE_DATABASE_URL: "https://hemolog.firebaseio.com"

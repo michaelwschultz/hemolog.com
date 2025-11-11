@@ -83,7 +83,7 @@ const Header = (props: Props): JSX.Element => {
                 <Popover content={popoverContent as any} placement='bottomEnd'>
                   <Avatar
                     src={user.photoUrl || '/images/favicon-32x32.png'}
-                    text={user.displayName && user.displayName.charAt(0)}
+                    text={user?.displayName?.charAt(0)}
                     style={{ cursor: 'pointer' }}
                     scale={2}
                   />

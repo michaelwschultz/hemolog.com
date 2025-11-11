@@ -5,7 +5,6 @@ import { GeistProvider, CssBaseline, Themes } from '@geist-ui/react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from 'lib/theme'
 import { AuthProvider } from 'lib/auth'
-import splitbee from '@splitbee/web'
 
 const hemologPalette = {
   success: '#FF062C',
@@ -26,7 +25,8 @@ const hemologLight = Themes.createFromLight({
 })
 
 if (process.env.NODE_ENV === 'production') {
-  splitbee.init()
+  // TODO add new analytics
+  // splitbee.init()
 }
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {

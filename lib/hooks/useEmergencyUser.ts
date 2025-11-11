@@ -1,8 +1,8 @@
 import firebase from 'lib/firebase'
 import useFirestoreQuery, {
-  FirestoreStatusType,
+  type FirestoreStatusType,
 } from 'lib/hooks/useFirestoreQuery'
-import { Person } from 'lib/types/person'
+import type { Person } from 'lib/types/person'
 
 // TODO move FirestoreStatusTypes to a more general place
 type FirestoreStatusTypes = FirestoreStatusType
@@ -25,6 +25,7 @@ export default function useEmergencyUser(
       .limit(1)
   )
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: fix later
   let person
   if (data) {
     person = data[0]

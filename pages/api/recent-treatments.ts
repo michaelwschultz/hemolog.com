@@ -1,5 +1,5 @@
 import { getRecentUserInfusionsByApiKey } from 'lib/admin-db/infusions'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 const recentTreatments = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'GET') {

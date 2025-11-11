@@ -9,7 +9,7 @@ import {
 import styled from 'styled-components'
 
 import InfusionTable from 'components/infusionTable'
-import { Person } from 'lib/types/person'
+import type { Person } from 'lib/types/person'
 import { useAuth } from 'lib/auth'
 
 interface Props {
@@ -27,7 +27,7 @@ export default function EmergencyInfo(props: Props): JSX.Element {
         <StyledRow>
           <Avatar
             src={person.photoUrl}
-            text={person.name && person.name.charAt(0)}
+            text={person.name?.charAt(0)}
           />
 
           <div>

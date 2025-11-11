@@ -9,7 +9,6 @@ import {
   Grid,
   AutoComplete,
 } from '@geist-ui/react'
-import splitbee from '@splitbee/web'
 
 import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
@@ -18,7 +17,7 @@ import { updateUser } from 'lib/db/users'
 const SettingsForm = (): JSX.Element => {
   const { user } = useAuth()
   const [, setToast] = useToasts()
-  const { person } = useDbUser(user!.uid)
+  const { person } = useDbUser(user?.uid || '')
 
   const formik = useFormik({
     initialValues: {
@@ -37,7 +36,7 @@ const SettingsForm = (): JSX.Element => {
     },
     enableReinitialize: true,
     onSubmit: (values) => {
-      updateUser(user!.uid, values)
+      updateUser(user?.uid || '', values)
         .then(() => {
           setToast({
             text: 'Profile updated!',
@@ -108,7 +107,8 @@ const SettingsForm = (): JSX.Element => {
   ]
 
   const handleSubmitForm = () => {
-    splitbee.track('Updated Profile', { ...formik.values } as any)
+    // TODO add new analytics event
+    // splitbee.track('Updated Profile', { ...formik.values } as any)
     formik.submitForm()
   }
 

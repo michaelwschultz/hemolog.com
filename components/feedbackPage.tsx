@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import fetcher from 'lib/fetcher'
 import { useAuth } from 'lib/auth'
-import { FeedbackType } from 'lib/db/feedback'
+import type { FeedbackType } from 'lib/db/feedback'
 import LoadingScreen from 'components/loadingScreen'
 
 const handleReplyClick = (email: string) => {
@@ -17,7 +17,7 @@ const handleReplyClick = (email: string) => {
 const FeedbackPage = () => {
   const { user } = useAuth()
   const { data, error } = useSWR<FeedbackType[]>(
-    user && user.isAdmin ? ['/api/feedback', user.token] : null,
+    user?.isAdmin ? ['/api/feedback', user.token] : null,
     fetcher
   )
 
@@ -35,7 +35,8 @@ const FeedbackPage = () => {
     <>
       {data.map((feedback, index) => (
         <Grid.Container
-          key={`feedback-card-${index}`}
+          key={`feedback-card-${// biome-ignore lint/suspicious/noArrayIndexKey: nothing else to use
+index}`}
           style={{ paddingBottom: '16px' }}
         >
           <Fieldset style={{ width: '100%' }}>

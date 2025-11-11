@@ -1,4 +1,5 @@
 import _ from 'underscore'
+import styled from 'styled-components'
 import { Grid, Note, Card, useModal, Tooltip, Text } from '@geist-ui/react'
 
 import StatCard from 'components/statCard'
@@ -7,6 +8,7 @@ import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
 import { TreatmentTypeEnum } from 'lib/db/infusions'
 import FeedbackModal from 'components/feedbackModal'
 import { filterInfusions } from 'lib/helpers'
+
 
 // TODO(michael) move types to types file
 type Value = string[]
@@ -208,9 +210,9 @@ export default function Stats(props: StatsProps): JSX.Element {
             <Text small>Missing something?</Text>
             <Card.Footer>
               <Text>
-                <a onClick={() => setFeedbackModalVisible(true)}>
+                <StyledButton type="button" onClick={() => setFeedbackModalVisible(true)}>
                   Give feedback
-                </a>
+                </StyledButton>
               </Text>
             </Card.Footer>
           </Card>
@@ -229,3 +231,14 @@ export default function Stats(props: StatsProps): JSX.Element {
     </>
   )
 }
+
+
+const StyledButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  color: red;
+  font-weight: bold;
+` 

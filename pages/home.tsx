@@ -1,9 +1,7 @@
-import { useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Tabs } from '@geist-ui/react'
 import styled from 'styled-components'
-import splitbee from '@splitbee/web'
 
 import Header from 'components/header'
 import Footer from 'components/footer'
@@ -52,15 +50,16 @@ const Home = (props: { version: string }): JSX.Element => {
   const router = useRouter()
   const { version } = props
 
-  useEffect(() => {
-    if (user) {
-      splitbee.user.set({
-        displayName: user.name,
-        uid: user.uid,
-        appVersion: version,
-      })
-    }
-  }, [user, version])
+  // useEffect(() => {
+  //   if (user) {
+  //     // TODO add new analytics event
+  //     // splitbee.user.set({
+  //     //   displayName: user.name,
+  //     //   uid: user.uid,
+  //     //   appVersion: version,
+  //     // })
+  //   }
+  // }, [user, version])
 
   return (
     <ProtectRoute>

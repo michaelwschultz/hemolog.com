@@ -7,18 +7,17 @@ import {
   Grid,
   useToasts,
 } from '@geist-ui/react'
-import splitbee from '@splitbee/web'
 import { useFormik } from 'formik'
 import { compareDesc, format, parseISO } from 'date-fns'
 import { useAuth } from 'lib/auth'
 import {
   createInfusion,
-  TreatmentType,
+  type TreatmentType,
   TreatmentTypeEnum,
-  TreatmentTypeOptions,
+  type TreatmentTypeOptions,
   updateInfusion,
 } from 'lib/db/infusions'
-import { AttachedUserType } from 'lib/types/users'
+import type { AttachedUserType } from 'lib/types/users'
 import useInfusions from 'lib/hooks/useInfusions'
 
 interface InfusionValues {
@@ -35,6 +34,7 @@ interface InfusionValues {
 interface ModalProps {
   visible: boolean
   setVisible: (flag: boolean) => void
+  // biome-ignore lint/suspicious/noExplicitAny: not sure what this should be
   bindings: any
   infusion?: TreatmentType
 }
@@ -47,17 +47,16 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
 
   // TODO:(michael) limit the firebase call instead of having
   // to return all the infusions and filtering them here
-  infusions &&
-    infusions.sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
+  infusions?.sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
 
-  const previousInfusion = infusions && infusions[0]
+  const previousInfusion = infusions?.[0]
 
   const handleCreateInfusion = async (infusion: InfusionValues) => {
     const infusionUser: AttachedUserType = {
-      email: user!.email,
-      name: user!.name,
-      photoUrl: user!.photoUrl,
-      uid: user!.uid,
+      email: user?.email || '',
+      name: user?.name || '',
+      photoUrl: user?.photoUrl || '',
+      uid: user?.uid || '',
     }
 
     // TODO:(michael) should probably move to toLocaleString()
@@ -97,10 +96,10 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
 
   const handleUpdateInfusion = async (infusion: InfusionValues) => {
     const infusionUser: AttachedUserType = {
-      email: user!.email,
-      name: user!.name,
-      photoUrl: user!.photoUrl,
-      uid: user!.uid,
+      email: user?.email || '',
+      name: user?.name || '',
+      photoUrl: user?.photoUrl || '',
+      uid: user?.uid || '',
     }
 
     const { uid, date, brand, lot, units, cause, sites, type } = infusion
@@ -178,7 +177,8 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
   })
 
   const handleSubmit = () => {
-    splitbee.track('Logged Infusion')
+    // TODO add new analytics event
+    // splitbee.track('Logged Infusion')
     formik.submitForm()
   }
 
@@ -251,7 +251,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
               </Button>
             </Grid>
           </Grid.Container>
-          {user!.monoclonalAntibody && (
+          {user?.monoclonalAntibody && (
             <Grid.Container gap={1}>
               <Grid xs={24}>
                 <Button
@@ -298,7 +298,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
             crossOrigin={undefined}
             value={
               formik.values.type === TreatmentTypeEnum.ANTIBODY
-                ? user!.monoclonalAntibody
+                ? user?.monoclonalAntibody || ''
                 : formik.values.brand
             }
             width='100%'

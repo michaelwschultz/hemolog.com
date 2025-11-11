@@ -1,6 +1,6 @@
 import { auth } from 'lib/firebase-admin'
 import { getAllFeedback } from 'lib/admin-db/feedback'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 const feedback = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

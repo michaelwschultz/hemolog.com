@@ -6,7 +6,8 @@ const flipLights = async (req: any, res: any) => {
   const { query } = req
   let on = query.on
 
-  let currentState = undefined
+  // biome-ignore lint/suspicious/noImplicitAnyLet: not important
+    let currentState
 
   // NOTE(michael) this is only needed if I want to accept a query param
   if (query.on) {
@@ -34,7 +35,7 @@ const flipLights = async (req: any, res: any) => {
         // toggle light state
         on = !currentState
 
-        return fetch(REQUEST_URL + '/state', {
+        return fetch(`${REQUEST_URL}/state`, {
           method: 'PUT',
           body: JSON.stringify({ on: on }),
         })
@@ -46,7 +47,7 @@ const flipLights = async (req: any, res: any) => {
       })
   }
 
-  return fetch(REQUEST_URL + '/state', {
+  return fetch(`${REQUEST_URL}/state`, {
     method: 'PUT',
     body: JSON.stringify({ on: on }),
   })

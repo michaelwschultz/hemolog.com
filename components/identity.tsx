@@ -15,7 +15,7 @@ export default function Identity(): JSX.Element {
           <Grid.Container justify='center'>
             <Avatar
               src={user.photoUrl || ''}
-              text={user.displayName && user.displayName.charAt(0)}
+              text={user.displayName?.charAt(0) || ''}
             />
           </Grid.Container>
           <Spacer h={2} />

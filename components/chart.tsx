@@ -69,7 +69,7 @@ export default function Chart(props: ChartProps): JSX.Element {
   const distributeInfusions = (infusions: string[], data: ChartEntry[]) => {
     for (const infusion of infusions) {
       // Extract month from YYYY-MM-DD format (zero-based index)
-      const monthIndex = Number.parseInt(infusion.split('-')[1]) - 1
+      const monthIndex = Number.parseInt(infusion.split('-')[1], 10) - 1
       data[monthIndex].y = data[monthIndex].y + 1
     }
   }

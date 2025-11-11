@@ -1,0 +1,7 @@
+onlyBuiltDependencies:
+  - '@firebase/util'
+  - core-js
+  - cypress
+  - es5-ext
+  - protobufjs
+  - re2

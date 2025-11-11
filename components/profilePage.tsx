@@ -1,7 +1,6 @@
 import { useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { Grid, Text, Spacer, Snippet, Button, useToasts } from '@geist-ui/react'
-import splitbee from '@splitbee/web'
 
 import EmergencyCard from 'components/emergencyCard'
 import EmergencySnippet from 'components/emergencySnippet'
@@ -17,16 +16,18 @@ const ProfilePage = (): JSX.Element => {
   const router = useRouter()
   const [, setToast] = useToasts()
 
-  splitbee.track('Viewed profile page')
+  // TODO add new analytics event
+  // splitbee.track('Viewed profile page')
 
   const handleOnPrintClick = () => {
-    splitbee.track('Clicked Print Button', { page: '/profile' })
+    // TODO add new analytics event
+    // splitbee.track('Clicked Print Button', { page: '/profile' })
     router.push('/emergency/print')
   }
 
   const handleUpdateUserApiKey = useCallback(async () => {
     const newApiKey = await generateUniqueString(20)
-    updateUser(user!.uid, { apiKey: newApiKey })
+    updateUser(user?.uid || "", { apiKey: newApiKey })
       .then(() => {
         setToast({
           text: 'API key updated!',
@@ -43,6 +44,7 @@ const ProfilePage = (): JSX.Element => {
       )
   }, [setToast, user])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: user is needed here
   useEffect(() => {
     if (person && !person.apiKey) {
       handleUpdateUserApiKey()
