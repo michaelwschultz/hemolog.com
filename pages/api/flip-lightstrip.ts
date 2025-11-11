@@ -7,7 +7,7 @@ const flipLights = async (req: any, res: any) => {
   let on = query.on
 
   // biome-ignore lint/suspicious/noImplicitAnyLet: not important
-    let currentState
+  let currentState
 
   // NOTE(michael) this is only needed if I want to accept a query param
   if (query.on) {

@@ -9,7 +9,6 @@ import { TreatmentTypeEnum } from 'lib/db/infusions'
 import FeedbackModal from 'components/feedbackModal'
 import { filterInfusions } from 'lib/helpers'
 
-
 // TODO(michael) move types to types file
 type Value = string[]
 
@@ -210,7 +209,10 @@ export default function Stats(props: StatsProps): JSX.Element {
             <Text small>Missing something?</Text>
             <Card.Footer>
               <Text>
-                <StyledButton type="button" onClick={() => setFeedbackModalVisible(true)}>
+                <StyledButton
+                  type='button'
+                  onClick={() => setFeedbackModalVisible(true)}
+                >
                   Give feedback
                 </StyledButton>
               </Text>
@@ -232,7 +234,6 @@ export default function Stats(props: StatsProps): JSX.Element {
   )
 }
 
-
 const StyledButton = styled.button`
   background: none;
   border: none;
@@ -241,4 +242,4 @@ const StyledButton = styled.button`
   margin: 0;
   color: red;
   font-weight: bold;
-` 
+`

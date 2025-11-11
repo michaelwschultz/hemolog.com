@@ -25,10 +25,7 @@ export default function EmergencyInfo(props: Props): JSX.Element {
     return (
       <>
         <StyledRow>
-          <Avatar
-            src={person.photoUrl}
-            text={person.name?.charAt(0)}
-          />
+          <Avatar src={person.photoUrl} text={person.name?.charAt(0)} />
 
           <div>
             <Text h3>{person.name}</Text>

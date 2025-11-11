@@ -9,7 +9,7 @@ import {
   Text,
   useMediaQuery,
 } from '@geist-ui/react'
-import styled, { ThemeContext } from 'styled-components'
+import styled, { DefaultTheme, ThemeContext } from 'styled-components'
 import QRCode from 'react-qr-code'
 
 import { useAuth } from 'lib/auth'
@@ -23,7 +23,8 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
   const { user } = useAuth()
   const { person } = useDbUser(user?.uid || '')
   const theme = useTheme()
-  const themeContext = useContext(ThemeContext)
+  // biome-ignore lint/suspicious/noExplicitAny: TODO: fix when moving to tailwind
+  const themeContext = useContext(ThemeContext) as any
   const isMobile = useMediaQuery('xs', { match: 'down' })
 
   if (isMobile) {

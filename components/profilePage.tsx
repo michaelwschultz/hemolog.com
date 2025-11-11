@@ -25,7 +25,7 @@ const ProfilePage = (): JSX.Element => {
 
   const handleUpdateUserApiKey = useCallback(async () => {
     const newApiKey = await generateUniqueString(20)
-    updateUser(user?.uid || "", { apiKey: newApiKey })
+    updateUser(user?.uid || '', { apiKey: newApiKey })
       .then(() => {
         setToast({
           text: 'API key updated!',

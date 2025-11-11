@@ -35,8 +35,10 @@ const FeedbackPage = () => {
     <>
       {data.map((feedback, index) => (
         <Grid.Container
-          key={`feedback-card-${// biome-ignore lint/suspicious/noArrayIndexKey: nothing else to use
-index}`}
+          key={`feedback-card-${
+            // biome-ignore lint/suspicious/noArrayIndexKey: nothing else to use
+            index
+          }`}
           style={{ paddingBottom: '16px' }}
         >
           <Fieldset style={{ width: '100%' }}>
