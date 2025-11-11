@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Tabs } from '@geist-ui/react'
@@ -9,6 +10,7 @@ import { useAuth, ProtectRoute } from 'lib/auth'
 import HomePage from 'components/homePage'
 import ProfilePage from 'components/profilePage'
 import FeedbackPage from 'components/feedbackPage'
+import { track } from 'lib/helpers'
 
 export async function getStaticProps() {
   return {
@@ -50,16 +52,15 @@ const Home = (props: { version: string }): JSX.Element => {
   const router = useRouter()
   const { version } = props
 
-  // useEffect(() => {
-  //   if (user) {
-  //     // TODO add new analytics event
-  //     // splitbee.user.set({
-  //     //   displayName: user.name,
-  //     //   uid: user.uid,
-  //     //   appVersion: version,
-  //     // })
-  //   }
-  // }, [user, version])
+  useEffect(() => {
+    if (user) {
+      track('Logged In', {
+        uid: user.uid,
+        email: user.email,
+        appVersion: version,
+      })
+    }
+  }, [user, version])
 
   return (
     <ProtectRoute>

@@ -13,6 +13,7 @@ import {
 import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
 import { updateUser } from 'lib/db/users'
+import { track } from 'lib/helpers'
 
 const SettingsForm = (): JSX.Element => {
   const { user } = useAuth()
@@ -107,8 +108,7 @@ const SettingsForm = (): JSX.Element => {
   ]
 
   const handleSubmitForm = () => {
-    // TODO add new analytics event
-    // splitbee.track('Updated Profile', { ...formik.values } as any)
+    track('Updated Profile', { ...formik.values })
     formik.submitForm()
   }
 

@@ -9,7 +9,9 @@ import {
 } from '@geist-ui/react'
 import { useFormik } from 'formik'
 import { compareDesc, format, parseISO } from 'date-fns'
+
 import { useAuth } from 'lib/auth'
+import { track } from 'lib/helpers'
 import {
   createInfusion,
   type TreatmentType,
@@ -177,8 +179,9 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
   })
 
   const handleSubmit = () => {
-    // TODO add new analytics event
-    // splitbee.track('Logged Infusion')
+    track('Logged Infusion', {
+      type: formik.values.type,
+    })
     formik.submitForm()
   }
 

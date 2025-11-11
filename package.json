@@ -1,8 +1,9 @@
 {
   "name": "hemolog",
   "version": "2.9.0",
+  "type": "module",
   "scripts": {
-    "build": "next build",
+    "build": "bun run lint:fix; next build",
     "dev": "next dev",
     "firebase": "firebase emulators:start",
     "lint": "biome check \"**/*.{js,jsx,ts,tsx}\"",

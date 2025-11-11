@@ -24,11 +24,6 @@ const hemologLight = Themes.createFromLight({
   palette: hemologPalette,
 })
 
-if (process.env.NODE_ENV === 'production') {
-  // TODO add new analytics
-  // splitbee.init()
-}
-
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const description =
     'Back and better than ever! Hemolog 2 provides real-time insights on your hemophilia treatment regimen for free.'
@@ -82,6 +77,13 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         />
         <meta name='mobile-web-app-capable' content='yes' />
         <meta name='apple-mobile-web-app-capable' content='yes' />
+        <script
+          defer
+          src='https://assets.onedollarstats.com/stonks.js'
+          data-debug={
+            process.env.NODE_ENV !== 'production' ? 'hemolog.com' : undefined
+          }
+        />
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>

@@ -7,7 +7,7 @@ import EmergencySnippet from 'components/emergencySnippet'
 import SettingsForm from 'components/settingsForm'
 import { useAuth } from 'lib/auth'
 import { updateUser } from 'lib/db/users'
-import { generateUniqueString } from 'lib/helpers'
+import { generateUniqueString, track } from 'lib/helpers'
 import useDbUser from 'lib/hooks/useDbUser'
 
 const ProfilePage = (): JSX.Element => {
@@ -16,12 +16,10 @@ const ProfilePage = (): JSX.Element => {
   const router = useRouter()
   const [, setToast] = useToasts()
 
-  // TODO add new analytics event
-  // splitbee.track('Viewed profile page')
+  track('Viewed Profile Page')
 
   const handleOnPrintClick = () => {
-    // TODO add new analytics event
-    // splitbee.track('Clicked Print Button', { page: '/profile' })
+    track('Clicked Print Button', { page: '/profile' })
     router.push('/emergency/print')
   }
 
