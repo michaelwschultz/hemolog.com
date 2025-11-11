@@ -2,6 +2,7 @@
   "name": "hemolog",
   "version": "2.9.0",
   "type": "module",
+  "packageManager": "pnpm@10.13.x",
   "scripts": {
     "build": "bun run lint:fix; next build",
     "dev": "next dev",
