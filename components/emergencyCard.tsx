@@ -9,7 +9,7 @@ import {
   Text,
   useMediaQuery,
 } from '@geist-ui/react'
-import styled, { DefaultTheme, ThemeContext } from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import QRCode from 'react-qr-code'
 
 import { useAuth } from 'lib/auth'
