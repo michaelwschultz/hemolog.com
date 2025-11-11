@@ -82,6 +82,13 @@ function useProvideAuth() {
   }
 
   const signinWithGoogle = (redirect: string) => {
+    if (process.env.NEXT_PUBLIC_USE_EMULATORS) {
+      console.warn(
+        'Google sign-in is disabled when NEXT_PUBLIC_USE_EMULATORS is enabled. Use the Test User button instead.'
+      )
+      setLoading(false)
+      return Promise.resolve()
+    }
     setLoading(true)
     return auth
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())

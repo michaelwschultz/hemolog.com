@@ -60,14 +60,16 @@ const Signin = (pageProps: { version: string }) => {
               </Text>
               <Fieldset.Footer>
                 <Text></Text>
-                <Button
-                  onClick={() => auth.signinWithGoogle('/home')}
-                  loading={auth.loading}
-                  type='success-light'
-                  scale={3 / 4}
-                >
-                  Continue with Google
-                </Button>
+                {!process.env.NEXT_PUBLIC_USE_EMULATORS && (
+                  <Button
+                    onClick={() => auth.signinWithGoogle('/home')}
+                    loading={auth.loading}
+                    type='success-light'
+                    scale={3 / 4}
+                  >
+                    Continue with Google
+                  </Button>
+                )}
                 {process.env.NEXT_PUBLIC_USE_EMULATORS && (
                   <Button
                     onClick={() => auth.signinWithTestUser()}
