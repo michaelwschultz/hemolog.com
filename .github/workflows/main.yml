@@ -15,18 +15,18 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-        
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
-          cache: 'pnpm'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 10.13.1
           run_install: false
+        
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'pnpm'
 
       - run: pnpm install --frozen-lockfile # optional, --immutable
 
