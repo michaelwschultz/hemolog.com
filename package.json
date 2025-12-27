@@ -4,7 +4,7 @@
   "type": "module",
   "packageManager": "pnpm@10.13.1",
   "scripts": {
-    "build": "bun run lint:fix; next build",
+    "build": "pnpm run lint:fix; next build",
     "dev": "next dev",
     "firebase": "firebase emulators:start",
     "lint": "biome check",
