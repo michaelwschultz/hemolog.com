@@ -1,7 +1,11 @@
 import { adminFirestore } from 'lib/firebase-admin'
 import { compareDesc, parseISO } from 'date-fns'
 
-import type { TreatmentType } from '../db/infusions'
+import {
+  TreatmentTypeEnum,
+  type TreatmentType,
+} from '../db/infusions'
+import type { AttachedUserType } from 'lib/types/users'
 
 async function getAllInfusions() {
   const snapshot = await adminFirestore.collection('infusions').get()
@@ -118,7 +122,7 @@ async function getRecentUserInfusionsByApiKey(
 
 async function postInfusionByApiKey(
   apiKey: string,
-  lastInfusion: TreatmentType,
+  lastInfusion: TreatmentType | null,
   newInfusion: Partial<TreatmentType>
 ) {
   try {
@@ -134,19 +138,54 @@ async function postInfusionByApiKey(
       )
     }
 
-    // Make room for new values
-    Object.assign(lastInfusion, {
-      createdAt: new Date().toISOString(),
-      cause: '',
-      sites: '',
-    })
+    const userDoc = userSnapshot.docs[0]
+    const baseUser: AttachedUserType = {
+      email: userDoc.data().email || '',
+      name: userDoc.data().name || userDoc.data().displayName || '',
+      photoUrl: userDoc.data().photoUrl || '',
+      uid: userDoc.data().uid || userDoc.id,
+    }
 
-    delete lastInfusion.uid
+    const now = new Date().toISOString()
+    const baseInfusion: TreatmentType = lastInfusion
+      ? { ...lastInfusion }
+      : {
+          cause: '',
+          createdAt: now,
+          date: newInfusion.date || now.slice(0, 10),
+          deletedAt: null,
+          medication: {
+            brand: newInfusion.medication?.brand || '',
+            costPerUnit: newInfusion.medication?.costPerUnit,
+            lot: newInfusion.medication?.lot,
+            units: newInfusion.medication?.units || 0,
+          },
+          sites: '',
+          type: newInfusion.type || TreatmentTypeEnum.PROPHY,
+          user: (newInfusion.user as AttachedUserType) || baseUser,
+        }
 
-    // Keep data from last infusion and replace old with new data
-    const infusion = {
-      ...lastInfusion,
+    const sanitizedBase = {
+      ...baseInfusion,
+      createdAt: now,
+      cause: baseInfusion.cause || '',
+      sites: baseInfusion.sites || '',
+      deletedAt: null,
+      user: baseInfusion.user || baseUser,
+    }
+
+    delete (sanitizedBase as Partial<TreatmentType>).uid
+
+    const infusion: TreatmentType = {
+      ...sanitizedBase,
       ...newInfusion,
+      user: (newInfusion.user as AttachedUserType) || sanitizedBase.user,
+      medication: {
+        ...sanitizedBase.medication,
+        ...(newInfusion.medication || {}),
+      },
+      createdAt: now,
+      deletedAt: null,
     }
 
     await adminFirestore
