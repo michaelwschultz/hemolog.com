@@ -40,6 +40,13 @@ export interface TreatmentType {
   user: AttachedUserType
 }
 
+// Helper to filter undefined values from objects (Firestore doesn't accept undefined)
+function cleanUndefined<T extends object>(obj: T): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v !== undefined)
+  ) as Partial<T>
+}
+
 // NOTE(michael) this might be a bad way of adding the doc id.
 // Probably worth searching for another solution.
 async function createInfusion(data: TreatmentType) {
@@ -49,9 +56,10 @@ async function createInfusion(data: TreatmentType) {
     return
   }
 
+  const cleanData = cleanUndefined(data)
   const infusionsRef = collection(db, 'infusions')
-  const docRef = await addDoc(infusionsRef, data)
-  await setDoc(docRef, { uid: docRef.id, ...data }, { merge: true })
+  const docRef = await addDoc(infusionsRef, cleanData)
+  await setDoc(docRef, { uid: docRef.id, ...cleanData }, { merge: true })
 }
 
 function deleteInfusion(uid: string) {
@@ -76,8 +84,9 @@ async function updateInfusion(uid: string, newValues: Partial<TreatmentType>) {
     return
   }
 
+  const cleanValues = cleanUndefined(newValues)
   const infusionDocRef = doc(collection(db, 'infusions'), uid)
-  return updateDoc(infusionDocRef, newValues)
+  return updateDoc(infusionDocRef, cleanValues)
 }
 
 export { createInfusion, deleteInfusion, updateInfusion }

@@ -109,7 +109,7 @@ export const firestore = {
   },
 }
 
-// Re-export commonly used Firestore functions for convenience
+// Re-export only the Firestore functions we actually use
 export {
   collection,
   doc,
@@ -122,12 +122,6 @@ export {
   query,
   where,
   limit,
-  orderBy,
   onSnapshot,
   writeBatch,
-  type DocumentData,
-  type QuerySnapshot,
-  type DocumentSnapshot,
-  type Query,
-  type CollectionReference,
 } from 'firebase/firestore'

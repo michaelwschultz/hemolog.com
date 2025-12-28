@@ -14,6 +14,13 @@ export interface FeedbackType {
   user: AttachedUserType
 }
 
+// Helper to filter undefined values from objects (Firestore doesn't accept undefined)
+function cleanUndefined<T extends object>(obj: T): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v !== undefined)
+  ) as Partial<T>
+}
+
 function createFeedback(data: FeedbackType) {
   const db = firestore.instance
   if (!db) {
@@ -21,7 +28,7 @@ function createFeedback(data: FeedbackType) {
     return Promise.resolve({ id: '' })
   }
 
-  return addDoc(collection(db, 'feedback'), data)
+  return addDoc(collection(db, 'feedback'), cleanUndefined(data))
 }
 
 function deleteFeedback(uid: string) {
@@ -41,7 +48,7 @@ function updateFeedback(uid: string, newValues: Partial<FeedbackType>) {
     return Promise.resolve()
   }
 
-  return updateDoc(doc(collection(db, 'feedback'), uid), newValues)
+  return updateDoc(doc(collection(db, 'feedback'), uid), cleanUndefined(newValues))
 }
 
 export { createFeedback, deleteFeedback, updateFeedback }

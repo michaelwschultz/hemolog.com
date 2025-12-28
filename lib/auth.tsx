@@ -25,9 +25,11 @@ type ContextProps = {
   signinWithTestUser: () => Promise<void>
 }
 
+// Default context for pages without AuthProvider (public pages)
+// loading: false means we're not waiting for auth, user: null means not authenticated
 const authContext = createContext<Partial<ContextProps>>({
   user: null,
-  loading: true,
+  loading: false,
 })
 
 export function AuthProvider({
@@ -44,9 +46,15 @@ export function AuthProvider({
 
 export const useAuth = () => useContext(authContext)
 
+// Global state to persist auth across page navigations
+let globalUser: UserType | null = null
+let globalLoading = true
+let authListenerInitialized = false
+
 function useProvideAuth() {
-  const [user, setUser] = useState<UserType | null>(null)
-  const [loading, setLoading] = useState(true)
+  // Initialize with global state to persist across page navigations
+  const [user, setUser] = useState<UserType | null>(globalUser)
+  const [loading, setLoading] = useState(globalLoading)
 
   const handleUser = async (rawUser: User | null) => {
     if (rawUser) {
@@ -77,19 +85,26 @@ function useProvideAuth() {
         await createUser(formattedUser.uid, userWithoutToken)
       }
 
+      // Update both local and global state
+      globalUser = formattedUser
+      globalLoading = false
       setUser(formattedUser)
+      setLoading(false)
 
       cookie.set('hemolog-auth', {
         expires: 1,
       })
 
-      setLoading(false)
       return formattedUser
     } else {
+      // Update both local and global state
+      globalUser = null
+      globalLoading = false
       setUser(null)
+      setLoading(false)
+
       cookie.remove('hemolog-auth')
 
-      setLoading(false)
       return false
     }
   }
@@ -243,12 +258,32 @@ function useProvideAuth() {
     const auth = getAuth()
 
     if (!auth) {
+      globalLoading = false
       setLoading(false)
       return
     }
 
+    // If we already have a user from a previous page, sync local state
+    if (globalUser && !user) {
+      setUser(globalUser)
+      setLoading(false)
+      return
+    }
+
+    // Only set up listener once globally to avoid duplicate listeners
+    if (authListenerInitialized) {
+      // Sync with global state
+      setUser(globalUser)
+      setLoading(globalLoading)
+      return
+    }
+
+    authListenerInitialized = true
     const unsubscribe = onIdTokenChanged(auth, handleUser)
-    return () => unsubscribe()
+    return () => {
+      unsubscribe()
+      authListenerInitialized = false
+    }
   }, [])
 
   return {

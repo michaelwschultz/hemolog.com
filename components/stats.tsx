@@ -36,8 +36,6 @@ export default function Stats(props: StatsProps): JSX.Element {
   const { filterYear } = props
   const { data, status, error } = useInfusions()
 
-  console.log('testing data', data)
-
   const filteredInfusions = filterInfusions(data, filterYear)
 
   // TODO(michael): Remove the feedback modal from this component at some point

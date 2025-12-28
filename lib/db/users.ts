@@ -20,8 +20,12 @@ async function createUser(uid: string, data: Partial<UserType>) {
   }
 
   try {
+    // Filter out undefined values - Firestore doesn't accept them
+    const cleanData = Object.fromEntries(
+      Object.entries({ uid, ...data }).filter(([, v]) => v !== undefined)
+    )
     const userDocRef = doc(collection(db, 'users'), uid)
-    await setDoc(userDocRef, { uid, ...data }, { merge: true })
+    await setDoc(userDocRef, cleanData, { merge: true })
   } catch (error) {
     console.error(error)
   }
@@ -58,8 +62,12 @@ async function updateUser(uid: string, newValues: Partial<UserType>) {
     return
   }
 
+  // Filter out undefined values - Firestore doesn't accept them
+  const cleanValues = Object.fromEntries(
+    Object.entries(newValues).filter(([, v]) => v !== undefined)
+  )
   const userDocRef = doc(collection(db, 'users'), uid)
-  return updateDoc(userDocRef, newValues)
+  return updateDoc(userDocRef, cleanValues)
 }
 
 export { createUser, deleteUser, updateUser }

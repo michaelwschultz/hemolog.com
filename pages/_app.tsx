@@ -4,7 +4,6 @@ import type { AppProps } from 'next/app'
 import { GeistProvider, CssBaseline, Themes } from '@geist-ui/react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from 'lib/theme'
-import { AuthProvider } from 'lib/auth'
 
 const hemologPalette = {
   success: '#FF062C',
@@ -87,14 +86,12 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <AuthProvider>
-          <GeistProvider themes={[hemologLight]} themeType={themeType}>
-            <CssBaseline />
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-            {/* @ts-ignore */}
-            <Component {...pageProps} switchTheme={switchThemes} />
-          </GeistProvider>
-        </AuthProvider>
+        <GeistProvider themes={[hemologLight]} themeType={themeType}>
+          <CssBaseline />
+          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+          {/* @ts-ignore */}
+          <Component {...pageProps} switchTheme={switchThemes} />
+        </GeistProvider>
       </ThemeProvider>
     </>
   )
