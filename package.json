@@ -21,7 +21,7 @@
     "@geist-ui/react": "2.2.5",
     "@geist-ui/react-icons": "^1.0.1",
     "date-fns": "^2.30.0",
-    "firebase": "^10.14.0",
+    "firebase": "^12.7.0",
     "firebase-admin": "^12.7.0",
     "formik": "^2.4.9",
     "isomorphic-unfetch": "^3.1.0",
