@@ -43,10 +43,6 @@ export default function useInfusions(
     error,
   } = useFirestoreQuery<TreatmentType[]>(firestoreQuery)
 
-  if (error) {
-    console.error('NEW ERROR', error)
-  }
-
   // NOTE(Michael) sorts infusions by date (newest to oldest)
   const data: TreatmentType[] = useMemo(() => {
     const arr: TreatmentType[] = Array.isArray(unsortedData) ? unsortedData : []

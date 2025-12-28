@@ -48,7 +48,10 @@ function updateFeedback(uid: string, newValues: Partial<FeedbackType>) {
     return Promise.resolve()
   }
 
-  return updateDoc(doc(collection(db, 'feedback'), uid), cleanUndefined(newValues))
+  return updateDoc(
+    doc(collection(db, 'feedback'), uid),
+    cleanUndefined(newValues)
+  )
 }
 
 export { createFeedback, deleteFeedback, updateFeedback }
