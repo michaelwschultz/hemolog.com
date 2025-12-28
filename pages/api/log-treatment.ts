@@ -25,7 +25,7 @@ const logTreatment = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (error) throw error
 
-    const mostRecentInfusion = infusions[0]
+    const mostRecentInfusion = infusions && infusions.length > 0 ? infusions[0] : null
 
     try {
       const { infusion, error } = await postInfusionByApiKey(

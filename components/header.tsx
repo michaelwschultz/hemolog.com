@@ -59,6 +59,12 @@ const Header = (props: Props): JSX.Element => {
   )
 
   if (user) {
+    const avatarInitial =
+      user.name?.charAt(0) ||
+      user.displayName?.charAt(0) ||
+      user.email?.charAt(0) ||
+      '?'
+
     return (
       <>
         <Grid.Container justify='space-between' alignItems='center'>
@@ -83,7 +89,7 @@ const Header = (props: Props): JSX.Element => {
                 <Popover content={popoverContent as any} placement='bottomEnd'>
                   <Avatar
                     src={user.photoUrl || '/images/favicon-32x32.png'}
-                    text={user?.displayName?.charAt(0)}
+                    text={avatarInitial}
                     style={{ cursor: 'pointer' }}
                     scale={2}
                   />

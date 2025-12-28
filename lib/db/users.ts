@@ -12,10 +12,10 @@ async function createUser(uid: string, data: any) {
 }
 
 async function deleteUser(uid: string) {
-  firestore.collection('users').doc(uid).delete()
+  await firestore.collection('users').doc(uid).delete()
   const snapshot = await firestore
     .collection('infusions')
-    .where('userId', '==', uid)
+    .where('user.uid', '==', uid)
     .get()
 
   const batch = firestore.batch()
