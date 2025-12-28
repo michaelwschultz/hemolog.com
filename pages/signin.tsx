@@ -1,4 +1,3 @@
-import { useAuth } from 'lib/auth'
 import Head from 'next/head'
 import {
   Text,
@@ -14,6 +13,8 @@ import styled from 'styled-components'
 
 import Logo from 'components/logo'
 import Footer from 'components/footer'
+import { withAuth } from 'components/withAuth'
+import { useAuth } from 'lib/auth'
 
 export async function getStaticProps() {
   return {
@@ -62,7 +63,7 @@ const Signin = (pageProps: { version: string }) => {
                 <Text></Text>
                 {!process.env.NEXT_PUBLIC_USE_EMULATORS && (
                   <Button
-                    onClick={() => auth.signinWithGoogle('/home')}
+                    onClick={() => auth.signinWithGoogle?.('/home')}
                     loading={auth.loading}
                     type='success-light'
                     scale={3 / 4}
@@ -72,7 +73,7 @@ const Signin = (pageProps: { version: string }) => {
                 )}
                 {process.env.NEXT_PUBLIC_USE_EMULATORS && (
                   <Button
-                    onClick={() => auth.signinWithTestUser()}
+                    onClick={() => auth.signinWithTestUser?.()}
                     loading={auth.loading}
                     type='success-light'
                     scale={3 / 4}
@@ -94,7 +95,7 @@ const Signin = (pageProps: { version: string }) => {
   )
 }
 
-export default Signin
+export default withAuth(Signin)
 
 const StyledPage = styled.div`
   height: 100%;

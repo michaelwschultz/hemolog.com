@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 import Header from 'components/header'
 import Footer from 'components/footer'
+import { withAuth } from 'components/withAuth'
 import { useAuth, ProtectRoute } from 'lib/auth'
 import HomePage from 'components/homePage'
 import ProfilePage from 'components/profilePage'
@@ -105,7 +106,7 @@ const Home = (props: { version: string }): JSX.Element => {
   )
 }
 
-export default Home
+export default withAuth(Home)
 
 const StyledPage = styled.div`
   height: 100%;

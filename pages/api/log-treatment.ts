@@ -25,7 +25,8 @@ const logTreatment = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (error) throw error
 
-    const mostRecentInfusion = infusions[0]
+    const mostRecentInfusion =
+      infusions && infusions.length > 0 ? infusions[0] : null
 
     try {
       const { infusion, error } = await postInfusionByApiKey(
@@ -35,11 +36,25 @@ const logTreatment = async (req: NextApiRequest, res: NextApiResponse) => {
       )
       if (error) throw error
       return res.status(200).json(infusion)
-    } catch (error: any) {
-      return res.status(500).send(error.message)
+    } catch (error: unknown) {
+      const errorMessage =
+        error &&
+        typeof error === 'object' &&
+        'message' in error &&
+        typeof error.message === 'string'
+          ? error.message
+          : 'An error occurred'
+      return res.status(500).send(errorMessage)
     }
-  } catch (error: any) {
-    return res.status(500).send(error.message)
+  } catch (error: unknown) {
+    const errorMessage =
+      error &&
+      typeof error === 'object' &&
+      'message' in error &&
+      typeof error.message === 'string'
+        ? error.message
+        : 'An error occurred'
+    return res.status(500).send(errorMessage)
   }
 }
 

@@ -17,7 +17,7 @@ interface Props {
   version?: string
 }
 
-const Header = (props: Props): JSX.Element => {
+const Header = (props: Props): JSX.Element | null => {
   const { version } = props
   const { user, signout } = useAuth()
 
@@ -36,29 +36,35 @@ const Header = (props: Props): JSX.Element => {
   //   )
   // }
 
-  const popoverContent = () => (
-    <div style={{ minWidth: '180px' }}>
-      <Popover.Item title>
-        <span>{user?.name}</span>
-      </Popover.Item>
-      <Popover.Item>
-        <span>Hemolog v{version}</span>
-      </Popover.Item>
-      <Popover.Item>
-        <Link color href='/changelog'>
-          Latest updates
-        </Link>
-      </Popover.Item>
-      <Popover.Item line />
-      <Popover.Item>
-        <Link color onClick={() => signout()}>
-          Sign out
-        </Link>
-      </Popover.Item>
-    </div>
-  )
-
   if (user) {
+    const avatarInitial =
+      user.name?.charAt(0) ||
+      user.displayName?.charAt(0) ||
+      user.email?.charAt(0) ||
+      '?'
+
+    const popoverContent = (
+      <div style={{ minWidth: '180px' }}>
+        <Popover.Item title>
+          <span>{user?.name}</span>
+        </Popover.Item>
+        <Popover.Item>
+          <span>Hemolog v{version}</span>
+        </Popover.Item>
+        <Popover.Item>
+          <Link color href='/changelog'>
+            Latest updates
+          </Link>
+        </Popover.Item>
+        <Popover.Item line />
+        <Popover.Item>
+          <Link color onClick={() => void signout?.()}>
+            Sign out
+          </Link>
+        </Popover.Item>
+      </div>
+    )
+
     return (
       <>
         <Grid.Container justify='space-between' alignItems='center'>
@@ -80,10 +86,11 @@ const Header = (props: Props): JSX.Element => {
                 )}
               </Grid>
               <Grid>
-                <Popover content={popoverContent as any} placement='bottomEnd'>
+                {/* @ts-expect-error - Popover content prop has a type conflict with HTML content attribute */}
+                <Popover content={popoverContent} placement='bottomEnd'>
                   <Avatar
                     src={user.photoUrl || '/images/favicon-32x32.png'}
-                    text={user?.displayName?.charAt(0)}
+                    text={avatarInitial}
                     style={{ cursor: 'pointer' }}
                     scale={2}
                   />
@@ -114,7 +121,7 @@ const Header = (props: Props): JSX.Element => {
     )
   }
 
-  return <></>
+  return null
 }
 
 export default Header

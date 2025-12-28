@@ -20,7 +20,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es6",
-    "incremental": true,
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",

@@ -1,4 +1,5 @@
-import firebase from 'lib/firebase'
+import { useMemo } from 'react'
+import { firestore, collection, query, where } from 'lib/firebase'
 import useFirestoreQuery, {
   type FirestoreStatusType,
 } from 'lib/hooks/useFirestoreQuery'
@@ -10,29 +11,35 @@ type FirestoreStatusTypes = FirestoreStatusType
 interface FirestoreUserResponse {
   person: Person | null
   status: FirestoreStatusTypes
-  error: Error
+  error: Error | null
 }
 
 export default function useDbUser(
   uid: string | string[]
 ): FirestoreUserResponse {
-  const db = firebase.firestore()
+  // Normalize uid to string
+  const normalizedUid = Array.isArray(uid) ? uid[0] : uid
 
-  // TODO(michaelwschultz): This hook is causing more problems than it's worth
-  // by caching the value it's causing FOOD (flash of outdated data).
-  // Replace this with the new Firebase v9 hooks
-  const { data, status, error } = useFirestoreQuery(
-    db.collection('users').where('uid', '==', uid)
-  )
+  // Memoize the query to prevent unnecessary re-subscriptions
+  const firestoreQuery = useMemo(() => {
+    const db = firestore.instance
+    if (!db || !normalizedUid) {
+      return null
+    }
+
+    return query(collection(db, 'users'), where('uid', '==', normalizedUid))
+  }, [normalizedUid])
+
+  const { data, status, error } = useFirestoreQuery(firestoreQuery)
 
   let person: Person | null = null
-  if (data) {
-    person = data[0]
+  if (data && Array.isArray(data) && data.length > 0) {
+    person = data[0] as Person
   }
 
   return {
     person,
     status,
-    error,
+    error: error ?? null,
   }
 }

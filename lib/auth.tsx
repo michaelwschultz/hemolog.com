@@ -1,7 +1,16 @@
 import { useState, useEffect, useContext, createContext } from 'react'
 import cookie from 'js-cookie'
+import {
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  onIdTokenChanged,
+  GoogleAuthProvider,
+  type User,
+} from 'firebase/auth'
 
-import firebase, { firestore } from 'lib/firebase'
+import { getAuth, firestore, collection, doc, getDoc } from 'lib/firebase'
 import { createUser } from 'lib/db/users'
 import { generateUniqueString } from 'lib/helpers'
 import LoadingScreen from 'components/loadingScreen'
@@ -11,12 +20,17 @@ import Router from 'next/router'
 type ContextProps = {
   user: UserType | null
   loading?: boolean
-  signout: any
-  signinWithGoogle: any
-  signinWithTestUser: any
+  signout: () => Promise<void>
+  signinWithGoogle: (redirect: string) => Promise<void>
+  signinWithTestUser: () => Promise<void>
 }
 
-const authContext = createContext<Partial<ContextProps>>({})
+// Default context for pages without AuthProvider (public pages)
+// loading: false means we're not waiting for auth, user: null means not authenticated
+const authContext = createContext<Partial<ContextProps>>({
+  user: null,
+  loading: false,
+})
 
 export function AuthProvider({
   children,
@@ -32,168 +46,273 @@ export function AuthProvider({
 
 export const useAuth = () => useContext(authContext)
 
+// Global state to persist auth across page navigations
+let globalUser: UserType | null = null
+let globalLoading = true
+let authListenerInitialized = false
+
 function useProvideAuth() {
-  const [user, setUser] = useState<UserType | null>(null)
-  const [loading, setLoading] = useState(true)
+  // Initialize with global state to persist across page navigations
+  const [user, setUser] = useState<UserType | null>(globalUser)
+  const [loading, setLoading] = useState(globalLoading)
 
-  const handleUser = async (rawUser: any) => {
+  const handleUser = async (rawUser: User | null) => {
     if (rawUser) {
-      const user = await formatUser(rawUser)
-      const dbUser = await firestore.collection('users').doc(user.uid).get()
+      const formattedUser = await formatUser(rawUser)
+      const db = firestore.instance
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { token, ...userWithoutToken } = user
+      if (db) {
+        const userDocRef = doc(collection(db, 'users'), formattedUser.uid)
+        const dbUserSnap = await getDoc(userDocRef)
 
-      // TODO(michael) If user already exist then remove alertId
-      // so it isn't overwritten when the user is updated on `createUser`
-      // and overwrite the alertId created in the formatter.
-      // This needs to be cleaned up.
-      if (dbUser.exists) {
-        user.alertId = dbUser.data()!.alertId
-        user.isAdmin = dbUser.data()!.isAdmin
-        user.apiKey = dbUser.data()!.apiKey
-        user.medication = dbUser.data()!.medication || ''
-        user.monoclonalAntibody = dbUser.data()!.monoclonalAntibody || ''
-        delete userWithoutToken.alertId
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { ...userWithoutToken } = formattedUser
+
+        // TODO(michael) If user already exist then remove alertId
+        // so it isn't overwritten when the user is updated on `createUser`
+        // and overwrite the alertId created in the formatter.
+        // This needs to be cleaned up.
+        if (dbUserSnap.exists()) {
+          const dbData = dbUserSnap.data()
+          formattedUser.alertId = dbData?.alertId
+          formattedUser.isAdmin = dbData?.isAdmin
+          formattedUser.apiKey = dbData?.apiKey
+          formattedUser.medication = dbData?.medication || ''
+          formattedUser.monoclonalAntibody = dbData?.monoclonalAntibody || ''
+          delete userWithoutToken.alertId
+        }
+
+        await createUser(formattedUser.uid, userWithoutToken)
       }
 
-      await createUser(user.uid, userWithoutToken)
-      setUser(user)
+      // Update both local and global state
+      globalUser = formattedUser
+      globalLoading = false
+      setUser(formattedUser)
+      setLoading(false)
 
       cookie.set('hemolog-auth', {
         expires: 1,
       })
 
-      setLoading(false)
-      return user
+      return formattedUser
     } else {
+      // Update both local and global state
+      globalUser = null
+      globalLoading = false
       setUser(null)
+      setLoading(false)
+
       cookie.remove('hemolog-auth')
 
-      setLoading(false)
       return false
     }
   }
 
-  const auth = firebase.auth()
-  // use emulator if developing locally
-  if (process.env.NEXT_PUBLIC_USE_EMULATORS) {
-    // biome-ignore lint/correctness/useHookAtTopLevel: this is not a react hook
-    auth.useEmulator('http://localhost:9099')
-  }
-
-  const signinWithGoogle = (redirect: string) => {
+  const signinWithGoogle = async (redirect: string) => {
     if (process.env.NEXT_PUBLIC_USE_EMULATORS) {
       console.warn(
         'Google sign-in is disabled when NEXT_PUBLIC_USE_EMULATORS is enabled. Use the Test User button instead.'
       )
       setLoading(false)
-      return Promise.resolve()
+      return
     }
-    setLoading(true)
-    return auth
-      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then((response) => {
-        handleUser(response.user)
 
-        if (redirect) {
-          Router.push(redirect)
-        }
-      })
-      .catch(() => {
-        setLoading(false)
-      })
+    setLoading(true)
+    const auth = getAuth()
+
+    if (!auth) {
+      console.error('Firebase auth not available for Google sign-in')
+      setLoading(false)
+      return
+    }
+
+    try {
+      const provider = new GoogleAuthProvider()
+      const result = await signInWithPopup(auth, provider)
+      await handleUser(result.user)
+
+      if (redirect) {
+        Router.push(redirect)
+      }
+    } catch (error) {
+      console.error('Google sign-in error:', error)
+      setLoading(false)
+    }
   }
 
   const signinWithTestUser = async () => {
     setLoading(true)
 
-    try {
-      const authResponse = await fetch(
-        `http://localhost:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=testing-key`,
-        {
-          body: JSON.stringify({
-            email: 'michael+test@hemolog.com',
-            password: 'test123',
-          }),
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-        }
-      ).then((response) => response.json())
-
-      // stricktly for testing purposes
-      if (authResponse.error?.message === 'EMAIL_EXISTS') {
-        return auth
-          .signInWithEmailAndPassword('michael+test@hemolog.com', 'test123')
-          .then((response) => {
-            handleUser(response.user)
-            Router.push('/home')
-          })
-
-          .catch(() => {
-            setLoading(false)
-          })
-      } else {
-        const testUser = {
-          email: authResponse.email,
-          token: authResponse.idToken,
-          uid: authResponse.localId,
-          displayName: 'Michael',
-          photoURL: null,
-          providerData: 'password',
-        }
-
-        return auth
-          .signInWithEmailAndPassword('michael+test@hemolog.com', 'test123')
-          .then(() => {
-            handleUser(testUser)
-            Router.push('/home')
-          })
-      }
-    } catch (e) {
-      console.error(e)
+    if (typeof window === 'undefined') {
+      console.error('Error: Cannot sign in on server-side')
       setLoading(false)
+      return
+    }
+
+    const auth = getAuth()
+
+    if (!auth) {
+      console.error(
+        'Error: Firebase auth not available. Make sure Firebase is initialized and emulator is running.'
+      )
+      setLoading(false)
+      return
+    }
+
+    const testEmail = 'michael+test@hemolog.com'
+    const testPassword = 'test123'
+
+    try {
+      // Try to sign in directly first (user might already exist)
+      const signInResponse = await signInWithEmailAndPassword(
+        auth,
+        testEmail,
+        testPassword
+      )
+      if (signInResponse.user) {
+        await handleUser(signInResponse.user)
+        Router.push('/home')
+        return
+      }
+    } catch (signInError: unknown) {
+      // If user doesn't exist, create them
+      const error =
+        signInError && typeof signInError === 'object' && 'code' in signInError
+          ? (signInError as { code?: string })
+          : null
+
+      const isUserNotFound =
+        error?.code === 'auth/user-not-found' ||
+        error?.code === 'auth/invalid-credential'
+
+      if (!isUserNotFound) {
+        console.error('Sign in error:', signInError)
+        setLoading(false)
+        return
+      }
+
+      // User doesn't exist, create them using Firebase SDK
+      try {
+        const createResponse = await createUserWithEmailAndPassword(
+          auth,
+          testEmail,
+          testPassword
+        )
+        if (createResponse.user) {
+          await handleUser(createResponse.user)
+          Router.push('/home')
+          return
+        }
+      } catch (createError: unknown) {
+        // If email already exists (race condition), try signing in again
+        const createErr =
+          createError &&
+          typeof createError === 'object' &&
+          'code' in createError
+            ? (createError as { code?: string })
+            : null
+
+        if (createErr?.code === 'auth/email-already-in-use') {
+          try {
+            const retrySignIn = await signInWithEmailAndPassword(
+              auth,
+              testEmail,
+              testPassword
+            )
+            if (retrySignIn.user) {
+              await handleUser(retrySignIn.user)
+              Router.push('/home')
+              return
+            }
+          } catch (retryError) {
+            console.error('Retry sign in error:', retryError)
+          }
+        } else {
+          console.error('Create user error:', createError)
+        }
+        setLoading(false)
+      }
     }
   }
 
-  const signout = () => {
+  const signout = async () => {
     Router.push('/signin')
-    return auth.signOut().then(() => handleUser(false))
+    const auth = getAuth()
+    if (!auth) {
+      await handleUser(null)
+      return
+    }
+    await firebaseSignOut(auth)
+    await handleUser(null)
   }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: handleUser would cause a loop on every render
+  // biome-ignore lint/correctness/useExhaustiveDependencies: handleUser is stable and would cause infinite re-renders
   useEffect(() => {
-    const unsubscribe = auth.onIdTokenChanged(handleUser)
-    return () => unsubscribe()
-  }, [auth])
+    // Only initialize auth listener on client-side when Firebase is available
+    if (typeof window === 'undefined') {
+      setLoading(false)
+      return
+    }
+
+    const auth = getAuth()
+
+    if (!auth) {
+      globalLoading = false
+      setLoading(false)
+      return
+    }
+
+    // If we already have a user from a previous page, sync local state
+    if (globalUser && !user) {
+      setUser(globalUser)
+      setLoading(false)
+      return
+    }
+
+    // Only set up listener once globally to avoid duplicate listeners
+    if (authListenerInitialized) {
+      // Sync with global state
+      setUser(globalUser)
+      setLoading(globalLoading)
+      return
+    }
+
+    authListenerInitialized = true
+    const unsubscribe = onIdTokenChanged(auth, handleUser)
+    return () => {
+      unsubscribe()
+      authListenerInitialized = false
+    }
+  }, [])
 
   return {
     user,
     loading,
-    // signinWithEmail,
-    // signinWithGitHub,
     signinWithGoogle,
     signinWithTestUser,
     signout,
   }
 }
 
-const formatUser = async (rawUser: Record<string, any>): Promise<UserType> => {
-  // biome-ignore lint/suspicious/noImplicitAnyLet: okay for now
-  let idTokenResult
-  if (rawUser.getIdTokenResult) {
-    idTokenResult = await rawUser.getIdTokenResult()
+const formatUser = async (rawUser: User): Promise<UserType> => {
+  let token = ''
+  try {
+    const idTokenResult = await rawUser.getIdTokenResult()
+    token = idTokenResult.token
+  } catch {
+    // Token retrieval failed, continue without token
   }
-  const token = idTokenResult?.token || rawUser.token
+
   const alertId = await generateUniqueString(6)
 
   return {
     alertId,
-    email: rawUser.email,
-    name: rawUser.displayName,
-    photoUrl: rawUser.photoURL,
-    provider: rawUser.providerData?.[0].providerId || 'password',
-    token,
+    email: rawUser.email || '',
+    name: rawUser.displayName || '',
+    photoUrl: rawUser.photoURL || undefined,
+    provider: rawUser.providerData?.[0]?.providerId || 'password',
+    token: token || '',
     uid: rawUser.uid,
   }
 }
@@ -208,8 +327,6 @@ export function ProtectRoute({
 }): React.ReactElement | null {
   const { user, loading } = useAuth()
   if (typeof window === 'undefined') return null
-
-  console.error('ProtectedRoute', { user, loading })
 
   if (loading && !user) {
     return <LoadingScreen />

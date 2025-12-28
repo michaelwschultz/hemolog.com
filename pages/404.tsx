@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { withAuth } from 'components/withAuth'
 import { useAuth } from 'lib/auth'
 import LoadingScreen from 'components/loadingScreen'
 
-export default function Custom404(): JSX.Element {
+function Custom404(): JSX.Element {
   const router = useRouter()
   const { user, loading } = useAuth()
 
@@ -17,3 +18,5 @@ export default function Custom404(): JSX.Element {
 
   return <LoadingScreen />
 }
+
+export default withAuth(Custom404)

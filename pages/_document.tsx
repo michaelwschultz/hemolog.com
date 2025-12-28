@@ -15,7 +15,7 @@ export default class MyDocument extends Document {
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          enhanceApp: (App: any) => (props: any) =>
+          enhanceApp: (App) => (props) =>
             sheet.collectStyles(<App {...props} />),
         })
       const initialProps = await Document.getInitialProps(ctx)
@@ -58,10 +58,7 @@ export default class MyDocument extends Document {
             href='https://fonts.googleapis.com/css?family=Nanum+Pen+Script&display=swap'
             rel='stylesheet'
           />
-          <link
-            rel='stylesheet'
-            href='https://unpkg.com/react-vis/dist/style.css'
-          />
+          {/* react-vis CSS is loaded dynamically when Chart component is used */}
         </Head>
         <body>
           <Main />

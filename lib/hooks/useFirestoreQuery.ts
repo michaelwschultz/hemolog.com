@@ -1,6 +1,13 @@
 // Reducer for hook state and actions
-import { useReducer, useEffect } from 'react'
-import useMemoCompare from 'lib/hooks/useMemoCompare'
+import { useReducer, useEffect, useRef } from 'react'
+import {
+  onSnapshot,
+  type Query,
+  type DocumentReference,
+  type QuerySnapshot,
+  type DocumentSnapshot,
+  type DocumentData,
+} from 'firebase/firestore'
 
 export enum FirestoreStatusType {
   IDLE = 'idle',
@@ -9,12 +16,18 @@ export enum FirestoreStatusType {
   ERROR = 'error',
 }
 
-interface Action {
+interface Action<T = unknown> {
   type: FirestoreStatusType
-  payload?: any
+  payload?: T
 }
 
-const reducer = (_state: any, action: Action) => {
+interface State<T = unknown> {
+  status: FirestoreStatusType
+  data: T | undefined
+  error: Error | undefined
+}
+
+const reducer = <T>(_state: State<T>, action: Action<T>): State<T> => {
   switch (action.type) {
     case FirestoreStatusType.IDLE:
       return {
@@ -38,73 +51,95 @@ const reducer = (_state: any, action: Action) => {
       return {
         status: FirestoreStatusType.ERROR,
         data: undefined,
-        error: action.payload,
+        error: action.payload as Error | undefined,
       }
     default:
       throw new Error('invalid action')
   }
 }
 
+type FirestoreQueryType =
+  | Query<DocumentData, DocumentData>
+  | DocumentReference<DocumentData, DocumentData>
+
 // Hook
-export default function useFirestoreQuery(query: any) {
+export default function useFirestoreQuery<T = unknown>(
+  query: FirestoreQueryType | null | undefined
+) {
   // Our initial state
   // Start with an "idle" status if query is falsy, as that means hook consumer is
   // waiting on required data before creating the query object.
-  // Example: useFirestoreQuery(uid && firestore.collection("profiles").doc(uid))
-  const initialState = {
+  const initialState: State<T> = {
     status: query ? FirestoreStatusType.LOADING : FirestoreStatusType.IDLE,
     data: undefined,
     error: undefined,
   }
 
   // Setup our state and actions
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer<T>, initialState)
 
-  // Get cached Firestore query object with useMemoCompare (https://usehooks.com/useMemoCompare)
-  // Needed because firestore.collection("profiles").doc(uid) will always being a new object reference
-  // causing effect to run -> state change -> rerender -> effect runs -> etc ...
-  // This is nicer than requiring hook consumer to always memoize query with useMemo.
-  const queryCached = useMemoCompare(query, (prevQuery: any) => {
-    // Use built-in Firestore isEqual method to determine if "equal"
-    return prevQuery && query && query.isEqual(prevQuery)
-  })
+  // Track the previous query to avoid re-subscribing unnecessarily
+  const prevQueryRef = useRef<FirestoreQueryType | null | undefined>(null)
 
   useEffect(() => {
-    // Return early if query is falsy and reset to "idle" status in case
-    // we're coming from "success" or "error" status due to query change.
-    if (!queryCached) {
+    // Return early if query is falsy and reset to "idle" status
+    if (!query) {
       dispatch({ type: FirestoreStatusType.IDLE })
       return
     }
 
+    // Check if query changed (simple reference equality)
+    // For v9, we rely on the consumer to memoize their queries
+    if (prevQueryRef.current === query) {
+      return
+    }
+    prevQueryRef.current = query
+
     dispatch({ type: FirestoreStatusType.LOADING })
 
     // Subscribe to query with onSnapshot
-    // Will unsubscribe on cleanup since this returns an unsubscribe function
-    return queryCached.onSnapshot(
-      (response: any) => {
-        // Get data for collection or doc
-        const data = response.docs
-          ? getCollectionData(response)
-          : getDocData(response)
+    // Handle both Query and DocumentReference
+    const isDocRef = 'type' in query && query.type === 'document'
 
-        dispatch({ type: FirestoreStatusType.SUCCESS, payload: data })
-      },
-      (error: any) => {
-        dispatch({ type: FirestoreStatusType.ERROR, payload: error })
-      }
-    )
-  }, [queryCached]) // Only run effect if queryCached changes
+    if (isDocRef) {
+      // Document reference
+      const unsubscribe = onSnapshot(
+        query as DocumentReference<DocumentData, DocumentData>,
+        (docSnap: DocumentSnapshot<DocumentData>) => {
+          const data = docSnap.exists()
+            ? { id: docSnap.id, ...docSnap.data() }
+            : null
+          dispatch({ type: FirestoreStatusType.SUCCESS, payload: data as T })
+        },
+        (error: Error) => {
+          dispatch({
+            type: FirestoreStatusType.ERROR,
+            payload: error as T & Error,
+          })
+        }
+      )
+      return () => unsubscribe()
+    } else {
+      // Query
+      const unsubscribe = onSnapshot(
+        query as Query<DocumentData, DocumentData>,
+        (snapshot: QuerySnapshot<DocumentData>) => {
+          const data = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          dispatch({ type: FirestoreStatusType.SUCCESS, payload: data as T })
+        },
+        (error: Error) => {
+          dispatch({
+            type: FirestoreStatusType.ERROR,
+            payload: error as T & Error,
+          })
+        }
+      )
+      return () => unsubscribe()
+    }
+  }, [query])
 
   return state
-}
-
-// Get doc data and merge doc.id
-function getDocData(doc: any) {
-  return doc.exists === true ? { id: doc.id, ...doc.data() } : null
-}
-
-// Get array of doc data from collection
-function getCollectionData(collection: any) {
-  return collection.docs.map(getDocData)
 }

@@ -1,6 +1,15 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useState } from 'react'
 import { useRouter } from 'next/router'
-import { Grid, Text, Spacer, Snippet, Button, useToasts } from '@geist-ui/react'
+import {
+  Grid,
+  Text,
+  Spacer,
+  Snippet,
+  Button,
+  useToasts,
+  Modal,
+  useModal,
+} from '@geist-ui/react'
 
 import EmergencyCard from 'components/emergencyCard'
 import EmergencySnippet from 'components/emergencySnippet'
@@ -11,10 +20,12 @@ import { generateUniqueString, track } from 'lib/helpers'
 import useDbUser from 'lib/hooks/useDbUser'
 
 const ProfilePage = (): JSX.Element => {
-  const { user } = useAuth()
+  const { user, signout } = useAuth()
   const { person } = useDbUser(user?.uid || '')
   const router = useRouter()
   const [, setToast] = useToasts()
+  const { visible, setVisible, bindings } = useModal()
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false)
 
   track('Viewed Profile Page')
 
@@ -48,6 +59,53 @@ const ProfilePage = (): JSX.Element => {
       handleUpdateUserApiKey()
     }
   }, [user, person, handleUpdateUserApiKey])
+
+  const handleDeleteAccount = async () => {
+    if (!user?.token) {
+      setToast({
+        text: 'Unable to delete account. Please sign in again and retry.',
+        type: 'error',
+        delay: 8000,
+      })
+      return
+    }
+
+    try {
+      setIsDeletingAccount(true)
+      track('Confirmed Delete Account')
+      const response = await fetch('/api/delete-account', {
+        method: 'DELETE',
+        headers: {
+          token: user.token,
+        },
+      })
+
+      if (!response.ok) {
+        const errorMessage = await response.text()
+        throw new Error(errorMessage || 'Unable to delete account.')
+      }
+
+      setToast({
+        text: 'Your account has been deleted. Thank you for trying Hemolog.',
+        type: 'success',
+        delay: 8000,
+      })
+      setVisible(false)
+      await signout?.()
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Failed to delete account. Please try again.'
+      setToast({
+        text: errorMessage,
+        type: 'error',
+        delay: 8000,
+      })
+    } finally {
+      setIsDeletingAccount(false)
+    }
+  }
 
   return (
     <Grid.Container>
@@ -116,7 +174,44 @@ const ProfilePage = (): JSX.Element => {
           </Grid.Container> */}
         <Spacer />
         <EmergencyCard />
+        <Spacer h={3} />
+        <Text h4>Delete account</Text>
+        <Text>
+          Deleting your account removes your profile, infusions, and emergency
+          info forever. This action cannot be undone.
+        </Text>
+        <Spacer />
+        <Button
+          auto
+          type='error'
+          onClick={() => {
+            track('Opened Delete Account Modal')
+            setVisible(true)
+          }}
+        >
+          Delete account
+        </Button>
       </Grid>
+      <Modal visible={visible} {...bindings}>
+        <Modal.Title>Delete your account?</Modal.Title>
+        <Modal.Content>
+          <Text>
+            This permanently deletes your Hemolog data and cannot be reversed.
+            You will need to create a new account to return.
+          </Text>
+        </Modal.Content>
+        <Modal.Action passive onClick={() => setVisible(false)}>
+          Cancel
+        </Modal.Action>
+        <Modal.Action
+          type='error'
+          loading={isDeletingAccount}
+          disabled={isDeletingAccount}
+          onClick={handleDeleteAccount}
+        >
+          Delete account
+        </Modal.Action>
+      </Modal>
     </Grid.Container>
   )
 }

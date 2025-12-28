@@ -1,4 +1,11 @@
-import firebase from 'lib/firebase'
+import { useMemo } from 'react'
+import {
+  firestore,
+  collection,
+  query,
+  where,
+  limit as firestoreLimit,
+} from 'lib/firebase'
 import useFirestoreQuery, {
   type FirestoreStatusType,
 } from 'lib/hooks/useFirestoreQuery'
@@ -8,32 +15,41 @@ import type { Person } from 'lib/types/person'
 type FirestoreStatusTypes = FirestoreStatusType
 
 interface FirestoreUserResponse {
-  person: Person
+  person: Person | null
   status: FirestoreStatusTypes
-  error: Error
+  error: Error | null
 }
 
 export default function useEmergencyUser(
   alertId?: string | string[]
 ): FirestoreUserResponse {
-  const db = firebase.firestore()
+  // Normalize alertId to string
+  const normalizedAlertId = Array.isArray(alertId) ? alertId[0] : alertId
 
-  const { data, status, error } = useFirestoreQuery(
-    db
-      .collection('users')
-      .where('alertId', '==', alertId || '')
-      .limit(1)
-  )
+  // Memoize the query to prevent unnecessary re-subscriptions
+  const firestoreQuery = useMemo(() => {
+    const db = firestore.instance
+    if (!db) {
+      return null
+    }
 
-  // biome-ignore lint/suspicious/noImplicitAnyLet: fix later
-  let person
-  if (data) {
-    person = data[0]
+    return query(
+      collection(db, 'users'),
+      where('alertId', '==', normalizedAlertId || ''),
+      firestoreLimit(1)
+    )
+  }, [normalizedAlertId])
+
+  const { data, status, error } = useFirestoreQuery(firestoreQuery)
+
+  let person: Person | undefined
+  if (data && Array.isArray(data) && data.length > 0) {
+    person = data[0] as Person
   }
 
   return {
-    person,
+    person: person ?? null,
     status,
-    error,
+    error: error ?? null,
   }
 }
