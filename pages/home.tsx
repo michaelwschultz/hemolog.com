@@ -67,7 +67,7 @@ const Home = (props: { version: string }): JSX.Element => {
       <Head>
         <title>Hemolog</title>
       </Head>
-      <div className='h-full flex flex-col max-w-2xl w-full mx-auto'>
+      <div className='h-full flex flex-col max-w-[80rem] w-full mx-auto'>
         <header className='p-6'>
           <Header version={version} />
         </header>
