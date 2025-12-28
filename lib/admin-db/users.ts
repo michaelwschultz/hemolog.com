@@ -28,6 +28,26 @@ async function deleteDocuments(docRefs: FirebaseFirestore.DocumentReference[]) {
 }
 
 async function deleteUserAndData(uid: string) {
+  // Delete Auth user FIRST - this is more likely to fail due to external dependencies.
+  // If this fails, no data is lost and the user can retry.
+  // If we deleted Firestore first and Auth failed, we'd leave the user in an
+  // inconsistent state (no data but still able to sign in).
+  try {
+    await auth.deleteUser(uid)
+  } catch (error: unknown) {
+    if (
+      error &&
+      typeof error === 'object' &&
+      'code' in error &&
+      error.code !== 'auth/user-not-found'
+    ) {
+      // Auth deletion failed - don't delete any data, throw to caller
+      throw error
+    }
+    // auth/user-not-found is okay - continue to delete orphaned data
+  }
+
+  // Auth user deleted (or didn't exist), now safe to delete Firestore data
   const userDocRef = adminFirestore.collection('users').doc(uid)
   const infusionSnapshot = await adminFirestore
     .collection('infusions')
@@ -40,19 +60,6 @@ async function deleteUserAndData(uid: string) {
   })
 
   await deleteDocuments(docRefs)
-
-  try {
-    await auth.deleteUser(uid)
-  } catch (error: unknown) {
-    if (
-      error &&
-      typeof error === 'object' &&
-      'code' in error &&
-      error.code !== 'auth/user-not-found'
-    ) {
-      throw error
-    }
-  }
 
   return { deletedDocs: docRefs.length }
 }
