@@ -48,19 +48,19 @@ I hope you find Hemolog useful and friendly to use. Or, if you don't have a blee
 
 ### Getting Started
 
-You'll need Bun installed before you can run the app. Check the package.json for corresponding version numbers.
+You'll need PNPM installed before you can run the app. Check the package.json for corresponding version numbers.
 
 You'll also need to start the Firebase emulators which run in a separate process. Open up a
 terminal window and run
 
 ```bash
-bun run firebase
+pnpm run firebase
 ```
 
 Then open another terminal window/tab and run the development server (Nextjs).
 
 ```bash
-bun run dev
+pnpm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
