@@ -1,8 +1,5 @@
 import useSWR from 'swr'
 import { format } from 'date-fns'
-import { Avatar, Grid, Fieldset, Button, Spacer } from '@geist-ui/react'
-import styled from 'styled-components'
-
 import fetcher from 'lib/fetcher'
 import { useAuth } from 'lib/auth'
 import type { FeedbackType } from 'lib/db/feedback'
@@ -32,57 +29,47 @@ const FeedbackPage = () => {
   }
 
   return (
-    <>
+    <div className='space-y-4'>
       {data.map((feedback, index) => (
-        <Grid.Container
+        <div
           key={`feedback-card-${
             // biome-ignore lint/suspicious/noArrayIndexKey: nothing else to use
             index
           }`}
-          style={{ paddingBottom: '16px' }}
+          className='border border-gray-200 rounded-lg p-6'
         >
-          <Fieldset style={{ width: '100%' }}>
-            <Fieldset.Title>{feedback?.user?.name}</Fieldset.Title>
-            <Fieldset.Subtitle>{feedback?.message}</Fieldset.Subtitle>
-            <Fieldset.Footer>
-              <StyledRow>
-                <span>
-                  <Avatar
-                    src={feedback?.user?.photoUrl}
-                    text={feedback?.user?.name.charAt(0)}
-                  />
-                </span>
-                <Spacer w={0.5} />
+          <h3 className='text-lg font-semibold mb-2'>{feedback?.user?.name}</h3>
+          <p className='text-gray-700 mb-4'>{feedback?.message}</p>
+
+          <div className='flex justify-between items-center pt-4 border-t border-gray-100'>
+            <div className='flex items-center gap-3'>
+              {feedback?.user?.photoUrl ? (
+                <img
+                  src={feedback?.user?.photoUrl}
+                  alt={feedback?.user?.name || 'User'}
+                  className='w-7 h-7 rounded-full'
+                />
+              ) : (
+                <div className='w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center text-sm font-semibold text-gray-700'>
+                  {feedback?.user?.name?.charAt(0) || '?'}
+                </div>
+              )}
+              <span className='text-sm text-gray-600'>
                 {format(new Date(feedback?.createdAt), 'PPp')}
-              </StyledRow>
-              <Button
-                auto
-                scale={0.25}
-                onClick={() => handleReplyClick(feedback?.user?.email)}
-              >
-                Reply
-              </Button>
-            </Fieldset.Footer>
-          </Fieldset>
-        </Grid.Container>
+              </span>
+            </div>
+            <button
+              type='button'
+              onClick={() => handleReplyClick(feedback?.user?.email || '')}
+              className='px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium transition-colors'
+            >
+              Reply
+            </button>
+          </div>
+        </div>
       ))}
-    </>
+    </div>
   )
 }
-
-const StyledRow = styled.div`
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-
-  p {
-    margin: 0;
-    padding: 0;
-  }
-
-  span {
-    width: 1.875rem;
-  }
-`
 
 export default FeedbackPage

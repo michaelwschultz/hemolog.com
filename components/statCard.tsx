@@ -1,11 +1,8 @@
-import { Card, Text, Loading } from '@geist-ui/react'
-import type { CardTypes } from '@geist-ui/react/dist/utils/prop-types'
-
 interface Props {
   value: string | number
   label: string | React.Component
   loading?: boolean
-  type?: CardTypes
+  type?: 'default' | 'success' | 'warning' | 'error'
   shadow?: boolean
   style?: React.CSSProperties
 }
@@ -20,16 +17,27 @@ export default function StatCard(props: Props): JSX.Element {
     style,
   } = props
 
+  const typeClasses = {
+    default: 'bg-white',
+    success: 'bg-success-50 border-success-200',
+    warning: 'bg-warning-50 border-warning-200',
+    error: 'bg-error-50 border-error-200',
+  }
+
   return (
-    <Card
-      width='100%'
-      shadow={!loading && shadow}
-      style={{ minHeight: '116px', height: '100%', ...style }}
-      type={type}
+    <div
+      className={`w-full min-h-[116px] h-full rounded-lg border p-4 ${
+        shadow && !loading ? 'shadow-md' : ''
+      } ${typeClasses[type]}`}
+      style={style}
     >
-      <Text h3>{value}</Text>
-      <Text small>{label}</Text>
-      {loading && <Loading type='secondary' />}
-    </Card>
+      <div className='text-2xl font-semibold mb-2'>{value}</div>
+      <div className='text-sm text-gray-600'>{label}</div>
+      {loading && (
+        <div className='flex justify-center mt-4'>
+          <div className='animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500'></div>
+        </div>
+      )}
+    </div>
   )
 }

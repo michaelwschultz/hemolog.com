@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Tabs } from '@geist-ui/react'
-import styled from 'styled-components'
+import { Tabs, TabsItem } from 'components/Tabs'
 
 import Header from 'components/header'
 import Footer from 'components/footer'
@@ -68,23 +67,23 @@ const Home = (props: { version: string }): JSX.Element => {
       <Head>
         <title>Hemolog</title>
       </Head>
-      <StyledPage>
-        <StyledPageHeader>
+      <div className='h-full flex flex-col max-w-2xl w-full mx-auto'>
+        <header className='p-6'>
           <Header version={version} />
-        </StyledPageHeader>
-        <StyledPageContent>
+        </header>
+        <main className='px-6'>
           <Tabs initialValue={router.route}>
-            <Tabs.Item label='home' value='/home'>
-              <StyledPageSection>
+            <TabsItem label='home' value='/home'>
+              <section className='pt-10'>
                 <HomePage />
-              </StyledPageSection>
-            </Tabs.Item>
+              </section>
+            </TabsItem>
 
-            <Tabs.Item label='Profile' value='/profile'>
-              <StyledPageSection>
+            <TabsItem label='Profile' value='/profile'>
+              <section className='pt-10'>
                 <ProfilePage />
-              </StyledPageSection>
-            </Tabs.Item>
+              </section>
+            </TabsItem>
             {/* 
             <Tabs.Item
               label='emergency'
@@ -92,46 +91,18 @@ const Home = (props: { version: string }): JSX.Element => {
             /> */}
 
             {user?.isAdmin && (
-              <Tabs.Item label='feedback' value='/feedback'>
-                <StyledPageSection>
+              <TabsItem label='feedback' value='/feedback'>
+                <section className='pt-10'>
                   <FeedbackPage />
-                </StyledPageSection>
-              </Tabs.Item>
+                </section>
+              </TabsItem>
             )}
           </Tabs>
-        </StyledPageContent>
+        </main>
         <Footer />
-      </StyledPage>
+      </div>
     </ProtectRoute>
   )
 }
 
 export default withAuth(Home)
-
-const StyledPage = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  max-width: 850pt;
-  width: 100%;
-  margin: 0 auto;
-
-  main {
-    flex: 1 0 auto;
-  }
-  footer {
-    flex-shrink: 0;
-  }
-`
-
-const StyledPageHeader = styled.header`
-  padding: 24px;
-`
-
-const StyledPageContent = styled.main`
-  padding: 0 24px;
-`
-
-const StyledPageSection = styled.section`
-  padding: 40px 0 0 0;
-`

@@ -1,23 +1,14 @@
 import { useState } from 'react'
 import { useFormik } from 'formik'
-import {
-  Input,
-  Button,
-  Text,
-  Spacer,
-  useToasts,
-  Grid,
-  AutoComplete,
-} from '@geist-ui/react'
 
 import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
 import { updateUser } from 'lib/db/users'
 import { track } from 'lib/helpers'
+import toast from 'react-hot-toast'
 
 const SettingsForm = (): JSX.Element => {
   const { user } = useAuth()
-  const [, setToast] = useToasts()
   const { person } = useDbUser(user?.uid || '')
 
   const formik = useFormik({
@@ -39,19 +30,11 @@ const SettingsForm = (): JSX.Element => {
     onSubmit: (values) => {
       updateUser(user?.uid || '', values)
         .then(() => {
-          setToast({
-            text: 'Profile updated!',
-            type: 'success',
-            delay: 5000,
-          })
+          toast.success('Profile updated!')
         })
         .catch((error) => {
           console.error(error)
-          setToast({
-            text: `Something went wrong: ${error}`,
-            type: 'error',
-            delay: 10000,
-          })
+          toast.error(`Something went wrong: ${error}`)
         })
     },
   })
@@ -133,131 +116,196 @@ const SettingsForm = (): JSX.Element => {
   }
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Grid.Container gap={2}>
-        <Grid xs={24} md={12} direction='column'>
-          <Text h5>Type of hemophilia</Text>
-          <AutoComplete
-            crossOrigin={undefined}
+    <form onSubmit={formik.handleSubmit} className='space-y-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+        <div>
+          <label
+            htmlFor='hemophiliaType'
+            className='block text-lg font-semibold mb-2'
+          >
+            Type of hemophilia
+          </label>
+          <select
             id='hemophiliaType'
             name='hemophiliaType'
-            width='100%'
-            placeholder='A'
-            onChange={(value) => formik.setFieldValue('hemophiliaType', value)}
-            options={hemophiliaTypeOptions}
+            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
             value={formik.values.hemophiliaType}
-          />
-        </Grid>
-        <Grid xs={24} md={12} direction='column'>
-          <Text h5>Severity</Text>
-          <AutoComplete
-            crossOrigin={undefined}
+            onChange={(e) =>
+              formik.setFieldValue('hemophiliaType', e.target.value)
+            }
+          >
+            <option value=''>Select type</option>
+            {hemophiliaTypeOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label
+            htmlFor='severity'
+            className='block text-lg font-semibold mb-2'
+          >
+            Severity
+          </label>
+          <select
             id='severity'
             name='severity'
-            width='100%'
-            disableFreeSolo
-            placeholder='Severe'
-            onChange={(value) => formik.setFieldValue('severity', value)}
-            options={severityOptions}
+            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
             value={formik.values.severity}
-          />
-        </Grid>
-        <Grid xs={24} md={12} direction='column'>
-          <Text h5>Factor number</Text>
-          <Input
-            crossOrigin={undefined}
+            onChange={(e) => formik.setFieldValue('severity', e.target.value)}
+          >
+            <option value=''>Select severity</option>
+            {severityOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor='factor' className='block text-lg font-semibold mb-2'>
+            Factor number
+          </label>
+          <input
             id='factor'
             name='factor'
-            htmlType='number'
-            width='100%'
+            type='number'
+            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
             placeholder='8'
             onChange={formik.handleChange}
             value={formik.values.factor ? formik.values.factor.toString() : ''}
           />
-        </Grid>
-        <Grid xs={24} md={12} direction='column'>
-          <Text h5>Factor</Text>
-          <AutoComplete
-            crossOrigin={undefined}
+        </div>
+
+        <div>
+          <label
+            htmlFor='medication'
+            className='block text-lg font-semibold mb-2'
+          >
+            Factor
+          </label>
+          <input
             id='medication'
             name='medication'
-            clearable
-            width='100%'
+            type='text'
+            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
             placeholder='Advate'
-            onChange={(value) => formik.setFieldValue('medication', value)}
-            options={filteredFactorOptions}
             value={formik.values.medication}
-            onSearch={(value) =>
-              searchHandler(value, factorOptions, setFilteredFactorOptions)
-            }
+            onChange={(e) => {
+              formik.setFieldValue('medication', e.target.value)
+              searchHandler(
+                e.target.value,
+                factorOptions,
+                setFilteredFactorOptions
+              )
+            }}
+            list='factor-options'
           />
-        </Grid>
-        <Grid xs={24} md={12} direction='column'>
-          <Text h5>Monoclonal antibody</Text>
-          <AutoComplete
-            crossOrigin={undefined}
+          <datalist id='factor-options'>
+            {filteredFactorOptions.map((option) => (
+              <option key={option.value} value={option.value} />
+            ))}
+          </datalist>
+        </div>
+
+        <div>
+          <label
+            htmlFor='monoclonalAntibody'
+            className='block text-lg font-semibold mb-2'
+          >
+            Monoclonal antibody
+          </label>
+          <input
             id='monoclonalAntibody'
             name='monoclonalAntibody'
-            clearable
-            width='100%'
+            type='text'
+            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
             placeholder='Hemlibra'
-            onChange={(value) =>
-              formik.setFieldValue('monoclonalAntibody', value)
-            }
-            options={monoclonalAntibodyOptions}
             value={formik.values.monoclonalAntibody}
+            onChange={(e) =>
+              formik.setFieldValue('monoclonalAntibody', e.target.value)
+            }
+            list='antibody-options'
           />
-        </Grid>
-        <Grid xs={24} md={12} direction='column'>
-          <Text h5>Injection frequency</Text>
-          <AutoComplete
-            crossOrigin={undefined}
+          <datalist id='antibody-options'>
+            {monoclonalAntibodyOptions.map((option) => (
+              <option key={option.value} value={option.value} />
+            ))}
+          </datalist>
+        </div>
+
+        <div>
+          <label
+            htmlFor='injectionFrequency'
+            className='block text-lg font-semibold mb-2'
+          >
+            Injection frequency
+          </label>
+          <select
             id='injectionFrequency'
             name='injectionFrequency'
-            disableFreeSolo
-            clearable
-            width='100%'
-            placeholder='Every other week'
-            onChange={(value) => {
-              formik.setFieldValue('injectionFrequency', value)
-            }}
-            options={injectionFrequencyOptions}
-            value={
-              injectionFrequencyOptions.find(
-                (option) => option.value === formik.values.injectionFrequency
-              )?.label
+            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            value={formik.values.injectionFrequency}
+            onChange={(e) =>
+              formik.setFieldValue('injectionFrequency', e.target.value)
             }
+          >
+            <option value=''>Select frequency</option>
+            {injectionFrequencyOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Emergency contacts section - commented out in original */}
+      {/*
+      <div className='space-y-4'>
+        <h5 className='text-lg font-semibold'>Emergency contacts</h5>
+        <div>
+          <label htmlFor='emergencyContactName' className='block text-sm font-medium text-gray-700 mb-1'>Contact name</label>
+          <input
+            id='emergencyContactName'
+            name='emergencyContactName'
+            type='text'
+            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            onChange={formik.handleChange}
+            value={formik.values.emergencyContacts[0].name}
           />
-        </Grid>
-      </Grid.Container>
-      {/* <Text h5>Emergency contacts</Text>
-      <Text h5>Contact name</Text>
-      <Input
-        id='emergencyContactName'
-        name='emergencyContactName'
-        type='text'
-        onChange={formik.handleChange}
-        value={formik.values.emergencyContacts[0].name}
-      />
-      <Spacer />
-      <Text h5>Contact phone number</Text>
-      <Input
-        id='emergencyContactPhone'
-        name='emergencyContactPhone'
-        type='text'
-        onChange={formik.handleChange}
-        value={formik.values.emergencyContacts[0].phone}
-      />
-      <Spacer /> */}
-      <Spacer />
-      <Button
-        type='success-light'
-        onClick={handleSubmitForm}
-        disabled={!formik.isValid || !formik.dirty}
-        loading={formik.isSubmitting}
-      >
-        Update
-      </Button>
+        </div>
+        <div>
+          <label htmlFor='emergencyContactPhone' className='block text-sm font-medium text-gray-700 mb-1'>Contact phone number</label>
+          <input
+            id='emergencyContactPhone'
+            name='emergencyContactPhone'
+            type='text'
+            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            onChange={formik.handleChange}
+            value={formik.values.emergencyContacts[0].phone}
+          />
+        </div>
+      </div>
+      */}
+
+      <div className='pt-4'>
+        <button
+          type='button'
+          onClick={handleSubmitForm}
+          disabled={!formik.isValid || !formik.dirty || formik.isSubmitting}
+          className='px-6 py-3 bg-green-100 hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed text-green-800 rounded-lg font-medium transition-colors flex items-center gap-2'
+        >
+          {formik.isSubmitting && (
+            <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-green-800'></div>
+          )}
+          Update
+        </button>
+      </div>
     </form>
   )
 }

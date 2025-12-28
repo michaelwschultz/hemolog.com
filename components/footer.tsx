@@ -1,5 +1,4 @@
-import { Text, Grid, Spacer, Link, Divider } from '@geist-ui/react'
-import styled from 'styled-components'
+// All Geist UI components have been migrated to Tailwind
 
 import EmergencySnippet from 'components/emergencySnippet'
 import { useAuth } from 'lib/auth'
@@ -18,48 +17,56 @@ export default function Footer(): JSX.Element {
   }
 
   return (
-    <StyledFooter>
-      <Divider />
-      <Spacer h={2} />
-      <Grid.Container gap={2}>
-        <Grid xs={24} sm={14} direction='column'>
-          <Text h5>Hemolog 2</Text>
-          <Link color href='/about'>
+    <footer className='px-10 py-10'>
+      <hr className='border-gray-200' />
+      <div className='h-8' />
+      <div className='flex flex-col sm:flex-row gap-4'>
+        <div className='flex-1 flex flex-col'>
+          <h5 className='text-lg font-semibold mb-2'>Hemolog 2</h5>
+          <a
+            className='text-primary-500 hover:text-primary-600 mb-1'
+            href='/about'
+          >
             The story so far...
-          </Link>
-          <Link color href='/changelog'>
+          </a>
+          <a
+            className='text-primary-500 hover:text-primary-600 mb-4'
+            href='/changelog'
+          >
             Development blog
-          </Link>
-          <Spacer />
-          <Text h5>Follow</Text>
-          <Link color icon href='https://twitter.com/hemolog'>
+          </a>
+          <h5 className='text-lg font-semibold mb-2'>Follow</h5>
+          <a
+            className='text-primary-500 hover:text-primary-600 mb-1 flex items-center'
+            href='https://twitter.com/hemolog'
+          >
             @Hemolog
-          </Link>
-          <Link color icon href='https://twitter.com/michaelschultz'>
+          </a>
+          <a
+            className='text-primary-500 hover:text-primary-600 mb-4 flex items-center'
+            href='https://twitter.com/michaelschultz'
+          >
             @MichaelSchultz
-          </Link>
-        </Grid>
-        <Grid xs={24} sm={10} direction='column'>
-          <Text h5>Get Involved</Text>
-          <Link
-            color
-            icon
+          </a>
+        </div>
+        <div className='flex-1 flex flex-col'>
+          <h5 className='text-lg font-semibold mb-2'>Get Involved</h5>
+          <a
+            className='text-primary-500 hover:text-primary-600 mb-1 flex items-center'
             href='https://github.com/michaelwschultz/hemolog.com'
           >
             View source
-          </Link>
-          <Link color icon href='https://github.com/sponsors/michaelwschultz'>
+          </a>
+          <a
+            className='text-primary-500 hover:text-primary-600 mb-4 flex items-center'
+            href='https://github.com/sponsors/michaelwschultz'
+          >
             Donate
-          </Link>
-          <Spacer />
-          <Text h5>Emergency Link</Text>
+          </a>
+          <h5 className='text-lg font-semibold mb-2'>Emergency Link</h5>
           <EmergencySnippet alertId={alertId()} />
-        </Grid>
-      </Grid.Container>
-    </StyledFooter>
+        </div>
+      </div>
+    </footer>
   )
 }
-
-const StyledFooter = styled.div`
-  padding: 40px 24px;
-`

@@ -1,8 +1,6 @@
 import Head from 'next/head'
-import { Text, Divider, Spacer, Link, Image } from '@geist-ui/react'
-
-import ChevronLeft from '@geist-ui/react-icons/chevronLeft'
-import styled from 'styled-components'
+import Image from 'next/image'
+import { IconChevronLeft } from '@tabler/icons-react'
 
 import StaticHeader from 'components/staticHeader'
 import Footer from 'components/footer'
@@ -31,126 +29,139 @@ const Changelog = (): JSX.Element => {
           }}
         />
       </Head>
-      <StyledPage>
+      <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
         <StaticHeader />
-        <StyledPageContent>
-          <StyledChangelogContent>
-            <Text h2>Changelog</Text>
-            <Link href='/changelog' color>
-              <StyledRow>
-                <ChevronLeft />
-                Back to list of updates
-              </StyledRow>
-            </Link>
-            <Divider />
+        <main className='flex-1 px-6 pt-10 pb-16'>
+          <div className='max-w-2xl mx-auto'>
+            <h2 className='text-3xl font-bold mb-2'>Changelog</h2>
+            <a
+              href='/changelog'
+              className='flex items-center text-primary-500 hover:text-primary-600 mb-8'
+            >
+              <IconChevronLeft className='w-4 h-4 mr-2' />
+              Back to list of updates
+            </a>
+            <hr className='border-gray-200 mb-12' />
 
-            <StyledPost id='post-3'>
-              <Spacer h={3} />
-              <Text h4>Log treatments at the speed of light</Text>
-              <Text h6>
+            <article id='post-3' className='pb-16'>
+              <div className='h-12' />
+              <h4 className='text-xl font-semibold mb-2'>
+                Log treatments at the speed of light
+              </h4>
+              <h6 className='text-base font-medium text-gray-600 mb-4'>
                 A brand new way to log treatments, directly from your keyboard.
                 Now available on Mac and Windows (beta) via{' '}
-                <a href='https://raycast.com'>Raycast</a>.
-              </Text>
-              <Spacer />
-              <Divider>Update #4</Divider>
-              <Text>
+                <a
+                  href='https://raycast.com'
+                  className='text-primary-500 hover:text-primary-600'
+                >
+                  Raycast
+                </a>
+                .
+              </h6>
+              <div className='h-4' />
+              <hr className='border-gray-200' />
+              <div className='text-center text-sm font-medium text-gray-500 mb-4'>
+                Update #4
+              </div>
+              <hr className='border-gray-200 mb-6' />
+              <p className='text-gray-700 mb-4'>
                 One of my favorite tools to use on my Mac is{' '}
-                <a href='https://raycast.com'>Raycast</a>. It’s a productivity
-                tool that lets you quickly launch apps, search the web, and run
-                commands all from your keyboard.
-              </Text>
-              <Text>
+                <a
+                  href='https://raycast.com'
+                  className='text-primary-500 hover:text-primary-600'
+                >
+                  Raycast
+                </a>
+                . It's a productivity tool that lets you quickly launch apps,
+                search the web, and run commands all from your keyboard.
+              </p>
+              <p className='text-gray-700 mb-6'>
                 Raycast has an{' '}
-                <a href='https://www.raycast.com/extensions'>extensions</a>{' '}
+                <a
+                  href='https://www.raycast.com/extensions'
+                  className='text-primary-500 hover:text-primary-600'
+                >
+                  extensions
+                </a>{' '}
                 ecosystem that lets you extend its functionality. I decided to
                 build an extension for Hemolog that lets you log treatments
-                directly from Raycast. It’s super quick and easy to use, and
-                it’s available for free on the Raycast Store.
-              </Text>
-              <Image
-                width={64}
-                src='/images/changelog/log-treatment.png'
-                alt='Raycast extension for Hemolog'
-              />
-              <Text>
-                To get started, you’ll need to install{' '}
-                <a href='https://raycast.com'>Raycast</a> on your Mac or Windows
-                PC! (the Windows app is currently in beta).
-              </Text>
-              <a
-                title='Install Hemolog Raycast Extension'
-                href='https://www.raycast.com/michaelschultz/hemolog-raycast-extension'
-              >
+                directly from Raycast. It's super quick and easy to use, and
+                it's available for free on the Raycast Store.
+              </p>
+
+              <div className='mb-6'>
                 <Image
-                  src='https://www.raycast.com/michaelschultz/hemolog-raycast-extension/install_button@2x.png?v=1.1'
-                  width={20}
-                  alt='Screenshot of Hemolog Raycast Extension in action.'
+                  width={64}
+                  height={64}
+                  src='/images/changelog/log-treatment.png'
+                  alt='Raycast extension for Hemolog'
                 />
-              </a>
-              <Text>
+              </div>
+
+              <p className='text-gray-700 mb-4'>
+                To get started, you'll need to install{' '}
+                <a
+                  href='https://raycast.com'
+                  className='text-primary-500 hover:text-primary-600'
+                >
+                  Raycast
+                </a>{' '}
+                on your Mac or Windows PC! (the Windows app is currently in
+                beta).
+              </p>
+
+              <div className='mb-6'>
+                <a
+                  title='Install Hemolog Raycast Extension'
+                  href='https://www.raycast.com/michaelschultz/hemolog-raycast-extension'
+                >
+                  <Image
+                    src='https://www.raycast.com/michaelschultz/hemolog-raycast-extension/install_button@2x.png?v=1.1'
+                    width={200}
+                    height={40}
+                    alt='Install Hemolog Raycast Extension'
+                  />
+                </a>
+              </div>
+
+              <p className='text-gray-700 mb-8'>
                 Once you have Raycast installed, you can install the Hemolog
                 extension from the{' '}
-                <a href='https://www.raycast.com/michaelschultz/hemolog-raycast-extension'>
+                <a
+                  href='https://www.raycast.com/michaelschultz/hemolog-raycast-extension'
+                  className='text-primary-500 hover:text-primary-600'
+                >
                   Raycast Store
                 </a>
-                . After that, you’ll need to connect your Hemolog account to the
-                extension. It’s as easy as logging into your hemolog account and
+                . After that, you'll need to connect your Hemolog account to the
+                extension. It's as easy as logging into your hemolog account and
                 visiting your{' '}
-                <a href='https://hemolog.com/profile'>profile page</a>. Here
-                you’ll find your <b>API key</b>. Launch the Hemolog extension in
-                Raycast and you’ll be prompted to enter your <b>API key</b>.
-                Paste it in, and you’re all set!
-              </Text>
-              <Spacer />
-              <PostFooter postId='post-4' />
-            </StyledPost>
-          </StyledChangelogContent>
+                <a
+                  href='https://hemolog.com/profile'
+                  className='text-primary-500 hover:text-primary-600'
+                >
+                  profile page
+                </a>
+                . Here you'll find your <strong>API key</strong>. Launch the
+                Hemolog extension in Raycast and you'll be prompted to enter
+                your <strong>API key</strong>. Paste it in, and you're all set!
+              </p>
 
-          <Spacer h={2} />
+              <PostFooter postId='post-4' />
+            </article>
+          </div>
+
+          <div className='h-8' />
 
           <BlogFooter />
 
-          <Spacer h={5} />
-        </StyledPageContent>
+          <div className='h-20' />
+        </main>
         <Footer />
-      </StyledPage>
+      </div>
     </>
   )
 }
 
 export default Changelog
-
-const StyledPage = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  max-width: 850pt;
-  width: 100%;
-  margin: 0 auto;
-
-  main {
-    flex: 1 0 auto;
-  }
-  footer {
-    flex-shrink: 0;
-  }
-`
-
-const StyledPageContent = styled.main`
-  padding: 40px 24px 0 24px;
-`
-
-const StyledChangelogContent = styled.div`
-  max-width: 480pt;
-  margin: 0 auto;
-`
-
-const StyledPost = styled.article`
-  padding-bottom: 64px;
-`
-
-const StyledRow = styled.span`
-  display: flex;
-  align-items: center;
-`

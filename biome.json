@@ -12,6 +12,7 @@
       "**/*.tsx",
       "**/*.js",
       "**/*.jsx",
+      "**/*.css",
       "!**/*.min.js",
       "!**/node_modules",
       "!**/dist",
@@ -43,6 +44,11 @@
       "semicolons": "asNeeded",
       "jsxQuoteStyle": "single",
       "trailingCommas": "es5"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   },
   "assist": {

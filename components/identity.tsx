@@ -1,37 +1,33 @@
-import styled from 'styled-components'
 import { useAuth } from 'lib/auth'
-import { Text, Spacer, Avatar, useTheme, Grid } from '@geist-ui/react'
 
 export default function Identity(): JSX.Element {
   const { user } = useAuth()
-  const theme = useTheme()
 
   return (
-    <StyledAvatar>
+    <div className='flex flex-col items-center'>
       {!user ? (
-        <Text h4>Loading user...</Text>
+        <h4 className='text-xl font-semibold'>Loading user...</h4>
       ) : (
         <>
-          <Grid.Container justify='center'>
-            <Avatar
-              src={user.photoUrl || ''}
-              text={user.displayName?.charAt(0) || ''}
-            />
-          </Grid.Container>
-          <Spacer h={2} />
-          <Grid.Container>
-            <Text h4 style={{ color: theme.palette.background }}>
-              {user.displayName}
-            </Text>
-          </Grid.Container>
+          <div className='flex justify-center'>
+            {user.photoUrl ? (
+              <img
+                src={user.photoUrl}
+                alt={user.displayName || 'User'}
+                className='w-16 h-16 rounded-full'
+              />
+            ) : (
+              <div className='w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-xl font-semibold text-gray-700'>
+                {user.displayName?.charAt(0) || '?'}
+              </div>
+            )}
+          </div>
+          <div className='h-8' />
+          <h4 className='text-xl font-semibold text-gray-900 dark:text-white'>
+            {user.displayName}
+          </h4>
         </>
       )}
-    </StyledAvatar>
+    </div>
   )
 }
-
-const StyledAvatar = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`

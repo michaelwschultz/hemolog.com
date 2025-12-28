@@ -1,5 +1,3 @@
-import { Grid, Button } from '@geist-ui/react'
-import styled from 'styled-components'
 import { useRouter } from 'next/router'
 
 import { useAuth } from 'lib/auth'
@@ -11,34 +9,29 @@ const StaticHeader = (): JSX.Element => {
   const router = useRouter()
 
   return (
-    <StyledPageHeader>
-      <Grid.Container>
-        <Grid xs={12}>
-          <Logo />
-        </Grid>
-        <Grid
-          xs={12}
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-          }}
+    <header className='p-6'>
+      <div className='flex justify-between items-center'>
+        <Logo />
+        <button
+          type='button'
+          className='bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+          onClick={() => router.push(user ? '/home' : '/signin')}
+          disabled={loading}
         >
-          <Button
-            type='success-light'
-            onClick={() => router.push(user ? '/home' : '/signin')}
-            loading={loading}
-            auto
-          >
-            {user ? 'Dashboard' : 'Register'}
-          </Button>
-        </Grid>
-      </Grid.Container>
-    </StyledPageHeader>
+          {loading ? (
+            <div className='flex items-center'>
+              <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-green-800 mr-2'></div>
+              Loading...
+            </div>
+          ) : user ? (
+            'Dashboard'
+          ) : (
+            'Register'
+          )}
+        </button>
+      </div>
+    </header>
   )
 }
 
 export default StaticHeader
-
-const StyledPageHeader = styled.header`
-  padding: 24px;
-`

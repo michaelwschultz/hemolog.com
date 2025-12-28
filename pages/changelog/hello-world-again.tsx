@@ -1,6 +1,5 @@
 import Head from 'next/head'
-import { Text, Divider, Display, Image, Spacer } from '@geist-ui/react'
-import styled from 'styled-components'
+import Image from 'next/image'
 
 import StaticHeader from 'components/staticHeader'
 import Footer from 'components/footer'
@@ -29,96 +28,80 @@ const Changelog = (): JSX.Element => {
           }}
         />
       </Head>
-      <StyledPage>
+      <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
         <StaticHeader />
-        <StyledPageContent>
-          <StyledChangelogContent>
-            <Text h2>Changelog</Text>
-            <Text h5>
+        <main className='flex-1 px-6 pt-10 pb-16'>
+          <div className='max-w-2xl mx-auto'>
+            <h2 className='text-3xl font-bold mb-2'>Changelog</h2>
+            <h5 className='text-lg font-semibold text-gray-600 mb-8'>
               Development blog about new features, fixes, and updates to Hemolog
-            </Text>
-            <Divider />
+            </h5>
+            <hr className='border-gray-200 mb-12' />
 
-            <StyledPost id='post-1'>
-              <Text h4>Hello world...again</Text>
-              <Text h6>Hemolog is back and better than ever</Text>
-              <Spacer />
+            <article id='post-1' className='pb-16'>
+              <h4 className='text-xl font-semibold mb-2'>
+                Hello world...again
+              </h4>
+              <h6 className='text-base font-medium text-gray-600 mb-4'>
+                Hemolog is back and better than ever
+              </h6>
+              <div className='h-4' />
 
-              <Divider>Update #1</Divider>
-              <Text>
-                Hemolog is back! After 8 years, I’ve built a reincarnation of
+              <hr className='border-gray-200' />
+              <div className='text-center text-sm font-medium text-gray-500 mb-4'>
+                Update #1
+              </div>
+              <hr className='border-gray-200 mb-6' />
+              <p className='text-gray-700 mb-4'>
+                Hemolog is back! After 8 years, I've built a reincarnation of
                 the old iPhone app Hemolog. This time around, it does a bit more
                 than just storing your treatment logs. In this incarnation,
                 Hemolog is now a web app and helps you understand your logs by
                 giving showing you stats.
-              </Text>
-              <Text>
+              </p>
+              <p className='text-gray-700 mb-8'>
                 The original Hemolog was built with the help of a contract
-                developer. This time around I’ve designed and built everything
+                developer. This time around I've designed and built everything
                 from the ground up with the purpose of being the best place to
                 store your infusion data and learn from it.
-              </Text>
+              </p>
 
-              <Display
-                shadow
-                caption='High level insights that help you understand your habits'
-              >
-                <Image src='/images/insights-example.png' alt='Insights' />
-              </Display>
+              <figure className='mb-8'>
+                <Image
+                  src='/images/insights-example.png'
+                  alt='Insights'
+                  width={800}
+                  height={400}
+                  className='w-full rounded-lg shadow-lg'
+                />
+                <figcaption className='text-sm text-gray-600 mt-2 text-center'>
+                  High level insights that help you understand your habits
+                </figcaption>
+              </figure>
 
-              <Text>
+              <p className='text-gray-700 mb-8'>
                 These insights are calculated as you add more data. Filters will
                 allow you to choose different time frames for viewing your data
                 down the road giving you the best most comprehensive view into
-                your treatment history ever. I’ve chosen a few insights that are
+                your treatment history ever. I've chosen a few insights that are
                 interesting for me. If you have thoughts on what you would like
                 to see just let me know.
-              </Text>
+              </p>
 
-              <Spacer />
               <PostFooter postId='post-1' />
-            </StyledPost>
-          </StyledChangelogContent>
+            </article>
+          </div>
 
-          <Spacer h={2} />
+          <div className='h-8' />
 
           <BlogFooter />
 
-          <Spacer h={5} />
-        </StyledPageContent>
+          <div className='h-20' />
+        </main>
         <Footer />
-      </StyledPage>
+      </div>
     </>
   )
 }
 
 export default Changelog
-
-const StyledPage = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  max-width: 850pt;
-  width: 100%;
-  margin: 0 auto;
-
-  main {
-    flex: 1 0 auto;
-  }
-  footer {
-    flex-shrink: 0;
-  }
-`
-
-const StyledPageContent = styled.main`
-  padding: 40px 24px 0 24px;
-`
-
-const StyledChangelogContent = styled.div`
-  max-width: 480pt;
-  margin: 0 auto;
-`
-
-const StyledPost = styled.article`
-  padding-bottom: 64px;
-`

@@ -1,6 +1,5 @@
-import { useState } from 'react'
-import { Text, Spacer, Grid, Select, useMediaQuery } from '@geist-ui/react'
-import Filter from '@geist-ui/react-icons/filter'
+import React, { useState } from 'react'
+import { IconFilter } from '@tabler/icons-react'
 import { getYear } from 'date-fns'
 
 import dynamic from 'next/dynamic'
@@ -14,7 +13,18 @@ const Chart = dynamic(() => import('components/chart'), {
 })
 
 const HomePage = (): JSX.Element => {
-  const smallerThanSmall = useMediaQuery('xs', { match: 'down' })
+  const [smallerThanSmall, setSmallerThanSmall] = useState(false)
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setSmallerThanSmall(window.innerWidth < 640) // Tailwind's sm breakpoint
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   const { data } = useInfusions()
 
   const infusionYears = data
@@ -80,85 +90,53 @@ const HomePage = (): JSX.Element => {
       {/* {showWelcome && (
         <>
           {welcomeHero()}
-          <Spacer y={3} />
+          <div className='h-12' />
         </>
       )} */}
 
-      <Grid.Container
-        justify='space-between'
-        alignItems='center'
-        style={{ padding: '0 0 16px 0' }}
-      >
-        <Grid>
-          <Text h4 style={{ marginBottom: '0' }}>
-            Insights
-          </Text>
-        </Grid>
-        <Grid>
-          <Grid.Container gap={2} alignItems='center'>
-            <Grid alignItems='center'>
-              <Filter size={16} />
-            </Grid>
-            <Grid>
-              <Select
-                placeholder='Choose one'
-                disabled={infusionYears.length < 1}
-                initialValue={filterYear}
-                onChange={(value) => setFilterYear(value as string)}
-              >
-                <Select.Option value={ALL_TIME}>{ALL_TIME}</Select.Option>
-                {!infusionYears.includes(Number.parseInt(THIS_YEAR, 10)) && (
-                  <Select.Option value={THIS_YEAR} key={THIS_YEAR}>
-                    {THIS_YEAR}
-                  </Select.Option>
-                )}
-                {infusionYears.map((year) => (
-                  <Select.Option value={year.toString()} key={year}>
-                    {year}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Grid>
-          </Grid.Container>
-        </Grid>
-      </Grid.Container>
+      <div className='flex justify-between items-center pb-4'>
+        <h4 className='text-xl font-semibold m-0'>Insights</h4>
+        <div className='flex items-center gap-2'>
+          <IconFilter size={16} className='text-gray-500' />
+          <select
+            className='px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50'
+            disabled={infusionYears.length < 1}
+            value={filterYear}
+            onChange={(e) => setFilterYear(e.target.value)}
+          >
+            <option value={ALL_TIME}>{ALL_TIME}</option>
+            {!infusionYears.includes(Number.parseInt(THIS_YEAR, 10)) && (
+              <option value={THIS_YEAR} key={THIS_YEAR}>
+                {THIS_YEAR}
+              </option>
+            )}
+            {infusionYears.map((year) => (
+              <option value={year.toString()} key={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
       <Stats filterYear={filterYear} />
-      <Spacer h={3} />
+      <div className='h-12' />
 
-      <Text h4>Annual overview ({filterYear})</Text>
-      <Text h6 type='secondary'>
+      <h4 className='text-xl font-semibold'>Annual overview ({filterYear})</h4>
+      <p className='text-sm text-gray-600 mt-1'>
         Treatments are stacked by type (bleed, preventative, or prophy)
-      </Text>
+      </p>
       <Chart filterYear={filterYear} />
 
-      <Spacer h={3} />
-      <Grid justify='space-between' alignItems='center'>
-        <Text h4>Treatments</Text>
-        {smallerThanSmall && <Text>Swipe →</Text>}
-      </Grid>
+      <div className='h-12' />
+      <div className='flex justify-between items-center'>
+        <h4 className='text-xl font-semibold'>Treatments</h4>
+        {smallerThanSmall && (
+          <span className='text-sm text-gray-600'>Swipe →</span>
+        )}
+      </div>
       <InfusionTable filterYear={filterYear} />
     </>
   )
 }
-
-// const StyledHero = styled.div`
-//   position: relative;
-//   border: 4px solid transparent;
-//   padding: 24px;
-//   margin: 0 -32px;
-//   border-image: linear-gradient(
-//     0deg,
-//     rgba(255, 6, 44, 1) 0%,
-//     rgba(255, 57, 143, 1) 100%
-//   );
-//   border-image-slice: 1;
-// `
-
-// const StyledCenterCard = styled.div`
-//   position: relative;
-//   display: inline-block;
-//   left: 50%;
-//   margin-left: -154px;
-// `
 
 export default HomePage

@@ -1,17 +1,10 @@
-import { Loading } from '@geist-ui/react'
-import styled from 'styled-components'
-
 const LoadingScreen = () => {
   return (
-    <StyledLoading>
-      <Loading>Loading</Loading>
-    </StyledLoading>
+    <div className='flex justify-center items-center h-screen'>
+      <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500'></div>
+      <span className='ml-2'>Loading</span>
+    </div>
   )
 }
-
-const StyledLoading = styled.div`
-  margin: 0 auto;
-  height: 100vh;
-`
 
 export default LoadingScreen

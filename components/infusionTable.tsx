@@ -1,24 +1,18 @@
-import styled from 'styled-components'
-import useInfusions from 'lib/hooks/useInfusions'
-import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
+import { useState } from 'react'
 import { format, parseISO } from 'date-fns'
 import {
-  Note,
-  Table,
-  Grid,
-  Loading,
-  Badge,
-  Spacer,
-  Pagination,
-  useToasts,
-  Button,
-  Tooltip,
-  useModal,
-  Popover,
-} from '@geist-ui/react'
-import ChevronRight from '@geist-ui/react-icons/chevronRight'
-import ChevronLeft from '@geist-ui/react-icons/chevronLeft'
-import MoreHorizontal from '@geist-ui/react-icons/moreHorizontal'
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  getPaginationRowModel,
+  flexRender,
+  type ColumnDef,
+  type SortingState,
+} from '@tanstack/react-table'
+import { IconChevronUp, IconChevronDown, IconDots } from '@tabler/icons-react'
+
+import useInfusions from 'lib/hooks/useInfusions'
+import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
 import {
   type TreatmentType,
   TreatmentTypeEnum,
@@ -26,8 +20,8 @@ import {
 } from 'lib/db/infusions'
 import { useAuth } from 'lib/auth'
 import { filterInfusions } from 'lib/helpers'
+import toast from 'react-hot-toast'
 import InfusionModal from './infusionModal'
-import { useState } from 'react'
 
 interface InfusionTableProps {
   limit?: number
@@ -35,228 +29,337 @@ interface InfusionTableProps {
   filterYear: string
 }
 
-enum infusionTypeBadgeStyle {
-  BLEED = 'success',
-  PROPHY = 'warning',
-  PREVENTATIVE = 'error',
-  ANTIBODY = 'secondary',
-}
-
 export default function InfusionTable(props: InfusionTableProps): JSX.Element {
   const { limit, uid, filterYear } = props
   const { data: infusions, status, error } = useInfusions(limit, uid)
-  const [, setToast] = useToasts()
   const { user } = useAuth()
   const [selectedInfusion, setSelectedInfusion] = useState<TreatmentType>()
-
-  const {
-    visible: infusionModal,
-    setVisible: setInfusionModalVisible,
-    bindings: infusionModalBindings,
-  } = useModal(false)
+  const [infusionModal, setInfusionModal] = useState(false)
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'date', desc: true },
+  ])
 
   const filteredInfusions = filterInfusions(infusions, filterYear)
 
-  // useEffect(() => {
-  //   // TODO: Replace this with lodash solution
-  //   // chunk data in sets of 25
-  //   if (filteredInfusions) {
-  //     const chunkedInfusions = chunk(filteredInfusions, 25)
-  //     setChunkedInfusions(chunkedInfusions)
-  //   }
-  // }, [filteredInfusions])
+  // Determine if user can edit/delete treatments
+  const isLoggedInUser = user && (!uid || uid === user.uid)
+
+  // Delete function
+  const deleteRow = (uid: string) => {
+    deleteInfusion(uid)
+      .then(() => {
+        toast.success('Treatment deleted.')
+      })
+      .catch((error: unknown) =>
+        toast.error(
+          `Something went wrong: ${error instanceof Error ? error.message : String(error)}`
+        )
+      )
+  }
+
+  // Column definitions
+  const columns: ColumnDef<TreatmentType>[] = [
+    {
+      accessorKey: 'date',
+      header: 'Date',
+      cell: ({ getValue }) => {
+        const dateString = getValue() as string
+        const parsedDate = parseISO(dateString)
+        return format(parsedDate, 'MM/dd/yyyy')
+      },
+      sortingFn: (rowA, rowB) => {
+        const dateA = parseISO(rowA.getValue('date') as string)
+        const dateB = parseISO(rowB.getValue('date') as string)
+        return dateA.getTime() - dateB.getTime()
+      },
+    },
+    {
+      accessorKey: 'type',
+      header: 'Reason',
+      cell: ({ getValue }) => {
+        const type = getValue() as TreatmentTypeEnum
+        const badgeStyles = {
+          [TreatmentTypeEnum.BLEED]: 'bg-red-100 text-red-800',
+          [TreatmentTypeEnum.PROPHY]: 'bg-yellow-100 text-yellow-800',
+          [TreatmentTypeEnum.PREVENTATIVE]: 'bg-orange-100 text-orange-800',
+          [TreatmentTypeEnum.ANTIBODY]: 'bg-gray-100 text-gray-800',
+        }
+
+        return (
+          <span
+            className={`px-2 py-1 text-xs font-medium rounded-full ${badgeStyles[type] || 'bg-gray-100 text-gray-800'}`}
+          >
+            {TreatmentTypeEnum[type]}
+          </span>
+        )
+      },
+    },
+    {
+      accessorKey: 'sites',
+      header: 'Bleed sites',
+    },
+    {
+      accessorKey: 'cause',
+      header: 'Cause',
+    },
+    {
+      accessorKey: 'medication.brand',
+      header: 'Factor',
+      cell: ({ row }) => row.original.medication.brand,
+    },
+    {
+      accessorKey: 'medication.units',
+      header: 'Amount',
+      cell: ({ getValue }) => {
+        const units = getValue() as number
+        return units ? `${units} iu` : ''
+      },
+    },
+  ]
+
+  // Add actions column for logged-in users
+  if (isLoggedInUser) {
+    columns.push({
+      id: 'actions',
+      header: '',
+      cell: ({ row }) => {
+        const infusion = row.original
+        return (
+          <div className='relative'>
+            <button
+              type='button'
+              className='p-1 text-gray-400 hover:text-gray-600'
+              onClick={() => {
+                // Simple dropdown implementation
+                const menu = document.createElement('div')
+                menu.innerHTML = `
+                  <div class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                    <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-action="edit">
+                      Update
+                    </button>
+                    <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50" data-action="delete">
+                      Delete
+                    </button>
+                  </div>
+                `
+                menu.style.position = 'absolute'
+                menu.style.right = '0'
+                menu.style.top = '100%'
+                menu.style.zIndex = '50'
+
+                // Handle clicks
+                const editBtn = menu.querySelector(
+                  '[data-action="edit"]'
+                ) as HTMLButtonElement
+                const deleteBtn = menu.querySelector(
+                  '[data-action="delete"]'
+                ) as HTMLButtonElement
+
+                editBtn.onclick = () => {
+                  setSelectedInfusion(infusion)
+                  setInfusionModal(true)
+                  document.body.removeChild(menu)
+                }
+
+                deleteBtn.onclick = () => {
+                  if (infusion.uid) {
+                    deleteRow(infusion.uid)
+                  }
+                  document.body.removeChild(menu)
+                }
+
+                // Close on outside click
+                const closeMenu = (e: MouseEvent) => {
+                  if (!menu.contains(e.target as Node)) {
+                    document.body.removeChild(menu)
+                    document.removeEventListener('click', closeMenu)
+                  }
+                }
+
+                document.body.appendChild(menu)
+                setTimeout(
+                  () => document.addEventListener('click', closeMenu),
+                  0
+                )
+              }}
+            >
+              <IconDots size={16} />
+            </button>
+          </div>
+        )
+      },
+    })
+  }
+
+  // Create the table instance - must be called before any early returns
+  const table = useReactTable({
+    data: filteredInfusions,
+    columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 25,
+      },
+    },
+  })
 
   if (status === FirestoreStatusType.LOADING) {
     return (
-      <>
-        <Table data={[]} width='100%'>
-          <Table.Column prop='date' label='Date' />
-          <Table.Column prop='type' label='Reason' />
-          <Table.Column prop='sites' label='Bleed sites' />
-          <Table.Column prop='cause' label='Cause' />
-          <Table.Column prop='factorBrand' label='Factor' />
-          <Table.Column prop='units' label='Amount' />
-        </Table>
-        <Spacer h={2} />
-        <Grid.Container>
-          <Loading>Loading treatment data</Loading>
-        </Grid.Container>
-      </>
+      <div className='overflow-x-auto'>
+        <div className='animate-pulse'>
+          <div className='h-12 bg-gray-200 rounded mb-4'></div>
+          <div className='h-16 bg-gray-100 rounded mb-2'></div>
+          <div className='h-16 bg-gray-100 rounded mb-2'></div>
+          <div className='h-16 bg-gray-100 rounded mb-2'></div>
+          <div className='h-16 bg-gray-100 rounded mb-2'></div>
+          <div className='h-16 bg-gray-100 rounded mb-2'></div>
+        </div>
+        <div className='flex justify-center items-center py-8'>
+          <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500'></div>
+          <span className='ml-3 text-gray-600'>Loading treatment data</span>
+        </div>
+      </div>
     )
   }
 
   if (error) {
     console.error('Error fetching infusions:', error)
     return (
-      <Note type='error' label='Error'>
-        Oops, the database didn’t respond. Refresh the page to try again.
-      </Note>
+      <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
+        <div className='font-semibold text-red-800 mb-1'>Error</div>
+        <div className='text-red-700'>
+          Oops, the database didn't respond. Refresh the page to try again.
+        </div>
+      </div>
     )
   }
 
   if (status === FirestoreStatusType.ERROR && !error) {
     return (
-      <Note type='error' label='Error'>
-        Something went wrong accessing your treatment data. Refresh the page to
-        try again.
-      </Note>
+      <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
+        <div className='font-semibold text-red-800 mb-1'>Error</div>
+        <div className='text-red-700'>
+          Something went wrong accessing your treatment data. Refresh the page
+          to try again.
+        </div>
+      </div>
     )
-  }
-
-  const deleteRow = (uid: string) => {
-    deleteInfusion(uid)
-      .then(() => {
-        setToast({
-          text: 'Treatment deleted.',
-          type: 'success',
-          delay: 5000,
-        })
-      })
-      .catch((error: unknown) =>
-        setToast({
-          text: `Something went wrong: ${error instanceof Error ? error.message : String(error)}`,
-          type: 'error',
-          delay: 10000,
-        })
-      )
-  }
-
-  function formatInfusionRow(infusion: TreatmentType) {
-    const { cause, sites, uid } = infusion
-
-    const parsedDate = parseISO(infusion.date)
-    const date = format(parsedDate, 'MM/dd/yyyy')
-
-    const type = (
-      <Badge type={infusionTypeBadgeStyle[infusion.type]}>
-        {TreatmentTypeEnum[infusion.type]}
-      </Badge>
-    )
-    const factorBrand = infusion.medication.brand
-    const units = infusion.medication.units && `${infusion.medication.units} iu`
-
-    const moreMenu = () => {
-      const content = (
-        <>
-          <Popover.Item>
-            <Button
-              scale={0.5}
-              onClick={() => {
-                setSelectedInfusion(infusion)
-                setInfusionModalVisible(true)
-              }}
-              auto
-            >
-              Update
-            </Button>
-          </Popover.Item>
-          <Popover.Item>
-            <Tooltip
-              text='This is permanent and cannot be undone.'
-              placement='left'
-            >
-              <Button
-                scale={0.5}
-                onClick={() => infusion.uid && deleteRow(infusion.uid)}
-                auto
-                type='success-light'
-              >
-                Delete
-              </Button>
-            </Tooltip>
-          </Popover.Item>
-        </>
-      )
-
-      return (
-        // @ts-expect-error - Popover content prop has a type conflict with HTML content attribute
-        <Popover content={content} style={{ cursor: 'pointer' }}>
-          <MoreHorizontal />
-        </Popover>
-      )
-    }
-
-    return {
-      uid,
-      date,
-      type,
-      sites,
-      cause,
-      factorBrand,
-      units,
-      moreMenu: moreMenu(),
-    }
-  }
-
-  // TODO(michael) add more sorting filters
-  // sort by date, most recent at the top
-  filteredInfusions.sort((a, b) => b.date.localeCompare(a.date))
-
-  const rowData = filteredInfusions.map((infusion) =>
-    formatInfusionRow(infusion)
-  )
-
-  // only shows more menu when the logged in user is viewing their own data
-  let isLoggedInUser = false
-  if (user) {
-    if (!uid) {
-      isLoggedInUser = true
-    }
-
-    // if (uid && uid === user.uid) {
-    //   isLoggedInUser = true
-    // }
   }
 
   return (
     <>
-      <StyledTableWrapper>
-        <Table data={rowData} width='100%' hover={false}>
-          <Table.Column prop='date' label='Date' />
-          <Table.Column prop='type' label='Reason' />
-          <Table.Column prop='sites' label='Bleed sites' />
-          <Table.Column prop='cause' label='Cause' />
-          <Table.Column prop='factorBrand' label='Factor' />
-          <Table.Column prop='units' label='Amount' />
-          {isLoggedInUser && <Table.Column prop='moreMenu' />}
-        </Table>
-        {filteredInfusions.length === 0 && (
-          <>
-            <Spacer />
-            <Note type='success'>
-              No treatments found. Add one by clicking ’New Treatment’ above.
-            </Note>
-            <Spacer />
-          </>
+      <div className='overflow-x-auto'>
+        <table className='min-w-full divide-y divide-gray-200'>
+          <thead className='bg-gray-50'>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    <div className='flex items-center gap-1'>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {header.column.getIsSorted() === 'asc' && (
+                        <IconChevronUp size={14} />
+                      )}
+                      {header.column.getIsSorted() === 'desc' && (
+                        <IconChevronDown size={14} />
+                      )}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody className='bg-white divide-y divide-gray-200'>
+            {table.getRowModel().rows.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={columns.length}
+                  className='px-6 py-12 text-center text-gray-500'
+                >
+                  <div className='bg-green-50 border border-green-200 rounded-lg p-4 inline-block'>
+                    <div className='font-semibold text-green-800 mb-1'>
+                      No treatments found
+                    </div>
+                    <div className='text-green-700'>
+                      Add one by clicking 'New Treatment' above.
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              table.getRowModel().rows.map((row) => (
+                <tr key={row.id} className='hover:bg-gray-50'>
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+
+        {/* Pagination */}
+        {filteredInfusions.length > 25 && (
+          <div className='flex items-center justify-between px-6 py-3 bg-white border-t border-gray-200'>
+            <div className='flex items-center gap-2'>
+              <button
+                type='button'
+                className='px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Previous
+              </button>
+              <span className='text-sm text-gray-700'>
+                Page {table.getState().pagination.pageIndex + 1} of{' '}
+                {table.getPageCount()}
+              </span>
+              <button
+                type='button'
+                className='px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Next
+              </button>
+            </div>
+            <div className='text-sm text-gray-700'>
+              Showing {table.getRowModel().rows.length} of{' '}
+              {filteredInfusions.length} treatments
+            </div>
+          </div>
         )}
-        {filteredInfusions.length >= 25 && (
-          <>
-            <Spacer h={0.5} />
-            <Grid.Container justify='flex-end'>
-              <Pagination count={1}>
-                <Pagination.Next>
-                  <ChevronRight />
-                </Pagination.Next>
-                <Pagination.Previous>
-                  <ChevronLeft />
-                </Pagination.Previous>
-              </Pagination>
-            </Grid.Container>
-          </>
-        )}
-      </StyledTableWrapper>
+      </div>
+
       {isLoggedInUser && (
         <InfusionModal
           infusion={selectedInfusion}
           visible={infusionModal}
-          setVisible={setInfusionModalVisible}
-          bindings={infusionModalBindings}
+          setVisible={setInfusionModal}
+          bindings={{}}
         />
       )}
     </>
   )
 }
-
-const StyledTableWrapper = styled.div`
-  overflow-x: scroll;
-`

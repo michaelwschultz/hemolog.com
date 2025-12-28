@@ -1,13 +1,4 @@
-import {
-  Grid,
-  Avatar,
-  Note,
-  Spacer,
-  Text,
-  useMediaQuery,
-} from '@geist-ui/react'
-import styled from 'styled-components'
-
+import React from 'react'
 import InfusionTable from 'components/infusionTable'
 import type { Person } from 'lib/types/person'
 import { useAuth } from 'lib/auth'
@@ -19,48 +10,76 @@ interface Props {
 export default function EmergencyInfo(props: Props): JSX.Element {
   const { person } = props
   const { user } = useAuth()
-  const smallerThanSmall = useMediaQuery('xs', { match: 'down' })
+  const [smallerThanSmall, setSmallerThanSmall] = React.useState(false)
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setSmallerThanSmall(window.innerWidth < 640) // Tailwind's sm breakpoint
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   if (person) {
     return (
       <>
-        <StyledRow>
-          <Avatar src={person.photoUrl} text={person.name?.charAt(0)} />
+        <div className='flex items-center flex-shrink-0'>
+          {person.photoUrl ? (
+            <img
+              src={person.photoUrl}
+              alt={person.name || 'User'}
+              className='w-12 h-12 rounded-full'
+            />
+          ) : (
+            <div className='w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-lg font-semibold text-gray-700'>
+              {person.name?.charAt(0) || '?'}
+            </div>
+          )}
 
-          <div>
-            <Text h3>{person.name}</Text>
-            <Text h5 type='secondary'>
+          <div className='flex flex-col pl-4'>
+            <h3 className='text-xl font-semibold m-0'>{person.name}</h3>
+            <h5 className='text-sm text-gray-600 m-0'>
               {person.severity} Hemophilia {person.hemophiliaType}, treat with
               factor {person.factor}
-            </Text>
+            </h5>
           </div>
-        </StyledRow>
+        </div>
 
-        <Spacer h={2} />
-        <Grid.Container justify='space-between' alignItems='center'>
-          <Text h5>Most recent treatments</Text>
-          {smallerThanSmall && <Text>Swipe →</Text>}
-        </Grid.Container>
+        <div className='h-8' />
+        <div className='flex justify-between items-center'>
+          <h5 className='text-lg font-semibold'>Most recent treatments</h5>
+          {smallerThanSmall && (
+            <span className='text-sm text-gray-600'>Swipe →</span>
+          )}
+        </div>
         <InfusionTable limit={3} uid={person.uid} filterYear='All time' />
-        <Spacer />
-        <Note label='Note'>
-          Pay attention to the date on each of these logs. We’re only showing
-          you the <Text b>3</Text> most recent logs. If you want to see more,{' '}
-          <Text i>{person.name?.split(' ')[0]}</Text> will have to give you
-          permission.
-        </Note>
+        <div className='h-4' />
+        <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
+          <div className='font-semibold text-blue-800 mb-1'>Note</div>
+          <div className='text-blue-700'>
+            Pay attention to the date on each of these logs. We're only showing
+            you the <span className='font-bold'>3</span> most recent logs. If
+            you want to see more,{' '}
+            <span className='italic'>{person.name?.split(' ')[0]}</span> will
+            have to give you permission.
+          </div>
+        </div>
 
-        <Spacer h={3} />
+        <div className='h-12' />
 
         {user && (
           <>
-            <Text h5>Emergency contacts (coming soon)</Text>
-            <Text>
-              Soon you’ll be able to add these from your settings page.
-            </Text>
+            <h5 className='text-lg font-semibold'>
+              Emergency contacts (coming soon)
+            </h5>
+            <p className='text-gray-600 mt-1'>
+              Soon you'll be able to add these from your settings page.
+            </p>
           </>
         )}
-        <Spacer />
+        <div className='h-4' />
         {/* NOTE(michael) remember when you implement this that you remember
         to update the example logic on /emergency/alertId as to not
         leak my actual emergency contact's info */}
@@ -102,25 +121,11 @@ export default function EmergencyInfo(props: Props): JSX.Element {
   }
 
   return (
-    <Note type='success' label='Error'>
-      This person’s information could not be found.
-    </Note>
+    <div className='bg-green-50 border border-green-200 rounded-lg p-4'>
+      <div className='font-semibold text-green-800 mb-1'>Error</div>
+      <div className='text-green-700'>
+        This person's information could not be found.
+      </div>
+    </div>
   )
 }
-
-const StyledRow = styled.div`
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-
-  h3,
-  h5 {
-    margin: 0;
-  }
-
-  div {
-    display: flex;
-    flex-direction: column;
-    padding-left: 16px;
-  }
-`

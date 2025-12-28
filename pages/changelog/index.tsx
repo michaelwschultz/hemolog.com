@@ -1,6 +1,5 @@
 import Head from 'next/head'
-import { Text, Divider, Image, Spacer, Link, useTheme } from '@geist-ui/react'
-import styled from 'styled-components'
+import Image from 'next/image'
 
 import StaticHeader from 'components/staticHeader'
 import Footer from 'components/footer'
@@ -8,202 +7,216 @@ import BlogFooter from 'components/blog/blogFooter'
 import PostFooter from 'components/blog/postFooter'
 
 const Changelog = (): JSX.Element => {
-  const theme = useTheme()
-
   return (
     <>
       <Head>
         <title>Hemolog - Changelog</title>
       </Head>
-      <StyledPage>
+      <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
         <StaticHeader />
-        <StyledPageContent>
-          <StyledChangelogContent>
-            <Text h2>Changelog</Text>
-            <Text h4 style={{ color: theme.palette.secondary }}>
+        <main className='flex-1 px-6 pt-10 pb-16'>
+          <div className='max-w-2xl mx-auto'>
+            <h2 className='text-3xl font-bold mb-2'>Changelog</h2>
+            <h4 className='text-lg font-semibold text-gray-600 mb-8'>
               Development blog about new features, fixes, and updates to Hemolog
-            </Text>
-            <Divider />
+            </h4>
+            <hr className='border-gray-200 mb-12' />
 
-            <StyledPost id='post-4'>
-              <Spacer h={3} />
-              <Text h4>Log treatments at the speed of light</Text>
-              <Text h6>
+            <section id='post-4' className='pb-16'>
+              <div className='h-12' />
+              <h4 className='text-xl font-semibold mb-2'>
+                Log treatments at the speed of light
+              </h4>
+              <h6 className='text-base font-medium text-gray-600 mb-4'>
                 A brand new way to log treatments, directly from your keyboard.
                 Now available on Mac and Windows (beta) via{' '}
-                <a href='https://raycast.com'>Raycast</a>.
-              </Text>
-              <Spacer />
-              <Divider>Update #4</Divider>
-              <Text>
+                <a
+                  href='https://raycast.com'
+                  className='text-primary-500 hover:text-primary-600'
+                >
+                  Raycast
+                </a>
+                .
+              </h6>
+              <div className='h-4' />
+              <hr className='border-gray-200' />
+              <div className='text-center text-sm font-medium text-gray-500 mb-4'>
+                Update #4
+              </div>
+              <hr className='border-gray-200 mb-6' />
+              <p className='text-gray-700 mb-6'>
                 One of my favorite tools to use on my Mac is{' '}
-                <a href='https://raycast.com'>Raycast</a>. It’s a productivity
-                tool that lets you quickly launch apps, search the web, and run
-                commands all from your keyboard.
-              </Text>
-              <StyledRow>
-                <Link href='/changelog/raycast-extension' color>
+                <a
+                  href='https://raycast.com'
+                  className='text-primary-500 hover:text-primary-600'
+                >
+                  Raycast
+                </a>
+                . It's a productivity tool that lets you quickly launch apps,
+                search the web, and run commands all from your keyboard.
+              </p>
+              <div className='flex justify-between items-center mb-8'>
+                <a
+                  href='/changelog/raycast-extension'
+                  className='text-primary-500 hover:text-primary-600'
+                >
                   Continue reading
-                </Link>
+                </a>
 
                 <Image
                   width={40}
+                  height={40}
                   src='/images/changelog/log-treatment.png'
                   alt='Raycast extension for Hemolog'
                 />
-              </StyledRow>
+              </div>
 
               <PostFooter postId='post-4' />
-            </StyledPost>
+            </section>
 
-            <StyledPost id='post-3'>
-              <Spacer h={3} />
-              <Text h4>A brand new treatment type</Text>
-              <Text h6>
-                It’s finally here. Monoclonal antibodies officially can treat
+            <section id='post-3' className='pb-16'>
+              <div className='h-12' />
+              <h4 className='text-xl font-semibold mb-2'>
+                A brand new treatment type
+              </h4>
+              <h6 className='text-base font-medium text-gray-600 mb-4'>
+                It's finally here. Monoclonal antibodies officially can treat
                 hemophilia, giving us a new method of getting our medicine in
                 our body and a whole lot more.
-              </Text>
-              <Spacer />
-              <Divider>Update #3</Divider>
-              <Text>
-                I never thought I’d say this, but I no longer simply{' '}
-                <b>infuse</b> to treat bleeds. I also <b>inject</b>.
-              </Text>
-              <Text>
+              </h6>
+              <div className='h-4' />
+              <hr className='border-gray-200' />
+              <div className='text-center text-sm font-medium text-gray-500 mb-4'>
+                Update #3
+              </div>
+              <hr className='border-gray-200 mb-6' />
+              <p className='text-gray-700 mb-4'>
+                I never thought I'd say this, but I no longer simply{' '}
+                <strong>infuse</strong> to treat bleeds. I also{' '}
+                <strong>inject</strong>.
+              </p>
+              <p className='text-gray-700 mb-6'>
                 That might not sound like a huge difference off the bat, but I
                 can assure you it is. Having to find a vein all the time is now
                 a thing of the past, finally we can inject subcutaneously under
-                the skin, like so many other people. I’m so excited for what
-                this means for people with bad or damage veins and kids! It’s
+                the skin, like so many other people. I'm so excited for what
+                this means for people with bad or damage veins and kids! It's
                 just lessens the burden so much.
-              </Text>
-              <StyledRow>
-                <Link href='/changelog/monoclonal-antibodies' color>
+              </p>
+              <div className='flex justify-between items-center mb-8'>
+                <a
+                  href='/changelog/monoclonal-antibodies'
+                  className='text-primary-500 hover:text-primary-600'
+                >
                   Continue reading
-                </Link>
+                </a>
 
                 <Image
                   width={40}
+                  height={40}
                   src='/images/changelog/about-you.png'
                   alt='About you section of the profile page'
                 />
-              </StyledRow>
+              </div>
 
               <PostFooter postId='post-3' />
-            </StyledPost>
+            </section>
 
-            <StyledPost id='post-2'>
-              <Spacer h={3} />
-              <Text h4>Mobile enhancements</Text>
-              <Text h6>
-                Looks great on your desktop <i>and</i> mobile devices!
-              </Text>
-              <Spacer />
-              <Divider>Update #2</Divider>
-              <Text>
+            <section id='post-2' className='pb-16'>
+              <div className='h-12' />
+              <h4 className='text-xl font-semibold mb-2'>
+                Mobile enhancements
+              </h4>
+              <h6 className='text-base font-medium text-gray-600 mb-4'>
+                Looks great on your desktop <em>and</em> mobile devices!
+              </h6>
+              <div className='h-4' />
+              <hr className='border-gray-200' />
+              <div className='text-center text-sm font-medium text-gray-500 mb-4'>
+                Update #2
+              </div>
+              <hr className='border-gray-200 mb-6' />
+              <p className='text-gray-700 mb-6'>
                 I designed Hemolog to be used anywhere. That meant building a
                 web app verses an iPhone, Android, or some hybrid app.
-              </Text>
-              <StyledRow>
-                <Link href='/changelog/mobile-enhancements' color>
+              </p>
+              <div className='flex justify-between items-center mb-8'>
+                <a
+                  href='/changelog/mobile-enhancements'
+                  className='text-primary-500 hover:text-primary-600'
+                >
                   Continue reading
-                </Link>
+                </a>
 
                 <Image
                   width={40}
+                  height={40}
                   src='/images/changelog/iphone-hemolog-light.png'
                   alt='Hemolog for iPhone'
                 />
-              </StyledRow>
+              </div>
 
               <PostFooter postId='post-2' />
-            </StyledPost>
+            </section>
 
-            <StyledPost id='post-1'>
-              <Text h4>Hello world...again</Text>
-              <Text h6>Hemolog is back and better than ever</Text>
-              <Spacer />
+            <section id='post-1' className='pb-16'>
+              <h4 className='text-xl font-semibold mb-2'>
+                Hello world...again
+              </h4>
+              <h6 className='text-base font-medium text-gray-600 mb-4'>
+                Hemolog is back and better than ever
+              </h6>
+              <div className='h-4' />
 
-              <Divider>Update #1</Divider>
-              <Text>
-                Hemolog is back! After 8 years, I’ve built a reincarnation of
+              <hr className='border-gray-200' />
+              <div className='text-center text-sm font-medium text-gray-500 mb-4'>
+                Update #1
+              </div>
+              <hr className='border-gray-200 mb-6' />
+              <p className='text-gray-700 mb-4'>
+                Hemolog is back! After 8 years, I've built a reincarnation of
                 the old iPhone app Hemolog. This time around, it does a bit more
                 than just storing your treatment logs. In this incarnation,
                 Hemolog is now a web app and helps you understand your logs by
                 giving showing you stats.
-              </Text>
-              <Text>
+              </p>
+              <p className='text-gray-700 mb-6'>
                 The original Hemolog was built with the help of a contract
-                developer. This time around I’ve designed and built everything
+                developer. This time around I've designed and built everything
                 from the ground up with the purpose of being the best place to
                 store your infusion data and learn from it.
-              </Text>
+              </p>
 
-              <StyledRow>
-                <Link href='/changelog/hello-world-again' color>
+              <div className='flex justify-between items-center mb-8'>
+                <a
+                  href='/changelog/hello-world-again'
+                  className='text-primary-500 hover:text-primary-600'
+                >
                   Continue reading
-                </Link>
+                </a>
 
                 <Image
                   width={40}
+                  height={40}
                   src='/images/insights-example.png'
                   alt='Insights'
                 />
-              </StyledRow>
+              </div>
 
               <PostFooter postId='post-1' />
-            </StyledPost>
-          </StyledChangelogContent>
+            </section>
+          </div>
 
-          <Spacer h={2} />
+          <div className='h-8' />
 
           <BlogFooter />
 
-          <Spacer h={5} />
-        </StyledPageContent>
+          <div className='h-20' />
+        </main>
         <Footer />
-      </StyledPage>
+      </div>
     </>
   )
 }
 
 export default Changelog
-
-const StyledPage = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  max-width: 850pt;
-  width: 100%;
-  margin: 0 auto;
-
-  main {
-    flex: 1 0 auto;
-  }
-  footer {
-    flex-shrink: 0;
-  }
-`
-
-const StyledPageContent = styled.main`
-  padding: 40px 24px 0 24px;
-`
-
-const StyledChangelogContent = styled.div`
-  max-width: 480pt;
-  margin: 0 auto;
-`
-
-const StyledPost = styled.section`
-  padding-bottom: 64px;
-`
-const StyledRow = styled.div`
-  display: flex;
-  justify-content: 'space-between';
-
-  a.link {
-    display: block;
-    width: 100%;
-  }
-`

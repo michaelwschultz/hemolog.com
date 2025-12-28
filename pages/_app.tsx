@@ -1,36 +1,13 @@
-import { useState } from 'react'
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
-import { GeistProvider, CssBaseline, Themes } from '@geist-ui/react'
-import { createGlobalStyle, ThemeProvider } from 'styled-components'
-import { theme } from 'lib/theme'
+import { Toaster } from 'react-hot-toast'
+import { ThemeProvider } from 'lib/contexts/ThemeContext'
 
-const hemologPalette = {
-  success: '#FF062C',
-  successLight: '#FF398F',
-  successDark: '#a3051d',
-  warning: '#0070F3',
-  warningLight: '#3291FF',
-  warningDark: '#0761D1',
-  error: '#48BB78',
-  errorLight: '#48BB78',
-  errorDark: '#48BB78',
-  link: '#FF062C',
-}
-
-const hemologLight = Themes.createFromLight({
-  type: 'hemologLight',
-  palette: hemologPalette,
-})
+import '../styles/globals.css'
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const description =
     'Back and better than ever! Hemolog 2 provides real-time insights on your hemophilia treatment regimen for free.'
-
-  const [themeType, setThemeType] = useState('hemologLight')
-  const switchThemes = () => {
-    setThemeType((last) => (last === 'dark' ? 'hemologLight' : 'dark'))
-  }
 
   return (
     <>
@@ -84,47 +61,17 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
           }
         /> */}
       </Head>
-      <GlobalStyle />
-      <ThemeProvider theme={theme}>
-        <GeistProvider themes={[hemologLight]} themeType={themeType}>
-          <CssBaseline />
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-ignore */}
-          <Component {...pageProps} switchTheme={switchThemes} />
-        </GeistProvider>
-      </ThemeProvider>
+      <div className='min-h-screen'>
+        <ThemeProvider>
+          <Toaster
+            position='top-right'
+            toastOptions={{
+              className: 'dark:bg-gray-800 dark:text-white',
+            }}
+          />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </div>
     </>
   )
 }
-
-const GlobalStyle = createGlobalStyle`
-  /* targets the empty div applied by nextjs so the sidebar follows the height of the page */
-
-  html, body {
-    height: 100%;
-  }
-
-  /*  targets Nextjs empty div issue */
-  /* TODO(michael): remove scrollbar on mobile */
-  body > div:first-child {
-    overflow: -moz-scrollbars-vertical; 
-    overflow-y: scroll;
-    height: inherit;
-  }
-
-  a {
-    font-weight: 600;
-  }
-
-  // overrides dumb geist-ui cssBaseline rules for unordered lists
-  li:before {
-    content: "" !important;
-  }
-
-  .ellipsis {
-    display: block;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-`

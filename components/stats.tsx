@@ -1,6 +1,5 @@
 import _ from 'underscore'
-import styled from 'styled-components'
-import { Grid, Note, Card, useModal, Tooltip, Text } from '@geist-ui/react'
+import { useState } from 'react'
 
 import StatCard from 'components/statCard'
 import useInfusions from 'lib/hooks/useInfusions'
@@ -41,57 +40,43 @@ export default function Stats(props: StatsProps): JSX.Element {
   // TODO(michael): Remove the feedback modal from this component at some point
   // since we already use it in the footer, maybe figure out a way to share
   // the modal across multiple components my lifting it up into context.
-  const {
-    visible: feedbackModal,
-    setVisible: setFeedbackModalVisible,
-    bindings: feedbackModalBindings,
-  } = useModal(false)
+  const [feedbackModal, setFeedbackModal] = useState(false)
 
   if (status === FirestoreStatusType.LOADING) {
     return (
-      <Grid.Container gap={2}>
-        <Grid xs={24} sm={12} md={6}>
-          <StatCard value='' label='' loading />
-        </Grid>
-        <Grid xs={24} sm={12} md={6}>
-          <StatCard value='' label='' loading />
-        </Grid>
-        <Grid xs={24} sm={12} md={6}>
-          <StatCard value='' label='' loading />
-        </Grid>
-        <Grid xs={24} sm={12} md={6}>
-          <StatCard value='' label='' loading />
-        </Grid>
-        <Grid xs={24} sm={12} md={6}>
-          <StatCard value='' label='' loading />
-        </Grid>
-        <Grid xs={24} sm={12} md={6}>
-          <StatCard value='' label='' loading />
-        </Grid>
-        <Grid xs={24} sm={12} md={6}>
-          <StatCard value='' label='' loading />
-        </Grid>
-        <Grid xs={24} sm={12} md={6}>
-          <StatCard value='' label='' loading />
-        </Grid>
-      </Grid.Container>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
+        <StatCard value='' label='' loading />
+        <StatCard value='' label='' loading />
+        <StatCard value='' label='' loading />
+        <StatCard value='' label='' loading />
+        <StatCard value='' label='' loading />
+        <StatCard value='' label='' loading />
+        <StatCard value='' label='' loading />
+        <StatCard value='' label='' loading />
+      </div>
     )
   }
 
   if (error) {
     return (
-      <Note type='error' label='Error'>
-        Oops, the database didn’t respond. Refresh the page to try again.
-      </Note>
+      <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
+        <div className='text-red-800 font-semibold mb-1'>Error</div>
+        <div className='text-red-700'>
+          Oops, the database didn't respond. Refresh the page to try again.
+        </div>
+      </div>
     )
   }
 
   if (status === FirestoreStatusType.ERROR && !error) {
     return (
-      <Note type='error' label='Error'>
-        Something went wrong accessing your treatment data. Refresh the page to
-        try again.
-      </Note>
+      <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
+        <div className='text-red-800 font-semibold mb-1'>Error</div>
+        <div className='text-red-700'>
+          Something went wrong accessing your treatment data. Refresh the page
+          to try again.
+        </div>
+      </div>
     )
   }
 
@@ -159,87 +144,59 @@ export default function Stats(props: StatsProps): JSX.Element {
 
   return (
     <>
-      <Grid.Container gap={2}>
-        <Grid xs={12} sm={12} md={6}>
-          <StatCard value={numberOfInfusions} label='Treatments' />
-        </Grid>
-        <Grid xs={12} sm={12} md={6}>
-          <StatCard value={numberOfBleeds} label='Bleeds' />
-        </Grid>
-        <Grid xs={24} sm={12} md={6}>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
+        <StatCard value={numberOfInfusions} label='Treatments' />
+        <StatCard value={numberOfBleeds} label='Bleeds' />
+        <StatCard
+          value={consecutiveProphyInfusions()}
+          label='Consecutive prophy treatments'
+        />
+        <StatCard
+          value={mostAffectedArea || 'Not enough data'}
+          label='Most affected area'
+        />
+        <StatCard
+          value={biggestCause || 'Not enough data'}
+          label='Biggest cause'
+        />
+        <StatCard
+          value={`~${totalUnits.toLocaleString()} iu`}
+          label='Units of factor'
+        />
+        {/* I think this is between $1.19 and $1.66 per unit based on this article
+            https://www.ashclinicalnews.org/spotlight/feature-articles/high-price-hemophilia/ */}
+        <div className='group relative'>
           <StatCard
-            value={consecutiveProphyInfusions()}
-            label='Consecutive prophy treatments'
+            value={`$${estimatedTotalCost.toLocaleString()}`}
+            label='Estimated cost this year'
           />
-        </Grid>
-        <Grid xs={24} sm={12} md={6}>
-          <StatCard
-            value={mostAffectedArea || 'Not enough data'}
-            label='Most affected area'
-          />
-        </Grid>
-        <Grid xs={24} sm={12} md={6}>
-          <StatCard
-            value={biggestCause || 'Not enough data'}
-            label='Biggest cause'
-          />
-        </Grid>
-        <Grid xs={24} sm={12} md={6}>
-          <StatCard
-            value={`~${totalUnits.toLocaleString()} iu`}
-            label='Units of factor'
-          />
-        </Grid>
-        <Grid xs={24} sm={12} md={6}>
-          {/* I think this is between $1.19 and $1.66 per unit based on this article
-              https://www.ashclinicalnews.org/spotlight/feature-articles/high-price-hemophilia/ */}
-          <Tooltip
-            text={'Current'}
-            style={{ display: 'block', width: '100%', height: '100%' }}
-          >
-            <StatCard
-              style={{ display: 'block' }}
-              value={`$${estimatedTotalCost.toLocaleString()}`}
-              label='Estimated cost this year'
-            />
-          </Tooltip>
-        </Grid>
-        <Grid xs={24} sm={12} md={6}>
-          <Card width='100%' style={{ minHeight: '116px', height: '100%' }}>
-            <Text small>Missing something?</Text>
-            <Card.Footer>
-              <Text>
-                <StyledButton
-                  type='button'
-                  onClick={() => setFeedbackModalVisible(true)}
-                >
-                  Give feedback
-                </StyledButton>
-              </Text>
-            </Card.Footer>
-          </Card>
-        </Grid>
-        {/* <Grid xs={24} sm={12} md={6}>
-            TODO(michael) could setup a separate collection for this data as well as a 
+          <div className='absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap'>
+            Current
+          </div>
+        </div>
+        <div className='bg-white rounded-lg border shadow-md p-4 min-h-[116px] flex flex-col justify-between'>
+          <div className='text-sm text-gray-600'>Missing something?</div>
+          <div className='mt-4'>
+            <button
+              type='button'
+              onClick={() => setFeedbackModal(true)}
+              className='bg-transparent border-none cursor-pointer p-0 m-0 text-red-500 font-bold'
+            >
+              Give feedback
+            </button>
+          </div>
+        </div>
+        {/* <div className="col-span-1 sm:col-span-1 lg:col-span-1 xl:col-span-1">
+            TODO(michael) could setup a separate collection for this data as well as a
             separate api call
           <StatCard value='tk' label='Pharmacy Orders' />
-        </Grid> */}
-      </Grid.Container>
+        </div> */}
+      </div>
       <FeedbackModal
         visible={feedbackModal}
-        setVisible={setFeedbackModalVisible}
-        bindings={feedbackModalBindings}
+        setVisible={setFeedbackModal}
+        bindings={{}}
       />
     </>
   )
 }
-
-const StyledButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-  color: red;
-  font-weight: bold;
-`

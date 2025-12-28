@@ -1,15 +1,4 @@
 import Head from 'next/head'
-import {
-  Text,
-  Fieldset,
-  Grid,
-  Spacer,
-  Link,
-  Button,
-  Note,
-  Tag,
-} from '@geist-ui/react'
-import styled from 'styled-components'
 
 import Logo from 'components/logo'
 import Footer from 'components/footer'
@@ -33,90 +22,82 @@ const Signin = (pageProps: { version: string }) => {
       <Head>
         <title>Hemolog - Sign in</title>
       </Head>
-      <StyledPage>
-        <StyledPageHeader>
-          <Grid.Container alignItems='center' justify='space-between'>
+      <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
+        <header className='p-6'>
+          <div className='flex justify-between items-center'>
             <Logo />
-            <Link href='https://github.com/michaelwschultz/hemolog.com'>
-              <Tag>v{version}</Tag>
-            </Link>
-          </Grid.Container>
-        </StyledPageHeader>
-        <StyledPageContent>
-          <Note type='default' label='Important'>
-            Hemolog is currently in development. Data integrety is not
-            guaranteed. Hemolog is{' '}
-            <b>
-              <i>not</i>
-            </b>{' '}
-            HIPAA compliant... yada yada yada.
-          </Note>
-          <Spacer h={2} />
-          <Grid.Container justify='center'>
-            <Fieldset style={{ maxWidth: '460px', width: '100%' }}>
-              <Text h4>Register or sign in</Text>
-              <Text p>
-                Signing in will create an account if you don’t have one yet.
-                Don’t worry, Hemolog will always be <i>free</i>.
-              </Text>
-              <Fieldset.Footer>
-                <Text></Text>
+            <a
+              href='https://github.com/michaelwschultz/hemolog.com'
+              className='px-2 py-1 bg-gray-100 text-gray-800 text-sm rounded'
+            >
+              v{version}
+            </a>
+          </div>
+        </header>
+
+        <main className='flex-1 px-6 pt-10'>
+          <div className='bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8'>
+            <div className='font-semibold text-blue-800 mb-1'>Important</div>
+            <div className='text-blue-700'>
+              Hemolog is currently in development. Data integrity is not
+              guaranteed. Hemolog is{' '}
+              <b>
+                <i>not</i>
+              </b>{' '}
+              HIPAA compliant... yada yada yada.
+            </div>
+          </div>
+
+          <div className='flex justify-center'>
+            <div className='max-w-md w-full border border-gray-200 rounded-lg p-6'>
+              <h4 className='text-xl font-semibold mb-3'>
+                Register or sign in
+              </h4>
+              <p className='text-gray-600 mb-6'>
+                Signing in will create an account if you don't have one yet.
+                Don't worry, Hemolog will always be <i>free</i>.
+              </p>
+
+              <div className='flex justify-end'>
                 {!process.env.NEXT_PUBLIC_USE_EMULATORS && (
-                  <Button
+                  <button
+                    type='button'
                     onClick={() => auth.signinWithGoogle?.('/home')}
-                    loading={auth.loading}
-                    type='success-light'
-                    scale={3 / 4}
+                    disabled={auth.loading}
+                    className='px-4 py-2 bg-green-100 hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed text-green-800 rounded-lg font-medium transition-colors flex items-center gap-2'
                   >
+                    {auth.loading && (
+                      <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-green-800'></div>
+                    )}
                     Continue with Google
-                  </Button>
+                  </button>
                 )}
                 {process.env.NEXT_PUBLIC_USE_EMULATORS && (
-                  <Button
+                  <button
+                    type='button'
                     onClick={() => auth.signinWithTestUser?.()}
-                    loading={auth.loading}
-                    type='success-light'
-                    scale={3 / 4}
+                    disabled={auth.loading}
+                    className='px-4 py-2 bg-green-100 hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed text-green-800 rounded-lg font-medium transition-colors flex items-center gap-2'
                   >
+                    {auth.loading && (
+                      <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-green-800'></div>
+                    )}
                     Continue with Test User
-                  </Button>
+                  </button>
                 )}
-              </Fieldset.Footer>
-            </Fieldset>
-          </Grid.Container>
+              </div>
+            </div>
+          </div>
 
-          {/* <Spacer h={3} />
+          {/* <div className='h-12' />
           <DescriptionCards />
-          <Spacer h={2} /> */}
-        </StyledPageContent>
+          <div className='h-8' /> */}
+        </main>
+
         <Footer />
-      </StyledPage>
+      </div>
     </>
   )
 }
 
 export default withAuth(Signin)
-
-const StyledPage = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  max-width: 850pt;
-  width: 100%;
-  margin: 0 auto;
-
-  main {
-    flex: 1 0 auto;
-  }
-  footer {
-    flex-shrink: 0;
-  }
-`
-
-const StyledPageHeader = styled.header`
-  padding: 24px;
-`
-
-const StyledPageContent = styled.main`
-  padding: 40px 24px 0 24px;
-`

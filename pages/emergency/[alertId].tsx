@@ -1,11 +1,9 @@
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import NextLink from 'next/link'
-import styled from 'styled-components'
 
 import useEmergencyUser from 'lib/hooks/useEmergencyUser'
 import { FirestoreStatusType } from 'lib/hooks/useFirestoreQuery'
-import { Loading, Note, Text, Grid, Link } from '@geist-ui/react'
 import EmergencyInfo from 'components/emergencyInfo'
 import Footer from 'components/footer'
 
@@ -27,88 +25,78 @@ const Emergency = (): JSX.Element => {
       <Head>
         <title>Emergency - from Hemolog</title>
       </Head>
-      <StyledPage>
-        <Grid.Container
-          justify='space-between'
-          alignItems='center'
-          style={{ padding: '24px', paddingBottom: '0' }}
-        >
-          <Text h4 type='success'>
+      <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
+        {/* Header */}
+        <header className='flex justify-between items-center px-6 py-6 pb-0'>
+          <h4 className='text-xl font-semibold text-green-600'>
             Emergency Info
-          </Text>
-          <Text h6>
-            <NextLink href='/'>
-              <Link href='/'>Hemolog.com</Link>
-            </NextLink>
-          </Text>
-        </Grid.Container>
+          </h4>
+          <NextLink href='/'>
+            {/* biome-ignore lint/a11y/useValidAnchor: NextLink provides href */}
+            <a className='text-sm font-medium text-primary-500 hover:text-primary-600'>
+              Hemolog.com
+            </a>
+          </NextLink>
+        </header>
 
-        <Grid.Container
-          justify='space-between'
-          alignItems='center'
-          style={{
-            paddingLeft: '24px',
-            paddingRight: '24px',
-            paddingBottom: '32px',
-          }}
-        >
-          <Text h6 type='secondary'>
+        {/* Disclaimer and Important Note */}
+        <div className='flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 px-6 pb-8'>
+          <p className='text-sm text-gray-600 flex-1'>
             This page shows the most recent medical logs for someone with
             hemophilia. <br />
-            This data is <i>self reported</i> and may not be up-to-date.
-          </Text>
+            This data is <em>self reported</em> and may not be up-to-date.
+          </p>
 
-          <Note type='success' label='Important' style={{ maxWidth: '360px' }}>
-            If someone has been in an accident, please call{' '}
-            <a href='tel:911'>911</a> immediately.
-          </Note>
-        </Grid.Container>
+          <div className='bg-green-50 border border-green-200 rounded-lg p-4 max-w-sm'>
+            <div className='font-semibold text-green-800 mb-1'>Important</div>
+            <div className='text-green-700'>
+              If someone has been in an accident, please call{' '}
+              <a
+                href='tel:911'
+                className='text-green-600 hover:text-green-800 font-semibold'
+              >
+                911
+              </a>{' '}
+              immediately.
+            </div>
+          </div>
+        </div>
 
-        <StyledPageContent>
+        {/* Main Content */}
+        <main className='flex-1 px-6 pb-16'>
           {status === FirestoreStatusType.LOADING && (
-            <Loading>Loading emergency info</Loading>
+            <div className='flex justify-center items-center py-12'>
+              <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500'></div>
+              <span className='ml-3 text-gray-600'>Loading emergency info</span>
+            </div>
           )}
 
           {error && (
-            <Note type='success' label='Error'>
-              Something went wrong. This could mean that this person no longer
-              has a Hemolog account or the app is broken.
-            </Note>
+            <div className='bg-red-50 border border-red-200 rounded-lg p-4 mb-6'>
+              <div className='font-semibold text-red-800 mb-1'>Error</div>
+              <div className='text-red-700'>
+                Something went wrong. This could mean that this person no longer
+                has a Hemolog account or the app is broken.
+              </div>
+            </div>
           )}
 
           {!person && status !== FirestoreStatusType.LOADING && (
-            <Note type='secondary' label='Try again'>
-              Nothing could be found at this address. Please make sure the URL
-              matches the link provided on the Hemolog Emergency Card.
-            </Note>
+            <div className='bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6'>
+              <div className='font-semibold text-gray-800 mb-1'>Try again</div>
+              <div className='text-gray-700'>
+                Nothing could be found at this address. Please make sure the URL
+                matches the link provided on the Hemolog Emergency Card.
+              </div>
+            </div>
           )}
 
           {person && <EmergencyInfo person={person} />}
-        </StyledPageContent>
+        </main>
         <Footer />
-      </StyledPage>
+      </div>
     </>
   )
 }
 
 export default Emergency
-
-const StyledPage = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  max-width: 850pt;
-  width: 100%;
-  margin: 0 auto;
-
-  main {
-    flex: 1 0 auto;
-  }
-  footer {
-    flex-shrink: 0;
-  }
-`
-
-const StyledPageContent = styled.main`
-  padding: 0 24px;
-`

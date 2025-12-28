@@ -1,16 +1,6 @@
 import Head from 'next/head'
-import {
-  Text,
-  Divider,
-  Display,
-  Image,
-  Spacer,
-  Link,
-  Note,
-} from '@geist-ui/react'
-import Share from '@geist-ui/react-icons/share'
-import ChevronLeft from '@geist-ui/react-icons/chevronLeft'
-import styled from 'styled-components'
+import { IconShare, IconChevronLeft } from '@tabler/icons-react'
+import Image from 'next/image'
 
 import StaticHeader from 'components/staticHeader'
 import Footer from 'components/footer'
@@ -39,113 +29,106 @@ const Changelog = (): JSX.Element => {
           }}
         />
       </Head>
-      <StyledPage>
+      <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
         <StaticHeader />
-        <StyledPageContent>
-          <StyledChangelogContent>
-            <Text h2>Changelog</Text>
-            <Link href='/changelog' color>
-              <StyledRow>
-                <ChevronLeft />
-                Back to list of updates
-              </StyledRow>
-            </Link>
-            <Divider />
+        <main className='flex-1 px-6 pt-10 pb-16'>
+          <div className='max-w-2xl mx-auto'>
+            <h2 className='text-3xl font-bold mb-2'>Changelog</h2>
+            <a
+              href='/changelog'
+              className='flex items-center text-primary-500 hover:text-primary-600 mb-8'
+            >
+              <IconChevronLeft className='w-4 h-4 mr-2' />
+              Back to list of updates
+            </a>
+            <hr className='border-gray-200 mb-12' />
 
-            <StyledPost id='post-2'>
-              <Spacer h={3} />
-              <Text h4>Mobile enhancements</Text>
-              <Text h6>
-                Looks great on your desktop <i>and</i> mobile devices!
-              </Text>
-              <Spacer />
-              <Divider>Update #2</Divider>
-              <Text>
+            <article id='post-2' className='pb-16'>
+              <div className='h-12' />
+              <h4 className='text-xl font-semibold mb-2'>
+                Mobile enhancements
+              </h4>
+              <h6 className='text-base font-medium text-gray-600 mb-4'>
+                Looks great on your desktop <em>and</em> mobile devices!
+              </h6>
+              <div className='h-4' />
+              <hr className='border-gray-200' />
+              <div className='text-center text-sm font-medium text-gray-500 mb-4'>
+                Update #2
+              </div>
+              <hr className='border-gray-200 mb-6' />
+              <p className='text-gray-700 mb-4'>
                 I designed Hemolog to be used anywhere. That meant building a
                 web app verses an iPhone, Android, or some hybrid app.
-              </Text>
-              <Text>
+              </p>
+              <p className='text-gray-700 mb-8'>
                 The original Hemolog was built with the help of a contract
-                developer. This time around I’ve designed and built everything
+                developer. This time around I've designed and built everything
                 from the ground up with the purpose of being the best place to
                 store your infusion data and learn from it.
-              </Text>
-              <Display shadow caption='Hemolog running on an iPhone 12'>
+              </p>
+
+              <figure className='mb-8'>
                 <Image
                   src='/images/changelog/iphone-hemolog-light.png'
                   alt='Hemolog for iPhone'
+                  width={400}
+                  height={600}
+                  className='w-full rounded-lg shadow-lg'
                 />
-              </Display>
-              <Note label='Pro tip'>
-                Visit Hemolog.com using Safari on your iPhone and click the{' '}
-                <Share size={16} /> icon, then scroll down to ’Add to Home
-                Screen’ to create an app icon.
-              </Note>
-              <Display shadow caption='Hemolog app icon on iPhone'>
+                <figcaption className='text-sm text-gray-600 mt-2 text-center'>
+                  Hemolog running on an iPhone 12
+                </figcaption>
+              </figure>
+
+              <div className='bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8'>
+                <div className='font-semibold text-blue-800 mb-1'>Pro tip</div>
+                <div className='text-blue-700'>
+                  Visit Hemolog.com using Safari on your iPhone and click the{' '}
+                  <IconShare size={16} className='inline' /> icon, then scroll
+                  down to 'Add to Home Screen' to create an app icon.
+                </div>
+              </div>
+
+              <figure className='mb-8'>
                 <Image
                   src='/images/changelog/iphone-homescreen-app.jpg'
                   alt='Hemolog app icon on iPhone'
+                  width={400}
+                  height={300}
+                  className='w-full rounded-lg shadow-lg'
                 />
-              </Display>
-              <Spacer />
-              <span role='img' aria-label='sunglasses'>
-                😎
-              </span>{' '}
-              <Link
-                color
-                icon
-                href='https://github.com/michaelwschultz/hemolog.com/issues/9'
-              >
-                Sneak peak of what’s coming next
-              </Link>
-              <PostFooter postId='post-2' />
-            </StyledPost>
-          </StyledChangelogContent>
+                <figcaption className='text-sm text-gray-600 mt-2 text-center'>
+                  Hemolog app icon on iPhone
+                </figcaption>
+              </figure>
 
-          <Spacer h={2} />
+              <div className='mb-8'>
+                <span role='img' aria-label='sunglasses' className='text-xl'>
+                  😎
+                </span>{' '}
+                <a
+                  href='https://github.com/michaelwschultz/hemolog.com/issues/9'
+                  className='text-primary-500 hover:text-primary-600'
+                >
+                  Sneak peak of what's coming next
+                </a>
+              </div>
+
+              <PostFooter postId='post-2' />
+            </article>
+          </div>
+
+          <div className='h-8' />
 
           <BlogFooter />
 
-          <Spacer h={5} />
-        </StyledPageContent>
+          <div className='h-20' />
+        </main>
         <Footer />
-      </StyledPage>
+      </div>
     </>
   )
 }
 
 export default Changelog
-
-const StyledPage = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  max-width: 850pt;
-  width: 100%;
-  margin: 0 auto;
-
-  main {
-    flex: 1 0 auto;
-  }
-  footer {
-    flex-shrink: 0;
-  }
-`
-
-const StyledPageContent = styled.main`
-  padding: 40px 24px 0 24px;
-`
-
-const StyledChangelogContent = styled.div`
-  max-width: 480pt;
-  margin: 0 auto;
-`
-
-const StyledPost = styled.article`
-  padding-bottom: 64px;
-`
-
-const StyledRow = styled.span`
-  display: flex;
-  align-items: center;
-`
