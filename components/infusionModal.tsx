@@ -87,9 +87,9 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
         })
         closeModal()
       })
-      .catch((error) =>
+      .catch((error: unknown) =>
         setToast({
-          text: `Something went wrong: ${error}`,
+          text: `Something went wrong: ${error instanceof Error ? error.message : String(error)}`,
           type: 'error',
           delay: 10000,
         })

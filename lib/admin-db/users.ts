@@ -1,4 +1,3 @@
-import type { FirebaseFirestore } from 'firebase-admin'
 import { auth, adminFirestore } from 'lib/firebase-admin'
 
 const BATCH_LIMIT = 400
@@ -35,15 +34,22 @@ async function deleteUserAndData(uid: string) {
     .where('user.uid', '==', uid)
     .get()
 
-  const docRefs = [userDocRef]
-  infusionSnapshot.forEach((doc) => docRefs.push(doc.ref))
+  const docRefs: FirebaseFirestore.DocumentReference[] = [userDocRef]
+  infusionSnapshot.forEach((docSnapshot) => {
+    docRefs.push(docSnapshot.ref)
+  })
 
   await deleteDocuments(docRefs)
 
   try {
     await auth.deleteUser(uid)
-  } catch (error: any) {
-    if (error?.code !== 'auth/user-not-found') {
+  } catch (error: unknown) {
+    if (
+      error &&
+      typeof error === 'object' &&
+      'code' in error &&
+      error.code !== 'auth/user-not-found'
+    ) {
       throw error
     }
   }

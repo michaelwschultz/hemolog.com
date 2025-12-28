@@ -9,6 +9,16 @@ import useInfusions from 'lib/hooks/useInfusions'
 import { filterInfusions } from 'lib/helpers'
 import { TreatmentTypeEnum } from 'lib/db/infusions'
 
+// Dynamically load react-vis CSS only when Chart component is used
+if (typeof window !== 'undefined') {
+  const link = document.createElement('link')
+  link.rel = 'stylesheet'
+  link.href = 'https://unpkg.com/react-vis/dist/style.css'
+  if (!document.querySelector(`link[href="${link.href}"]`)) {
+    document.head.appendChild(link)
+  }
+}
+
 type ChartEntry = {
   x: string
   y: number
@@ -18,12 +28,12 @@ interface ChartProps {
   filterYear: string
 }
 
-export default function Chart(props: ChartProps): JSX.Element {
+export default function Chart(props: ChartProps): JSX.Element | null {
   const { filterYear } = props
   const { data } = useInfusions()
 
   if (!data) {
-    return <></>
+    return null
   }
 
   const filteredInfusions = filterInfusions(data, filterYear)

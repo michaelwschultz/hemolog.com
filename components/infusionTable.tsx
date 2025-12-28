@@ -79,13 +79,14 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
         </Table>
         <Spacer h={2} />
         <Grid.Container>
-          <Loading>Loading infusion data</Loading>
+          <Loading>Loading treatment data</Loading>
         </Grid.Container>
       </>
     )
   }
 
   if (error) {
+    console.error('Error fetching infusions:', error)
     return (
       <Note type='error' label='Error'>
         Oops, the database didn’t respond. Refresh the page to try again.
@@ -96,7 +97,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
   if (status === FirestoreStatusType.ERROR && !error) {
     return (
       <Note type='error' label='Error'>
-        Something went wrong accessing your infusion data. Refresh the page to
+        Something went wrong accessing your treatment data. Refresh the page to
         try again.
       </Note>
     )
@@ -111,9 +112,9 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
           delay: 5000,
         })
       })
-      .catch((error) =>
+      .catch((error: unknown) =>
         setToast({
-          text: `Something went wrong: ${error}`,
+          text: `Something went wrong: ${error instanceof Error ? error.message : String(error)}`,
           type: 'error',
           delay: 10000,
         })
@@ -168,7 +169,8 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
       )
 
       return (
-        <Popover content={content as any} style={{ cursor: 'pointer' }}>
+        // @ts-expect-error - Popover content prop has a type conflict with HTML content attribute
+        <Popover content={content} style={{ cursor: 'pointer' }}>
           <MoreHorizontal />
         </Popover>
       )

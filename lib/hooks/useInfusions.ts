@@ -1,4 +1,5 @@
-import firebase from 'lib/firebase'
+import { useMemo } from 'react'
+import { firestore, collection, query, where } from 'lib/firebase'
 import { useAuth } from 'lib/auth'
 import { compareDesc } from 'date-fns'
 
@@ -12,44 +13,61 @@ type FirestoreStatusTypes = FirestoreStatusType
 interface InfusionResponse {
   data: TreatmentType[]
   status: FirestoreStatusTypes
-  error: Error
+  error: Error | null
 }
 
 export default function useInfusions(
   limit?: number,
   uid?: string
 ): InfusionResponse {
-  const db = firebase.firestore()
   const { user } = useAuth()
+  const userUid = user ? user.uid : uid
 
-  // TODO(michael) orderBy createdAt
-  // this isn't working right now becuase Firebase
-  // can't read the isostring format
-  const query = db
-    .collection('infusions')
-    .where('user.uid', '==', user ? user.uid : uid)
-    .where('deletedAt', '==', null)
+  // Memoize the query to prevent unnecessary re-subscriptions
+  const firestoreQuery = useMemo(() => {
+    const db = firestore.instance
+    if (!db || !userUid) {
+      return null
+    }
 
-  const { data: unsortedData, status, error } = useFirestoreQuery(query)
+    return query(
+      collection(db, 'infusions'),
+      where('user.uid', '==', userUid),
+      where('deletedAt', '==', null)
+    )
+  }, [userUid])
+
+  const {
+    data: unsortedData,
+    status,
+    error,
+  } = useFirestoreQuery<TreatmentType[]>(firestoreQuery)
+
+  if (error) {
+    console.error('NEW ERROR', error)
+  }
 
   // NOTE(Michael) sorts infusions by date (newest to oldest)
-  const data = unsortedData
+  const data: TreatmentType[] = useMemo(() => {
+    const arr: TreatmentType[] = Array.isArray(unsortedData) ? unsortedData : []
 
-  if (data) {
-    data.sort((a: TreatmentType, b: TreatmentType) =>
-      compareDesc(new Date(a.date), new Date(b.date))
-    )
+    if (arr.length > 0) {
+      const sorted = [...arr].sort((a: TreatmentType, b: TreatmentType) =>
+        compareDesc(new Date(a.date), new Date(b.date))
+      )
 
-    // For now, I've moved the limiting into the useFirestoreQuery
-    // method, this works ok but would be better to fix here long term
-    if (limit) {
-      data.length = limit
+      if (limit) {
+        return sorted.slice(0, limit)
+      }
+      return sorted
     }
-  }
+
+    return arr
+  }, [unsortedData, limit])
 
   return {
     data,
     status,
-    error,
+    error: error ?? null,
   }
 }

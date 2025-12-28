@@ -1,19 +1,18 @@
 import { adminFirestore } from 'lib/firebase-admin'
 import { compareDesc, parseISO } from 'date-fns'
 
-import {
-  TreatmentTypeEnum,
-  type TreatmentType,
-} from '../db/infusions'
+import { TreatmentTypeEnum, type TreatmentType } from '../db/infusions'
 import type { AttachedUserType } from 'lib/types/users'
 
 async function getAllInfusions() {
   const snapshot = await adminFirestore.collection('infusions').get()
 
-  const infusions: any = []
+  const infusions: TreatmentType[] = []
 
   snapshot.forEach((doc) => {
-    infusions.push({ id: doc.id, ...doc.data() })
+    infusions.push({ id: doc.id, ...doc.data() } as TreatmentType & {
+      id: string
+    })
   })
 
   return { infusions }
@@ -24,13 +23,15 @@ async function getInfusion(infusionId: string) {
     .collection('infusions')
     .where('uid', '==', infusionId)
     .get()
-  const infusions: any = []
+  const infusions: TreatmentType[] = []
 
   snapshot.forEach((doc) => {
-    infusions.push({ id: doc.id, ...doc.data() })
+    infusions.push({ id: doc.id, ...doc.data() } as TreatmentType & {
+      id: string
+    })
   })
 
-  infusions.sort((a: any, b: any) =>
+  infusions.sort((a: TreatmentType, b: TreatmentType) =>
     compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
   )
 
@@ -59,10 +60,12 @@ async function getAllInfusionsByApiKey(apiKey: string) {
       .orderBy('date', 'desc')
       .get()
 
-    const infusions: any = []
+    const infusions: TreatmentType[] = []
 
     snapshot.forEach((doc) => {
-      infusions.push({ id: doc.id, ...doc.data() })
+      infusions.push({ id: doc.id, ...doc.data() } as TreatmentType & {
+        id: string
+      })
     })
 
     return { infusions }
@@ -98,18 +101,18 @@ async function getRecentUserInfusionsByApiKey(
       // .limitToLast(3)
       .get()
 
-    const infusions: any = []
+    const infusions: TreatmentType[] = []
 
     // TODO: Find out why I was adding an id here.
     // The doc.id should already be available as the uid.
     // Removing for now.
     snapshot.forEach((doc) => {
       // infusions.push({ id: doc.id, ...doc.data() })
-      infusions.push({ ...doc.data() })
+      infusions.push(doc.data() as TreatmentType)
     })
 
     // TODO: remove this hack after fixing the orderBy issue above
-    infusions.sort((a: any, b: any) =>
+    infusions.sort((a: TreatmentType, b: TreatmentType) =>
       compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
     )
     infusions.length = 3

@@ -1,17 +1,18 @@
 import { adminFirestore } from 'lib/firebase-admin'
 import { compareAsc, compareDesc, parseISO } from 'date-fns'
+import type { FeedbackType } from 'lib/db/feedback'
 
 async function getAllFeedback() {
   try {
     const snapshot = await adminFirestore.collection('feedback').get()
-    const feedback: any = []
+    const feedback: FeedbackType[] = []
 
     snapshot.forEach(async (doc) => {
-      const data = { ...doc.data() }
+      const data = doc.data() as FeedbackType
       feedback.push(data)
     })
 
-    feedback.sort((a: any, b: any) =>
+    feedback.sort((a: FeedbackType, b: FeedbackType) =>
       compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
     )
 
@@ -27,13 +28,13 @@ async function getUserFeedback(userId: string) {
       .collection('feedback')
       .where('user.uid', '==', userId)
     const snapshot = await ref.get()
-    const feedback: any = []
+    const feedback: FeedbackType[] = []
 
     snapshot.forEach((doc) => {
-      feedback.push({ ...doc.data() })
+      feedback.push(doc.data() as FeedbackType)
     })
 
-    feedback.sort((a: any, b: any) =>
+    feedback.sort((a: FeedbackType, b: FeedbackType) =>
       compareAsc(parseISO(a.createdAt), parseISO(b.createdAt))
     )
 

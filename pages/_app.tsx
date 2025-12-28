@@ -77,13 +77,13 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         />
         <meta name='mobile-web-app-capable' content='yes' />
         <meta name='apple-mobile-web-app-capable' content='yes' />
-        <script
+        {/* <script
           defer
           src='https://assets.onedollarstats.com/stonks.js'
           data-debug={
             process.env.NODE_ENV !== 'production' ? 'hemolog.com' : undefined
           }
-        />
+        /> */}
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>

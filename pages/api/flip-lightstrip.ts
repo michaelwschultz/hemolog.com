@@ -1,10 +1,12 @@
 // NOTE(michael): this endpoint isn't used anywhere and was just an
 // exploration of the HUE api.
+import type { NextApiRequest, NextApiResponse } from 'next'
+
 const REQUEST_URL = `${process.env.HUE_BRIDGE_URL}/lights/3`
 
-const flipLights = async (req: any, res: any) => {
+const flipLights = async (req: NextApiRequest, res: NextApiResponse) => {
   const { query } = req
-  let on = query.on
+  let on: boolean | undefined
 
   // biome-ignore lint/suspicious/noImplicitAnyLet: not important
   let currentState

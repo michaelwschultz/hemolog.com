@@ -69,13 +69,11 @@ export default function EmergencyCard({ forPrint }: Props): JSX.Element {
         <Grid xs={17}>
           {person ? (
             <StyledPersonalInfo forPrint={forPrint}>
-              <>
-                <h3>{person?.name}</h3>
-                <h5>
-                  {person?.severity} Hemophilia {person?.hemophiliaType}
-                </h5>
-                {person?.factor && <h5>Treat with factor {person.factor}</h5>}
-              </>
+              <h3>{person?.name}</h3>
+              <h5>
+                {person?.severity} Hemophilia {person?.hemophiliaType}
+              </h5>
+              {person?.factor && <h5>Treat with factor {person.factor}</h5>}
               <StyledScanLink forPrint={forPrint}>
                 <Text h4>Scan or visit for treatment history</Text>
                 <Tooltip text='Visit your page to preview what others will see.'>

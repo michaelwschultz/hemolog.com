@@ -12,7 +12,7 @@ interface FeedbackValues {
 interface FeedbackModalProps {
   visible: boolean
   setVisible: (flag: boolean) => void
-  bindings: any
+  bindings: Record<string, unknown>
 }
 
 export default function FeedbackModal(props: FeedbackModalProps): JSX.Element {
@@ -43,9 +43,9 @@ export default function FeedbackModal(props: FeedbackModalProps): JSX.Element {
         })
         closeModal()
       })
-      .catch((error) =>
+      .catch((error: unknown) =>
         setToast({
-          text: `Something went wrong: ${error}`,
+          text: `Something went wrong: ${error instanceof Error ? error.message : String(error)}`,
           type: 'error',
           delay: 10000,
         })
@@ -67,7 +67,7 @@ export default function FeedbackModal(props: FeedbackModalProps): JSX.Element {
   })
 
   return (
-    <Modal open={visible} {...bindings}>
+    <Modal visible={visible} {...bindings}>
       <Modal.Title>Feedback</Modal.Title>
       <Modal.Subtitle>Hemolog.com</Modal.Subtitle>
       <Modal.Content>

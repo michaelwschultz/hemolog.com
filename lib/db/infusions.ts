@@ -1,4 +1,11 @@
-import { firestore } from 'lib/firebase'
+import {
+  firestore,
+  collection,
+  doc,
+  addDoc,
+  setDoc,
+  updateDoc,
+} from 'lib/firebase'
 import type { AttachedUserType } from 'lib/types/users'
 
 export enum TreatmentTypeEnum {
@@ -35,24 +42,42 @@ export interface TreatmentType {
 
 // NOTE(michael) this might be a bad way of adding the doc id.
 // Probably worth searching for another solution.
-function createInfusion(data: TreatmentType) {
-  return firestore
-    .collection('infusions')
-    .add(data)
-    .then((docRef) => {
-      docRef.set({ uid: docRef.id, ...data }, { merge: true })
-    })
+async function createInfusion(data: TreatmentType) {
+  const db = firestore.instance
+  if (!db) {
+    console.error('Firestore not available')
+    return
+  }
+
+  const infusionsRef = collection(db, 'infusions')
+  const docRef = await addDoc(infusionsRef, data)
+  await setDoc(docRef, { uid: docRef.id, ...data }, { merge: true })
 }
 
 function deleteInfusion(uid: string) {
-  return firestore
-    .collection('infusions')
-    .doc(uid)
-    .set({ deletedAt: new Date().toISOString() }, { merge: true })
+  const db = firestore.instance
+  if (!db) {
+    console.error('Firestore not available')
+    return Promise.resolve()
+  }
+
+  const infusionDocRef = doc(collection(db, 'infusions'), uid)
+  return setDoc(
+    infusionDocRef,
+    { deletedAt: new Date().toISOString() },
+    { merge: true }
+  )
 }
 
 async function updateInfusion(uid: string, newValues: Partial<TreatmentType>) {
-  return firestore.collection('infusions').doc(uid).update(newValues)
+  const db = firestore.instance
+  if (!db) {
+    console.error('Firestore not available')
+    return
+  }
+
+  const infusionDocRef = doc(collection(db, 'infusions'), uid)
+  return updateDoc(infusionDocRef, newValues)
 }
 
 export { createInfusion, deleteInfusion, updateInfusion }

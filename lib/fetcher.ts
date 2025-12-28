@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-unfetch'
 
-const fetcher = async <JSON = any>(
+const fetcher = async <JSON = unknown>(
   input: RequestInfo,
   token: string
 ): Promise<JSON> => {

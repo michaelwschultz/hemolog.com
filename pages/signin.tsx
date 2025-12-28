@@ -62,7 +62,7 @@ const Signin = (pageProps: { version: string }) => {
                 <Text></Text>
                 {!process.env.NEXT_PUBLIC_USE_EMULATORS && (
                   <Button
-                    onClick={() => auth.signinWithGoogle('/home')}
+                    onClick={() => auth.signinWithGoogle?.('/home')}
                     loading={auth.loading}
                     type='success-light'
                     scale={3 / 4}
@@ -72,7 +72,7 @@ const Signin = (pageProps: { version: string }) => {
                 )}
                 {process.env.NEXT_PUBLIC_USE_EMULATORS && (
                   <Button
-                    onClick={() => auth.signinWithTestUser()}
+                    onClick={() => auth.signinWithTestUser?.()}
                     loading={auth.loading}
                     type='success-light'
                     scale={3 / 4}

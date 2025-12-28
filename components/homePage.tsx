@@ -3,10 +3,15 @@ import { Text, Spacer, Grid, Select, useMediaQuery } from '@geist-ui/react'
 import Filter from '@geist-ui/react-icons/filter'
 import { getYear } from 'date-fns'
 
+import dynamic from 'next/dynamic'
 import InfusionTable from 'components/infusionTable'
 import Stats from 'components/stats'
-import Chart from 'components/chart'
 import useInfusions from 'lib/hooks/useInfusions'
+
+// Lazy load Chart component (includes react-vis ~100KB) - only loads when needed
+const Chart = dynamic(() => import('components/chart'), {
+  ssr: false,
+})
 
 const HomePage = (): JSX.Element => {
   const smallerThanSmall = useMediaQuery('xs', { match: 'down' })

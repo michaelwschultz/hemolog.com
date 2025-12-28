@@ -24,8 +24,10 @@ const deleteAccount = async (req: NextApiRequest, res: NextApiResponse) => {
     await deleteUserAndData(uid)
 
     return res.status(200).json({ success: true })
-  } catch (error: any) {
-    return res.status(500).send(error?.message || 'Unable to delete account.')
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unable to delete account.'
+    return res.status(500).send(errorMessage)
   }
 }
 

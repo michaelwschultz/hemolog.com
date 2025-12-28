@@ -92,9 +92,13 @@ const ProfilePage = (): JSX.Element => {
       })
       setVisible(false)
       await signout?.()
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Failed to delete account. Please try again.'
       setToast({
-        text: error?.message || 'Failed to delete account. Please try again.',
+        text: errorMessage,
         type: 'error',
         delay: 8000,
       })
@@ -188,7 +192,7 @@ const ProfilePage = (): JSX.Element => {
           Delete account
         </Button>
       </Grid>
-      <Modal open={visible} {...bindings}>
+      <Modal visible={visible} {...bindings}>
         <Modal.Title>Delete your account?</Modal.Title>
         <Modal.Content>
           <Text>
