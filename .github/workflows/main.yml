@@ -11,22 +11,50 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FIREBASE_EMULATORS_PATH: ${{ github.workspace }}/emulator-cache
+      CYPRESS_CACHE_FOLDER: ~/.cache/Cypress
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: 10.13.1
           run_install: false
         
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'pnpm'
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Determine pnpm store path
+        id: pnpm-store
+        run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}
+          restore-keys: |
+            pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+            pnpm-store-${{ runner.os }}-
+
+      - name: Cache Cypress binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-binary-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.run_id }}
+          restore-keys: |
+            cypress-binary-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+            cypress-binary-${{ runner.os }}-
 
       - run: pnpm install --frozen-lockfile # optional, --immutable
 
@@ -49,8 +77,9 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           build: pnpm build
-          start: pnpm start
-          wait-on: 'http://localhost:8082, http://localhost:8081'
+          start: node .next/standalone/server.js
+          wait-on: 'http://localhost:8082, http://localhost:8081, http://localhost:3000'
+          install: false
         env: 
           FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
           FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
