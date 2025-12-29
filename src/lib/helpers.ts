@@ -1,4 +1,7 @@
-// Placeholder - need to restore from git
+export const CONFIG = {
+  blueskyUrl: 'https://bsky.app/profile/michaelschultz.com',
+}
+
 export async function generateUniqueString(length: number): Promise<string> {
   return Math.random()
     .toString(36)

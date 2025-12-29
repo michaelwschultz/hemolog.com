@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { format, parseISO } from 'date-fns'
 import {
   useReactTable,
@@ -47,10 +47,13 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
   // Determine if user can edit/delete treatments
   const isLoggedInUser = user && (!uid || uid === user.uid)
 
-  // Delete function
-  const deleteRow = (infusionUid: string) => {
-    deleteInfusion({ uid: infusionUid, userUid: user?.uid || '' })
-  }
+  // Delete function - memoized to prevent column recreation
+  const deleteRow = useCallback(
+    (infusionUid: string) => {
+      deleteInfusion({ uid: infusionUid, userUid: user?.uid || '' })
+    },
+    [deleteInfusion, user?.uid]
+  )
 
   // Column definitions - memoized to prevent recreation on every render
   const columns: ColumnDef<TreatmentType>[] = useMemo(() => {
@@ -188,8 +191,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
     }
 
     return baseColumns
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoggedInUser, user?.uid])
+  }, [isLoggedInUser, deleteRow])
 
   // Create the table instance - must be called before any early returns
   const table = useReactTable({

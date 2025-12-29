@@ -1,5 +1,6 @@
 'use client'
 
+import { CONFIG } from '@/lib/helpers'
 import { IconShare } from '@tabler/icons-react'
 import toast from 'react-hot-toast'
 
@@ -30,7 +31,7 @@ export default function PostFooter({ postId }: { postId: string }) {
             <div>
               <div className='font-medium'>Michael Schultz</div>
               <a
-                href='https://twitter.com/michaelschultz'
+                href={CONFIG.blueskyUrl}
                 className='text-primary-500 hover:text-primary-600 text-sm'
               >
                 @michaelschultz

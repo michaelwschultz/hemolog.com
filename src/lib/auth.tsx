@@ -84,7 +84,10 @@ function useProvideAuth() {
 
       try {
         // Fetch user data from Firestore using Firestore Lite with timeout
-        const dbUser = await withTimeout(fetchUserByUid(formattedUser.uid), 5000)
+        const dbUser = await withTimeout(
+          fetchUserByUid(formattedUser.uid),
+          5000
+        )
 
         const { ...userWithoutToken } = formattedUser
 
@@ -308,10 +311,19 @@ function useProvideAuth() {
 
     if (authListenerInitialized) {
       // Sync state with global state if it changed
-      if (user !== globalUser) {
-        setUser(globalUser)
-        setLoading(globalLoading)
-      }
+      // Use functional updates to avoid needing user in dependencies
+      setUser((currentUser) => {
+        if (currentUser !== globalUser) {
+          return globalUser
+        }
+        return currentUser
+      })
+      setLoading((currentLoading) => {
+        if (currentLoading !== globalLoading) {
+          return globalLoading
+        }
+        return currentLoading
+      })
       return
     }
 
@@ -338,8 +350,7 @@ function useProvideAuth() {
       unsubscribe()
       authListenerInitialized = false
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [handleUser]) // Only depend on handleUser, not user, to prevent re-initialization
+  }, [handleUser]) // Only depend on handleUser to prevent re-initialization
 
   return {
     user,
@@ -371,7 +382,10 @@ const formatUser = async (rawUser: User): Promise<UserType> => {
     token = idTokenResult.token
   } catch (error) {
     // Token retrieval failed or timed out, continue without token
-    console.warn('Token retrieval failed:', error instanceof Error ? error.message : 'Unknown error')
+    console.warn(
+      'Token retrieval failed:',
+      error instanceof Error ? error.message : 'Unknown error'
+    )
   }
 
   const alertId = await generateUniqueString(6)

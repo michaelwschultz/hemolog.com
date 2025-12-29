@@ -27,8 +27,7 @@ export async function createUser(
   userData: Partial<UserType>
 ): Promise<void> {
   // Remove token from userData as it shouldn't be stored in Firestore
-  // biome-ignore lint/correctness/noUnusedVariables: token is intentionally extracted and discarded
-  const { token, ...dataWithoutToken } = userData
+  const { token: _token, ...dataWithoutToken } = userData
 
   try {
     // Create or update user document with 10 second timeout

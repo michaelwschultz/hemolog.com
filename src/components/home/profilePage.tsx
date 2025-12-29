@@ -40,8 +40,7 @@ const ProfilePage = (): JSX.Element => {
     if (person && !person.apiKey && user?.uid) {
       handleUpdateUserApiKey()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [person?.apiKey, user?.uid]) // Only depend on apiKey, not the whole person object
+  }, [person, person?.apiKey, user?.uid, handleUpdateUserApiKey])
 
   const handleDeleteAccount = async () => {
     if (!user?.token) {

@@ -4,6 +4,7 @@
 
 import EmergencySnippet from '@/components/shared/emergencySnippet'
 import { useAuth } from '@/lib/auth'
+import { CONFIG } from '@/lib/helpers'
 
 export default function Footer(): JSX.Element {
   const { user, loading } = useAuth()
@@ -46,7 +47,7 @@ export default function Footer(): JSX.Element {
           </a>
           <a
             className='text-primary-500 hover:text-primary-600 mb-4 flex items-center'
-            href='https://twitter.com/michaelschultz'
+            href={CONFIG.blueskyUrl}
           >
             @MichaelSchultz
           </a>
