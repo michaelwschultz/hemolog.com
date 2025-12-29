@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { createUser, updateUser } from '@/lib/db/users'
-import { userKeys } from './useUserQuery'
-import type { UserType } from '@/lib/types/users'
 import type { Person } from '@/lib/types/person'
+import type { UserType } from '@/lib/types/users'
+import { userKeys } from './useUserQuery'
 
 interface UseUserMutationsOptions {
   onCreateSuccess?: () => void

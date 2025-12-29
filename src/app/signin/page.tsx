@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Logo from '@/components/shared/logo'
+import { useEffect } from 'react'
 import Footer from '@/components/shared/footer'
+import LoadingScreen from '@/components/shared/loadingScreen'
+import Logo from '@/components/shared/logo'
 import { withAuth } from '@/components/shared/withAuth'
 import { useAuth } from '@/lib/auth'
-import LoadingScreen from '@/components/shared/loadingScreen'
 
 const Signin = () => {
   const auth = useAuth()

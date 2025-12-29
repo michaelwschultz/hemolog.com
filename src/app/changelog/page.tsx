@@ -1,11 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-
-import StaticHeader from '@/components/shared/staticHeader'
-import Footer from '@/components/shared/footer'
 import BlogFooter from '@/components/blog/blogFooter'
 import PostFooter from '@/components/blog/postFooter'
+import Footer from '@/components/shared/footer'
+import StaticHeader from '@/components/shared/staticHeader'
 
 const Changelog = (): JSX.Element => {
   return (

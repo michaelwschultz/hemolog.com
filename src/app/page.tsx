@@ -1,8 +1,8 @@
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
+import DescriptionCards from '@/components/landing/descriptionCards'
 import Footer from '@/components/shared/footer'
 import StaticHeader from '@/components/shared/staticHeader'
-import DescriptionCards from '@/components/landing/descriptionCards'
 
 export default function Landing(): JSX.Element {
   return (

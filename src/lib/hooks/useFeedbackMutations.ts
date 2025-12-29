@@ -3,8 +3,8 @@ import toast from 'react-hot-toast'
 import {
   createFeedback,
   deleteFeedback,
-  updateFeedback,
   type FeedbackType,
+  updateFeedback,
 } from '@/lib/db/feedback'
 
 interface UseFeedbackMutationsOptions {

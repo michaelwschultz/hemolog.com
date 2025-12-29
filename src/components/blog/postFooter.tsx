@@ -1,8 +1,8 @@
 'use client'
 
-import { CONFIG } from '@/lib/helpers'
 import { IconShare } from '@tabler/icons-react'
 import toast from 'react-hot-toast'
+import { CONFIG } from '@/lib/helpers'
 
 export default function PostFooter({ postId }: { postId: string }) {
   const handleCopy = async (postId: string) => {

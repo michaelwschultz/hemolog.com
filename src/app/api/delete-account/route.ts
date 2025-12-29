@@ -1,6 +1,6 @@
-import { auth } from '@/lib/firebase-admin'
-import { deleteUserAndData } from '@/lib/admin-db/users'
 import type { NextRequest } from 'next/server'
+import { deleteUserAndData } from '@/lib/admin-db/users'
+import { auth } from '@/lib/firebase-admin'
 
 export async function DELETE(request: NextRequest) {
   try {

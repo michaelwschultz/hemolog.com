@@ -1,11 +1,10 @@
-import _ from 'underscore'
 import { useState } from 'react'
-
-import StatCard from '@/components/home/statCard'
-import { useInfusionsQuery } from '@/lib/hooks/useInfusionsQuery'
-import { TreatmentTypeEnum } from '@/lib/db/infusions'
+import _ from 'underscore'
 import FeedbackModal from '@/components/home/feedbackModal'
+import StatCard from '@/components/home/statCard'
+import { TreatmentTypeEnum } from '@/lib/db/infusions'
 import { filterInfusions } from '@/lib/helpers'
+import { useInfusionsQuery } from '@/lib/hooks/useInfusionsQuery'
 
 // TODO(michael) move types to types file
 type Value = string[]

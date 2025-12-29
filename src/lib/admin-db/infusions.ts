@@ -1,8 +1,7 @@
-import { adminFirestore } from '@/lib/firebase-admin'
 import { compareDesc, parseISO } from 'date-fns'
-
-import { TreatmentTypeEnum, type TreatmentType } from '../db/infusions'
+import { adminFirestore } from '@/lib/firebase-admin'
 import type { AttachedUserType } from '@/lib/types/users'
+import { type TreatmentType, TreatmentTypeEnum } from '../db/infusions'
 
 async function getAllInfusions() {
   const snapshot = await adminFirestore.collection('infusions').get()

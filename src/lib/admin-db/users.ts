@@ -1,4 +1,4 @@
-import { auth, adminFirestore } from '@/lib/firebase-admin'
+import { adminFirestore, auth } from '@/lib/firebase-admin'
 
 const BATCH_LIMIT = 400
 

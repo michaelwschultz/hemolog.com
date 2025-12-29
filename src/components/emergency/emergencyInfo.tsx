@@ -1,7 +1,7 @@
 import React from 'react'
 import InfusionTable from '@/components/home/infusionTable'
-import type { Person } from '@/lib/types/person'
 import { useAuth } from '@/lib/auth'
+import type { Person } from '@/lib/types/person'
 
 interface Props {
   person: Person

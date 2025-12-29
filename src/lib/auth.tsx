@@ -1,29 +1,28 @@
 'use client'
 
 import {
-  useState,
-  useEffect,
-  useContext,
-  createContext,
-  useCallback,
-} from 'react'
-import cookie from 'js-cookie'
-import {
-  signInWithPopup,
-  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
-  onIdTokenChanged,
   GoogleAuthProvider,
+  onIdTokenChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
   type User,
 } from 'firebase/auth'
-
-import { getAuth } from '@/lib/firebase'
-import { createUser, fetchUserByUid } from '@/lib/db/users'
-import { generateUniqueString } from '@/lib/helpers'
+import cookie from 'js-cookie'
+import { usePathname, useRouter } from 'next/navigation'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import LoadingScreen from '@/components/shared/loadingScreen'
+import { createUser, fetchUserByUid } from '@/lib/db/users'
+import { getAuth } from '@/lib/firebase'
+import { generateUniqueString } from '@/lib/helpers'
 import type { UserType } from '@/lib/types/users'
-import { useRouter, usePathname } from 'next/navigation'
 
 type ContextProps = {
   user: UserType | null
@@ -289,6 +288,7 @@ function useProvideAuth() {
     await handleUser(null)
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Will cause infinite loop
   useEffect(() => {
     if (typeof window === 'undefined') {
       // On server, keep loading true (will be set to false on client)

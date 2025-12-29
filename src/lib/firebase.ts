@@ -2,11 +2,11 @@
 // Initializes firebase across app for authentication only
 // Firestore operations are now handled by firestore-lite.ts
 
-import { initializeApp, getApps, type FirebaseApp } from 'firebase/app'
+import { type FirebaseApp, getApps, initializeApp } from 'firebase/app'
 import {
-  getAuth as getFirebaseAuth,
-  connectAuthEmulator,
   type Auth,
+  connectAuthEmulator,
+  getAuth as getFirebaseAuth,
 } from 'firebase/auth'
 
 const firebaseConfig = {

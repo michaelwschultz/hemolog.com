@@ -2,9 +2,9 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
+import LoadingScreen from '@/components/shared/loadingScreen'
 import { useAuth } from '@/lib/auth'
 import type { FeedbackType } from '@/lib/db/feedback'
-import LoadingScreen from '@/components/shared/loadingScreen'
 
 const handleReplyClick = (email: string) => {
   window.location.assign(

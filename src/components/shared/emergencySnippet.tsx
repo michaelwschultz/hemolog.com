@@ -1,5 +1,5 @@
-import type React from 'react'
 import { IconCopy } from '@tabler/icons-react'
+import type React from 'react'
 import toast from 'react-hot-toast'
 
 interface Props {

@@ -1,6 +1,6 @@
-import { auth } from '@/lib/firebase-admin'
-import { getAllFeedback } from '@/lib/admin-db/feedback'
 import type { NextRequest } from 'next/server'
+import { getAllFeedback } from '@/lib/admin-db/feedback'
+import { auth } from '@/lib/firebase-admin'
 
 export async function GET(request: NextRequest) {
   try {

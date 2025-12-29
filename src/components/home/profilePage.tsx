@@ -1,15 +1,14 @@
 'use client'
 
-import { useEffect, useCallback, useState } from 'react'
 import { useRouter } from 'next/navigation'
-
-import EmergencyCard from '@/components/home/emergencyCard'
-import EmergencySnippet from '@/components/shared/emergencySnippet'
-import SettingsForm from '@/components/home/settingsForm'
-import { useAuth } from '@/lib/auth'
-import { useUserMutations } from '@/lib/hooks/useUserMutations'
-import { generateUniqueString, track } from '@/lib/helpers'
+import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import EmergencyCard from '@/components/home/emergencyCard'
+import SettingsForm from '@/components/home/settingsForm'
+import EmergencySnippet from '@/components/shared/emergencySnippet'
+import { useAuth } from '@/lib/auth'
+import { generateUniqueString, track } from '@/lib/helpers'
+import { useUserMutations } from '@/lib/hooks/useUserMutations'
 import { useUserQuery } from '@/lib/hooks/useUserQuery'
 
 const ProfilePage = (): JSX.Element => {

@@ -1,12 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
 import Link from 'next/link'
-
-import { useEmergencyUserQuery } from '@/lib/hooks/useEmergencyUserQuery'
+import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import EmergencyInfo from '@/components/emergency/emergencyInfo'
 import Footer from '@/components/shared/footer'
+import { useEmergencyUserQuery } from '@/lib/hooks/useEmergencyUserQuery'
 
 const Emergency = (): JSX.Element => {
   const [mounted, setMounted] = useState(false)

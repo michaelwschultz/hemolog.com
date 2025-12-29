@@ -2,9 +2,9 @@
 // Initializes firebase with admin privileges and returns both {db} used for accessing Firestore
 // and {auth} use to verify logged in people.
 
-import { initializeApp, getApps, cert, type App } from 'firebase-admin/app'
-import { getFirestore, type Firestore } from 'firebase-admin/firestore'
-import { getAuth, type Auth } from 'firebase-admin/auth'
+import { type App, cert, getApps, initializeApp } from 'firebase-admin/app'
+import { type Auth, getAuth } from 'firebase-admin/auth'
+import { type Firestore, getFirestore } from 'firebase-admin/firestore'
 
 const useEmulators = process.env.NEXT_PUBLIC_USE_EMULATORS === 'true'
 

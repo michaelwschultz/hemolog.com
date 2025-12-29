@@ -5,13 +5,13 @@
 // IMPORTANT: This script only works with Firebase emulators for safety.
 // It will refuse to run if emulators are not enabled.
 
-import { adminFirestore } from './firebase-admin'
-import type { Person } from './types/person'
 import {
-  TreatmentTypeEnum,
   type TreatmentType,
+  TreatmentTypeEnum,
   type TreatmentTypeOptions,
 } from './db/infusions'
+import { adminFirestore } from './firebase-admin'
+import type { Person } from './types/person'
 import type { AttachedUserType } from './types/users'
 
 // Safety check: Only allow running with emulators

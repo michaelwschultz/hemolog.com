@@ -1,23 +1,22 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
-import { format, parseISO } from 'date-fns'
+import { IconChevronDown, IconChevronUp, IconDots } from '@tabler/icons-react'
 import {
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  getPaginationRowModel,
-  flexRender,
   type ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   type SortingState,
+  useReactTable,
 } from '@tanstack/react-table'
-import { IconChevronUp, IconChevronDown, IconDots } from '@tabler/icons-react'
-
-import { useInfusionsQuery } from '@/lib/hooks/useInfusionsQuery'
-import { useInfusionMutations } from '@/lib/hooks/useInfusionMutations'
-import { type TreatmentType, TreatmentTypeEnum } from '@/lib/db/infusions'
+import { format, parseISO } from 'date-fns'
+import { useCallback, useMemo, useState } from 'react'
 import { useAuth } from '@/lib/auth'
+import { type TreatmentType, TreatmentTypeEnum } from '@/lib/db/infusions'
 import { filterInfusions } from '@/lib/helpers'
+import { useInfusionMutations } from '@/lib/hooks/useInfusionMutations'
+import { useInfusionsQuery } from '@/lib/hooks/useInfusionsQuery'
 import InfusionModal from './infusionModal'
 
 interface InfusionTableProps {

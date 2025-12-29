@@ -1,9 +1,8 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-
-import { useAuth } from '@/lib/auth'
 import Logo from '@/components/shared/logo'
+import { useAuth } from '@/lib/auth'
 
 const StaticHeader = (): JSX.Element => {
   const { user, loading } = useAuth()

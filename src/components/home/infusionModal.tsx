@@ -1,17 +1,16 @@
-import { useFormik } from 'formik'
 import { format } from 'date-fns'
-
-import { useAuth } from '@/lib/auth'
-import { track } from '@/lib/helpers'
+import { useFormik } from 'formik'
 import toast from 'react-hot-toast'
+import { useAuth } from '@/lib/auth'
 import {
   type TreatmentType,
   TreatmentTypeEnum,
   type TreatmentTypeOptions,
 } from '@/lib/db/infusions'
-import type { AttachedUserType } from '@/lib/types/users'
-import { useInfusionsQuery } from '@/lib/hooks/useInfusionsQuery'
+import { track } from '@/lib/helpers'
 import { useInfusionMutations } from '@/lib/hooks/useInfusionMutations'
+import { useInfusionsQuery } from '@/lib/hooks/useInfusionsQuery'
+import type { AttachedUserType } from '@/lib/types/users'
 
 interface InfusionValues {
   brand: string

@@ -1,10 +1,9 @@
 'use client'
 
 import React from 'react'
-
-import { useAuth } from '@/lib/auth'
-import Logo from '@/components/shared/logo'
 import InfusionModal from '@/components/home/infusionModal'
+import Logo from '@/components/shared/logo'
+import { useAuth } from '@/lib/auth'
 
 interface Props {
   version?: string

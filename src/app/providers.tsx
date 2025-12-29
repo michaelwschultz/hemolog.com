@@ -1,8 +1,8 @@
 'use client'
 
 import { Toaster } from 'react-hot-toast'
-import { ThemeProvider } from '@/lib/contexts/ThemeContext'
 import { AuthProvider } from '@/lib/auth'
+import { ThemeProvider } from '@/lib/contexts/ThemeContext'
 import { QueryProvider } from '@/lib/providers/query-provider'
 
 export function Providers({ children }: { children: React.ReactNode }) {

@@ -1,8 +1,8 @@
 import {
   createDocument,
-  updateDocument,
-  softDeleteDocument,
   getDocuments,
+  softDeleteDocument,
+  updateDocument,
   where,
 } from '@/lib/firestore-lite'
 import type { AttachedUserType } from '@/lib/types/users'

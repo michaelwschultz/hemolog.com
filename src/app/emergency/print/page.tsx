@@ -1,7 +1,7 @@
 'use client'
 
-import Logo from '@/components/shared/logo'
 import EmergencyCard from '@/components/home/emergencyCard'
+import Logo from '@/components/shared/logo'
 
 export default function Print(): JSX.Element {
   // TODO(michael) Could improve this by determining the user on the server side

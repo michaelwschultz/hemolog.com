@@ -1,7 +1,6 @@
 import Image from 'next/image'
-
-import StaticHeader from '@/components/shared/staticHeader'
 import Footer from '@/components/shared/footer'
+import StaticHeader from '@/components/shared/staticHeader'
 
 const About = (): JSX.Element => {
   return (

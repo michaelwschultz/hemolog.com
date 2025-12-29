@@ -1,12 +1,12 @@
 import {
-  setDocument,
   getDocument,
   getDocuments,
-  where,
   limit,
+  setDocument,
+  where,
 } from '@/lib/firestore-lite'
-import type { UserType } from '../types/users'
 import type { Person } from '../types/person'
+import type { UserType } from '../types/users'
 
 // Helper to add timeout to a promise
 function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {

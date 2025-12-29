@@ -1,5 +1,5 @@
-import { getAllInfusionsByApiKey } from '@/lib/admin-db/infusions'
 import type { NextRequest } from 'next/server'
+import { getAllInfusionsByApiKey } from '@/lib/admin-db/infusions'
 
 export async function GET(request: NextRequest) {
   try {

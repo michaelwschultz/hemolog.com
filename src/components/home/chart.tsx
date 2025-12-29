@@ -1,14 +1,14 @@
 import {
-  BarChart,
   Bar,
-  XAxis,
-  YAxis,
+  BarChart,
   CartesianGrid,
   ResponsiveContainer,
+  XAxis,
+  YAxis,
 } from 'recharts'
-import { useInfusionsQuery } from '@/lib/hooks/useInfusionsQuery'
-import { filterInfusions } from '@/lib/helpers'
 import { TreatmentTypeEnum } from '@/lib/db/infusions'
+import { filterInfusions } from '@/lib/helpers'
+import { useInfusionsQuery } from '@/lib/hooks/useInfusionsQuery'
 
 type ChartDataEntry = {
   month: string

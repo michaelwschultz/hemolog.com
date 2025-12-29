@@ -1,16 +1,16 @@
 'use client'
 
-import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-import { Tabs, TabsItem } from '@/components/home/Tabs'
+import { useEffect } from 'react'
+import FeedbackPage from '@/components/home/feedbackPage'
 
 import Header from '@/components/home/header'
-import Footer from '@/components/shared/footer'
-import { withAuth } from '@/components/shared/withAuth'
-import { useAuth, ProtectRoute } from '@/lib/auth'
 import HomePage from '@/components/home/homePage'
 import ProfilePage from '@/components/home/profilePage'
-import FeedbackPage from '@/components/home/feedbackPage'
+import { Tabs, TabsItem } from '@/components/home/Tabs'
+import Footer from '@/components/shared/footer'
+import { withAuth } from '@/components/shared/withAuth'
+import { ProtectRoute, useAuth } from '@/lib/auth'
 import { track } from '@/lib/helpers'
 
 const Home = (): JSX.Element => {

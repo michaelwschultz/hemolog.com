@@ -2,26 +2,26 @@
 // Lightweight Firestore client using REST API via firebase/firestore/lite
 // This replaces the full Firestore SDK to reduce bundle size and eliminate WebSocket issues
 
-import { initializeApp, getApps, type FirebaseApp } from 'firebase/app'
+import { type FirebaseApp, getApps, initializeApp } from 'firebase/app'
 import {
-  getFirestore,
-  connectFirestoreEmulator,
+  addDoc,
   collection,
+  connectFirestoreEmulator,
+  type DocumentData,
+  deleteDoc,
   doc,
+  type Firestore,
   getDoc,
   getDocs,
-  setDoc,
-  updateDoc,
-  deleteDoc,
-  addDoc,
-  query,
-  where,
+  getFirestore,
   limit,
   orderBy,
-  type Firestore,
   type QueryConstraint,
-  type DocumentData,
+  query,
+  setDoc,
+  updateDoc,
   type WithFieldValue,
+  where,
 } from 'firebase/firestore/lite'
 
 const firebaseConfig = {

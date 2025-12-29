@@ -1,8 +1,8 @@
+import type { NextRequest } from 'next/server'
 import {
   getRecentUserInfusionsByApiKey,
   postInfusionByApiKey,
 } from '@/lib/admin-db/infusions'
-import type { NextRequest } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
