@@ -169,24 +169,25 @@ export default function TreatmentModal(
     },
   })
 
+  const monoclonalAntibody = user?.monoclonalAntibody
+  const { brand, cause, sites, type } = formik.values
+  const { setFieldValue } = formik
+
   // Update brand to monoclonal antibody when type changes to ANTIBODY
   useEffect(() => {
-    if (
-      formik.values.type === TreatmentTypeEnum.ANTIBODY &&
-      user?.monoclonalAntibody
-    ) {
-      if (formik.values.brand !== user.monoclonalAntibody) {
-        formik.setFieldValue('brand', user.monoclonalAntibody)
+    if (type === TreatmentTypeEnum.ANTIBODY && monoclonalAntibody) {
+      if (brand !== monoclonalAntibody) {
+        setFieldValue('brand', monoclonalAntibody)
       }
       // Ensure cause and sites are empty for antibody treatments
-      if (formik.values.cause !== '') {
-        formik.setFieldValue('cause', '')
+      if (cause !== '') {
+        setFieldValue('cause', '')
       }
-      if (formik.values.sites !== '') {
-        formik.setFieldValue('sites', '')
+      if (sites !== '') {
+        setFieldValue('sites', '')
       }
     }
-  }, [formik.values.type, user?.monoclonalAntibody])
+  }, [brand, cause, monoclonalAntibody, setFieldValue, sites, type])
 
   const handleSubmit = () => {
     track('Logged Treatment', {
