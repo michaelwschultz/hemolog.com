@@ -5,6 +5,7 @@
   "packageManager": "pnpm@10.13.1",
   "scripts": {
     "build": "pnpm run lint:fix; next build",
+    "build:prod": "pnpm run rules:prod && pnpm run lint:fix && next build",
     "dev": "next dev",
     "firebase": "firebase emulators:start",
     "firebase:dev": "pnpm run rules:dev && firebase emulators:start",
