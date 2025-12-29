@@ -1,5 +1,6 @@
 import { format } from 'date-fns'
 import { useFormik } from 'formik'
+import { useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { useAuth } from '@/lib/auth'
 import {
@@ -55,17 +56,24 @@ export default function TreatmentModal(
 
     // TODO:(michael) should probably move to toLocaleString()
     const { date, brand, lot, units, cause, sites, type } = treatmentValues
+    
+    // For antibody treatments, use monoclonal antibody from profile and clear cause/sites
+    const isAntibody = type === TreatmentTypeEnum.ANTIBODY
+    const medicationBrand = isAntibody 
+      ? (user?.monoclonalAntibody || '') 
+      : brand
+    
     const payload: TreatmentType = {
-      cause,
+      cause: isAntibody ? '' : cause,
       createdAt: new Date().toISOString(),
       deletedAt: null,
       date,
       medication: {
-        brand,
-        lot,
-        units: units ? parseInt(units, 10) : 0,
+        brand: medicationBrand,
+        lot: isAntibody ? undefined : lot,
+        units: isAntibody ? 0 : (units ? parseInt(units, 10) : 0),
       },
-      sites,
+      sites: isAntibody ? '' : sites,
       type,
       user: treatmentUser,
     }
@@ -82,17 +90,24 @@ export default function TreatmentModal(
     }
 
     const { uid, date, brand, lot, units, cause, sites, type } = treatmentValues
+    
+    // For antibody treatments, use monoclonal antibody from profile and clear cause/sites
+    const isAntibody = type === TreatmentTypeEnum.ANTIBODY
+    const medicationBrand = isAntibody 
+      ? (user?.monoclonalAntibody || '') 
+      : brand
+    
     const payload: TreatmentType = {
-      cause,
+      cause: isAntibody ? '' : cause,
       createdAt: new Date().toISOString(),
       deletedAt: null,
       date,
       medication: {
-        brand,
-        lot,
-        units: units ? parseInt(units, 10) : 0,
+        brand: medicationBrand,
+        lot: isAntibody ? undefined : lot,
+        units: isAntibody ? 0 : (units ? parseInt(units, 10) : 0),
       },
-      sites,
+      sites: isAntibody ? '' : sites,
       type,
       user: treatmentUser,
     }
@@ -114,19 +129,31 @@ export default function TreatmentModal(
   // TODO(michael) Add formik validation
   const formik = useFormik({
     initialValues: {
-      brand: displayTreatment ? displayTreatment.medication.brand : '',
-      cause: displayTreatment ? displayTreatment.cause : '',
+      brand: displayTreatment 
+        ? (displayTreatment.type === TreatmentTypeEnum.ANTIBODY 
+            ? (user?.monoclonalAntibody || '')
+            : displayTreatment.medication.brand)
+        : '',
+      cause: displayTreatment 
+        ? (displayTreatment.type === TreatmentTypeEnum.ANTIBODY ? '' : displayTreatment.cause)
+        : '',
       date:
         displayTreatment && treatment
           ? displayTreatment.date
           : format(new Date(), 'yyyy-MM-dd'),
-      lot: displayTreatment ? displayTreatment.medication.lot : '',
-      sites: displayTreatment ? displayTreatment.sites : '',
+      lot: displayTreatment 
+        ? (displayTreatment.type === TreatmentTypeEnum.ANTIBODY ? '' : (displayTreatment.medication.lot || ''))
+        : '',
+      sites: displayTreatment 
+        ? (displayTreatment.type === TreatmentTypeEnum.ANTIBODY ? '' : displayTreatment.sites)
+        : '',
       type: displayTreatment
         ? displayTreatment.type
         : (TreatmentTypeEnum.PROPHY as TreatmentTypeOptions),
       units: displayTreatment
-        ? displayTreatment.medication.units.toString()
+        ? (displayTreatment.type === TreatmentTypeEnum.ANTIBODY 
+            ? '0' 
+            : displayTreatment.medication.units.toString())
         : '',
       uid: displayTreatment ? displayTreatment.uid : null,
     },
@@ -139,6 +166,22 @@ export default function TreatmentModal(
       }
     },
   })
+
+  // Update brand to monoclonal antibody when type changes to ANTIBODY
+  useEffect(() => {
+    if (formik.values.type === TreatmentTypeEnum.ANTIBODY && user?.monoclonalAntibody) {
+      if (formik.values.brand !== user.monoclonalAntibody) {
+        formik.setFieldValue('brand', user.monoclonalAntibody)
+      }
+      // Ensure cause and sites are empty for antibody treatments
+      if (formik.values.cause !== '') {
+        formik.setFieldValue('cause', '')
+      }
+      if (formik.values.sites !== '') {
+        formik.setFieldValue('sites', '')
+      }
+    }
+  }, [formik.values.type, user?.monoclonalAntibody])
 
   const handleSubmit = () => {
     track('Logged Treatment', {
@@ -160,9 +203,15 @@ export default function TreatmentModal(
                 <div className='grid grid-cols-3 gap-2'>
                   <button
                     type='button'
-                    onClick={() =>
+                    onClick={() => {
                       formik.setFieldValue('type', TreatmentTypeEnum.PROPHY)
-                    }
+                      // Clear antibody-specific fields when switching away from antibody
+                      if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
+                        formik.setFieldValue('brand', '')
+                        formik.setFieldValue('cause', '')
+                        formik.setFieldValue('sites', '')
+                      }
+                    }}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       formik.values.type === TreatmentTypeEnum.PROPHY
                         ? 'bg-yellow-100 text-yellow-800 border border-yellow-300'
@@ -173,9 +222,15 @@ export default function TreatmentModal(
                   </button>
                   <button
                     type='button'
-                    onClick={() =>
+                    onClick={() => {
                       formik.setFieldValue('type', TreatmentTypeEnum.BLEED)
-                    }
+                      // Clear antibody-specific fields when switching away from antibody
+                      if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
+                        formik.setFieldValue('brand', '')
+                        formik.setFieldValue('cause', '')
+                        formik.setFieldValue('sites', '')
+                      }
+                    }}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       formik.values.type === TreatmentTypeEnum.BLEED
                         ? 'bg-green-100 text-green-800 border border-green-300'
@@ -186,12 +241,15 @@ export default function TreatmentModal(
                   </button>
                   <button
                     type='button'
-                    onClick={() =>
-                      formik.setFieldValue(
-                        'type',
-                        TreatmentTypeEnum.PREVENTATIVE
-                      )
-                    }
+                    onClick={() => {
+                      formik.setFieldValue('type', TreatmentTypeEnum.PREVENTATIVE)
+                      // Clear antibody-specific fields when switching away from antibody
+                      if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
+                        formik.setFieldValue('brand', '')
+                        formik.setFieldValue('cause', '')
+                        formik.setFieldValue('sites', '')
+                      }
+                    }}
                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       formik.values.type === TreatmentTypeEnum.PREVENTATIVE
                         ? 'bg-red-100 text-red-800 border border-red-300'
@@ -205,9 +263,15 @@ export default function TreatmentModal(
                 {user?.monoclonalAntibody && (
                   <button
                     type='button'
-                    onClick={() =>
+                    onClick={() => {
                       formik.setFieldValue('type', TreatmentTypeEnum.ANTIBODY)
-                    }
+                      // Set brand to monoclonal antibody and clear cause/sites when switching to antibody
+                      formik.setFieldValue('brand', user?.monoclonalAntibody || '')
+                      formik.setFieldValue('cause', '')
+                      formik.setFieldValue('sites', '')
+                      formik.setFieldValue('units', '0')
+                      formik.setFieldValue('lot', '')
+                    }}
                     className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       formik.values.type === TreatmentTypeEnum.ANTIBODY
                         ? 'bg-blue-100 text-blue-800 border border-blue-300'

@@ -104,7 +104,7 @@ export default function TreatmentTable(
       },
       {
         accessorKey: 'medication.brand',
-        header: 'Factor',
+        header: 'Medication',
         cell: ({ row }) => row.original.medication.brand,
       },
       {
