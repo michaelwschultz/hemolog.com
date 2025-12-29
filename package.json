@@ -51,6 +51,7 @@
     "autoprefixer": "^10.4.23",
     "cypress": "^15.8.1",
     "dotenv": "^17.2.3",
+    "firebase-tools": "^15.1.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.5.0",
     "react-hot-toast": "^2.6.0",
