@@ -1,8 +1,8 @@
 import type { NextRequest } from 'next/server'
 import {
-  getRecentUserInfusionsByApiKey,
-  postInfusionByApiKey,
-} from '@/lib/admin-db/infusions'
+  getRecentUserTreatmentsByApiKey,
+  postTreatmentByApiKey,
+} from '@/lib/admin-db/treatments'
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,24 +16,24 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
 
     if (!body) {
-      throw { message: 'Missing infusion data.' }
+      throw { message: 'Missing treatment data.' }
     }
 
-    const { infusions, error } = await getRecentUserInfusionsByApiKey(apikey)
+    const { treatments, error } = await getRecentUserTreatmentsByApiKey(apikey)
 
     if (error) throw error
 
-    const mostRecentInfusion =
-      infusions && infusions.length > 0 ? infusions[0] : null
+    const mostRecentTreatment =
+      treatments && treatments.length > 0 ? treatments[0] : null
 
     try {
-      const { infusion, error } = await postInfusionByApiKey(
+      const { treatment, error } = await postTreatmentByApiKey(
         apikey,
-        mostRecentInfusion,
+        mostRecentTreatment,
         body
       )
       if (error) throw error
-      return Response.json(infusion)
+      return Response.json(treatment)
     } catch (error: unknown) {
       const errorMessage =
         error &&

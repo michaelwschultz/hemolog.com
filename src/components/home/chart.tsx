@@ -6,9 +6,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { TreatmentTypeEnum } from '@/lib/db/infusions'
-import { filterInfusions } from '@/lib/helpers'
-import { useInfusionsQuery } from '@/lib/hooks/useInfusionsQuery'
+import { TreatmentTypeEnum } from '@/lib/db/treatments'
+import { filterTreatments } from '@/lib/helpers'
+import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
 
 type ChartDataEntry = {
   month: string
@@ -24,27 +24,27 @@ interface ChartProps {
 
 export default function Chart(props: ChartProps): JSX.Element | null {
   const { filterYear } = props
-  const { data } = useInfusionsQuery()
+  const { data } = useTreatmentsQuery()
 
   if (!data) {
     return null
   }
 
-  const filteredInfusions = filterInfusions(data, filterYear)
+  const filteredTreatments = filterTreatments(data, filterYear)
 
-  const bleeds = filteredInfusions
+  const bleeds = filteredTreatments
     .filter((entry) => entry.type === TreatmentTypeEnum.BLEED)
     .map((bleed) => bleed.date)
 
-  const preventative = filteredInfusions
+  const preventative = filteredTreatments
     .filter((entry) => entry.type === TreatmentTypeEnum.PREVENTATIVE)
     .map((preventitive) => preventitive.date)
 
-  const prophy = filteredInfusions
+  const prophy = filteredTreatments
     .filter((entry) => entry.type === TreatmentTypeEnum.PROPHY)
     .map((prophy) => prophy.date)
 
-  const antibody = filteredInfusions
+  const antibody = filteredTreatments
     .filter((entry) => entry.type === TreatmentTypeEnum.ANTIBODY)
     .map((antibody) => antibody.date)
 
@@ -72,22 +72,25 @@ export default function Chart(props: ChartProps): JSX.Element | null {
     antibody: 0,
   }))
 
-  // Distribute infusions into months
+  // Distribute treatments into months
   type NumericChartKeys = 'bleed' | 'preventative' | 'prophy' | 'antibody'
-  const distributeInfusions = (infusions: string[], type: NumericChartKeys) => {
-    for (const infusion of infusions) {
+  const distributeTreatments = (
+    treatments: string[],
+    type: NumericChartKeys
+  ) => {
+    for (const treatment of treatments) {
       // Extract month from YYYY-MM-DD format (zero-based index)
-      const monthIndex = Number.parseInt(infusion.split('-')[1], 10) - 1
+      const monthIndex = Number.parseInt(treatment.split('-')[1], 10) - 1
       if (monthIndex >= 0 && monthIndex < 12) {
         chartData[monthIndex][type] = chartData[monthIndex][type] + 1
       }
     }
   }
 
-  distributeInfusions(bleeds, 'bleed')
-  distributeInfusions(preventative, 'preventative')
-  distributeInfusions(prophy, 'prophy')
-  distributeInfusions(antibody, 'antibody')
+  distributeTreatments(bleeds, 'bleed')
+  distributeTreatments(preventative, 'preventative')
+  distributeTreatments(prophy, 'prophy')
+  distributeTreatments(antibody, 'antibody')
 
   // Calculate max Y value for proper scaling
   const maxY = Math.max(

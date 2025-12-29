@@ -12,25 +12,25 @@ export function track(event: string, data: Record<string, unknown>) {
   console.log('track', event, data)
 }
 
-import type { TreatmentType } from './db/infusions'
+import type { TreatmentType } from './db/treatments'
 
-export function filterInfusions(
-  infusions: TreatmentType[] | undefined,
+export function filterTreatments(
+  treatments: TreatmentType[] | undefined,
   filterYear: string
 ): TreatmentType[] {
-  if (!infusions) {
+  if (!treatments) {
     return []
   }
 
   if (filterYear === 'All time') {
-    return infusions
+    return treatments
   }
 
-  return infusions.filter((infusion) => {
-    if (!infusion.date) {
+  return treatments.filter((treatment) => {
+    if (!treatment.date) {
       return false
     }
-    const infusionYear = new Date(infusion.date).getFullYear().toString()
-    return infusionYear === filterYear
+    const treatmentYear = new Date(treatment.date).getFullYear().toString()
+    return treatmentYear === filterYear
   })
 }

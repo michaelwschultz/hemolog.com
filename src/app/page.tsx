@@ -12,7 +12,7 @@ export default function Landing(): JSX.Element {
         {/* Background illustration */}
         <div className='absolute right-0 top-0 w-1/2 h-full pointer-events-none'>
           <Image
-            alt='logging infusion illustration'
+            alt='logging treatment illustration'
             src='/images/logging-infusion-illustration.png'
             width={925 / 2}
             height={989 / 2}

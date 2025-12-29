@@ -4,9 +4,9 @@ import { IconFilter } from '@tabler/icons-react'
 import { getYear } from 'date-fns'
 import dynamic from 'next/dynamic'
 import React, { useState } from 'react'
-import InfusionTable from '@/components/home/infusionTable'
 import Stats from '@/components/home/stats'
-import { useInfusionsQuery } from '@/lib/hooks/useInfusionsQuery'
+import TreatmentTable from '@/components/home/treatmentTable'
+import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
 
 // Lazy load Chart component (includes recharts) - only loads when needed
 const Chart = dynamic(() => import('@/components/home/chart'), {
@@ -26,9 +26,9 @@ const HomePage = (): JSX.Element => {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  const { data } = useInfusionsQuery()
+  const { data } = useTreatmentsQuery()
 
-  const infusionYears = data
+  const treatmentYears = data
     ? data
         .filter((d) => d?.date)
         .map((d) => getYear(new Date(d.date)))
@@ -101,17 +101,17 @@ const HomePage = (): JSX.Element => {
           <IconFilter size={16} className='text-gray-500' />
           <select
             className='px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50'
-            disabled={infusionYears.length < 1}
+            disabled={treatmentYears.length < 1}
             value={filterYear}
             onChange={(e) => setFilterYear(e.target.value)}
           >
             <option value={ALL_TIME}>{ALL_TIME}</option>
-            {!infusionYears.includes(Number.parseInt(THIS_YEAR, 10)) && (
+            {!treatmentYears.includes(Number.parseInt(THIS_YEAR, 10)) && (
               <option value={THIS_YEAR} key={THIS_YEAR}>
                 {THIS_YEAR}
               </option>
             )}
-            {infusionYears.map((year) => (
+            {treatmentYears.map((year) => (
               <option value={year.toString()} key={year}>
                 {year}
               </option>
@@ -135,7 +135,7 @@ const HomePage = (): JSX.Element => {
           {smallerThanSmall && 'Swipe →'}
         </span>
       </div>
-      <InfusionTable filterYear={filterYear} />
+      <TreatmentTable filterYear={filterYear} />
     </>
   )
 }

@@ -97,7 +97,7 @@ function getPostData(slug: string) {
             The original Hemolog was built with the help of a contract
             developer. This time around I've designed and built everything from
             the ground up with the purpose of being the best place to store your
-            infusion data and learn from it.
+            treatment data and learn from it.
           </p>
         </>
       ),

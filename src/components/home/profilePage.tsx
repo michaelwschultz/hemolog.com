@@ -130,7 +130,7 @@ const ProfilePage = (): JSX.Element => {
         <div className='h-12' />
         <h4 className='text-xl font-semibold mb-4'>Delete account</h4>
         <p className='mb-4 text-gray-600'>
-          Deleting your account removes your profile, infusions, and emergency
+          Deleting your account removes your profile, treatments, and emergency
           info forever. This action cannot be undone.
         </p>
 

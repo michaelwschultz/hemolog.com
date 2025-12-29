@@ -2,9 +2,9 @@ import { useState } from 'react'
 import _ from 'underscore'
 import FeedbackModal from '@/components/home/feedbackModal'
 import StatCard from '@/components/home/statCard'
-import { TreatmentTypeEnum } from '@/lib/db/infusions'
-import { filterInfusions } from '@/lib/helpers'
-import { useInfusionsQuery } from '@/lib/hooks/useInfusionsQuery'
+import { TreatmentTypeEnum } from '@/lib/db/treatments'
+import { filterTreatments } from '@/lib/helpers'
+import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
 
 // TODO(michael) move types to types file
 type Value = string[]
@@ -15,7 +15,7 @@ interface ValueRanges {
   values: Value[]
 }
 
-export interface InfusionSheet {
+export interface TreatmentSheet {
   error?: Error
   spreadsheetId: string
   valueRanges: ValueRanges[]
@@ -31,9 +31,9 @@ interface StatsProps {
 
 export default function Stats(props: StatsProps): JSX.Element {
   const { filterYear } = props
-  const { data, isLoading, isError, error } = useInfusionsQuery()
+  const { data, isLoading, isError, error } = useTreatmentsQuery()
 
-  const filteredInfusions = filterInfusions(data, filterYear)
+  const filteredTreatments = filterTreatments(data, filterYear)
 
   // TODO(michael): Remove the feedback modal from this component at some point
   // since we already use it in the footer, maybe figure out a way to share
@@ -73,10 +73,10 @@ export default function Stats(props: StatsProps): JSX.Element {
   // Another idea could be to make all these cards individual components as the logic
   // could get a lot more complicated for some of them.
 
-  const numberOfInfusions = filteredInfusions.length
-  const affectedAreas = filteredInfusions.map((entry) => entry.sites)
-  const causes = filteredInfusions.map((entry) => entry.cause)
-  const numberOfBleeds = filteredInfusions.filter(
+  const numberOfTreatments = filteredTreatments.length
+  const affectedAreas = filteredTreatments.map((entry) => entry.sites)
+  const causes = filteredTreatments.map((entry) => entry.cause)
+  const numberOfBleeds = filteredTreatments.filter(
     (entry) => entry.type === TreatmentTypeEnum.BLEED
   ).length
   const mostAffectedArea = _.chain(affectedAreas)
@@ -95,11 +95,11 @@ export default function Stats(props: StatsProps): JSX.Element {
     .head()
     .value()
 
-  const consecutiveProphyInfusions = (): number => {
+  const consecutiveProphyTreatments = (): number => {
     let longestStreak = 0
     let currentStreak = 0
 
-    for (const entry of filteredInfusions) {
+    for (const entry of filteredTreatments) {
       const isProphy = entry.type === TreatmentTypeEnum.PROPHY
 
       if (isProphy) {
@@ -118,7 +118,7 @@ export default function Stats(props: StatsProps): JSX.Element {
 
   const getTotalUnits = () => {
     let units = 0
-    for (const entry of filteredInfusions) {
+    for (const entry of filteredTreatments) {
       units += entry.medication.units
     }
 
@@ -131,10 +131,10 @@ export default function Stats(props: StatsProps): JSX.Element {
   return (
     <>
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
-        <StatCard value={numberOfInfusions} label='Treatments' />
+        <StatCard value={numberOfTreatments} label='Treatments' />
         <StatCard value={numberOfBleeds} label='Bleeds' />
         <StatCard
-          value={consecutiveProphyInfusions()}
+          value={consecutiveProphyTreatments()}
           label='Consecutive prophy treatments'
         />
         <StatCard

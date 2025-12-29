@@ -1,5 +1,5 @@
 import React from 'react'
-import InfusionTable from '@/components/home/infusionTable'
+import TreatmentTable from '@/components/home/treatmentTable'
 import { useAuth } from '@/lib/auth'
 import type { Person } from '@/lib/types/person'
 
@@ -55,7 +55,7 @@ export default function EmergencyInfo(props: Props): JSX.Element {
           </span>
         </div>
         {person.uid ? (
-          <InfusionTable limit={3} uid={person.uid} filterYear='All time' />
+          <TreatmentTable limit={3} uid={person.uid} filterYear='All time' />
         ) : (
           <div className='bg-yellow-50 border border-yellow-200 rounded-lg p-4'>
             <div className='font-semibold text-yellow-800 mb-1'>Warning</div>

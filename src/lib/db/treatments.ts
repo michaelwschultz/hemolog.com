@@ -39,33 +39,33 @@ export interface TreatmentType {
   user: AttachedUserType
 }
 
-// Create a new infusion document
-export async function createInfusion(data: TreatmentType): Promise<string> {
+// Create a new treatment document
+export async function createTreatment(data: TreatmentType): Promise<string> {
   const docId = await createDocument('infusions', data)
   return docId
 }
 
-// Soft delete an infusion (sets deletedAt timestamp)
-export async function deleteInfusion(uid: string): Promise<void> {
+// Soft delete a treatment (sets deletedAt timestamp)
+export async function deleteTreatment(uid: string): Promise<void> {
   await softDeleteDocument('infusions', uid)
 }
 
-// Update an infusion document
-export async function updateInfusion(
+// Update a treatment document
+export async function updateTreatment(
   uid: string,
   newValues: Partial<TreatmentType>
 ): Promise<void> {
   await updateDocument('infusions', uid, newValues)
 }
 
-// Fetch infusions for a user (used by TanStack Query)
-export async function fetchInfusions(
+// Fetch treatments for a user (used by TanStack Query)
+export async function fetchTreatments(
   userUid: string
 ): Promise<TreatmentType[]> {
-  const infusions = await getDocuments<TreatmentType>(
+  const treatments = await getDocuments<TreatmentType>(
     'infusions',
     where('user.uid', '==', userUid),
     where('deletedAt', '==', null)
   )
-  return infusions
+  return treatments
 }

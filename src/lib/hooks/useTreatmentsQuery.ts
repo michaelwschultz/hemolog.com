@@ -1,22 +1,22 @@
 import { useQuery } from '@tanstack/react-query'
 import { compareDesc } from 'date-fns'
 import { useAuth } from '@/lib/auth'
-import { fetchInfusions, type TreatmentType } from '@/lib/db/infusions'
+import { fetchTreatments, type TreatmentType } from '@/lib/db/treatments'
 
-// Query key factory for infusions
-export const infusionKeys = {
+// Query key factory for treatments
+export const treatmentKeys = {
   all: ['infusions'] as const,
-  list: (uid: string) => [...infusionKeys.all, uid] as const,
+  list: (uid: string) => [...treatmentKeys.all, uid] as const,
 }
 
-interface UseInfusionsQueryOptions {
+interface UseTreatmentsQueryOptions {
   limit?: number
   uid?: string
   // Polling interval in ms (default: no polling)
   refetchInterval?: number
 }
 
-interface InfusionQueryResult {
+interface TreatmentQueryResult {
   data: TreatmentType[]
   isLoading: boolean
   isError: boolean
@@ -24,20 +24,20 @@ interface InfusionQueryResult {
   refetch: () => void
 }
 
-export function useInfusionsQuery(
-  options: UseInfusionsQueryOptions = {}
-): InfusionQueryResult {
+export function useTreatmentsQuery(
+  options: UseTreatmentsQueryOptions = {}
+): TreatmentQueryResult {
   const { limit: maxItems, uid: overrideUid, refetchInterval } = options
   const { user } = useAuth()
   const userUid = overrideUid ?? user?.uid
 
   const query = useQuery({
-    queryKey: infusionKeys.list(userUid ?? ''),
+    queryKey: treatmentKeys.list(userUid ?? ''),
     queryFn: async () => {
       if (!userUid) {
         return []
       }
-      return fetchInfusions(userUid)
+      return fetchTreatments(userUid)
     },
     enabled: !!userUid,
     refetchInterval,
@@ -45,7 +45,7 @@ export function useInfusionsQuery(
     staleTime: 10 * 1000, // 10 seconds
   })
 
-  // Sort infusions by date (newest first) and apply limit
+  // Sort treatments by date (newest first) and apply limit
   const sortedData = (query.data ?? [])
     .slice()
     .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
@@ -62,4 +62,4 @@ export function useInfusionsQuery(
 }
 
 // Hook alias for backward compatibility
-export default useInfusionsQuery
+export default useTreatmentsQuery

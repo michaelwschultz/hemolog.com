@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import InfusionModal from '@/components/home/infusionModal'
+import TreatmentModal from '@/components/home/treatmentModal'
 import Logo from '@/components/shared/logo'
 import { useAuth } from '@/lib/auth'
 
@@ -13,7 +13,7 @@ const Header = (props: Props): JSX.Element | null => {
   const { version } = props
   const { user, signout } = useAuth()
 
-  const [infusionModal, setInfusionModal] = React.useState(false)
+  const [treatmentModal, setTreatmentModal] = React.useState(false)
 
   const [isMobile, setIsMobile] = React.useState(false)
   const [dropdownOpen, setDropdownOpen] = React.useState(false)
@@ -61,7 +61,7 @@ const Header = (props: Props): JSX.Element | null => {
             {!isMobile && (
               <button
                 type='button'
-                onClick={() => setInfusionModal(true)}
+                onClick={() => setTreatmentModal(true)}
                 className='bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1.5 rounded text-sm font-medium transition-colors'
               >
                 New treatment
@@ -124,17 +124,17 @@ const Header = (props: Props): JSX.Element | null => {
           {isMobile && (
             <button
               type='button'
-              onClick={() => setInfusionModal(true)}
+              onClick={() => setTreatmentModal(true)}
               className='w-full bg-green-100 hover:bg-green-200 text-green-800 px-4 py-3 rounded-lg font-medium transition-colors'
             >
-              Log infusion
+              Log treatment
             </button>
           )}
         </div>
 
-        <InfusionModal
-          visible={infusionModal}
-          setVisible={setInfusionModal}
+        <TreatmentModal
+          visible={treatmentModal}
+          setVisible={setTreatmentModal}
           bindings={{}}
         />
       </>

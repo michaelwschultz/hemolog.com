@@ -1,61 +1,61 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import {
-  createInfusion,
-  deleteInfusion,
+  createTreatment,
+  deleteTreatment,
   type TreatmentType,
-  updateInfusion,
-} from '@/lib/db/infusions'
-import { infusionKeys } from './useInfusionsQuery'
+  updateTreatment,
+} from '@/lib/db/treatments'
+import { treatmentKeys } from './useTreatmentsQuery'
 
-interface UseInfusionMutationsOptions {
+interface UseTreatmentMutationsOptions {
   onCreateSuccess?: (docId: string) => void
   onUpdateSuccess?: () => void
   onDeleteSuccess?: () => void
   onError?: (error: Error) => void
 }
 
-export function useInfusionMutations(
-  options: UseInfusionMutationsOptions = {}
+export function useTreatmentMutations(
+  options: UseTreatmentMutationsOptions = {}
 ) {
   const queryClient = useQueryClient()
   const { onCreateSuccess, onUpdateSuccess, onDeleteSuccess, onError } = options
 
-  // Create infusion mutation with optimistic update
+  // Create treatment mutation with optimistic update
   const createMutation = useMutation({
     mutationFn: async (data: TreatmentType) => {
-      const docId = await createInfusion(data)
+      const docId = await createTreatment(data)
       return docId
     },
-    onMutate: async (newInfusion) => {
+    onMutate: async (newTreatment) => {
       // Cancel any outgoing refetches
-      await queryClient.cancelQueries({ queryKey: infusionKeys.all })
+      await queryClient.cancelQueries({ queryKey: treatmentKeys.all })
 
       // Snapshot the previous value
-      const userUid = newInfusion.user.uid
-      const previousInfusions = queryClient.getQueryData<TreatmentType[]>(
-        infusionKeys.list(userUid)
+      const userUid = newTreatment.user.uid
+      const previousTreatments = queryClient.getQueryData<TreatmentType[]>(
+        treatmentKeys.list(userUid)
       )
 
       // Optimistically update with a temporary ID
-      const optimisticInfusion: TreatmentType = {
-        ...newInfusion,
+      const optimisticTreatment: TreatmentType = {
+        ...newTreatment,
         uid: `temp-${Date.now()}`,
       }
 
       queryClient.setQueryData<TreatmentType[]>(
-        infusionKeys.list(userUid),
-        (old) => (old ? [optimisticInfusion, ...old] : [optimisticInfusion])
+        treatmentKeys.list(userUid),
+        (old) => (old ? [optimisticTreatment, ...old] : [optimisticTreatment])
       )
 
-      return { previousInfusions, userUid }
+      return { previousTreatments, userUid }
     },
-    onError: (error, _newInfusion, context) => {
+    onError: (error, _newTreatment, context) => {
       // Rollback on error
-      if (context?.previousInfusions !== undefined) {
+      if (context?.previousTreatments !== undefined) {
         queryClient.setQueryData(
-          infusionKeys.list(context.userUid),
-          context.previousInfusions
+          treatmentKeys.list(context.userUid),
+          context.previousTreatments
         )
       }
       toast.error(
@@ -70,12 +70,12 @@ export function useInfusionMutations(
     onSettled: (_data, _error, variables) => {
       // Refetch to ensure consistency
       queryClient.invalidateQueries({
-        queryKey: infusionKeys.list(variables.user.uid),
+        queryKey: treatmentKeys.list(variables.user.uid),
       })
     },
   })
 
-  // Update infusion mutation with optimistic update
+  // Update treatment mutation with optimistic update
   const updateMutation = useMutation({
     mutationFn: async ({
       uid,
@@ -86,32 +86,32 @@ export function useInfusionMutations(
       userUid: string
       data: Partial<TreatmentType>
     }) => {
-      await updateInfusion(uid, data)
+      await updateTreatment(uid, data)
       return { uid, userUid, data }
     },
     onMutate: async ({ uid, userUid, data }) => {
-      await queryClient.cancelQueries({ queryKey: infusionKeys.all })
+      await queryClient.cancelQueries({ queryKey: treatmentKeys.all })
 
-      const previousInfusions = queryClient.getQueryData<TreatmentType[]>(
-        infusionKeys.list(userUid)
+      const previousTreatments = queryClient.getQueryData<TreatmentType[]>(
+        treatmentKeys.list(userUid)
       )
 
       // Optimistically update
       queryClient.setQueryData<TreatmentType[]>(
-        infusionKeys.list(userUid),
+        treatmentKeys.list(userUid),
         (old) =>
-          old?.map((infusion) =>
-            infusion.uid === uid ? { ...infusion, ...data } : infusion
+          old?.map((treatment) =>
+            treatment.uid === uid ? { ...treatment, ...data } : treatment
           ) ?? []
       )
 
-      return { previousInfusions, userUid }
+      return { previousTreatments, userUid }
     },
     onError: (error, _variables, context) => {
-      if (context?.previousInfusions !== undefined) {
+      if (context?.previousTreatments !== undefined) {
         queryClient.setQueryData(
-          infusionKeys.list(context.userUid),
-          context.previousInfusions
+          treatmentKeys.list(context.userUid),
+          context.previousTreatments
         )
       }
       toast.error(
@@ -125,37 +125,37 @@ export function useInfusionMutations(
     },
     onSettled: (_data, _error, variables) => {
       queryClient.invalidateQueries({
-        queryKey: infusionKeys.list(variables.userUid),
+        queryKey: treatmentKeys.list(variables.userUid),
       })
     },
   })
 
-  // Delete infusion mutation with optimistic update (soft delete)
+  // Delete treatment mutation with optimistic update (soft delete)
   const deleteMutation = useMutation({
     mutationFn: async ({ uid, userUid }: { uid: string; userUid: string }) => {
-      await deleteInfusion(uid)
+      await deleteTreatment(uid)
       return { uid, userUid }
     },
     onMutate: async ({ uid, userUid }) => {
-      await queryClient.cancelQueries({ queryKey: infusionKeys.all })
+      await queryClient.cancelQueries({ queryKey: treatmentKeys.all })
 
-      const previousInfusions = queryClient.getQueryData<TreatmentType[]>(
-        infusionKeys.list(userUid)
+      const previousTreatments = queryClient.getQueryData<TreatmentType[]>(
+        treatmentKeys.list(userUid)
       )
 
       // Optimistically remove from list
       queryClient.setQueryData<TreatmentType[]>(
-        infusionKeys.list(userUid),
-        (old) => old?.filter((infusion) => infusion.uid !== uid) ?? []
+        treatmentKeys.list(userUid),
+        (old) => old?.filter((treatment) => treatment.uid !== uid) ?? []
       )
 
-      return { previousInfusions, userUid }
+      return { previousTreatments, userUid }
     },
     onError: (error, _variables, context) => {
-      if (context?.previousInfusions !== undefined) {
+      if (context?.previousTreatments !== undefined) {
         queryClient.setQueryData(
-          infusionKeys.list(context.userUid),
-          context.previousInfusions
+          treatmentKeys.list(context.userUid),
+          context.previousTreatments
         )
       }
       toast.error(
@@ -169,22 +169,22 @@ export function useInfusionMutations(
     },
     onSettled: (_data, _error, variables) => {
       queryClient.invalidateQueries({
-        queryKey: infusionKeys.list(variables.userUid),
+        queryKey: treatmentKeys.list(variables.userUid),
       })
     },
   })
 
   return {
-    createInfusion: createMutation.mutate,
-    createInfusionAsync: createMutation.mutateAsync,
+    createTreatment: createMutation.mutate,
+    createTreatmentAsync: createMutation.mutateAsync,
     isCreating: createMutation.isPending,
 
-    updateInfusion: updateMutation.mutate,
-    updateInfusionAsync: updateMutation.mutateAsync,
+    updateTreatment: updateMutation.mutate,
+    updateTreatmentAsync: updateMutation.mutateAsync,
     isUpdating: updateMutation.isPending,
 
-    deleteInfusion: deleteMutation.mutate,
-    deleteInfusionAsync: deleteMutation.mutateAsync,
+    deleteTreatment: deleteMutation.mutate,
+    deleteTreatmentAsync: deleteMutation.mutateAsync,
     isDeleting: deleteMutation.isPending,
 
     isPending:
@@ -194,4 +194,4 @@ export function useInfusionMutations(
   }
 }
 
-export default useInfusionMutations
+export default useTreatmentMutations

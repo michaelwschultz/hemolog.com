@@ -1,5 +1,5 @@
 import type { NextRequest } from 'next/server'
-import { getAllInfusionsByApiKey } from '@/lib/admin-db/infusions'
+import { getAllTreatmentsByApiKey } from '@/lib/admin-db/treatments'
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,13 +10,13 @@ export async function GET(request: NextRequest) {
       throw { message: 'Access denied. Missing api key.' }
     }
 
-    const { infusions, error } = await getAllInfusionsByApiKey(apikey)
+    const { treatments, error } = await getAllTreatmentsByApiKey(apikey)
 
     if (error) {
       throw error
     }
 
-    return Response.json(infusions)
+    return Response.json(treatments)
   } catch (error: unknown) {
     const errorMessage =
       error &&

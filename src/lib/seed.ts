@@ -9,7 +9,7 @@ import {
   type TreatmentType,
   TreatmentTypeEnum,
   type TreatmentTypeOptions,
-} from './db/infusions'
+} from './db/treatments'
 import { adminFirestore } from './firebase-admin'
 import type { Person } from './types/person'
 import type { AttachedUserType } from './types/users'
@@ -50,12 +50,12 @@ function cleanUndefined<T extends object>(obj: T): Partial<T> {
   ) as Partial<T>
 }
 
-async function seedInfusions(
+async function seedTreatments(
   user: AttachedUserType,
   medicationBrand: string,
   count: number = 10
 ): Promise<void> {
-  const infusionTypes: TreatmentTypeOptions[] = [
+  const treatmentTypes: TreatmentTypeOptions[] = [
     TreatmentTypeEnum.ANTIBODY,
     TreatmentTypeEnum.PROPHY,
     TreatmentTypeEnum.BLEED,
@@ -66,25 +66,26 @@ async function seedInfusions(
   const causes = ['', 'Minor cut', 'Bruise', 'Joint pain', 'Preventive']
 
   const now = new Date()
-  const infusions: TreatmentType[] = []
+  const treatments: TreatmentType[] = []
 
   for (let i = 0; i < count; i++) {
-    // Spread infusions over the last 30 days
+    // Spread treatments over the last 30 days
     const daysAgo = Math.floor((i / count) * 30)
-    const infusionDate = new Date(now)
-    infusionDate.setDate(infusionDate.getDate() - daysAgo)
+    const treatmentDate = new Date(now)
+    treatmentDate.setDate(treatmentDate.getDate() - daysAgo)
 
-    const dateStr = infusionDate.toISOString().slice(0, 10)
-    const createdAt = infusionDate.toISOString()
+    const dateStr = treatmentDate.toISOString().slice(0, 10)
+    const createdAt = treatmentDate.toISOString()
 
-    const type = infusionTypes[Math.floor(Math.random() * infusionTypes.length)]
+    const type =
+      treatmentTypes[Math.floor(Math.random() * treatmentTypes.length)]
     const site = sites[Math.floor(Math.random() * sites.length)]
     const cause = causes[Math.floor(Math.random() * causes.length)]
 
     // Vary units between 2000-4000
     const units = Math.floor(Math.random() * 2000) + 2000
 
-    const infusion: TreatmentType = {
+    const treatment: TreatmentType = {
       deletedAt: null,
       cause,
       createdAt,
@@ -99,20 +100,20 @@ async function seedInfusions(
       user,
     }
 
-    infusions.push(infusion)
+    treatments.push(treatment)
   }
 
   // Sort by date (oldest first) for more realistic ordering
-  infusions.sort((a, b) => a.date.localeCompare(b.date))
+  treatments.sort((a, b) => a.date.localeCompare(b.date))
 
-  // Create infusions in Firestore
-  for (const infusion of infusions) {
-    const cleanData = cleanUndefined(infusion)
+  // Create treatments in Firestore
+  for (const treatment of treatments) {
+    const cleanData = cleanUndefined(treatment)
     const docRef = await adminFirestore.collection('infusions').add(cleanData)
     await docRef.set({ uid: docRef.id, ...cleanData }, { merge: true })
   }
 
-  console.log(`✓ Created ${count} infusions for user ${user.name}`)
+  console.log(`✓ Created ${count} treatments for user ${user.name}`)
 }
 
 async function seedUser() {
@@ -182,7 +183,7 @@ async function seedUser() {
       console.log('User data:', JSON.stringify(cleanData, null, 2))
     }
 
-    // Create AttachedUserType for infusions
+    // Create AttachedUserType for treatments
     // Ensure uid matches what's stored in the Person document
     const attachedUser: AttachedUserType = {
       uid: userDocData.uid || userUid,
@@ -191,11 +192,11 @@ async function seedUser() {
       photoUrl: userDocData.photoUrl || '',
     }
 
-    console.log(`Creating infusions with user.uid: ${attachedUser.uid}`)
+    console.log(`Creating treatments with user.uid: ${attachedUser.uid}`)
     console.log(`Person document uid: ${userDocData.uid}`)
 
-    // Create 10 infusions
-    await seedInfusions(attachedUser, seedUserData.medication, 10)
+    // Create 10 treatments
+    await seedTreatments(attachedUser, seedUserData.medication, 10)
   } catch (error) {
     console.error('Error seeding user:', error)
     process.exit(1)

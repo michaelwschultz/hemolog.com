@@ -13,45 +13,47 @@ import {
 import { format, parseISO } from 'date-fns'
 import { useCallback, useMemo, useState } from 'react'
 import { useAuth } from '@/lib/auth'
-import { type TreatmentType, TreatmentTypeEnum } from '@/lib/db/infusions'
-import { filterInfusions } from '@/lib/helpers'
-import { useInfusionMutations } from '@/lib/hooks/useInfusionMutations'
-import { useInfusionsQuery } from '@/lib/hooks/useInfusionsQuery'
-import InfusionModal from './infusionModal'
+import { type TreatmentType, TreatmentTypeEnum } from '@/lib/db/treatments'
+import { filterTreatments } from '@/lib/helpers'
+import { useTreatmentMutations } from '@/lib/hooks/useTreatmentMutations'
+import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
+import TreatmentModal from './treatmentModal'
 
-interface InfusionTableProps {
+interface TreatmentTableProps {
   limit?: number
   uid?: string
   filterYear: string
 }
 
-export default function InfusionTable(props: InfusionTableProps): JSX.Element {
+export default function TreatmentTable(
+  props: TreatmentTableProps
+): JSX.Element {
   const { limit, uid, filterYear } = props
   const {
-    data: infusions,
+    data: treatments,
     isLoading,
     isError,
     error,
-  } = useInfusionsQuery({ limit, uid })
+  } = useTreatmentsQuery({ limit, uid })
   const { user } = useAuth()
-  const { deleteInfusion } = useInfusionMutations()
-  const [selectedInfusion, setSelectedInfusion] = useState<TreatmentType>()
-  const [infusionModal, setInfusionModal] = useState(false)
+  const { deleteTreatment } = useTreatmentMutations()
+  const [selectedTreatment, setSelectedTreatment] = useState<TreatmentType>()
+  const [treatmentModal, setTreatmentModal] = useState(false)
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'date', desc: true },
   ])
 
-  const filteredInfusions = filterInfusions(infusions, filterYear)
+  const filteredTreatments = filterTreatments(treatments, filterYear)
 
   // Determine if user can edit/delete treatments
   const isLoggedInUser = user && (!uid || uid === user.uid)
 
   // Delete function - memoized to prevent column recreation
   const deleteRow = useCallback(
-    (infusionUid: string) => {
-      deleteInfusion({ uid: infusionUid, userUid: user?.uid || '' })
+    (treatmentUid: string) => {
+      deleteTreatment({ uid: treatmentUid, userUid: user?.uid || '' })
     },
-    [deleteInfusion, user?.uid]
+    [deleteTreatment, user?.uid]
   )
 
   // Column definitions - memoized to prevent recreation on every render
@@ -121,7 +123,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
         id: 'actions',
         header: '',
         cell: ({ row }) => {
-          const infusion = row.original
+          const treatment = row.original
           return (
             <div className='relative'>
               <button
@@ -154,14 +156,14 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
                   ) as HTMLButtonElement
 
                   editBtn.onclick = () => {
-                    setSelectedInfusion(infusion)
-                    setInfusionModal(true)
+                    setSelectedTreatment(treatment)
+                    setTreatmentModal(true)
                     document.body.removeChild(menu)
                   }
 
                   deleteBtn.onclick = () => {
-                    if (infusion.uid) {
-                      deleteRow(infusion.uid)
+                    if (treatment.uid) {
+                      deleteRow(treatment.uid)
                     }
                     document.body.removeChild(menu)
                   }
@@ -194,7 +196,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
 
   // Create the table instance - must be called before any early returns
   const table = useReactTable({
-    data: filteredInfusions,
+    data: filteredTreatments,
     columns,
     state: {
       sorting,
@@ -244,7 +246,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
   }
 
   if (isError || error) {
-    console.error('Error fetching infusions:', error)
+    console.error('Error fetching treatments:', error)
     return (
       <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
         <div className='font-semibold text-red-800 mb-1'>Error</div>
@@ -256,7 +258,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
   }
 
   // Show empty state if query completed successfully but no treatments found
-  if (!infusions || infusions.length === 0) {
+  if (!treatments || treatments.length === 0) {
     const emptyMessage = isLoggedInUser
       ? "You haven't logged any treatments yet. Add one by clicking 'New Treatment' above."
       : 'This person has not logged any treatments yet.'
@@ -341,7 +343,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
         </table>
 
         {/* Pagination */}
-        {filteredInfusions.length > 25 && (
+        {filteredTreatments.length > 25 && (
           <div className='flex items-center justify-between px-6 py-3 bg-white border-t border-gray-200'>
             <div className='flex items-center gap-2'>
               <button
@@ -367,17 +369,17 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
             </div>
             <div className='text-sm text-gray-700'>
               Showing {table.getRowModel().rows.length} of{' '}
-              {filteredInfusions.length} treatments
+              {filteredTreatments.length} treatments
             </div>
           </div>
         )}
       </div>
 
       {isLoggedInUser && (
-        <InfusionModal
-          infusion={selectedInfusion}
-          visible={infusionModal}
-          setVisible={setInfusionModal}
+        <TreatmentModal
+          treatment={selectedTreatment}
+          visible={treatmentModal}
+          setVisible={setTreatmentModal}
           bindings={{}}
         />
       )}

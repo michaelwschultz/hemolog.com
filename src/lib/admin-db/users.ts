@@ -49,13 +49,13 @@ async function deleteUserAndData(uid: string) {
 
   // Auth user deleted (or didn't exist), now safe to delete Firestore data
   const userDocRef = adminFirestore.collection('users').doc(uid)
-  const infusionSnapshot = await adminFirestore
+  const treatmentSnapshot = await adminFirestore
     .collection('infusions')
     .where('user.uid', '==', uid)
     .get()
 
   const docRefs: FirebaseFirestore.DocumentReference[] = [userDocRef]
-  infusionSnapshot.forEach((docSnapshot) => {
+  treatmentSnapshot.forEach((docSnapshot) => {
     docRefs.push(docSnapshot.ref)
   })
 

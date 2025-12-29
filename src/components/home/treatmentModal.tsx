@@ -6,13 +6,13 @@ import {
   type TreatmentType,
   TreatmentTypeEnum,
   type TreatmentTypeOptions,
-} from '@/lib/db/infusions'
+} from '@/lib/db/treatments'
 import { track } from '@/lib/helpers'
-import { useInfusionMutations } from '@/lib/hooks/useInfusionMutations'
-import { useInfusionsQuery } from '@/lib/hooks/useInfusionsQuery'
+import { useTreatmentMutations } from '@/lib/hooks/useTreatmentMutations'
+import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
 import type { AttachedUserType } from '@/lib/types/users'
 
-interface InfusionValues {
+interface TreatmentValues {
   brand: string
   cause: string
   date: string
@@ -23,28 +23,30 @@ interface InfusionValues {
   uid?: string | null
 }
 
-interface InfusionModalProps {
+interface TreatmentModalProps {
   visible: boolean
   setVisible: (flag: boolean) => void
   // biome-ignore lint/suspicious/noExplicitAny: not sure what this should be
   bindings: any
-  infusion?: TreatmentType
+  treatment?: TreatmentType
 }
 
-export default function InfusionModal(props: InfusionModalProps): JSX.Element {
-  const { visible, setVisible, infusion } = props
+export default function TreatmentModal(
+  props: TreatmentModalProps
+): JSX.Element {
+  const { visible, setVisible, treatment } = props
   const { user } = useAuth()
-  const { data: infusions } = useInfusionsQuery()
-  const { createInfusion, updateInfusion } = useInfusionMutations({
+  const { data: treatments } = useTreatmentsQuery()
+  const { createTreatment, updateTreatment } = useTreatmentMutations({
     onCreateSuccess: () => closeModal(),
     onUpdateSuccess: () => closeModal(),
   })
 
-  // Infusions are already sorted by the query hook (newest first)
-  const previousInfusion = infusions?.[0]
+  // Treatments are already sorted by the query hook (newest first)
+  const previousTreatment = treatments?.[0]
 
-  const handleCreateInfusion = async (infusionValues: InfusionValues) => {
-    const infusionUser: AttachedUserType = {
+  const handleCreateTreatment = async (treatmentValues: TreatmentValues) => {
+    const treatmentUser: AttachedUserType = {
       email: user?.email || '',
       name: user?.name || '',
       photoUrl: user?.photoUrl || '',
@@ -52,7 +54,7 @@ export default function InfusionModal(props: InfusionModalProps): JSX.Element {
     }
 
     // TODO:(michael) should probably move to toLocaleString()
-    const { date, brand, lot, units, cause, sites, type } = infusionValues
+    const { date, brand, lot, units, cause, sites, type } = treatmentValues
     const payload: TreatmentType = {
       cause,
       createdAt: new Date().toISOString(),
@@ -65,21 +67,21 @@ export default function InfusionModal(props: InfusionModalProps): JSX.Element {
       },
       sites,
       type,
-      user: infusionUser,
+      user: treatmentUser,
     }
 
-    createInfusion(payload)
+    createTreatment(payload)
   }
 
-  const handleUpdateInfusion = async (infusionValues: InfusionValues) => {
-    const infusionUser: AttachedUserType = {
+  const handleUpdateTreatment = async (treatmentValues: TreatmentValues) => {
+    const treatmentUser: AttachedUserType = {
       email: user?.email || '',
       name: user?.name || '',
       photoUrl: user?.photoUrl || '',
       uid: user?.uid || '',
     }
 
-    const { uid, date, brand, lot, units, cause, sites, type } = infusionValues
+    const { uid, date, brand, lot, units, cause, sites, type } = treatmentValues
     const payload: TreatmentType = {
       cause,
       createdAt: new Date().toISOString(),
@@ -92,11 +94,11 @@ export default function InfusionModal(props: InfusionModalProps): JSX.Element {
       },
       sites,
       type,
-      user: infusionUser,
+      user: treatmentUser,
     }
 
     if (uid) {
-      updateInfusion({ uid, userUid: user?.uid || '', data: payload })
+      updateTreatment({ uid, userUid: user?.uid || '', data: payload })
     } else {
       toast.error('Treatment database entry not found')
     }
@@ -107,37 +109,39 @@ export default function InfusionModal(props: InfusionModalProps): JSX.Element {
     formik.resetForm()
   }
 
-  const displayInfusion = infusion ? infusion : previousInfusion
+  const displayTreatment = treatment ? treatment : previousTreatment
 
   // TODO(michael) Add formik validation
   const formik = useFormik({
     initialValues: {
-      brand: displayInfusion ? displayInfusion.medication.brand : '',
-      cause: displayInfusion ? displayInfusion.cause : '',
+      brand: displayTreatment ? displayTreatment.medication.brand : '',
+      cause: displayTreatment ? displayTreatment.cause : '',
       date:
-        displayInfusion && infusion
-          ? displayInfusion.date
+        displayTreatment && treatment
+          ? displayTreatment.date
           : format(new Date(), 'yyyy-MM-dd'),
-      lot: displayInfusion ? displayInfusion.medication.lot : '',
-      sites: displayInfusion ? displayInfusion.sites : '',
-      type: displayInfusion
-        ? displayInfusion.type
+      lot: displayTreatment ? displayTreatment.medication.lot : '',
+      sites: displayTreatment ? displayTreatment.sites : '',
+      type: displayTreatment
+        ? displayTreatment.type
         : (TreatmentTypeEnum.PROPHY as TreatmentTypeOptions),
-      units: displayInfusion ? displayInfusion.medication.units.toString() : '',
-      uid: displayInfusion ? displayInfusion.uid : null,
+      units: displayTreatment
+        ? displayTreatment.medication.units.toString()
+        : '',
+      uid: displayTreatment ? displayTreatment.uid : null,
     },
     enableReinitialize: true,
     onSubmit: async (values) => {
-      if (infusion) {
-        await handleUpdateInfusion(values)
+      if (treatment) {
+        await handleUpdateTreatment(values)
       } else {
-        await handleCreateInfusion(values)
+        await handleCreateTreatment(values)
       }
     },
   })
 
   const handleSubmit = () => {
-    track('Logged Infusion', {
+    track('Logged Treatment', {
       type: formik.values.type,
     })
     formik.submitForm()
@@ -361,7 +365,7 @@ export default function InfusionModal(props: InfusionModalProps): JSX.Element {
                 {formik.isSubmitting && (
                   <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
                 )}
-                {infusion ? 'Update Treatment' : 'Log Treatment'}
+                {treatment ? 'Update Treatment' : 'Log Treatment'}
               </button>
             </div>
           </div>
