@@ -2,16 +2,23 @@
 
 // All Geist UI components have been migrated to Tailwind
 
+import { useEffect, useState } from 'react'
 import EmergencySnippet from '@/components/shared/emergencySnippet'
 import { useAuth } from '@/lib/auth'
 import { CONFIG } from '@/lib/helpers'
 
 export default function Footer(): JSX.Element {
   const { user, loading } = useAuth()
+  const [mounted, setMounted] = useState(false)
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Use a consistent default during SSR and initial hydration to avoid mismatch
   const alertId = () => {
-    if (loading) {
-      return ''
+    if (!mounted || loading) {
+      return 'example'
     }
     if (user?.alertId) {
       return user.alertId

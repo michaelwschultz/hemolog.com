@@ -1,5 +1,6 @@
 import { IconCopy } from '@tabler/icons-react'
 import type React from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
 interface Props {
@@ -9,8 +10,13 @@ interface Props {
 
 export default function EmergencySnippet(props: Props): JSX.Element {
   const { alertId = 'example', style } = props
-  const env = process.env.NODE_ENV
-  const domain = env === 'development' ? 'localhost:3000' : 'hemolog.com'
+  const [domain, setDomain] = useState('hemolog.com')
+
+  useEffect(() => {
+    // Use actual hostname on client to avoid hydration mismatch
+    setDomain(window.location.host)
+  }, [])
+
   const url = `${domain}/emergency/${alertId}`
 
   const copyToClipboard = async () => {

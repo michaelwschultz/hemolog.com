@@ -17,6 +17,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'fonts.gstatic.com',
+        pathname: '/**', // Allow all paths on this hostname
+      },
+      {
+        protocol: 'https',
         hostname: 'assets.onedollarstats.com',
         pathname: '/**',
       },
@@ -67,12 +72,12 @@ const nextConfig = {
   // },
 
   // Production optimizations
-  ...(process.env.NODE_ENV === 'production' && {
-    // Enable standalone output for better deployment
-    output: 'standalone',
-    // Compress responses
-    compress: true,
-  }),
+  // ...(process.env.NODE_ENV === 'production' && {
+  //   // // Enable standalone output for better deployment
+  //   // output: 'standalone',
+  //   // // Compress responses
+  //   compress: true,
+  // }),
 }
 
 export default withBundleAnalyzer(nextConfig)

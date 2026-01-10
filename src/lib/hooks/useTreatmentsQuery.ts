@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { compareDesc } from 'date-fns'
+import { useMemo } from 'react'
 import { useAuth } from '@/lib/auth'
 import { fetchTreatments, type TreatmentType } from '@/lib/db/treatments'
 
@@ -21,6 +22,7 @@ interface TreatmentQueryResult {
   isLoading: boolean
   isError: boolean
   error: Error | null
+  isFetching: boolean
   refetch: () => void
 }
 
@@ -46,17 +48,24 @@ export function useTreatmentsQuery(
   })
 
   // Sort treatments by date (newest first) and apply limit
-  const sortedData = (query.data ?? [])
-    .slice()
-    .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
+  // Memoized to prevent creating new array references on every render
+  const sortedData = useMemo(() => {
+    if (!query.data) return []
+    return [...query.data].sort((a, b) =>
+      compareDesc(new Date(a.date), new Date(b.date))
+    )
+  }, [query.data])
 
-  const limitedData = maxItems ? sortedData.slice(0, maxItems) : sortedData
+  const limitedData = useMemo(() => {
+    return maxItems ? sortedData.slice(0, maxItems) : sortedData
+  }, [sortedData, maxItems])
 
   return {
     data: limitedData,
     isLoading: query.isLoading,
     isError: query.isError,
     error: query.error,
+    isFetching: query.isFetching,
     refetch: query.refetch,
   }
 }

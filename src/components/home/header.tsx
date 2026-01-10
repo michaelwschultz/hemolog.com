@@ -4,6 +4,7 @@ import React from 'react'
 import TreatmentModal from '@/components/home/treatmentModal'
 import Logo from '@/components/shared/logo'
 import { useAuth } from '@/lib/auth'
+import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
 
 interface Props {
   version?: string
@@ -12,6 +13,7 @@ interface Props {
 const Header = (props: Props): JSX.Element | null => {
   const { version } = props
   const { user, signout } = useAuth()
+  const { data: treatments } = useTreatmentsQuery()
 
   const [treatmentModal, setTreatmentModal] = React.useState(false)
 
@@ -132,11 +134,14 @@ const Header = (props: Props): JSX.Element | null => {
           )}
         </div>
 
-        <TreatmentModal
-          visible={treatmentModal}
-          setVisible={setTreatmentModal}
-          bindings={{}}
-        />
+        {treatmentModal && (
+          <TreatmentModal
+            visible={treatmentModal}
+            setVisible={setTreatmentModal}
+            previousTreatment={treatments?.[0]}
+            bindings={{}}
+          />
+        )}
       </>
     )
   }

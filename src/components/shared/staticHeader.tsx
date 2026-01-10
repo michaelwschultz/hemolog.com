@@ -1,12 +1,21 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import Logo from '@/components/shared/logo'
 import { useAuth } from '@/lib/auth'
 
 const StaticHeader = (): JSX.Element => {
   const { user, loading } = useAuth()
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Use consistent "Loading..." state during SSR and initial hydration
+  const isLoading = !mounted || loading
 
   return (
     <header className='p-6'>
@@ -16,9 +25,9 @@ const StaticHeader = (): JSX.Element => {
           type='button'
           className='bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
           onClick={() => router.push(user ? '/home' : '/signin')}
-          disabled={loading}
+          disabled={isLoading}
         >
-          {loading ? (
+          {isLoading ? (
             <div className='flex items-center'>
               <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-green-800 mr-2'></div>
               Loading...

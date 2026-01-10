@@ -1,6 +1,6 @@
 'use client'
 
-import { IconChevronDown, IconChevronUp, IconDots } from '@tabler/icons-react'
+import { IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 import {
   type ColumnDef,
   flexRender,
@@ -17,6 +17,7 @@ import { type TreatmentType, TreatmentTypeEnum } from '@/lib/db/treatments'
 import { filterTreatments } from '@/lib/helpers'
 import { useTreatmentMutations } from '@/lib/hooks/useTreatmentMutations'
 import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
+import ActionMenu from './actionMenu'
 import TreatmentModal from './treatmentModal'
 
 interface TreatmentTableProps {
@@ -34,16 +35,28 @@ export default function TreatmentTable(
     isLoading,
     isError,
     error,
+    isFetching,
   } = useTreatmentsQuery({ limit, uid })
   const { user } = useAuth()
   const { deleteTreatment } = useTreatmentMutations()
-  const [selectedTreatment, setSelectedTreatment] = useState<TreatmentType>()
+  const [selectedTreatmentUid, setSelectedTreatmentUid] = useState<
+    string | null
+  >(null)
   const [treatmentModal, setTreatmentModal] = useState(false)
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'date', desc: true },
   ])
 
   const filteredTreatments = filterTreatments(treatments, filterYear)
+
+  // Look up the selected treatment by UID - memoized to prevent unnecessary re-renders
+  const selectedTreatment = useMemo(
+    () =>
+      selectedTreatmentUid
+        ? treatments.find((t) => t.uid === selectedTreatmentUid)
+        : undefined,
+    [selectedTreatmentUid, treatments]
+  )
 
   // Determine if user can edit/delete treatments
   const isLoggedInUser = user && (!uid || uid === user.uid)
@@ -54,6 +67,62 @@ export default function TreatmentTable(
       deleteTreatment({ uid: treatmentUid, userUid: user?.uid || '' })
     },
     [deleteTreatment, user?.uid]
+  )
+
+  // Edit function - memoized to prevent column recreation
+  const editRow = useCallback((treatment: TreatmentType) => {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/3dc15767-f349-4da6-9392-58b37a9964f4', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionId: 'debug-session',
+        runId: 'pre-fix',
+        hypothesisId: 'H1',
+        location: 'src/components/home/treatmentTable.tsx:70',
+        message: 'editRow invoked',
+        data: {
+          treatmentUid: treatment.uid || null,
+          modalOpen: true,
+        },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {})
+    // #endregion
+    setSelectedTreatmentUid(treatment.uid || null)
+    setTreatmentModal(true)
+  }, [])
+
+  // Close modal handler - clears selected treatment when closing
+  const handleModalClose = useCallback(
+    (visible: boolean) => {
+      // #region agent log
+      fetch(
+        'http://127.0.0.1:7242/ingest/3dc15767-f349-4da6-9392-58b37a9964f4',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: 'debug-session',
+            runId: 'pre-fix',
+            hypothesisId: 'H1',
+            location: 'src/components/home/treatmentTable.tsx:76',
+            message: 'handleModalClose called',
+            data: {
+              nextVisible: visible,
+              selectedTreatmentUid,
+            },
+            timestamp: Date.now(),
+          }),
+        }
+      ).catch(() => {})
+      // #endregion
+      setTreatmentModal(visible)
+      if (!visible) {
+        setSelectedTreatmentUid(null)
+      }
+    },
+    [selectedTreatmentUid]
   )
 
   // Column definitions - memoized to prevent recreation on every render
@@ -117,7 +186,6 @@ export default function TreatmentTable(
       },
     ]
 
-    // Add actions column for logged-in users
     if (isLoggedInUser) {
       baseColumns.push({
         id: 'actions',
@@ -125,76 +193,19 @@ export default function TreatmentTable(
         cell: ({ row }) => {
           const treatment = row.original
           return (
-            <div className='relative'>
-              <button
-                type='button'
-                className='p-1 text-gray-400 hover:text-gray-600'
-                onClick={() => {
-                  // Simple dropdown implementation
-                  const menu = document.createElement('div')
-                  menu.innerHTML = `
-                    <div class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
-                      <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" data-action="edit">
-                        Update
-                      </button>
-                      <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50" data-action="delete">
-                        Delete
-                      </button>
-                    </div>
-                  `
-                  menu.style.position = 'absolute'
-                  menu.style.right = '0'
-                  menu.style.top = '100%'
-                  menu.style.zIndex = '50'
-
-                  // Handle clicks
-                  const editBtn = menu.querySelector(
-                    '[data-action="edit"]'
-                  ) as HTMLButtonElement
-                  const deleteBtn = menu.querySelector(
-                    '[data-action="delete"]'
-                  ) as HTMLButtonElement
-
-                  editBtn.onclick = () => {
-                    setSelectedTreatment(treatment)
-                    setTreatmentModal(true)
-                    document.body.removeChild(menu)
-                  }
-
-                  deleteBtn.onclick = () => {
-                    if (treatment.uid) {
-                      deleteRow(treatment.uid)
-                    }
-                    document.body.removeChild(menu)
-                  }
-
-                  // Close on outside click
-                  const closeMenu = (e: MouseEvent) => {
-                    if (!menu.contains(e.target as Node)) {
-                      document.body.removeChild(menu)
-                      document.removeEventListener('click', closeMenu)
-                    }
-                  }
-
-                  document.body.appendChild(menu)
-                  setTimeout(
-                    () => document.addEventListener('click', closeMenu),
-                    0
-                  )
-                }}
-              >
-                <IconDots size={16} />
-              </button>
-            </div>
+            <ActionMenu
+              treatment={treatment}
+              onEdit={editRow}
+              onDelete={deleteRow}
+            />
           )
         },
       })
     }
 
     return baseColumns
-  }, [isLoggedInUser, deleteRow])
+  }, [isLoggedInUser, deleteRow, editRow])
 
-  // Create the table instance - must be called before any early returns
   const table = useReactTable({
     data: filteredTreatments,
     columns,
@@ -271,6 +282,34 @@ export default function TreatmentTable(
         <div className='text-green-700'>{emptyMessage}</div>
       </div>
     )
+  }
+
+  if (treatmentModal) {
+    const treatmentsSignature =
+      treatments?.map((treatment) => treatment.uid ?? 'missing').join('|') ??
+      null
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/3dc15767-f349-4da6-9392-58b37a9964f4', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionId: 'debug-session',
+        runId: 'pre-fix',
+        hypothesisId: 'H2',
+        location: 'src/components/home/treatmentTable.tsx:245',
+        message: 'TreatmentTable render with modal open',
+        data: {
+          selectedTreatmentUid,
+          selectedTreatmentUidResolved: selectedTreatment?.uid || null,
+          treatmentsCount: treatments?.length || 0,
+          filterYear,
+          isFetching,
+          treatmentsSignature,
+        },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {})
+    // #endregion
   }
 
   return (
@@ -375,11 +414,12 @@ export default function TreatmentTable(
         )}
       </div>
 
-      {isLoggedInUser && (
+      {isLoggedInUser && treatmentModal && (
         <TreatmentModal
           treatment={selectedTreatment}
+          previousTreatment={treatments?.[0]}
           visible={treatmentModal}
-          setVisible={setTreatmentModal}
+          setVisible={handleModalClose}
           bindings={{}}
         />
       )}

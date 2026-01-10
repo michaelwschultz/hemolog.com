@@ -1,6 +1,6 @@
 import { format } from 'date-fns'
 import { useFormik } from 'formik'
-import { useEffect } from 'react'
+import React from 'react'
 import toast from 'react-hot-toast'
 import { useAuth } from '@/lib/auth'
 import {
@@ -10,7 +10,6 @@ import {
 } from '@/lib/db/treatments'
 import { track } from '@/lib/helpers'
 import { useTreatmentMutations } from '@/lib/hooks/useTreatmentMutations'
-import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
 import type { AttachedUserType } from '@/lib/types/users'
 
 interface TreatmentValues {
@@ -30,21 +29,124 @@ interface TreatmentModalProps {
   // biome-ignore lint/suspicious/noExplicitAny: not sure what this should be
   bindings: any
   treatment?: TreatmentType
+  // Previous treatment for prefilling form when creating new treatments
+  previousTreatment?: TreatmentType
 }
+
+// Helper function to compute initial values - called once when modal mounts
+function getInitialValues(
+  treatment: TreatmentType | undefined,
+  previousTreatment: TreatmentType | undefined,
+  monoclonalAntibody: string | undefined
+) {
+  const displayTreatment = treatment || previousTreatment
+  const isAntibody = displayTreatment?.type === TreatmentTypeEnum.ANTIBODY
+
+  return {
+    brand: displayTreatment
+      ? isAntibody
+        ? monoclonalAntibody || ''
+        : displayTreatment.medication.brand
+      : '',
+    cause: displayTreatment ? (isAntibody ? '' : displayTreatment.cause) : '',
+    date: treatment
+      ? displayTreatment?.date || format(new Date(), 'yyyy-MM-dd')
+      : format(new Date(), 'yyyy-MM-dd'),
+    lot: displayTreatment
+      ? isAntibody
+        ? ''
+        : displayTreatment.medication.lot || ''
+      : '',
+    sites: displayTreatment ? (isAntibody ? '' : displayTreatment.sites) : '',
+    type: displayTreatment
+      ? displayTreatment.type
+      : (TreatmentTypeEnum.PROPHY as TreatmentTypeOptions),
+    units: displayTreatment
+      ? isAntibody
+        ? '0'
+        : displayTreatment.medication.units.toString()
+      : '',
+    uid: displayTreatment?.uid || null,
+  }
+}
+
+// Debug: Track render count
+let renderCount = 0
 
 export default function TreatmentModal(
   props: TreatmentModalProps
 ): JSX.Element {
-  const { visible, setVisible, treatment } = props
-  const { user } = useAuth()
-  const { data: treatments } = useTreatmentsQuery()
-  const { createTreatment, updateTreatment } = useTreatmentMutations({
-    onCreateSuccess: () => closeModal(),
-    onUpdateSuccess: () => closeModal(),
+  const { visible, setVisible, treatment, previousTreatment } = props
+
+  // Debug: Log every render
+  renderCount++
+  console.log(`[TreatmentModal] Render #${renderCount}`, {
+    visible,
+    treatmentUid: treatment?.uid,
+    previousTreatmentUid: previousTreatment?.uid,
   })
 
-  // Treatments are already sorted by the query hook (newest first)
-  const previousTreatment = treatments?.[0]
+  const { user } = useAuth()
+  console.log('[TreatmentModal] useAuth result:', { userUid: user?.uid })
+
+  // Use the mutations hook without callbacks - we'll handle success in the handlers
+  const { createTreatment, updateTreatment } = useTreatmentMutations()
+  console.log('[TreatmentModal] useTreatmentMutations called')
+
+  // Compute initial values once when component mounts
+  const [initialValues] = React.useState(() => {
+    console.log(
+      '[TreatmentModal] Computing initial values (should only happen once)'
+    )
+    return getInitialValues(
+      treatment,
+      previousTreatment,
+      user?.monoclonalAntibody
+    )
+  })
+
+  // TODO(michael) Add formik validation
+  const formik = useFormik({
+    initialValues,
+    enableReinitialize: false,
+    onSubmit: async (values) => {
+      if (treatment) {
+        await handleUpdateTreatment(values)
+      } else {
+        await handleCreateTreatment(values)
+      }
+    },
+  })
+
+  if (visible) {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/3dc15767-f349-4da6-9392-58b37a9964f4', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionId: 'debug-session',
+        runId: 'pre-fix',
+        hypothesisId: 'H2',
+        location: 'src/components/home/treatmentModal.tsx:103',
+        message: 'Formik state inside TreatmentModal',
+        data: {
+          treatmentUid: treatment?.uid || null,
+          previousTreatmentUid: previousTreatment?.uid || null,
+          formUid: formik.values.uid || null,
+          formType: formik.values.type,
+          initialUid: initialValues.uid || null,
+          isDirty: formik.dirty,
+          isValid: formik.isValid,
+          isSubmitting: formik.isSubmitting,
+          dateValue: formik.values.date,
+        },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {})
+    // #endregion
+  }
+
+  console.log('[TreatmentModal] formik values:', formik.values)
 
   const handleCreateTreatment = async (treatmentValues: TreatmentValues) => {
     const treatmentUser: AttachedUserType = {
@@ -76,7 +178,9 @@ export default function TreatmentModal(
       user: treatmentUser,
     }
 
-    createTreatment(payload)
+    createTreatment(payload, {
+      onSuccess: () => setVisible(false),
+    })
   }
 
   const handleUpdateTreatment = async (treatmentValues: TreatmentValues) => {
@@ -109,7 +213,10 @@ export default function TreatmentModal(
     }
 
     if (uid) {
-      updateTreatment({ uid, userUid: user?.uid || '', data: payload })
+      updateTreatment(
+        { uid, userUid: user?.uid || '', data: payload },
+        { onSuccess: () => setVisible(false) }
+      )
     } else {
       toast.error('Treatment database entry not found')
     }
@@ -119,75 +226,6 @@ export default function TreatmentModal(
     setVisible(false)
     formik.resetForm()
   }
-
-  const displayTreatment = treatment ? treatment : previousTreatment
-
-  // TODO(michael) Add formik validation
-  const formik = useFormik({
-    initialValues: {
-      brand: displayTreatment
-        ? displayTreatment.type === TreatmentTypeEnum.ANTIBODY
-          ? user?.monoclonalAntibody || ''
-          : displayTreatment.medication.brand
-        : '',
-      cause: displayTreatment
-        ? displayTreatment.type === TreatmentTypeEnum.ANTIBODY
-          ? ''
-          : displayTreatment.cause
-        : '',
-      date:
-        displayTreatment && treatment
-          ? displayTreatment.date
-          : format(new Date(), 'yyyy-MM-dd'),
-      lot: displayTreatment
-        ? displayTreatment.type === TreatmentTypeEnum.ANTIBODY
-          ? ''
-          : displayTreatment.medication.lot || ''
-        : '',
-      sites: displayTreatment
-        ? displayTreatment.type === TreatmentTypeEnum.ANTIBODY
-          ? ''
-          : displayTreatment.sites
-        : '',
-      type: displayTreatment
-        ? displayTreatment.type
-        : (TreatmentTypeEnum.PROPHY as TreatmentTypeOptions),
-      units: displayTreatment
-        ? displayTreatment.type === TreatmentTypeEnum.ANTIBODY
-          ? '0'
-          : displayTreatment.medication.units.toString()
-        : '',
-      uid: displayTreatment ? displayTreatment.uid : null,
-    },
-    enableReinitialize: true,
-    onSubmit: async (values) => {
-      if (treatment) {
-        await handleUpdateTreatment(values)
-      } else {
-        await handleCreateTreatment(values)
-      }
-    },
-  })
-
-  const monoclonalAntibody = user?.monoclonalAntibody
-  const { brand, cause, sites, type } = formik.values
-  const { setFieldValue } = formik
-
-  // Update brand to monoclonal antibody when type changes to ANTIBODY
-  useEffect(() => {
-    if (type === TreatmentTypeEnum.ANTIBODY && monoclonalAntibody) {
-      if (brand !== monoclonalAntibody) {
-        setFieldValue('brand', monoclonalAntibody)
-      }
-      // Ensure cause and sites are empty for antibody treatments
-      if (cause !== '') {
-        setFieldValue('cause', '')
-      }
-      if (sites !== '') {
-        setFieldValue('sites', '')
-      }
-    }
-  }, [brand, cause, monoclonalAntibody, setFieldValue, sites, type])
 
   const handleSubmit = () => {
     track('Logged Treatment', {

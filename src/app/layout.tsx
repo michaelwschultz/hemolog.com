@@ -1,6 +1,14 @@
 import type { Metadata } from 'next'
+import { Nanum_Pen_Script } from 'next/font/google'
 import { Providers } from './providers'
 import './globals.css'
+
+const nanumPenScript = Nanum_Pen_Script({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-nanum-pen-script',
+})
 
 export const metadata: Metadata = {
   title: 'Hemolog',
@@ -51,32 +59,13 @@ export const metadata: Metadata = {
   },
 }
 
-const googleRichResultsSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  url: 'https://hemolog.com',
-  logo: 'https://hemolog.com/images/hemolog-logo.png',
-}
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang='en'>
-      <head>
-        <script
-          type='application/ld+json'
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(googleRichResultsSchema),
-          }}
-        />
-        <link
-          href='https://fonts.googleapis.com/css?family=Nanum+Pen+Script&display=swap'
-          rel='stylesheet'
-        />
-      </head>
+    <html lang='en' className={nanumPenScript.variable}>
       <body>
         <Providers>{children}</Providers>
       </body>

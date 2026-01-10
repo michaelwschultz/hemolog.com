@@ -24,7 +24,7 @@ export default function Landing(): JSX.Element {
 
         {/* Content */}
         <div className='relative z-10 max-w-2xl'>
-          <h1 className='font-["Nanum_Pen_Script"] text-8xl md:text-[100px] leading-tight md:leading-[80px] w-3/4 mb-4'>
+          <h1 className='font-[var(--font-nanum-pen-script)] text-8xl md:text-[100px] leading-tight md:leading-[80px] w-3/4 mb-4'>
             TREATMENT INSIGHTS <br />
             THAT MATTER
           </h1>
