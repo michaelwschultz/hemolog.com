@@ -13,6 +13,7 @@
       "**/*.js",
       "**/*.jsx",
       "**/*.css",
+      "**/*.cy.ts",
       "!**/*.min.js",
       "!**/node_modules",
       "!**/dist",
@@ -23,8 +24,7 @@
       "!**/.husky",
       "!**/.vscode",
       "!**/.env",
-      "!**/.env.local",
-      "!**/cypress"
+      "!**/.env.local"
     ]
   },
   "formatter": {

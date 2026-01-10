@@ -1,0 +1,8 @@
+{
+  "[javascript, typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[json, jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+}

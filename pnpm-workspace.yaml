@@ -1,6 +1,6 @@
 packages:
 onlyBuiltDependencies:
-  - '@firebase/util'
+  - "@firebase/util"
   - core-js
   - cypress
   - es5-ext
