@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import { compareDesc } from 'date-fns'
-import { useMemo } from 'react'
 import { useAuth } from '@/lib/auth'
 import { fetchTreatments, type TreatmentType } from '@/lib/db/treatments'
 
@@ -48,17 +47,14 @@ export function useTreatmentsQuery(
   })
 
   // Sort treatments by date (newest first) and apply limit
-  // Memoized to prevent creating new array references on every render
-  const sortedData = useMemo(() => {
-    if (!query.data) return []
-    return [...query.data].sort((a, b) =>
-      compareDesc(new Date(a.date), new Date(b.date))
-    )
-  }, [query.data])
+  // React 19 compiler automatically memoizes these derived values
+  const sortedData = !query.data
+    ? []
+    : [...query.data].sort((a, b) =>
+        compareDesc(new Date(a.date), new Date(b.date))
+      )
 
-  const limitedData = useMemo(() => {
-    return maxItems ? sortedData.slice(0, maxItems) : sortedData
-  }, [sortedData, maxItems])
+  const limitedData = maxItems ? sortedData.slice(0, maxItems) : sortedData
 
   return {
     data: limitedData,

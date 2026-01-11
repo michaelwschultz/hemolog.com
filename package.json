@@ -23,6 +23,7 @@
     "node": "22.21.x"
   },
   "dependencies": {
+    "@silk-hq/components": "^0.10.0",
     "@tanstack/react-query": "^5.62.0",
     "@tanstack/react-table": "^8.21.3",
     "date-fns": "^2.30.0",
@@ -31,8 +32,8 @@
     "formik": "^2.4.9",
     "js-cookie": "^2.2.1",
     "next": "^16.1.1",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "react-qr-code": "^2.0.18",
     "recharts": "^3.6.0",
     "underscore": "^1.13.7"
@@ -45,8 +46,8 @@
     "@testing-library/cypress": "^10.1.0",
     "@types/js-cookie": "^2.2.7",
     "@types/node": "^22.19.3",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "@types/underscore": "^1.13.0",
     "autoprefixer": "^10.4.23",
     "cypress": "^15.8.1",

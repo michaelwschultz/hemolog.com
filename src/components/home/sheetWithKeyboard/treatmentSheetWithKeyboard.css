@@ -1,0 +1,105 @@
+/* TreatmentSheet styles */
+
+.TreatmentSheet-content {
+  /* INNER-LAYOUT */
+  container-type: size;
+  display: grid;
+  grid-template-rows: min-content 1fr;
+}
+
+.TreatmentSheet-header {
+  /* SELF-LAYOUT */
+  height: 57px;
+
+  /* APPEARANCE */
+  border-bottom: 1px solid rgb(229, 231, 235);
+
+  /* INNER-LAYOUT */
+  position: relative;
+  padding-inline: 1.25rem;
+  display: grid;
+  grid-template-columns: 80px 1fr 80px;
+  align-items: center;
+  gap: 0.75rem;
+}
+@media (min-width: 800px) {
+  .TreatmentSheet-header {
+    /* SELF-LAYOUT */
+    height: 53px;
+  }
+}
+
+.TreatmentSheet-cancelButton {
+  /* SELF-LAYOUT */
+  justify-self: start;
+
+  /* APPEARANCE */
+  border-radius: 6px;
+  outline-offset: 5px;
+  border: none;
+  appearance: none;
+  background-color: transparent;
+
+  /* INTERACTIVITY */
+  cursor: pointer;
+
+  /* INNER-LAYOUT */
+  padding: 0;
+
+  /* TEXT */
+  font-size: 17.25px;
+  font-weight: 500;
+  color: rgb(52, 159, 13);
+}
+
+.TreatmentSheet-title {
+  /* SELF-LAYOUT */
+  margin: 0;
+  justify-self: center;
+
+  /* TEXT */
+  font-size: 17.25px;
+  font-weight: 620;
+  color: rgb(31, 41, 55);
+}
+
+.TreatmentSheet-saveButton {
+  /* SELF-LAYOUT */
+  justify-self: end;
+
+  /* APPEARANCE */
+  border-radius: 6px;
+  outline-offset: 5px;
+  border: none;
+  appearance: none;
+  background-color: transparent;
+
+  /* INTERACTIVITY */
+  cursor: pointer;
+
+  /* INNER-LAYOUT */
+  padding: 0;
+
+  /* TEXT */
+  font-size: 17.25px;
+  font-weight: 600;
+  color: rgb(52, 159, 13);
+}
+
+.TreatmentSheet-scrollView {
+  /* SELF-LAYOUT */
+  min-height: 0;
+
+  /* APPEARANCE */
+  overflow: clip;
+  overflow: hidden;
+  border-radius: 0 0 var(--sheetWithKeyboard-radius)
+    var(--sheetWithKeyboard-radius);
+  background-color: white;
+}
+
+.TreatmentSheet-scrollContent {
+  /* INNER-LAYOUT */
+  display: grid;
+  align-content: start;
+}

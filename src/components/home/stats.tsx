@@ -79,21 +79,37 @@ export default function Stats(props: StatsProps): JSX.Element {
   const numberOfBleeds = filteredTreatments.filter(
     (entry) => entry.type === TreatmentTypeEnum.BLEED
   ).length
-  const mostAffectedArea = _.chain(affectedAreas)
-    .compact()
-    .countBy()
-    .pairs()
-    .max(_.last)
-    .head()
-    .value()
+  let mostAffectedArea: unknown
+  let biggestCause: unknown
+  try {
+    mostAffectedArea = _.chain(affectedAreas)
+      .compact()
+      .countBy()
+      .pairs()
+      .max(_.last)
+      .head()
+      .value()
+  } catch (err) {
+    if (err instanceof Error) {
+      throw err
+    }
+    throw new Error('Unknown error calculating most affected area')
+  }
 
-  const biggestCause = _.chain(causes)
-    .compact()
-    .countBy()
-    .pairs()
-    .max(_.last)
-    .head()
-    .value()
+  try {
+    biggestCause = _.chain(causes)
+      .compact()
+      .countBy()
+      .pairs()
+      .max(_.last)
+      .head()
+      .value()
+  } catch (err) {
+    if (err instanceof Error) {
+      throw err
+    }
+    throw new Error('Unknown error calculating biggest cause')
+  }
 
   const consecutiveProphyTreatments = (): number => {
     let longestStreak = 0
@@ -138,11 +154,11 @@ export default function Stats(props: StatsProps): JSX.Element {
           label='Consecutive prophy treatments'
         />
         <StatCard
-          value={mostAffectedArea || 'Not enough data'}
+          value={(mostAffectedArea as string) || 'Not enough data'}
           label='Most affected area'
         />
         <StatCard
-          value={biggestCause || 'Not enough data'}
+          value={(biggestCause as string) || 'Not enough data'}
           label='Biggest cause'
         />
         <StatCard

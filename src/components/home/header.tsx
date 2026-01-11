@@ -1,9 +1,9 @@
 'use client'
 
 import React from 'react'
-import TreatmentModal from '@/components/home/treatmentModal'
 import Logo from '@/components/shared/logo'
 import { useAuth } from '@/lib/auth'
+import { useTreatmentSheet } from '@/lib/hooks/useTreatmentSheet'
 import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
 
 interface Props {
@@ -14,21 +14,16 @@ const Header = (props: Props): JSX.Element | null => {
   const { version } = props
   const { user, signout } = useAuth()
   const { data: treatments } = useTreatmentsQuery()
+  const { openTreatmentSheet } = useTreatmentSheet()
 
-  const [treatmentModal, setTreatmentModal] = React.useState(false)
-
-  const [isMobile, setIsMobile] = React.useState(false)
   const [dropdownOpen, setDropdownOpen] = React.useState(false)
 
-  React.useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 640) // Tailwind's sm breakpoint
-    }
-
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  const handleOpenSheet = () => {
+    openTreatmentSheet({
+      mode: 'create',
+      previousTreatment: treatments?.[0],
+    })
+  }
 
   // Close dropdown when clicking outside
   React.useEffect(() => {
@@ -45,13 +40,6 @@ const Header = (props: Props): JSX.Element | null => {
     }
   }, [dropdownOpen])
 
-  // const [themeType, setThemeType] = useState('dark')
-  // const switchThemes = () => {
-  //   setThemeType((lastThemeType) =>
-  //     lastThemeType === 'dark' ? 'light' : 'dark'
-  //   )
-  // }
-
   if (user) {
     const avatarInitial = user.name?.charAt(0) || user.email?.charAt(0) || '?'
 
@@ -60,15 +48,13 @@ const Header = (props: Props): JSX.Element | null => {
         <div className='flex justify-between items-center'>
           <Logo />
           <div className='flex items-center gap-2' suppressHydrationWarning>
-            {!isMobile && (
-              <button
-                type='button'
-                onClick={() => setTreatmentModal(true)}
-                className='bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1.5 rounded text-sm font-medium transition-colors'
-              >
-                New treatment
-              </button>
-            )}
+            <button
+              type='button'
+              onClick={handleOpenSheet}
+              className='bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1.5 rounded text-sm font-medium transition-colors'
+            >
+              New treatment
+            </button>
             <div className='relative dropdown-container'>
               <button
                 type='button'
@@ -121,27 +107,6 @@ const Header = (props: Props): JSX.Element | null => {
         </div>
 
         <div className='h-4' />
-
-        <div suppressHydrationWarning>
-          {isMobile && (
-            <button
-              type='button'
-              onClick={() => setTreatmentModal(true)}
-              className='w-full bg-green-100 hover:bg-green-200 text-green-800 px-4 py-3 rounded-lg font-medium transition-colors'
-            >
-              Log treatment
-            </button>
-          )}
-        </div>
-
-        {treatmentModal && (
-          <TreatmentModal
-            visible={treatmentModal}
-            setVisible={setTreatmentModal}
-            previousTreatment={treatments?.[0]}
-            bindings={{}}
-          />
-        )}
       </>
     )
   }

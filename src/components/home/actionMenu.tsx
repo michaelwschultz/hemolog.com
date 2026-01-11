@@ -67,10 +67,8 @@ export default function ActionMenu({
 
   const handleEdit = () => {
     setIsOpen(false)
-    // Use setTimeout to ensure menu closes before triggering the edit
-    setTimeout(() => {
-      onEdit(treatment)
-    }, 0)
+    // Trigger edit immediately; click handlers will stop propagation.
+    onEdit(treatment)
   }
 
   const handleDelete = () => {
@@ -90,14 +88,22 @@ export default function ActionMenu({
         <button
           type='button'
           className='block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer'
-          onClick={handleEdit}
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            handleEdit()
+          }}
         >
           Update
         </button>
         <button
           type='button'
           className='block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer'
-          onClick={handleDelete}
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            handleDelete()
+          }}
         >
           Delete
         </button>

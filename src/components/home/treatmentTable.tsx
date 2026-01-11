@@ -7,18 +7,20 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  type Row,
   type SortingState,
   useReactTable,
 } from '@tanstack/react-table'
 import { format, parseISO } from 'date-fns'
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useAuth } from '@/lib/auth'
 import { type TreatmentType, TreatmentTypeEnum } from '@/lib/db/treatments'
 import { filterTreatments } from '@/lib/helpers'
 import { useTreatmentMutations } from '@/lib/hooks/useTreatmentMutations'
+import { useTreatmentSheet } from '@/lib/hooks/useTreatmentSheet'
 import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
 import ActionMenu from './actionMenu'
-import TreatmentModal from './treatmentModal'
 
 interface TreatmentTableProps {
   limit?: number
@@ -35,97 +37,41 @@ export default function TreatmentTable(
     isLoading,
     isError,
     error,
-    isFetching,
   } = useTreatmentsQuery({ limit, uid })
+
   const { user } = useAuth()
   const { deleteTreatment } = useTreatmentMutations()
-  const [selectedTreatmentUid, setSelectedTreatmentUid] = useState<
-    string | null
-  >(null)
-  const [treatmentModal, setTreatmentModal] = useState(false)
+  const { openTreatmentSheet } = useTreatmentSheet()
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'date', desc: true },
   ])
 
   const filteredTreatments = filterTreatments(treatments, filterYear)
 
-  // Look up the selected treatment by UID - memoized to prevent unnecessary re-renders
-  const selectedTreatment = useMemo(
-    () =>
-      selectedTreatmentUid
-        ? treatments.find((t) => t.uid === selectedTreatmentUid)
-        : undefined,
-    [selectedTreatmentUid, treatments]
-  )
-
   // Determine if user can edit/delete treatments
   const isLoggedInUser = user && (!uid || uid === user.uid)
 
-  // Delete function - memoized to prevent column recreation
-  const deleteRow = useCallback(
-    (treatmentUid: string) => {
-      deleteTreatment({ uid: treatmentUid, userUid: user?.uid || '' })
-    },
-    [deleteTreatment, user?.uid]
-  )
+  // Delete function - React 19 compiler handles memoization automatically
+  const deleteRow = (treatmentUid: string) => {
+    deleteTreatment({ uid: treatmentUid, userUid: user?.uid || '' })
+  }
 
-  // Edit function - memoized to prevent column recreation
-  const editRow = useCallback((treatment: TreatmentType) => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3dc15767-f349-4da6-9392-58b37a9964f4', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        sessionId: 'debug-session',
-        runId: 'pre-fix',
-        hypothesisId: 'H1',
-        location: 'src/components/home/treatmentTable.tsx:70',
-        message: 'editRow invoked',
-        data: {
-          treatmentUid: treatment.uid || null,
-          modalOpen: true,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {})
-    // #endregion
-    setSelectedTreatmentUid(treatment.uid || null)
-    setTreatmentModal(true)
-  }, [])
+  // Edit function - React 19 compiler handles memoization automatically
+  const editRow = (treatment: TreatmentType) => {
+    // Prevent editing treatments without a uid (shouldn't happen, but safety check)
+    if (!treatment.uid) {
+      toast.error('Cannot edit treatment: missing database ID')
+      return
+    }
+    openTreatmentSheet({
+      mode: 'edit',
+      treatment,
+      previousTreatment: treatments?.[0],
+    })
+  }
 
-  // Close modal handler - clears selected treatment when closing
-  const handleModalClose = useCallback(
-    (visible: boolean) => {
-      // #region agent log
-      fetch(
-        'http://127.0.0.1:7242/ingest/3dc15767-f349-4da6-9392-58b37a9964f4',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            sessionId: 'debug-session',
-            runId: 'pre-fix',
-            hypothesisId: 'H1',
-            location: 'src/components/home/treatmentTable.tsx:76',
-            message: 'handleModalClose called',
-            data: {
-              nextVisible: visible,
-              selectedTreatmentUid,
-            },
-            timestamp: Date.now(),
-          }),
-        }
-      ).catch(() => {})
-      // #endregion
-      setTreatmentModal(visible)
-      if (!visible) {
-        setSelectedTreatmentUid(null)
-      }
-    },
-    [selectedTreatmentUid]
-  )
-
-  // Column definitions - memoized to prevent recreation on every render
+  // Column definitions - React 19 compiler handles memoization automatically
+  // biome-ignore lint/correctness/useExhaustiveDependencies: will cause infinite loop
   const columns: ColumnDef<TreatmentType>[] = useMemo(() => {
     const baseColumns: ColumnDef<TreatmentType>[] = [
       {
@@ -133,13 +79,30 @@ export default function TreatmentTable(
         header: 'Date',
         cell: ({ getValue }) => {
           const dateString = getValue() as string
-          const parsedDate = parseISO(dateString)
-          return format(parsedDate, 'MM/dd/yyyy')
+          try {
+            const parsedDate = parseISO(dateString)
+            return format(parsedDate, 'MM/dd/yyyy')
+          } catch (error: unknown) {
+            if (error instanceof Error) {
+              toast.error(error.message)
+            } else {
+              toast.error('Error parsing date')
+            }
+          }
         },
-        sortingFn: (rowA, rowB) => {
-          const dateA = parseISO(rowA.getValue('date') as string)
-          const dateB = parseISO(rowB.getValue('date') as string)
-          return dateA.getTime() - dateB.getTime()
+        sortingFn: (rowA: Row<TreatmentType>, rowB: Row<TreatmentType>) => {
+          try {
+            const dateA = parseISO(rowA.getValue('date') as string)
+            const dateB = parseISO(rowB.getValue('date') as string)
+            return dateA.getTime() - dateB.getTime()
+          } catch (error: unknown) {
+            if (error instanceof Error) {
+              toast.error(error.message)
+            } else {
+              toast.error('Error sorting dates')
+            }
+            return 0 // Return 0 to indicate equal when parsing fails
+          }
         },
       },
       {
@@ -204,7 +167,7 @@ export default function TreatmentTable(
     }
 
     return baseColumns
-  }, [isLoggedInUser, deleteRow, editRow])
+  }, [isLoggedInUser])
 
   const table = useReactTable({
     data: filteredTreatments,
@@ -284,145 +247,102 @@ export default function TreatmentTable(
     )
   }
 
-  if (treatmentModal) {
-    const treatmentsSignature =
-      treatments?.map((treatment) => treatment.uid ?? 'missing').join('|') ??
-      null
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3dc15767-f349-4da6-9392-58b37a9964f4', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        sessionId: 'debug-session',
-        runId: 'pre-fix',
-        hypothesisId: 'H2',
-        location: 'src/components/home/treatmentTable.tsx:245',
-        message: 'TreatmentTable render with modal open',
-        data: {
-          selectedTreatmentUid,
-          selectedTreatmentUidResolved: selectedTreatment?.uid || null,
-          treatmentsCount: treatments?.length || 0,
-          filterYear,
-          isFetching,
-          treatmentsSignature,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {})
-    // #endregion
-  }
-
   return (
-    <>
-      <div className='overflow-x-auto'>
-        <table className='min-w-full divide-y divide-gray-200'>
-          <thead className='bg-gray-50'>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
-                    onClick={header.column.getToggleSortingHandler()}
+    <div className='overflow-x-auto'>
+      <table className='min-w-full divide-y divide-gray-200'>
+        <thead className='bg-gray-50'>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+                  onClick={header.column.getToggleSortingHandler()}
+                >
+                  <div className='flex items-center gap-1'>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                    {header.column.getIsSorted() === 'asc' && (
+                      <IconChevronUp size={14} />
+                    )}
+                    {header.column.getIsSorted() === 'desc' && (
+                      <IconChevronDown size={14} />
+                    )}
+                  </div>
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody className='bg-white divide-y divide-gray-200'>
+          {table.getRowModel().rows.length === 0 ? (
+            <tr>
+              <td
+                colSpan={columns.length}
+                className='px-6 py-12 text-center text-gray-500'
+              >
+                <div className='bg-green-50 border border-green-200 rounded-lg p-4 inline-block'>
+                  <div className='font-semibold text-green-800 mb-1'>
+                    No treatments found
+                  </div>
+                  <div className='text-green-700'>
+                    {isLoggedInUser
+                      ? "Add one by clicking 'New Treatment' above."
+                      : 'This person has not logged any treatments yet.'}
+                  </div>
+                </div>
+              </td>
+            </tr>
+          ) : (
+            table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className='hover:bg-gray-50'>
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'
                   >
-                    <div className='flex items-center gap-1'>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      {header.column.getIsSorted() === 'asc' && (
-                        <IconChevronUp size={14} />
-                      )}
-                      {header.column.getIsSorted() === 'desc' && (
-                        <IconChevronDown size={14} />
-                      )}
-                    </div>
-                  </th>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
                 ))}
               </tr>
-            ))}
-          </thead>
-          <tbody className='bg-white divide-y divide-gray-200'>
-            {table.getRowModel().rows.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={columns.length}
-                  className='px-6 py-12 text-center text-gray-500'
-                >
-                  <div className='bg-green-50 border border-green-200 rounded-lg p-4 inline-block'>
-                    <div className='font-semibold text-green-800 mb-1'>
-                      No treatments found
-                    </div>
-                    <div className='text-green-700'>
-                      {isLoggedInUser
-                        ? "Add one by clicking 'New Treatment' above."
-                        : 'This person has not logged any treatments yet.'}
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            ) : (
-              table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className='hover:bg-gray-50'>
-                  {row.getVisibleCells().map((cell) => (
-                    <td
-                      key={cell.id}
-                      className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+            ))
+          )}
+        </tbody>
+      </table>
 
-        {/* Pagination */}
-        {filteredTreatments.length > 25 && (
-          <div className='flex items-center justify-between px-6 py-3 bg-white border-t border-gray-200'>
-            <div className='flex items-center gap-2'>
-              <button
-                type='button'
-                className='px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                Previous
-              </button>
-              <span className='text-sm text-gray-700'>
-                Page {table.getState().pagination.pageIndex + 1} of{' '}
-                {table.getPageCount()}
-              </span>
-              <button
-                type='button'
-                className='px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                Next
-              </button>
-            </div>
-            <div className='text-sm text-gray-700'>
-              Showing {table.getRowModel().rows.length} of{' '}
-              {filteredTreatments.length} treatments
-            </div>
+      {/* Pagination */}
+      {filteredTreatments.length > 25 && (
+        <div className='flex items-center justify-between px-6 py-3 bg-white border-t border-gray-200'>
+          <div className='flex items-center gap-2'>
+            <button
+              type='button'
+              className='px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Previous
+            </button>
+            <span className='text-sm text-gray-700'>
+              Page {table.getState().pagination.pageIndex + 1} of{' '}
+              {table.getPageCount()}
+            </span>
+            <button
+              type='button'
+              className='px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </button>
           </div>
-        )}
-      </div>
-
-      {isLoggedInUser && treatmentModal && (
-        <TreatmentModal
-          treatment={selectedTreatment}
-          previousTreatment={treatments?.[0]}
-          visible={treatmentModal}
-          setVisible={handleModalClose}
-          bindings={{}}
-        />
+          <div className='text-sm text-gray-700'>
+            Showing {table.getRowModel().rows.length} of{' '}
+            {filteredTreatments.length} treatments
+          </div>
+        </div>
       )}
-    </>
+    </div>
   )
 }
