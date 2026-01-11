@@ -15,6 +15,7 @@
       "**/*.css",
       "**/*.cy.ts",
       "!**/*.min.js",
+      "!**/*.d.ts",
       "!**/node_modules",
       "!**/dist",
       "!**/build",
