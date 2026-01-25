@@ -48,3 +48,4 @@ cypress/screenshots/
 # Kilo Code agent worktrees
 .kilocode/worktrees/
 .plans/
+.env*.local

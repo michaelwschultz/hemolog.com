@@ -1,6 +1,6 @@
 {
   "name": "hemolog",
-  "version": "2.9.0",
+  "version": "2.9.5",
   "type": "module",
   "packageManager": "pnpm@10.28.0",
   "scripts": {
@@ -55,6 +55,7 @@
     "firebase-tools": "^15.1.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.5.0",
+    "nanoid": "^5.0.9",
     "react-hot-toast": "^2.6.0",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.9.3"
