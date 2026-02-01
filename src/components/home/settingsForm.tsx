@@ -1,38 +1,76 @@
-import { useFormik } from 'formik'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useAuth } from '@/lib/auth'
+import { isDirty } from '@/lib/form-utils'
 import { track } from '@/lib/helpers'
 import { useUserMutations } from '@/lib/hooks/useUserMutations'
 import { useUserQuery } from '@/lib/hooks/useUserQuery'
 
+interface SettingsValues {
+  hemophiliaType: string
+  severity: string
+  factor: string
+  medication: string
+  monoclonalAntibody: string
+  injectionFrequency: string
+}
+
+const getInitialValues = (): SettingsValues => ({
+  hemophiliaType: '',
+  severity: '',
+  factor: '',
+  medication: '',
+  monoclonalAntibody: '',
+  injectionFrequency: '',
+})
+
 const SettingsForm = (): JSX.Element => {
   const { user } = useAuth()
   const { person } = useUserQuery(user?.uid)
-  const { updateUser } = useUserMutations()
+  const { updateUser, isUpdating } = useUserMutations()
 
-  const formik = useFormik({
-    initialValues: {
-      hemophiliaType: person?.hemophiliaType ?? '',
-      severity: person?.severity ?? '',
-      factor: person?.factor ? person.factor.toString() : '',
-      medication: person?.medication ?? '',
-      monoclonalAntibody: person?.monoclonalAntibody ?? '',
-      injectionFrequency: person?.injectionFrequency ?? '',
-      // emergencyContacts: [
-      //   {
-      //     name: '',
-      //     phone: '',
-      //   },
-      // ],
-    },
-    enableReinitialize: true,
-    onSubmit: (values) => {
-      if (user?.uid) {
-        updateUser({ uid: user.uid, userData: values })
+  const [values, setValues] = useState<SettingsValues>(getInitialValues)
+  const [initialValues, setInitialValues] =
+    useState<SettingsValues>(getInitialValues)
+
+  // Sync form values with person data when it loads
+  useEffect(() => {
+    if (person) {
+      const newValues: SettingsValues = {
+        hemophiliaType: person.hemophiliaType ?? '',
+        severity: person.severity ?? '',
+        factor: person.factor ? person.factor.toString() : '',
+        medication: person.medication ?? '',
+        monoclonalAntibody: person.monoclonalAntibody ?? '',
+        injectionFrequency: person.injectionFrequency ?? '',
       }
-    },
-  })
+      setValues(newValues)
+      setInitialValues(newValues)
+    }
+  }, [person])
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target
+    setValues((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const setFieldValue = (field: keyof SettingsValues, value: string) => {
+    setValues((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const handleSubmit = () => {
+    if (user?.uid) {
+      track('Updated Profile', { ...values })
+      updateUser({ uid: user.uid, userData: values })
+      // Update initial values after successful submit to reset dirty state
+      setInitialValues(values)
+    }
+  }
+
+  // Check if form has changes
+  const formIsDirty = isDirty(values, initialValues)
 
   const severityOptions = [
     { label: 'Mild', value: 'Mild' },
@@ -85,11 +123,6 @@ const SettingsForm = (): JSX.Element => {
     },
   ]
 
-  const handleSubmitForm = () => {
-    track('Updated Profile', { ...formik.values })
-    formik.submitForm()
-  }
-
   const [filteredFactorOptions, setFilteredFactorOptions] =
     useState(factorOptions)
 
@@ -111,7 +144,13 @@ const SettingsForm = (): JSX.Element => {
   }
 
   return (
-    <form onSubmit={formik.handleSubmit} className='space-y-6'>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        handleSubmit()
+      }}
+      className='space-y-6'
+    >
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <div>
           <label
@@ -124,10 +163,8 @@ const SettingsForm = (): JSX.Element => {
             id='hemophiliaType'
             name='hemophiliaType'
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
-            value={formik.values.hemophiliaType ?? ''}
-            onChange={(e) =>
-              formik.setFieldValue('hemophiliaType', e.target.value)
-            }
+            value={values.hemophiliaType ?? ''}
+            onChange={(e) => setFieldValue('hemophiliaType', e.target.value)}
           >
             <option value=''>Select type</option>
             {hemophiliaTypeOptions.map((option) => (
@@ -149,8 +186,8 @@ const SettingsForm = (): JSX.Element => {
             id='severity'
             name='severity'
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
-            value={formik.values.severity ?? ''}
-            onChange={(e) => formik.setFieldValue('severity', e.target.value)}
+            value={values.severity ?? ''}
+            onChange={(e) => setFieldValue('severity', e.target.value)}
           >
             <option value=''>Select severity</option>
             {severityOptions.map((option) => (
@@ -171,8 +208,8 @@ const SettingsForm = (): JSX.Element => {
             type='number'
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
             placeholder='8'
-            onChange={formik.handleChange}
-            value={formik.values.factor ?? ''}
+            onChange={handleChange}
+            value={values.factor ?? ''}
           />
         </div>
 
@@ -189,9 +226,9 @@ const SettingsForm = (): JSX.Element => {
             type='text'
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
             placeholder='Advate'
-            value={formik.values.medication ?? ''}
+            value={values.medication ?? ''}
             onChange={(e) => {
-              formik.setFieldValue('medication', e.target.value)
+              setFieldValue('medication', e.target.value)
               searchHandler(
                 e.target.value,
                 factorOptions,
@@ -220,9 +257,9 @@ const SettingsForm = (): JSX.Element => {
             type='text'
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
             placeholder='Hemlibra'
-            value={formik.values.monoclonalAntibody ?? ''}
+            value={values.monoclonalAntibody ?? ''}
             onChange={(e) =>
-              formik.setFieldValue('monoclonalAntibody', e.target.value)
+              setFieldValue('monoclonalAntibody', e.target.value)
             }
             list='antibody-options'
           />
@@ -244,9 +281,9 @@ const SettingsForm = (): JSX.Element => {
             id='injectionFrequency'
             name='injectionFrequency'
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
-            value={formik.values.injectionFrequency ?? ''}
+            value={values.injectionFrequency ?? ''}
             onChange={(e) =>
-              formik.setFieldValue('injectionFrequency', e.target.value)
+              setFieldValue('injectionFrequency', e.target.value)
             }
           >
             <option value=''>Select frequency</option>
@@ -270,8 +307,8 @@ const SettingsForm = (): JSX.Element => {
             name='emergencyContactName'
             type='text'
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
-            onChange={formik.handleChange}
-            value={formik.values.emergencyContacts[0].name}
+            onChange={handleChange}
+            value={values.emergencyContacts[0].name}
           />
         </div>
         <div>
@@ -281,8 +318,8 @@ const SettingsForm = (): JSX.Element => {
             name='emergencyContactPhone'
             type='text'
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
-            onChange={formik.handleChange}
-            value={formik.values.emergencyContacts[0].phone}
+            onChange={handleChange}
+            value={values.emergencyContacts[0].phone}
           />
         </div>
       </div>
@@ -291,11 +328,11 @@ const SettingsForm = (): JSX.Element => {
       <div className='pt-4'>
         <button
           type='button'
-          onClick={handleSubmitForm}
-          disabled={!formik.isValid || !formik.dirty || formik.isSubmitting}
+          onClick={handleSubmit}
+          disabled={!formIsDirty || isUpdating}
           className='px-6 py-3 bg-green-100 hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed text-green-800 rounded-lg font-medium transition-colors flex items-center gap-2'
         >
-          {formik.isSubmitting && (
+          {isUpdating && (
             <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-green-800'></div>
           )}
           Update

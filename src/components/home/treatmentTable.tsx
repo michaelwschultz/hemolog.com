@@ -12,7 +12,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { format, parseISO } from 'date-fns'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useAuth } from '@/lib/auth'
 import { type TreatmentType, TreatmentTypeEnum } from '@/lib/db/treatments'
@@ -46,32 +46,54 @@ export default function TreatmentTable(
     { id: 'date', desc: true },
   ])
 
-  const filteredTreatments = filterTreatments(treatments, filterYear)
+  const filteredTreatments = useMemo(
+    () => filterTreatments(treatments, filterYear),
+    [treatments, filterYear]
+  )
 
   // Determine if user can edit/delete treatments
   const isLoggedInUser = user && (!uid || uid === user.uid)
 
-  // Delete function - React 19 compiler handles memoization automatically
-  const deleteRow = (treatmentUid: string) => {
-    deleteTreatment({ uid: treatmentUid, userUid: user?.uid || '' })
-  }
+  // Store treatments in ref to avoid recreating handlers when treatments change
+  const treatmentsRef = useRef(treatments)
+  treatmentsRef.current = treatments
 
-  // Edit function - React 19 compiler handles memoization automatically
-  const editRow = (treatment: TreatmentType) => {
+  // Store user in ref to avoid recreating handlers when user changes
+  const userRef = useRef(user)
+  userRef.current = user
+
+  // Store deleteTreatment in ref to avoid recreating deleteRow
+  const deleteTreatmentRef = useRef(deleteTreatment)
+  deleteTreatmentRef.current = deleteTreatment
+
+  // Store openTreatmentSheet in ref to avoid recreating editRow
+  const openTreatmentSheetRef = useRef(openTreatmentSheet)
+  openTreatmentSheetRef.current = openTreatmentSheet
+
+  // Memoize delete function
+  const deleteRow = useCallback((treatmentUid: string) => {
+    deleteTreatmentRef.current({
+      uid: treatmentUid,
+      userUid: userRef.current?.uid || '',
+    })
+  }, [])
+
+  // Memoize edit function
+  const editRow = useCallback((treatment: TreatmentType) => {
     // Prevent editing treatments without a uid (shouldn't happen, but safety check)
     if (!treatment.uid) {
       toast.error('Cannot edit treatment: missing database ID')
       return
     }
-    openTreatmentSheet({
+    openTreatmentSheetRef.current({
       mode: 'edit',
       treatment,
-      previousTreatment: treatments?.[0],
+      previousTreatment: treatmentsRef.current?.[0],
     })
-  }
+  }, [])
 
-  // Column definitions - React 19 compiler handles memoization automatically
-  // biome-ignore lint/correctness/useExhaustiveDependencies: will cause infinite loop
+  // Column definitions
+  // biome-ignore lint/correctness/useExhaustiveDependencies: editRow and deleteRow are stable refs
   const columns: ColumnDef<TreatmentType>[] = useMemo(() => {
     const baseColumns: ColumnDef<TreatmentType>[] = [
       {

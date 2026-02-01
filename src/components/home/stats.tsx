@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import _ from 'underscore'
 import FeedbackModal from '@/components/home/feedbackModal'
 import StatCard from '@/components/home/statCard'
@@ -33,7 +33,10 @@ export default function Stats(props: StatsProps): JSX.Element {
   const { filterYear } = props
   const { data, isLoading, isError, error } = useTreatmentsQuery()
 
-  const filteredTreatments = filterTreatments(data, filterYear)
+  const filteredTreatments = useMemo(
+    () => filterTreatments(data, filterYear),
+    [data, filterYear]
+  )
 
   // TODO(michael): Remove the feedback modal from this component at some point
   // since we already use it in the footer, maybe figure out a way to share

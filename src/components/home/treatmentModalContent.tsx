@@ -1,5 +1,4 @@
 import { format } from 'date-fns'
-import { useFormik } from 'formik'
 import React from 'react'
 import toast from 'react-hot-toast'
 import { useAuth } from '@/lib/auth'
@@ -36,7 +35,7 @@ function getInitialValues(
   treatment: TreatmentType | undefined,
   previousTreatment: TreatmentType | undefined,
   monoclonalAntibody: string | undefined
-) {
+): TreatmentValues {
   const displayTreatment = treatment || previousTreatment
   const isAntibody = displayTreatment?.type === TreatmentTypeEnum.ANTIBODY
 
@@ -82,6 +81,7 @@ export default React.forwardRef<
   // Track if we've already submitted to prevent double-submission
   const hasSubmittedRef = React.useRef(false)
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Intentionally empty deps - only run on mount to reset debug counters
   // Reset counter and submission flag on mount
   React.useEffect(() => {
     renderCountRef.current = 0
@@ -120,10 +120,8 @@ export default React.forwardRef<
 
   // Store initial values in state so they don't change during the component lifecycle
   // The component remounts when the sheet opens, so this gives us fresh values each time
-  // Store initial values in state so they don't change during the component lifecycle
-  // The component remounts when the sheet opens, so this gives us fresh values each time
-  const [initialValues] = React.useState(() => {
-    const values = getInitialValues(
+  const [values, setValues] = React.useState<TreatmentValues>(() => {
+    const initialValues = getInitialValues(
       treatment,
       previousTreatment,
       user?.monoclonalAntibody
@@ -132,12 +130,32 @@ export default React.forwardRef<
       treatmentUid: treatment?.uid,
       previousTreatmentUid: previousTreatment?.uid,
     })
-    return values
+    return initialValues
   })
 
   // Store user in ref to avoid recreating handlers when user changes
   const userRef = React.useRef(user)
   userRef.current = user
+
+  // Handle input changes
+  const handleChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target
+      setValues((prev) => ({ ...prev, [name]: value }))
+    },
+    []
+  )
+
+  // Set a specific field value
+  const setFieldValue = React.useCallback(
+    (
+      field: keyof TreatmentValues,
+      value: TreatmentValues[keyof TreatmentValues]
+    ) => {
+      setValues((prev) => ({ ...prev, [field]: value }))
+    },
+    []
+  )
 
   // Memoize handlers to prevent recreation on every render
   // Use refs to access mutations and user to keep handlers stable
@@ -240,9 +258,11 @@ export default React.forwardRef<
   const handleUpdateTreatmentRef = React.useRef(handleUpdateTreatment)
   handleUpdateTreatmentRef.current = handleUpdateTreatment
 
-  // TODO(michael) Add formik validation
-  // Memoize onSubmit with empty deps - use refs for all dependencies
-  const onSubmit = React.useCallback((values: TreatmentValues) => {
+  // Store values in ref for stable submit handler
+  const valuesRef = React.useRef(values)
+  valuesRef.current = values
+
+  const onSubmit = React.useCallback(() => {
     console.log('onSubmit called', {
       hasSubmitted: hasSubmittedRef.current,
       treatmentUid: treatmentRef.current?.uid,
@@ -254,54 +274,50 @@ export default React.forwardRef<
     hasSubmittedRef.current = true
 
     if (treatmentRef.current) {
-      handleUpdateTreatmentRef.current(values)
+      handleUpdateTreatmentRef.current(valuesRef.current)
     } else {
-      handleCreateTreatmentRef.current(values)
+      handleCreateTreatmentRef.current(valuesRef.current)
     }
   }, []) // Empty deps - use refs for all dependencies
 
-  const formik = useFormik({
-    initialValues,
-    enableReinitialize: false, // Prevent formik from resetting on prop changes
-    onSubmit,
-  })
-
   // Define handleSubmit with useCallback to stabilize the reference
-  // Use ref to access formik to avoid dependency on formik object
-  const formikRef = React.useRef(formik)
-  formikRef.current = formik
-
   const handleSubmit = React.useCallback(() => {
     console.log('handleSubmit called', {
       hasSubmitted: hasSubmittedRef.current,
-      formikValues: formikRef.current.values,
+      values: valuesRef.current,
     })
     track('Logged Treatment', {
-      type: formikRef.current.values.type,
+      type: valuesRef.current.type,
     })
-    formikRef.current.submitForm()
-  }, [])
+    onSubmit()
+  }, [onSubmit])
 
   React.useImperativeHandle(ref, () => ({ handleSubmit }), [handleSubmit])
 
   return (
     <div className='p-6'>
-      <form onSubmit={formik.handleSubmit} className='space-y-4'>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          handleSubmit()
+        }}
+        className='space-y-4'
+      >
         {/* Treatment Type Buttons */}
         <div className='grid grid-cols-3 gap-2'>
           <button
             type='button'
             onClick={() => {
-              formik.setFieldValue('type', TreatmentTypeEnum.PROPHY)
+              setFieldValue('type', TreatmentTypeEnum.PROPHY)
               // Clear antibody-specific fields when switching away from antibody
-              if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
-                formik.setFieldValue('brand', '')
-                formik.setFieldValue('cause', '')
-                formik.setFieldValue('sites', '')
+              if (values.type === TreatmentTypeEnum.ANTIBODY) {
+                setFieldValue('brand', '')
+                setFieldValue('cause', '')
+                setFieldValue('sites', '')
               }
             }}
             className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-              formik.values.type === TreatmentTypeEnum.PROPHY
+              values.type === TreatmentTypeEnum.PROPHY
                 ? 'bg-yellow-100 text-yellow-800 border border-yellow-300'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
@@ -311,16 +327,16 @@ export default React.forwardRef<
           <button
             type='button'
             onClick={() => {
-              formik.setFieldValue('type', TreatmentTypeEnum.BLEED)
+              setFieldValue('type', TreatmentTypeEnum.BLEED)
               // Clear antibody-specific fields when switching away from antibody
-              if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
-                formik.setFieldValue('brand', '')
-                formik.setFieldValue('cause', '')
-                formik.setFieldValue('sites', '')
+              if (values.type === TreatmentTypeEnum.ANTIBODY) {
+                setFieldValue('brand', '')
+                setFieldValue('cause', '')
+                setFieldValue('sites', '')
               }
             }}
             className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-              formik.values.type === TreatmentTypeEnum.BLEED
+              values.type === TreatmentTypeEnum.BLEED
                 ? 'bg-green-100 text-green-800 border border-green-300'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
@@ -330,16 +346,16 @@ export default React.forwardRef<
           <button
             type='button'
             onClick={() => {
-              formik.setFieldValue('type', TreatmentTypeEnum.PREVENTATIVE)
+              setFieldValue('type', TreatmentTypeEnum.PREVENTATIVE)
               // Clear antibody-specific fields when switching away from antibody
-              if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
-                formik.setFieldValue('brand', '')
-                formik.setFieldValue('cause', '')
-                formik.setFieldValue('sites', '')
+              if (values.type === TreatmentTypeEnum.ANTIBODY) {
+                setFieldValue('brand', '')
+                setFieldValue('cause', '')
+                setFieldValue('sites', '')
               }
             }}
             className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-              formik.values.type === TreatmentTypeEnum.PREVENTATIVE
+              values.type === TreatmentTypeEnum.PREVENTATIVE
                 ? 'bg-red-100 text-red-800 border border-red-300'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
@@ -352,16 +368,16 @@ export default React.forwardRef<
           <button
             type='button'
             onClick={() => {
-              formik.setFieldValue('type', TreatmentTypeEnum.ANTIBODY)
+              setFieldValue('type', TreatmentTypeEnum.ANTIBODY)
               // Set brand to monoclonal antibody and clear cause/sites when switching to antibody
-              formik.setFieldValue('brand', user?.monoclonalAntibody || '')
-              formik.setFieldValue('cause', '')
-              formik.setFieldValue('sites', '')
-              formik.setFieldValue('units', '0')
-              formik.setFieldValue('lot', '')
+              setFieldValue('brand', user?.monoclonalAntibody || '')
+              setFieldValue('cause', '')
+              setFieldValue('sites', '')
+              setFieldValue('units', '0')
+              setFieldValue('lot', '')
             }}
             className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-              formik.values.type === TreatmentTypeEnum.ANTIBODY
+              values.type === TreatmentTypeEnum.ANTIBODY
                 ? 'bg-blue-100 text-blue-800 border border-blue-300'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
@@ -382,8 +398,8 @@ export default React.forwardRef<
             id='date'
             name='date'
             type='date'
-            onChange={formik.handleChange}
-            value={formik.values.date}
+            onChange={handleChange}
+            value={values.date}
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
           />
         </div>
@@ -400,19 +416,19 @@ export default React.forwardRef<
             id='brand'
             name='brand'
             type='text'
-            onChange={formik.handleChange}
+            onChange={handleChange}
             placeholder='Brand name'
-            disabled={formik.values.type === TreatmentTypeEnum.ANTIBODY}
+            disabled={values.type === TreatmentTypeEnum.ANTIBODY}
             value={
-              formik.values.type === TreatmentTypeEnum.ANTIBODY
+              values.type === TreatmentTypeEnum.ANTIBODY
                 ? user?.monoclonalAntibody || ''
-                : formik.values.brand
+                : values.brand
             }
             className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed'
           />
         </div>
 
-        {formik.values.type !== TreatmentTypeEnum.ANTIBODY && (
+        {values.type !== TreatmentTypeEnum.ANTIBODY && (
           <>
             {/* Units Input */}
             <div>
@@ -427,9 +443,9 @@ export default React.forwardRef<
                   id='units'
                   name='units'
                   type='number'
-                  onChange={formik.handleChange}
+                  onChange={handleChange}
                   placeholder='3000'
-                  value={formik.values.units}
+                  value={values.units}
                   className='w-full px-3 py-2 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
                 />
                 <span className='absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500'>
@@ -450,9 +466,9 @@ export default React.forwardRef<
                 id='lot'
                 name='lot'
                 type='text'
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 placeholder='Lot number'
-                value={formik.values.lot}
+                value={values.lot}
                 className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
               />
             </div>
@@ -469,9 +485,9 @@ export default React.forwardRef<
                 id='sites'
                 name='sites'
                 type='text'
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 placeholder='Left ankle, right knee'
-                value={formik.values.sites}
+                value={values.sites}
                 className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
               />
             </div>
@@ -488,9 +504,9 @@ export default React.forwardRef<
                 id='cause'
                 name='cause'
                 type='text'
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 placeholder='Ran into a door'
-                value={formik.values.cause}
+                value={values.cause}
                 className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
               />
             </div>

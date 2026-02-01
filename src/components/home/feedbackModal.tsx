@@ -1,5 +1,5 @@
 import { Sheet } from '@silk-hq/components'
-import { useFormik } from 'formik'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { useAuth } from '@/lib/auth'
@@ -16,11 +16,37 @@ interface FeedbackModalProps {
   bindings: Record<string, unknown>
 }
 
+const initialValues: FeedbackValues = {
+  message: '',
+}
+
 export default function FeedbackModal(
   props: FeedbackModalProps
 ): JSX.Element | null {
   const { visible, setVisible } = props
   const { user } = useAuth()
+
+  const [values, setValues] = useState<FeedbackValues>(initialValues)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Derived state for validation
+  const isDirty = values.message.trim() !== ''
+  const isValid = isDirty
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setValues((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const resetForm = () => {
+    setValues(initialValues)
+    setIsSubmitting(false)
+  }
+
+  const closeModal = () => {
+    setVisible(false)
+    resetForm()
+  }
 
   const handleCreateFeedback = async (feedback: FeedbackValues) => {
     const feedbackUser: AttachedUserType = {
@@ -48,19 +74,13 @@ export default function FeedbackModal(
       )
   }
 
-  const closeModal = () => {
-    setVisible(false)
-    formik.resetForm()
-  }
+  const handleSubmit = async () => {
+    if (!isValid || isSubmitting) return
 
-  const formik = useFormik({
-    initialValues: {
-      message: '',
-    },
-    onSubmit: async (values) => {
-      await handleCreateFeedback(values)
-    },
-  })
+    setIsSubmitting(true)
+    await handleCreateFeedback(values)
+    setIsSubmitting(false)
+  }
 
   if (!visible) {
     return null
@@ -80,20 +100,12 @@ export default function FeedbackModal(
                 work better for you, let me know.
               </p>
 
-              <form onSubmit={formik.handleSubmit}>
-                {/* <div className='mb-4'>
-                    <label className='block text-sm font-medium text-gray-700 mb-1'>Name</label>
-                    <input
-                      type='text'
-                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
-                      placeholder={
-                        user && user.displayName ? user.displayName : 'Your name'
-                      }
-                      disabled={user && user.displayName && !!user.displayName}
-                      value={user && user.displayName ? user.displayName : ''}
-                    />
-                  </div> */}
-
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  handleSubmit()
+                }}
+              >
                 <div>
                   <label
                     htmlFor='message'
@@ -104,9 +116,9 @@ export default function FeedbackModal(
                   <textarea
                     id='message'
                     name='message'
-                    onChange={formik.handleChange}
+                    onChange={handleChange}
                     placeholder="Your thoughts are appreciated, feel free to write as much or as little as you'd like."
-                    value={formik.values.message}
+                    value={values.message}
                     rows={4}
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-vertical'
                   />
@@ -125,11 +137,11 @@ export default function FeedbackModal(
             </button>
             <button
               type='button'
-              onClick={formik.submitForm}
-              disabled={!formik.isValid || !formik.dirty || formik.isSubmitting}
+              onClick={handleSubmit}
+              disabled={!isValid || !isDirty || isSubmitting}
               className='px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center gap-2'
             >
-              {formik.isSubmitting && (
+              {isSubmitting && (
                 <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
               )}
               Send feedback

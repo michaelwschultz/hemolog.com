@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import TreatmentModalContent from '@/components/home/treatmentModalContent'
 import type { TreatmentType } from '@/lib/db/treatments'
 import { useSheet } from '@/lib/providers/sheet-provider'
@@ -16,15 +16,23 @@ export function useTreatmentSheet() {
   const formRef = useRef<{ handleSubmit: () => void }>(null)
   const sheetKeyRef = useRef(0)
 
-  // React 19 compiler handles memoization automatically
-  const openTreatmentSheet = (options: TreatmentSheetOptions) => {
+  // Store close in ref to avoid recreating openTreatmentSheet when close changes
+  const closeRef = useRef(close)
+  closeRef.current = close
+
+  // Store open in ref to avoid recreating openTreatmentSheet when open changes
+  const openRef = useRef(open)
+  openRef.current = open
+
+  // Memoize to prevent recreation on every render
+  const openTreatmentSheet = useCallback((options: TreatmentSheetOptions) => {
     const { mode, treatment, previousTreatment } = options
     const title = mode === 'edit' ? 'Edit Treatment' : 'Log Treatment'
 
     // Increment key to force full remount of component
     sheetKeyRef.current += 1
 
-    open({
+    openRef.current({
       title,
       content: (
         <TreatmentModalContent
@@ -33,7 +41,7 @@ export function useTreatmentSheet() {
           treatment={treatment}
           previousTreatment={previousTreatment}
           onSuccess={() => {
-            close()
+            closeRef.current()
           }}
         />
       ),
@@ -42,7 +50,7 @@ export function useTreatmentSheet() {
       },
       saveLabel: mode === 'edit' ? 'Save' : 'Log Treatment',
     })
-  }
+  }, [])
 
   return {
     openTreatmentSheet,

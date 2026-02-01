@@ -3,7 +3,7 @@
 import { IconFilter } from '@tabler/icons-react'
 import { getYear } from 'date-fns'
 import dynamic from 'next/dynamic'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import Stats from '@/components/home/stats'
 import TreatmentTable from '@/components/home/treatmentTable'
 import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
@@ -28,13 +28,14 @@ const HomePage = (): JSX.Element => {
 
   const { data } = useTreatmentsQuery()
 
-  const treatmentYears = data
-    ? data
-        .filter((d) => d?.date)
-        .map((d) => getYear(new Date(d.date)))
-        .filter((item, index, arr) => arr.indexOf(item) === index)
-        .sort((a, b) => b - a)
-    : []
+  const treatmentYears = useMemo(() => {
+    if (!data) return []
+    return data
+      .filter((d) => d?.date)
+      .map((d) => getYear(new Date(d.date)))
+      .filter((item, index, arr) => arr.indexOf(item) === index)
+      .sort((a, b) => b - a)
+  }, [data])
 
   // TODO(michaelwschultz): enable once Firebase caching is removed
   // const { user } = useAuth()

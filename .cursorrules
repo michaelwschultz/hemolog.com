@@ -3,7 +3,7 @@
 Hemophilia medication tracking app. Next.js 16 + TypeScript + Firebase + TanStack Query.
 
 ## Tech Stack
-Next.js 16.1.1 (App Router) | TypeScript (strict) | Tailwind 4.0 | TanStack Query v5 | Formik | Firebase Auth + Firestore (lite SDK) | @silk-hq/components | @tabler/icons-react | Recharts | react-hot-toast | Biome | pnpm 10.28 | Node 22.21
+Next.js 16.1.1 (App Router) | TypeScript (strict) | Tailwind 4.0 | TanStack Query v5 | Firebase Auth + Firestore (lite SDK) | @silk-hq/components | @tabler/icons-react | Recharts | react-hot-toast | Biome | pnpm 10.28 | Node 22.21
 
 ## Structure
 ```

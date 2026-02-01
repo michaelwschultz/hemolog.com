@@ -29,7 +29,6 @@
     "date-fns": "^2.30.0",
     "firebase": "^12.7.0",
     "firebase-admin": "^12.7.0",
-    "formik": "^2.4.9",
     "js-cookie": "^2.2.1",
     "next": "^16.1.1",
     "react": "^19.2.3",
