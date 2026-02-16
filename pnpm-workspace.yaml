@@ -1,8 +1,10 @@
-packages:
+packages: null
+
 onlyBuiltDependencies:
-  - "@firebase/util"
+  - '@firebase/util'
   - core-js
   - cypress
   - es5-ext
   - protobufjs
   - re2
+  - sharp
