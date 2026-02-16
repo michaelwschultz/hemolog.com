@@ -87,15 +87,9 @@ export default React.forwardRef<
   const hasSubmittedRef = React.useRef(false)
 
   // Reset submission flag on mount
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Intentionally empty deps - only run on mount to reset debug counter
   React.useEffect(() => {
     hasSubmittedRef.current = false
-    console.log('TreatmentModalContent mounted', {
-      treatment: treatment?.uid,
-      previousTreatment: previousTreatment?.uid,
-    })
     return () => {
-      console.log('TreatmentModalContent unmounting')
       // Reset on unmount too, just in case
       hasSubmittedRef.current = false
     }
@@ -120,10 +114,6 @@ export default React.forwardRef<
       previousTreatment,
       user?.monoclonalAntibody
     )
-    console.log('TreatmentModalContent: Initial values calculated on mount', {
-      treatmentUid: treatment?.uid,
-      previousTreatmentUid: previousTreatment?.uid,
-    })
     return initialValues
   })
 
@@ -257,12 +247,7 @@ export default React.forwardRef<
   valuesRef.current = values
 
   const onSubmit = React.useCallback(() => {
-    console.log('onSubmit called', {
-      hasSubmitted: hasSubmittedRef.current,
-      treatmentUid: treatmentRef.current?.uid,
-    })
     if (hasSubmittedRef.current) {
-      console.warn('onSubmit: Already submitted, ignoring')
       return
     }
     hasSubmittedRef.current = true
@@ -276,10 +261,6 @@ export default React.forwardRef<
 
   // Define handleSubmit with useCallback to stabilize the reference
   const handleSubmit = React.useCallback(() => {
-    console.log('handleSubmit called', {
-      hasSubmitted: hasSubmittedRef.current,
-      values: valuesRef.current,
-    })
     track('Logged Treatment', {
       type: valuesRef.current.type,
     })

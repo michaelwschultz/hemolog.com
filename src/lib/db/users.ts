@@ -35,8 +35,6 @@ export async function createUser(
       setDocument('users', uid, { uid, ...dataWithoutToken }),
       10000 // 10 second timeout
     )
-
-    console.log('User document created/updated:', uid)
   } catch (error) {
     console.error('Error creating/updating user document:', error)
     throw error
