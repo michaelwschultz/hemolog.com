@@ -84,6 +84,18 @@ const Header = (props: Props): JSX.Element | null => {
                     Hemolog v{version}
                   </div>
                   <a
+                    href='/home'
+                    className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50'
+                  >
+                    Home
+                  </a>
+                  <a
+                    href='/profile'
+                    className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50'
+                  >
+                    Profile
+                  </a>
+                  <a
                     href='/changelog'
                     className='block px-4 py-2 text-sm text-primary-600 hover:bg-gray-50'
                   >

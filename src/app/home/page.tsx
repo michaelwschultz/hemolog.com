@@ -1,13 +1,9 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
-import FeedbackPage from '@/components/home/feedbackPage'
-
 import Header from '@/components/home/header'
 import HomePage from '@/components/home/homePage'
-import ProfilePage from '@/components/home/profilePage'
-import { Tabs, TabsItem } from '@/components/home/Tabs'
+import { PageNav } from '@/components/home/pageNav'
 import Footer from '@/components/shared/footer'
 import { withAuth } from '@/components/shared/withAuth'
 import { ProtectRoute, useAuth } from '@/lib/auth'
@@ -35,14 +31,13 @@ const Home = (): JSX.Element => {
   //       ],
   //     })
   //   }
-  // }, [user])
+  // }, [user, toasts])
 
   // TODO(michael): Could improve this by determining the user on the server side
   // and redirecting before hitting this page. Similar to how Lee Robinson explains
   // it here https://www.youtube.com/watch?v=NSR_Y_rm_zU
 
   const { user } = useAuth()
-  const pathname = usePathname()
   const version = process.env.npm_package_version
 
   useEffect(() => {
@@ -62,32 +57,10 @@ const Home = (): JSX.Element => {
           <Header version={version} />
         </header>
         <main className='px-6'>
-          <Tabs initialValue={pathname}>
-            <TabsItem label='home' value='/home'>
-              <section className='pt-10'>
-                <HomePage />
-              </section>
-            </TabsItem>
-
-            <TabsItem label='Profile' value='/profile'>
-              <section className='pt-10'>
-                <ProfilePage />
-              </section>
-            </TabsItem>
-            {/* 
-            <Tabs.Item
-              label='emergency'
-              value={`/emergency/${user && user.alertId}`}
-            /> */}
-
-            {user?.isAdmin && (
-              <TabsItem label='feedback' value='/feedback'>
-                <section className='pt-10'>
-                  <FeedbackPage />
-                </section>
-              </TabsItem>
-            )}
-          </Tabs>
+          <PageNav />
+          <section className='pt-6'>
+            <HomePage />
+          </section>
         </main>
         <Footer />
       </div>
