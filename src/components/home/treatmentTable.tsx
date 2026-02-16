@@ -149,17 +149,17 @@ export default function TreatmentTable(
         },
       },
       {
+        accessorKey: 'medication.brand',
+        header: 'Medication',
+        cell: ({ row }) => row.original.medication.brand,
+      },
+      {
         accessorKey: 'sites',
         header: 'Bleed sites',
       },
       {
         accessorKey: 'cause',
         header: 'Cause',
-      },
-      {
-        accessorKey: 'medication.brand',
-        header: 'Medication',
-        cell: ({ row }) => row.original.medication.brand,
       },
       {
         accessorKey: 'medication.units',

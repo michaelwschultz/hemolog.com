@@ -30,11 +30,11 @@ export interface Medication {
 export interface TreatmentType {
   deletedAt: string | null
   uid?: string
-  cause: string
+  cause: string | null
   createdAt: string
   date: string
   medication: Medication
-  sites: string
+  sites: string | null
   type: TreatmentTypeOptions
   user: AttachedUserType
 }

@@ -13,10 +13,10 @@ import type { AttachedUserType } from '@/lib/types/users'
 
 interface TreatmentValues {
   brand: string
-  cause: string
+  cause: string | null
   date: string
-  lot?: string
-  sites: string
+  lot?: string | null
+  sites: string | null
   type: TreatmentTypeOptions
   units: string
   uid?: string | null
@@ -45,16 +45,24 @@ function getInitialValues(
         ? monoclonalAntibody || ''
         : displayTreatment.medication.brand
       : '',
-    cause: displayTreatment ? (isAntibody ? '' : displayTreatment.cause) : '',
+    cause: displayTreatment
+      ? isAntibody
+        ? null
+        : displayTreatment.cause
+      : null,
     date: treatment
       ? displayTreatment?.date || format(new Date(), 'yyyy-MM-dd')
       : format(new Date(), 'yyyy-MM-dd'),
     lot: displayTreatment
       ? isAntibody
-        ? ''
+        ? null
         : displayTreatment.medication.lot || ''
-      : '',
-    sites: displayTreatment ? (isAntibody ? '' : displayTreatment.sites) : '',
+      : null,
+    sites: displayTreatment
+      ? isAntibody
+        ? null
+        : displayTreatment.sites
+      : null,
     type: displayTreatment
       ? displayTreatment.type
       : (TreatmentTypeEnum.PROPHY as TreatmentTypeOptions),
@@ -157,23 +165,23 @@ export default React.forwardRef<
       // TODO:(michael) should probably move to toLocaleString()
       const { date, brand, lot, units, cause, sites, type } = treatmentValues
 
-      // For antibody treatments, use monoclonal antibody from profile and clear cause/sites
+      // For antibody treatments, use monoclonal antibody from profile and clear cause/sites to null
       const isAntibody = type === TreatmentTypeEnum.ANTIBODY
       const medicationBrand = isAntibody
         ? userRef.current?.monoclonalAntibody || ''
         : brand
 
       const payload: TreatmentType = {
-        cause: isAntibody ? '' : cause,
+        cause: isAntibody ? null : cause || null,
         createdAt: new Date().toISOString(),
         deletedAt: null,
         date,
         medication: {
           brand: medicationBrand,
-          lot: isAntibody ? undefined : lot,
           units: isAntibody ? 0 : units ? parseInt(units, 10) : 0,
+          ...(!isAntibody && lot ? { lot } : {}),
         },
-        sites: isAntibody ? '' : sites,
+        sites: isAntibody ? null : sites || null,
         type,
         user: treatmentUser,
       }
@@ -197,23 +205,23 @@ export default React.forwardRef<
       const { uid, date, brand, lot, units, cause, sites, type } =
         treatmentValues
 
-      // For antibody treatments, use monoclonal antibody from profile and clear cause/sites
+      // For antibody treatments, use monoclonal antibody from profile and clear cause/sites to null
       const isAntibody = type === TreatmentTypeEnum.ANTIBODY
       const medicationBrand = isAntibody
         ? userRef.current?.monoclonalAntibody || ''
         : brand
 
       const payload: TreatmentType = {
-        cause: isAntibody ? '' : cause,
+        cause: isAntibody ? null : cause || null,
         createdAt: new Date().toISOString(),
         deletedAt: null,
         date,
         medication: {
           brand: medicationBrand,
-          lot: isAntibody ? undefined : lot,
           units: isAntibody ? 0 : units ? parseInt(units, 10) : 0,
+          ...(!isAntibody && lot ? { lot } : {}),
         },
-        sites: isAntibody ? '' : sites,
+        sites: isAntibody ? null : sites || null,
         type,
         user: treatmentUser,
       }
@@ -454,7 +462,7 @@ export default React.forwardRef<
                 type='text'
                 onChange={handleChange}
                 placeholder='Lot number'
-                value={values.lot}
+                value={values.lot ?? ''}
                 className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
               />
             </div>
@@ -473,7 +481,7 @@ export default React.forwardRef<
                 type='text'
                 onChange={handleChange}
                 placeholder='Left ankle, right knee'
-                value={values.sites}
+                value={values.sites ?? ''}
                 className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
               />
             </div>
@@ -492,7 +500,7 @@ export default React.forwardRef<
                 type='text'
                 onChange={handleChange}
                 placeholder='Ran into a door'
-                value={values.cause}
+                value={values.cause ?? ''}
                 className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
               />
             </div>
