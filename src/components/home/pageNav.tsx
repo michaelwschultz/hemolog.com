@@ -8,7 +8,7 @@ const navItems = [
   { href: '/profile', label: 'Profile' },
 ]
 
-export function PageNav(): JSX.Element {
+export function PageNav() {
   const pathname = usePathname()
 
   return (

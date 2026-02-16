@@ -20,7 +20,7 @@
     "seed": "NEXT_PUBLIC_USE_EMULATORS=true npx tsx src/lib/seed.ts"
   },
   "engines": {
-    "node": "22.21.x"
+    "node": "24.x.x"
   },
   "dependencies": {
     "@silk-hq/components": "^0.10.0",

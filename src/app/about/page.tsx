@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Footer from '@/components/shared/footer'
 import StaticHeader from '@/components/shared/staticHeader'
 
-const About = (): JSX.Element => {
+const About = () => {
   return (
     <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
       <StaticHeader />

@@ -9,7 +9,7 @@ import { withAuth } from '@/components/shared/withAuth'
 import { ProtectRoute, useAuth } from '@/lib/auth'
 import { track } from '@/lib/helpers'
 
-const Home = (): JSX.Element => {
+const Home = () => {
   // TODO(michael) add welcome message by checking to see if this is the users
   // first time logging in. Still not sure how to accomplish this.
   //

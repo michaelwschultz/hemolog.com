@@ -9,7 +9,7 @@ import { withAuth } from '@/components/shared/withAuth'
 import { ProtectRoute, useAuth } from '@/lib/auth'
 import { track } from '@/lib/helpers'
 
-const Profile = (): JSX.Element => {
+const Profile = () => {
   const { user } = useAuth()
   const version = process.env.npm_package_version
 

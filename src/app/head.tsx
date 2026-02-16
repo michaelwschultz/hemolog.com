@@ -5,7 +5,7 @@ const googleRichResultsSchema = {
   logo: 'https://hemolog.com/images/hemolog-logo.png',
 }
 
-export default function Head(): JSX.Element {
+export default function Head() {
   return (
     <script
       type='application/ld+json'

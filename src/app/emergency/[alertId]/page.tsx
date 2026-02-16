@@ -7,7 +7,7 @@ import EmergencyInfo from '@/components/emergency/emergencyInfo'
 import Footer from '@/components/shared/footer'
 import { useEmergencyUserQuery } from '@/lib/hooks/useEmergencyUserQuery'
 
-const Emergency = (): JSX.Element => {
+const Emergency = () => {
   const [mounted, setMounted] = useState(false)
   const params = useParams()
   const alertId = params.alertId as string
