@@ -10,7 +10,7 @@ interface Props {
   version?: string
 }
 
-const Header = (props: Props): JSX.Element | null => {
+const Header = (props: Props) => {
   const { version } = props
   const { user, signout } = useAuth()
   const { data: treatments } = useTreatmentsQuery()

@@ -13,7 +13,7 @@ const Chart = dynamic(() => import('@/components/home/chart'), {
   ssr: false,
 })
 
-const HomePage = (): JSX.Element => {
+const HomePage = () => {
   const [smallerThanSmall, setSmallerThanSmall] = useState(false)
 
   React.useEffect(() => {

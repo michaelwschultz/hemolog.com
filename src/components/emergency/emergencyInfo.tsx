@@ -7,7 +7,7 @@ interface Props {
   person: Person
 }
 
-export default function EmergencyInfo(props: Props): JSX.Element {
+export default function EmergencyInfo(props: Props) {
   const { person } = props
   const { user } = useAuth()
   const [smallerThanSmall, setSmallerThanSmall] = React.useState(false)

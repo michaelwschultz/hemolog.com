@@ -7,7 +7,7 @@ interface Props {
   style?: React.CSSProperties
 }
 
-export default function StatCard(props: Props): JSX.Element {
+export default function StatCard(props: Props) {
   const {
     value,
     label,

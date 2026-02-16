@@ -14,7 +14,7 @@ export interface TabsItemProps {
   children: React.ReactNode
 }
 
-export function TabsItem({ children }: TabsItemProps): JSX.Element {
+export function TabsItem({ children }: TabsItemProps) {
   return <>{children}</>
 }
 
@@ -24,7 +24,7 @@ export function Tabs({
   onChange,
   children,
   className = '',
-}: TabsProps): JSX.Element {
+}: TabsProps) {
   const [activeTab, setActiveTab] = useState<string>(initialValue || '')
 
   const currentValue = value !== undefined ? value : activeTab
@@ -100,9 +100,6 @@ export interface TabsContentProps {
   className?: string
 }
 
-export function TabsContent({
-  children,
-  className = '',
-}: TabsContentProps): JSX.Element {
+export function TabsContent({ children, className = '' }: TabsContentProps) {
   return <div className={`py-6 ${className}`}>{children}</div>
 }

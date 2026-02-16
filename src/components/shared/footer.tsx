@@ -7,7 +7,7 @@ import EmergencySnippet from '@/components/shared/emergencySnippet'
 import { useAuth } from '@/lib/auth'
 import { CONFIG } from '@/lib/helpers'
 
-export default function Footer(): JSX.Element {
+export default function Footer() {
   const { user, loading } = useAuth()
   const [mounted, setMounted] = useState(false)
 

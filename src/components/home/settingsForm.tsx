@@ -24,7 +24,7 @@ const getInitialValues = (): SettingsValues => ({
   injectionFrequency: '',
 })
 
-const SettingsForm = (): JSX.Element => {
+const SettingsForm = () => {
   const { user } = useAuth()
   const { person } = useUserQuery(user?.uid)
   const { updateUser, isUpdating } = useUserMutations()

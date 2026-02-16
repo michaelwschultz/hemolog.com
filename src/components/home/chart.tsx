@@ -22,7 +22,7 @@ interface ChartProps {
   filterYear: string
 }
 
-export default function Chart(props: ChartProps): JSX.Element | null {
+export default function Chart(props: ChartProps) {
   const { filterYear } = props
   const { data } = useTreatmentsQuery()
 

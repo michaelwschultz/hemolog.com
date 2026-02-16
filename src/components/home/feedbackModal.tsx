@@ -20,9 +20,7 @@ const initialValues: FeedbackValues = {
   message: '',
 }
 
-export default function FeedbackModal(
-  props: FeedbackModalProps
-): JSX.Element | null {
+export default function FeedbackModal(props: FeedbackModalProps) {
   const { visible, setVisible } = props
   const { user } = useAuth()
 

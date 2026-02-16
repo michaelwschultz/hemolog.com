@@ -11,7 +11,7 @@ import { generateUniqueString, track } from '@/lib/helpers'
 import { useUserMutations } from '@/lib/hooks/useUserMutations'
 import { useUserQuery } from '@/lib/hooks/useUserQuery'
 
-const ProfilePage = (): JSX.Element => {
+const ProfilePage = () => {
   const { user, signout } = useAuth()
   const { person } = useUserQuery(user?.uid)
   const { updateUser } = useUserMutations()

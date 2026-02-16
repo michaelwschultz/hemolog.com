@@ -8,7 +8,7 @@ interface Props {
   style?: React.CSSProperties
 }
 
-export default function EmergencySnippet(props: Props): JSX.Element {
+export default function EmergencySnippet(props: Props) {
   const { alertId = 'example', style } = props
   const [domain, setDomain] = useState('hemolog.com')
 

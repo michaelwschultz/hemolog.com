@@ -10,7 +10,7 @@ interface Props {
   forPrint?: boolean
 }
 
-export default function EmergencyCard({ forPrint }: Props): JSX.Element {
+export default function EmergencyCard({ forPrint }: Props) {
   const { user } = useAuth()
   const { person } = useUserQuery(user?.uid)
 

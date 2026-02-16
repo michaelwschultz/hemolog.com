@@ -28,9 +28,7 @@ interface TreatmentTableProps {
   filterYear: string
 }
 
-export default function TreatmentTable(
-  props: TreatmentTableProps
-): JSX.Element {
+export default function TreatmentTable(props: TreatmentTableProps) {
   const { limit, uid, filterYear } = props
   const {
     data: treatments,

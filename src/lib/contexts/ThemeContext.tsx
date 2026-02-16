@@ -16,7 +16,7 @@ const ThemeContext = createContext<ThemeContextValue | undefined>(undefined)
 
 const THEME_STORAGE_KEY = 'hemolog-theme'
 
-export function ThemeProvider({ children }: ThemeProviderProps): JSX.Element {
+export function ThemeProvider({ children }: ThemeProviderProps) {
   // Always start with 'light' to match server-rendered HTML
   const [theme, setTheme] = useState<Theme>('light')
   const [mounted, setMounted] = useState(false)

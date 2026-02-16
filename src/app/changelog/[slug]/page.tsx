@@ -10,7 +10,7 @@ interface PageProps {
   }>
 }
 
-const ChangelogPost = async ({ params }: PageProps): Promise<JSX.Element> => {
+const ChangelogPost = async ({ params }: PageProps) => {
   const { slug } = await params
 
   // For now, redirect to 404 for unknown slugs

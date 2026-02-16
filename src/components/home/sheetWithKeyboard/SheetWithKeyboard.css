@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/complexity/noImportantStyles: ok here for external libraries */
 .SheetWithKeyboard-view {
   --sheetWithKeyboard-radius: 24px;
 
@@ -33,6 +34,7 @@
   border-radius: var(--sheetWithKeyboard-radius) var(--sheetWithKeyboard-radius)
     0 0;
   overflow: clip;
+  /* biome-ignore lint/suspicious/noDuplicateProperties: correct behavior requires two overflows */
   overflow: hidden;
   background-color: white;
 }

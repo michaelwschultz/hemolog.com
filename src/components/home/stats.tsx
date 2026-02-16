@@ -29,7 +29,7 @@ interface StatsProps {
   filterYear: string
 }
 
-export default function Stats(props: StatsProps): JSX.Element {
+export default function Stats(props: StatsProps) {
   const { filterYear } = props
   const { data, isLoading, isError, error } = useTreatmentsQuery()
 

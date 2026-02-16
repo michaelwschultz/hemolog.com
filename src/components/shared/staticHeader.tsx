@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import Logo from '@/components/shared/logo'
 import { useAuth } from '@/lib/auth'
 
-const StaticHeader = (): JSX.Element => {
+const StaticHeader = () => {
   const { user, loading } = useAuth()
   const router = useRouter()
   const [mounted, setMounted] = useState(false)

@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 
 import { useAuth } from '@/lib/auth'
 
-export default function BlogFooter(): JSX.Element {
+export default function BlogFooter() {
   const { user, loading } = useAuth()
   const router = useRouter()
   const [mounted, setMounted] = useState(false)
