@@ -131,15 +131,18 @@ export default function TreatmentTable(props: TreatmentTableProps) {
         cell: ({ getValue }) => {
           const type = getValue() as TreatmentTypeEnum
           const badgeStyles = {
-            [TreatmentTypeEnum.BLEED]: 'bg-red-100 text-red-800',
-            [TreatmentTypeEnum.PROPHY]: 'bg-yellow-100 text-yellow-800',
-            [TreatmentTypeEnum.PREVENTATIVE]: 'bg-orange-100 text-orange-800',
-            [TreatmentTypeEnum.ANTIBODY]: 'bg-gray-100 text-gray-800',
+            [TreatmentTypeEnum.BLEED]: 'bg-red-50 text-red-700 border-red-100',
+            [TreatmentTypeEnum.PROPHY]:
+              'bg-amber-50 text-amber-700 border-amber-100',
+            [TreatmentTypeEnum.PREVENTATIVE]:
+              'bg-orange-50 text-orange-700 border-orange-100',
+            [TreatmentTypeEnum.ANTIBODY]:
+              'bg-gray-50 text-gray-700 border-gray-100',
           }
 
           return (
             <span
-              className={`px-2 py-1 text-xs font-medium rounded-full ${badgeStyles[type] || 'bg-gray-100 text-gray-800'}`}
+              className={`px-2.5 py-1 text-xs font-medium rounded-md border ${badgeStyles[type] || 'bg-gray-50 text-gray-700 border-gray-100'}`}
             >
               {TreatmentTypeEnum[type]}
             </span>
@@ -209,11 +212,11 @@ export default function TreatmentTable(props: TreatmentTableProps) {
   // Handle case where uid is not available
   if (!uid && !user?.uid) {
     return (
-      <div className='bg-gray-50 border border-gray-200 rounded-lg p-4'>
-        <div className='font-semibold text-gray-800 mb-1'>
+      <div className='bg-white rounded-2xl border border-gray-100 p-6 shadow-sm'>
+        <div className='font-semibold text-gray-900 mb-1'>
           No treatment data available
         </div>
-        <div className='text-gray-700'>
+        <div className='text-gray-500'>
           User information is not available to load treatments.
         </div>
       </div>
@@ -222,18 +225,20 @@ export default function TreatmentTable(props: TreatmentTableProps) {
 
   if (isLoading) {
     return (
-      <div className='overflow-x-auto'>
+      <div className='bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden'>
         <div className='animate-pulse'>
-          <div className='h-12 bg-gray-200 rounded mb-4'></div>
-          <div className='h-16 bg-gray-100 rounded mb-2'></div>
-          <div className='h-16 bg-gray-100 rounded mb-2'></div>
-          <div className='h-16 bg-gray-100 rounded mb-2'></div>
-          <div className='h-16 bg-gray-100 rounded mb-2'></div>
-          <div className='h-16 bg-gray-100 rounded mb-2'></div>
+          <div className='h-14 bg-gray-50 border-b border-gray-100'></div>
+          <div className='p-4 space-y-3'>
+            <div className='h-12 bg-gray-50 rounded-lg'></div>
+            <div className='h-12 bg-gray-50 rounded-lg'></div>
+            <div className='h-12 bg-gray-50 rounded-lg'></div>
+            <div className='h-12 bg-gray-50 rounded-lg'></div>
+            <div className='h-12 bg-gray-50 rounded-lg'></div>
+          </div>
         </div>
-        <div className='flex justify-center items-center py-8'>
-          <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500'></div>
-          <span className='ml-3 text-gray-600'>Loading treatment data</span>
+        <div className='flex justify-center items-center py-8 gap-3'>
+          <div className='animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500'></div>
+          <span className='text-gray-500'>Loading treatment data</span>
         </div>
       </div>
     )
@@ -242,9 +247,9 @@ export default function TreatmentTable(props: TreatmentTableProps) {
   if (isError || error) {
     console.error('Error fetching treatments:', error)
     return (
-      <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
+      <div className='bg-white rounded-2xl border border-red-100 p-6 shadow-sm'>
         <div className='font-semibold text-red-800 mb-1'>Error</div>
-        <div className='text-red-700'>
+        <div className='text-red-600'>
           Oops, the database didn't respond. Refresh the page to try again.
         </div>
       </div>
@@ -258,111 +263,116 @@ export default function TreatmentTable(props: TreatmentTableProps) {
       : 'This person has not logged any treatments yet.'
 
     return (
-      <div className='bg-green-50 border border-green-200 rounded-lg p-4'>
-        <div className='font-semibold text-green-800 mb-1'>
+      <div className='bg-white rounded-2xl border border-emerald-100 p-6 shadow-sm'>
+        <div className='font-semibold text-emerald-800 mb-1'>
           No treatment data available
         </div>
-        <div className='text-green-700'>{emptyMessage}</div>
+        <div className='text-emerald-600'>{emptyMessage}</div>
       </div>
     )
   }
 
   return (
-    <div className='overflow-x-auto'>
-      <table className='min-w-full divide-y divide-gray-200'>
-        <thead className='bg-gray-50'>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  <div className='flex items-center gap-1'>
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                    {header.column.getIsSorted() === 'asc' && (
-                      <IconChevronUp size={14} />
-                    )}
-                    {header.column.getIsSorted() === 'desc' && (
-                      <IconChevronDown size={14} />
-                    )}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody className='bg-white divide-y divide-gray-200'>
-          {table.getRowModel().rows.length === 0 ? (
-            <tr>
-              <td
-                colSpan={columns.length}
-                className='px-6 py-12 text-center text-gray-500'
-              >
-                <div className='bg-green-50 border border-green-200 rounded-lg p-4 inline-block'>
-                  <div className='font-semibold text-green-800 mb-1'>
-                    No treatments found
-                  </div>
-                  <div className='text-green-700'>
-                    {isLoggedInUser
-                      ? "Add one by clicking 'New Treatment' above."
-                      : 'This person has not logged any treatments yet.'}
-                  </div>
-                </div>
-              </td>
-            </tr>
-          ) : (
-            table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className='hover:bg-gray-50'>
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'
+    <div className='bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden'>
+      <div className='overflow-x-auto'>
+        <table className='min-w-full divide-y divide-gray-100'>
+          <thead className='bg-gray-50/50'>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className='px-4 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100/50 transition-colors'
+                    onClick={header.column.getToggleSortingHandler()}
                   >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
+                    <div className='flex items-center gap-1.5'>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {header.column.getIsSorted() === 'asc' && (
+                        <IconChevronUp size={14} className='text-gray-400' />
+                      )}
+                      {header.column.getIsSorted() === 'desc' && (
+                        <IconChevronDown size={14} className='text-gray-400' />
+                      )}
+                    </div>
+                  </th>
                 ))}
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+          <tbody className='divide-y divide-gray-50'>
+            {table.getRowModel().rows.length === 0 ? (
+              <tr>
+                <td colSpan={columns.length} className='px-6 py-12 text-center'>
+                  <div className='bg-emerald-50 border border-emerald-100 rounded-xl p-4 inline-block'>
+                    <div className='font-semibold text-emerald-800 mb-1'>
+                      No treatments found
+                    </div>
+                    <div className='text-emerald-600'>
+                      {isLoggedInUser
+                        ? "Add one by clicking 'New Treatment' above."
+                        : 'This person has not logged any treatments yet.'}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              table.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className='hover:bg-gray-50/80 transition-colors'
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className='px-4 py-3.5 whitespace-nowrap text-sm text-gray-700'
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
 
-      {/* Pagination */}
-      {filteredTreatments.length > 25 && (
-        <div className='flex items-center justify-between px-6 py-3 bg-white border-t border-gray-200'>
-          <div className='flex items-center gap-2'>
-            <button
-              type='button'
-              className='px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </button>
-            <span className='text-sm text-gray-700'>
-              Page {table.getState().pagination.pageIndex + 1} of{' '}
-              {table.getPageCount()}
-            </span>
-            <button
-              type='button'
-              className='px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </button>
+        {/* Pagination */}
+        {filteredTreatments.length > 25 && (
+          <div className='flex items-center justify-between px-4 py-3 bg-gray-50/50 border-t border-gray-100'>
+            <div className='flex items-center gap-2'>
+              <button
+                type='button'
+                className='px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-lg hover:bg-white hover:border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Previous
+              </button>
+              <span className='text-sm text-gray-500'>
+                Page {table.getState().pagination.pageIndex + 1} of{' '}
+                {table.getPageCount()}
+              </span>
+              <button
+                type='button'
+                className='px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-lg hover:bg-white hover:border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Next
+              </button>
+            </div>
+            <div className='text-sm text-gray-500'>
+              Showing {table.getRowModel().rows.length} of{' '}
+              {filteredTreatments.length} treatments
+            </div>
           </div>
-          <div className='text-sm text-gray-700'>
-            Showing {table.getRowModel().rows.length} of{' '}
-            {filteredTreatments.length} treatments
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }

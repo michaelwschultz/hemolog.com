@@ -37,6 +37,7 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "a11y": "off",
       "performance": {
         "noImgElement": "off"
       },

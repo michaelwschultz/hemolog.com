@@ -3,7 +3,7 @@
   --sheetWithKeyboard-radius: 24px;
 
   /* SELF-LAYOUT */
-  z-index: 1;
+  z-index: 50;
   top: 0;
   bottom: initial;
   /* Adding 60px to make it fully visible below iOS Safari's
@@ -15,7 +15,7 @@
   /* Ensure backdrop can receive outside clicks to dismiss */
   position: fixed !important;
   inset: 0 !important;
-  z-index: 0 !important;
+  z-index: 49 !important;
 }
 
 @media (min-width: 800px) {
