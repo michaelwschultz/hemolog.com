@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import Button from '@/components/shared/button'
 import { useAuth } from '@/lib/auth'
 import { isDirty } from '@/lib/form-utils'
 import { track } from '@/lib/helpers'
@@ -162,7 +163,7 @@ const SettingsForm = () => {
           <select
             id='hemophiliaType'
             name='hemophiliaType'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 transition-all'
             value={values.hemophiliaType ?? ''}
             onChange={(e) => setFieldValue('hemophiliaType', e.target.value)}
           >
@@ -185,7 +186,7 @@ const SettingsForm = () => {
           <select
             id='severity'
             name='severity'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 transition-all'
             value={values.severity ?? ''}
             onChange={(e) => setFieldValue('severity', e.target.value)}
           >
@@ -206,7 +207,7 @@ const SettingsForm = () => {
             id='factor'
             name='factor'
             type='number'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 transition-all'
             placeholder='8'
             onChange={handleChange}
             value={values.factor ?? ''}
@@ -224,7 +225,7 @@ const SettingsForm = () => {
             id='medication'
             name='medication'
             type='text'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 transition-all'
             placeholder='Advate'
             value={values.medication ?? ''}
             onChange={(e) => {
@@ -255,7 +256,7 @@ const SettingsForm = () => {
             id='monoclonalAntibody'
             name='monoclonalAntibody'
             type='text'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 transition-all'
             placeholder='Hemlibra'
             value={values.monoclonalAntibody ?? ''}
             onChange={(e) =>
@@ -280,7 +281,7 @@ const SettingsForm = () => {
           <select
             id='injectionFrequency'
             name='injectionFrequency'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 transition-all'
             value={values.injectionFrequency ?? ''}
             onChange={(e) =>
               setFieldValue('injectionFrequency', e.target.value)
@@ -326,17 +327,14 @@ const SettingsForm = () => {
       */}
 
       <div className='pt-4'>
-        <button
-          type='button'
+        <Button
+          variant='primary'
           onClick={handleSubmit}
           disabled={!formIsDirty || isUpdating}
-          className='px-6 py-3 bg-green-100 hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed text-green-800 rounded-lg font-medium transition-colors flex items-center gap-2'
+          isLoading={isUpdating}
         >
-          {isUpdating && (
-            <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-green-800'></div>
-          )}
           Update
-        </button>
+        </Button>
       </div>
     </form>
   )

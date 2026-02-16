@@ -25,11 +25,11 @@ const Profile = () => {
 
   return (
     <ProtectRoute>
-      <div className='h-full flex flex-col max-w-[80rem] w-full mx-auto'>
+      <div className='min-h-screen flex flex-col max-w-[80rem] w-full mx-auto'>
         <header className='p-6'>
           <Header version={version} />
         </header>
-        <main className='px-6'>
+        <main className='flex-1 px-6 pb-8'>
           <PageNav />
           <section className='pt-6'>
             <ProfilePageComponent />

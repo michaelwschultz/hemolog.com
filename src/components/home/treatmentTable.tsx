@@ -14,6 +14,7 @@ import {
 import { format, parseISO } from 'date-fns'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+import Button from '@/components/shared/button'
 import { useAuth } from '@/lib/auth'
 import { type TreatmentType, TreatmentTypeEnum } from '@/lib/db/treatments'
 import { filterTreatments } from '@/lib/helpers'
@@ -43,6 +44,10 @@ export default function TreatmentTable(props: TreatmentTableProps) {
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'date', desc: true },
   ])
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false)
+  const [treatmentToDeleteUid, setTreatmentToDeleteUid] = useState<
+    string | null
+  >(null)
 
   const filteredTreatments = useMemo(
     () => filterTreatments(treatments, filterYear),
@@ -70,11 +75,20 @@ export default function TreatmentTable(props: TreatmentTableProps) {
 
   // Memoize delete function
   const deleteRow = useCallback((treatmentUid: string) => {
-    deleteTreatmentRef.current({
-      uid: treatmentUid,
-      userUid: userRef.current?.uid || '',
-    })
+    setTreatmentToDeleteUid(treatmentUid)
+    setDeleteModalVisible(true)
   }, [])
+
+  const handleConfirmDelete = useCallback(() => {
+    if (treatmentToDeleteUid) {
+      deleteTreatmentRef.current({
+        uid: treatmentToDeleteUid,
+        userUid: userRef.current?.uid || '',
+      })
+    }
+    setDeleteModalVisible(false)
+    setTreatmentToDeleteUid(null)
+  }, [treatmentToDeleteUid])
 
   // Memoize edit function
   const editRow = useCallback((treatment: TreatmentType) => {
@@ -131,13 +145,13 @@ export default function TreatmentTable(props: TreatmentTableProps) {
         cell: ({ getValue }) => {
           const type = getValue() as TreatmentTypeEnum
           const badgeStyles = {
-            [TreatmentTypeEnum.BLEED]: 'bg-red-50 text-red-700 border-red-100',
+            [TreatmentTypeEnum.BLEED]: 'bg-red-50 text-red-600 border-red-100',
             [TreatmentTypeEnum.PROPHY]:
-              'bg-amber-50 text-amber-700 border-amber-100',
+              'bg-blue-50 text-blue-700 border-blue-100',
             [TreatmentTypeEnum.PREVENTATIVE]:
-              'bg-orange-50 text-orange-700 border-orange-100',
+              'bg-yellow-50 text-yellow-700 border-yellow-100',
             [TreatmentTypeEnum.ANTIBODY]:
-              'bg-gray-50 text-gray-700 border-gray-100',
+              'bg-green-50 text-green-600 border-green-100',
           }
 
           return (
@@ -373,6 +387,32 @@ export default function TreatmentTable(props: TreatmentTableProps) {
           </div>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteModalVisible && (
+        <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'>
+          <div className='bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl'>
+            <h3 className='text-lg font-bold tracking-tight text-gray-900 mb-3'>
+              Delete treatment?
+            </h3>
+            <p className='text-sm font-medium text-gray-500 mb-6 leading-relaxed'>
+              This will permanently delete this treatment record. This action
+              cannot be undone.
+            </p>
+            <div className='flex gap-3 justify-end'>
+              <Button
+                variant='ghost'
+                onClick={() => setDeleteModalVisible(false)}
+              >
+                Cancel
+              </Button>
+              <Button variant='danger' onClick={handleConfirmDelete}>
+                Delete
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

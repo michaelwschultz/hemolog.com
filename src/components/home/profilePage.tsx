@@ -5,6 +5,8 @@ import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import EmergencyCard from '@/components/home/emergencyCard'
 import SettingsForm from '@/components/home/settingsForm'
+import ApiKeyField from '@/components/shared/apiKeyField'
+import Button from '@/components/shared/button'
 import EmergencySnippet from '@/components/shared/emergencySnippet'
 import { useAuth } from '@/lib/auth'
 import { generateUniqueString, track } from '@/lib/helpers'
@@ -18,6 +20,7 @@ const ProfilePage = () => {
   const router = useRouter()
   const [deleteModalVisible, setDeleteModalVisible] = useState(false)
   const [isDeletingAccount, setIsDeletingAccount] = useState(false)
+  const [resetKeyModalVisible, setResetKeyModalVisible] = useState(false)
 
   useEffect(() => {
     track('Viewed Profile Page', {})
@@ -32,6 +35,8 @@ const ProfilePage = () => {
     if (!user?.uid) return
     const newApiKey = await generateUniqueString(20)
     updateUser({ uid: user.uid, userData: { apiKey: newApiKey } })
+    setResetKeyModalVisible(false)
+    toast.success('API key reset successfully')
   }, [user?.uid, updateUser])
 
   // Only create API key once when person is loaded and doesn't have one
@@ -79,100 +84,138 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-      <div className='flex flex-col'>
-        <h4 className='text-xl font-semibold mb-4'>About you</h4>
-        <SettingsForm />
-
-        <div className='h-12' />
-        <h4 className='text-xl font-semibold mb-4'>API key</h4>
-        <div className='flex gap-2 w-full'>
-          <code className='flex-1 bg-gray-100 px-3 py-2 rounded text-sm font-mono text-gray-800 break-all'>
-            {person?.apiKey || ' '}
-          </code>
-          <button
-            type='button'
-            onClick={handleUpdateUserApiKey}
-            className='px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-medium transition-colors'
-          >
-            Reset key
-          </button>
+    <div className='space-y-8'>
+      {/* Profile Settings */}
+      <section>
+        <h2 className='text-2xl font-bold tracking-tight text-gray-900 mb-6'>
+          About you
+        </h2>
+        <div className='bg-white rounded-2xl border border-gray-100 shadow-sm p-6'>
+          <SettingsForm />
         </div>
-        <p className='mt-2 text-gray-600'>
-          Used to access the (limited) Hemolog API. No documentation exists yet
-          but you can find more info inside the readme on Github.
-        </p>
-      </div>
+      </section>
 
-      <div className='flex flex-col'>
-        <h4 className='text-xl font-semibold mb-4'>In case of emergency</h4>
-        <p className='mb-4 text-gray-600'>
-          A medical worker can simply type in the URL listed on the card, or
-          easier scan the QR code with their phone. This gives the worker a
-          quick summary of all your info including your 3 most recent logs, and
-          emergency contacts. These features aren't available with Medic Alert.
-        </p>
-        <div className='flex gap-2 w-full mb-4'>
-          <div className='flex-1'>
-            <EmergencySnippet alertId={user?.alertId || 'example'} />
+      {/* Emergency Card */}
+      <section>
+        <h2 className='text-2xl font-bold tracking-tight text-gray-900 mb-6'>
+          In case of emergency
+        </h2>
+        <div className='bg-white rounded-2xl border border-gray-100 shadow-sm p-6'>
+          <p className='mb-6 text-sm font-medium text-gray-500 leading-relaxed'>
+            A medical worker can simply type in the URL listed on the card, or
+            easier scan the QR code with their phone. This gives the worker a
+            quick summary of all your info including your 3 most recent logs,
+            and emergency contacts. These features aren't available with Medic
+            Alert.
+          </p>
+          <div className='flex gap-3 mb-6'>
+            <div className='flex-1'>
+              <EmergencySnippet alertId={user?.alertId || 'example'} />
+            </div>
+            <Button variant='secondary' onClick={handleOnPrintClick}>
+              Print your card
+            </Button>
           </div>
-          <button
-            type='button'
-            onClick={handleOnPrintClick}
-            className='px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-medium transition-colors whitespace-nowrap'
-          >
-            Print your card
-          </button>
+          <EmergencyCard />
         </div>
+      </section>
 
-        <EmergencyCard />
+      {/* Account Management */}
+      <section>
+        <h2 className='text-2xl font-bold tracking-tight text-gray-900 mb-6'>
+          Account management
+        </h2>
+        <div className='bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6'>
+          {/* API Key */}
+          <div>
+            <h3 className='text-sm font-semibold text-gray-900 mb-1'>
+              API key
+            </h3>
+            <p className='text-sm text-gray-500 mb-3'>
+              Used to access the (limited) Hemolog API. Find more info in the
+              readme on Github.
+            </p>
+            <ApiKeyField
+              apiKey={person?.apiKey}
+              onReset={() => setResetKeyModalVisible(true)}
+            />
+          </div>
 
-        <div className='h-12' />
-        <h4 className='text-xl font-semibold mb-4'>Delete account</h4>
-        <p className='mb-4 text-gray-600'>
-          Deleting your account removes your profile, treatments, and emergency
-          info forever. This action cannot be undone.
-        </p>
+          <div className='border-t border-gray-100' />
 
-        <button
-          type='button'
-          onClick={() => {
-            track('Opened Delete Account Modal', {})
-            setDeleteModalVisible(true)
-          }}
-          className='px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors w-fit'
-        >
-          Delete account
-        </button>
-      </div>
+          {/* Delete Account */}
+          <div className='flex gap-4 items-start justify-between'>
+            <div>
+              <h3 className='text-sm font-semibold text-gray-900 mb-1'>
+                Delete account
+              </h3>
+              <p className='text-sm text-gray-500'>
+                Permanently remove your profile, treatments, and emergency info.
+              </p>
+            </div>
+            <Button
+              variant='danger'
+              onClick={() => {
+                track('Opened Delete Account Modal', {})
+                setDeleteModalVisible(true)
+              }}
+            >
+              Delete account
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {resetKeyModalVisible && (
+        <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'>
+          <div className='bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl'>
+            <h3 className='text-lg font-bold tracking-tight text-gray-900 mb-3'>
+              Reset API key?
+            </h3>
+            <p className='text-sm font-medium text-gray-500 mb-6 leading-relaxed'>
+              This will invalidate your current API key and generate a new one.
+              Any applications using the old key will stop working immediately.
+            </p>
+            <div className='flex gap-3 justify-end'>
+              <Button
+                variant='ghost'
+                onClick={() => setResetKeyModalVisible(false)}
+              >
+                Cancel
+              </Button>
+              <Button variant='danger' onClick={handleUpdateUserApiKey}>
+                Reset key
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {deleteModalVisible && (
-        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
-          <div className='bg-white rounded-lg p-6 max-w-md w-full mx-4'>
-            <h3 className='text-lg font-semibold mb-4'>Delete your account?</h3>
-            <p className='text-gray-600 mb-6'>
+        <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'>
+          <div className='bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl'>
+            <h3 className='text-lg font-bold tracking-tight text-gray-900 mb-3'>
+              Delete your account?
+            </h3>
+            <p className='text-sm font-medium text-gray-500 mb-6 leading-relaxed'>
               This permanently deletes your Hemolog data and cannot be reversed.
               You will need to create a new account to return.
             </p>
             <div className='flex gap-3 justify-end'>
-              <button
-                type='button'
+              <Button
+                variant='ghost'
                 onClick={() => setDeleteModalVisible(false)}
-                className='px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors'
               >
                 Cancel
-              </button>
-              <button
-                type='button'
+              </Button>
+              <Button
+                variant='danger'
                 onClick={handleDeleteAccount}
                 disabled={isDeletingAccount}
-                className='px-4 py-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center gap-2'
+                isLoading={isDeletingAccount}
               >
-                {isDeletingAccount && (
-                  <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
-                )}
                 Delete account
-              </button>
+              </Button>
             </div>
           </div>
         </div>

@@ -30,9 +30,9 @@ export default function EmergencySnippet(props: Props) {
   }
 
   return (
-    <div className='flex items-center gap-2'>
+    <div className='relative'>
       <code
-        className='flex-1 bg-gray-100 px-3 py-2 rounded text-sm font-mono text-gray-800 break-all'
+        className='block w-full bg-gray-50 px-3 py-2.5 pr-10 rounded-lg text-sm font-mono text-gray-700 break-all border border-gray-100'
         style={style}
       >
         {url}
@@ -40,7 +40,7 @@ export default function EmergencySnippet(props: Props) {
       <button
         type='button'
         onClick={copyToClipboard}
-        className='p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors'
+        className='absolute right-1 top-1/2 -translate-y-1/2 p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors'
         title='Copy to clipboard'
       >
         <IconCopy className='w-4 h-4' />

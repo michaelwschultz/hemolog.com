@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Button from '@/components/shared/button'
 import Logo from '@/components/shared/logo'
 import { useAuth } from '@/lib/auth'
 import { useTreatmentSheet } from '@/lib/hooks/useTreatmentSheet'
@@ -48,13 +49,9 @@ const Header = (props: Props) => {
         <div className='flex justify-between items-center'>
           <Logo />
           <div className='flex items-center gap-2' suppressHydrationWarning>
-            <button
-              type='button'
-              onClick={handleOpenSheet}
-              className='bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1.5 rounded text-sm font-medium transition-colors'
-            >
-              New treatment
-            </button>
+            <Button variant='primary' size='sm' onClick={handleOpenSheet}>
+              New Treatment
+            </Button>
             <div className='relative dropdown-container'>
               <button
                 type='button'

@@ -10,6 +10,7 @@
 .SheetProvider-header {
   /* SELF-LAYOUT */
   height: 57px;
+  flex-shrink: 0;
 
   /* APPEARANCE */
   border-bottom: 1px solid rgb(229, 231, 235);
@@ -32,9 +33,10 @@
 .SheetProvider-cancelButton {
   /* SELF-LAYOUT */
   justify-self: start;
+  white-space: nowrap;
 
   /* APPEARANCE */
-  border-radius: 6px;
+  border-radius: 8px;
   outline-offset: 5px;
   border: none;
   appearance: none;
@@ -44,31 +46,36 @@
   cursor: pointer;
 
   /* INNER-LAYOUT */
-  padding: 0;
+  padding: 0.5rem 0.75rem;
+  margin: -0.5rem -0.75rem;
 
   /* TEXT */
-  font-size: 17.25px;
+  font-size: 17px;
   font-weight: 500;
-  color: rgb(52, 159, 13);
+  color: rgb(107 114 128);
 }
 
 .SheetProvider-title {
   /* SELF-LAYOUT */
   margin: 0;
   justify-self: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   /* TEXT */
-  font-size: 17.25px;
-  font-weight: 620;
+  font-size: 17px;
+  font-weight: 600;
   color: rgb(31, 41, 55);
 }
 
 .SheetProvider-saveButton {
   /* SELF-LAYOUT */
   justify-self: end;
+  white-space: nowrap;
 
   /* APPEARANCE */
-  border-radius: 6px;
+  border-radius: 8px;
   outline-offset: 5px;
   border: none;
   appearance: none;
@@ -78,12 +85,17 @@
   cursor: pointer;
 
   /* INNER-LAYOUT */
-  padding: 0;
+  padding: 0.5rem 0.75rem;
+  margin: -0.5rem -0.75rem;
 
   /* TEXT */
-  font-size: 17.25px;
+  font-size: 17px;
   font-weight: 600;
-  color: rgb(52, 159, 13);
+  color: rgb(31, 41, 55);
+}
+
+.SheetProvider-saveButton:hover {
+  color: rgb(17, 24, 39);
 }
 
 .SheetProvider-scrollView {
@@ -92,7 +104,6 @@
 
   /* APPEARANCE */
   overflow: clip;
-  overflow: hidden;
   border-radius: 0 0 var(--sheetWithKeyboard-radius)
     var(--sheetWithKeyboard-radius);
   background-color: white;

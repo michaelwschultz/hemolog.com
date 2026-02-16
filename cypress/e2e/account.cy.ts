@@ -1,6 +1,7 @@
 describe('Acccounts', () => {
   const newTreatmentButton = () => cy.contains('button', 'New treatment')
-  const treatmentModalHeading = () => cy.contains('h3', 'Treatment')
+  const treatmentModalHeading = () =>
+    cy.contains('h3', /Log Treatment|Edit Treatment/)
   const toastShouldContain = (message: string) =>
     cy.contains('[role="status"]', message).should('be.visible')
 
@@ -44,7 +45,7 @@ describe('Acccounts', () => {
     cy.get('input[name="brand"]').clear().type('Xyntha')
     cy.get('input[name="units"]').clear().type('3000')
     cy.get('input[name="lot"]').clear().type('ABC123')
-    cy.contains('button', 'Log Treatment').click()
+    cy.contains('button', 'Save').click()
 
     toastShouldContain('Treatment logged! Hope all is well.')
   })
@@ -57,7 +58,7 @@ describe('Acccounts', () => {
     cy.get('input[name="brand"]').clear().type('Xyntha')
     cy.get('input[name="units"]').clear().type('3000')
     cy.get('input[name="lot"]').clear().type('ABC123')
-    cy.contains('button', 'Log Treatment').click()
+    cy.contains('button', 'Save').click()
 
     toastShouldContain('Treatment logged! Hope all is well.')
   })
@@ -71,7 +72,7 @@ describe('Acccounts', () => {
     cy.get('input[name="brand"]').clear().type('Advate')
     cy.get('input[name="units"]').clear().type('1999')
     cy.get('input[name="lot"]').clear().type('ABC123')
-    cy.contains('button', 'Update Treatment').click()
+    cy.contains('button', 'Save').click()
 
     toastShouldContain('Treatment updated!')
   })

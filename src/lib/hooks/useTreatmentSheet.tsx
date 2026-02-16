@@ -27,7 +27,7 @@ export function useTreatmentSheet() {
   // Memoize to prevent recreation on every render
   const openTreatmentSheet = useCallback((options: TreatmentSheetOptions) => {
     const { mode, treatment, previousTreatment } = options
-    const title = mode === 'edit' ? 'Edit Treatment' : 'Log Treatment'
+    const title = mode === 'edit' ? 'Edit Treatment' : 'New Treatment'
 
     // Increment key to force full remount of component
     sheetKeyRef.current += 1
@@ -48,7 +48,7 @@ export function useTreatmentSheet() {
       onSave: () => {
         formRef.current?.handleSubmit()
       },
-      saveLabel: mode === 'edit' ? 'Save' : 'Log Treatment',
+      saveLabel: 'Save',
     })
   }, [])
 

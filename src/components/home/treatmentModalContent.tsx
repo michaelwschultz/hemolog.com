@@ -288,14 +288,30 @@ export default React.forwardRef<
 
   React.useImperativeHandle(ref, () => ({ handleSubmit }), [handleSubmit])
 
+  const typeButtonStyles = {
+    base: 'px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200',
+    active: {
+      [TreatmentTypeEnum.PROPHY]:
+        'bg-blue-50 text-blue-700 border-2 border-blue-200',
+      [TreatmentTypeEnum.BLEED]:
+        'bg-red-50 text-red-600 border-2 border-red-200',
+      [TreatmentTypeEnum.PREVENTATIVE]:
+        'bg-yellow-50 text-yellow-700 border-2 border-yellow-200',
+      [TreatmentTypeEnum.ANTIBODY]:
+        'bg-green-50 text-green-700 border-2 border-green-200',
+    },
+    inactive:
+      'bg-gray-50 text-gray-500 border-2 border-transparent hover:bg-gray-100',
+  }
+
   return (
-    <div className='p-6'>
+    <div className='p-5'>
       <form
         onSubmit={(e) => {
           e.preventDefault()
           handleSubmit()
         }}
-        className='space-y-4'
+        className='space-y-5'
       >
         {/* Treatment Type Buttons */}
         <div className='grid grid-cols-3 gap-2'>
@@ -310,10 +326,10 @@ export default React.forwardRef<
                 setFieldValue('sites', '')
               }
             }}
-            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`${typeButtonStyles.base} ${
               values.type === TreatmentTypeEnum.PROPHY
-                ? 'bg-yellow-100 text-yellow-800 border border-yellow-300'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? typeButtonStyles.active[TreatmentTypeEnum.PROPHY]
+                : typeButtonStyles.inactive
             }`}
           >
             Prophy
@@ -329,10 +345,10 @@ export default React.forwardRef<
                 setFieldValue('sites', '')
               }
             }}
-            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`${typeButtonStyles.base} ${
               values.type === TreatmentTypeEnum.BLEED
-                ? 'bg-green-100 text-green-800 border border-green-300'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? typeButtonStyles.active[TreatmentTypeEnum.BLEED]
+                : typeButtonStyles.inactive
             }`}
           >
             Bleed
@@ -348,10 +364,10 @@ export default React.forwardRef<
                 setFieldValue('sites', '')
               }
             }}
-            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`${typeButtonStyles.base} ${
               values.type === TreatmentTypeEnum.PREVENTATIVE
-                ? 'bg-red-100 text-red-800 border border-red-300'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? typeButtonStyles.active[TreatmentTypeEnum.PREVENTATIVE]
+                : typeButtonStyles.inactive
             }`}
           >
             Preventative
@@ -370,10 +386,10 @@ export default React.forwardRef<
               setFieldValue('units', '0')
               setFieldValue('lot', '')
             }}
-            className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`w-full ${typeButtonStyles.base} ${
               values.type === TreatmentTypeEnum.ANTIBODY
-                ? 'bg-blue-100 text-blue-800 border border-blue-300'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? typeButtonStyles.active[TreatmentTypeEnum.ANTIBODY]
+                : typeButtonStyles.inactive
             }`}
           >
             Monoclonal antibody
@@ -384,7 +400,7 @@ export default React.forwardRef<
         <div>
           <label
             htmlFor='date'
-            className='block text-sm font-medium text-gray-700 mb-1'
+            className='block text-sm font-medium text-gray-700 mb-2'
           >
             Date
           </label>
@@ -394,7 +410,7 @@ export default React.forwardRef<
             type='date'
             onChange={handleChange}
             value={values.date}
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 bg-white transition-all min-h-[46px]'
           />
         </div>
 
@@ -402,7 +418,7 @@ export default React.forwardRef<
         <div>
           <label
             htmlFor='brand'
-            className='block text-sm font-medium text-gray-700 mb-1'
+            className='block text-sm font-medium text-gray-700 mb-2'
           >
             Medication
           </label>
@@ -418,7 +434,7 @@ export default React.forwardRef<
                 ? user?.monoclonalAntibody || ''
                 : values.brand
             }
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed'
+            className='w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 disabled:bg-gray-50 disabled:cursor-not-allowed bg-white transition-all'
           />
         </div>
 
@@ -428,7 +444,7 @@ export default React.forwardRef<
             <div>
               <label
                 htmlFor='units'
-                className='block text-sm font-medium text-gray-700 mb-1'
+                className='block text-sm font-medium text-gray-700 mb-2'
               >
                 Units
               </label>
@@ -440,9 +456,9 @@ export default React.forwardRef<
                   onChange={handleChange}
                   placeholder='3000'
                   value={values.units}
-                  className='w-full px-3 py-2 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+                  className='w-full px-4 py-2.5 pr-14 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 bg-white transition-all'
                 />
-                <span className='absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500'>
+                <span className='absolute right-4 top-1/2 transform -translate-y-1/2 text-sm text-gray-400'>
                   units
                 </span>
               </div>
@@ -452,7 +468,7 @@ export default React.forwardRef<
             <div>
               <label
                 htmlFor='lot'
-                className='block text-sm font-medium text-gray-700 mb-1'
+                className='block text-sm font-medium text-gray-700 mb-2'
               >
                 Lot Number
               </label>
@@ -463,7 +479,7 @@ export default React.forwardRef<
                 onChange={handleChange}
                 placeholder='Lot number'
                 value={values.lot ?? ''}
-                className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+                className='w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 bg-white transition-all'
               />
             </div>
 
@@ -471,7 +487,7 @@ export default React.forwardRef<
             <div>
               <label
                 htmlFor='sites'
-                className='block text-sm font-medium text-gray-700 mb-1'
+                className='block text-sm font-medium text-gray-700 mb-2'
               >
                 Affected Areas
               </label>
@@ -482,7 +498,7 @@ export default React.forwardRef<
                 onChange={handleChange}
                 placeholder='Left ankle, right knee'
                 value={values.sites ?? ''}
-                className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+                className='w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 bg-white transition-all'
               />
             </div>
 
@@ -490,7 +506,7 @@ export default React.forwardRef<
             <div>
               <label
                 htmlFor='cause'
-                className='block text-sm font-medium text-gray-700 mb-1'
+                className='block text-sm font-medium text-gray-700 mb-2'
               >
                 Cause of Bleed
               </label>
@@ -501,7 +517,7 @@ export default React.forwardRef<
                 onChange={handleChange}
                 placeholder='Ran into a door'
                 value={values.cause ?? ''}
-                className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+                className='w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 bg-white transition-all'
               />
             </div>
           </>
