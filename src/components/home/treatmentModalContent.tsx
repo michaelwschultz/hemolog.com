@@ -75,16 +75,12 @@ export default React.forwardRef<
 
   const { user } = useAuth()
 
-  // Debug: Track render count to detect infinite loops
-  const renderCountRef = React.useRef(0)
-
   // Track if we've already submitted to prevent double-submission
   const hasSubmittedRef = React.useRef(false)
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: Intentionally empty deps - only run on mount to reset debug counters
-  // Reset counter and submission flag on mount
+  // Reset submission flag on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Intentionally empty deps - only run on mount to reset debug counter
   React.useEffect(() => {
-    renderCountRef.current = 0
     hasSubmittedRef.current = false
     console.log('TreatmentModalContent mounted', {
       treatment: treatment?.uid,
@@ -96,16 +92,6 @@ export default React.forwardRef<
       hasSubmittedRef.current = false
     }
   }, [])
-
-  renderCountRef.current += 1
-  if (renderCountRef.current > 10) {
-    console.error('TreatmentModalContent render loop detected!', {
-      renderCount: renderCountRef.current,
-      treatment: treatment?.uid,
-      previousTreatment: previousTreatment?.uid,
-    })
-    throw new Error('Infinite render loop detected in TreatmentModalContent')
-  }
 
   // Stable reference to onSuccess to avoid closure issues
   const onSuccessRef = React.useRef(onSuccess)
