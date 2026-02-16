@@ -11,7 +11,7 @@ import { track } from '@/lib/helpers'
 
 const Profile = () => {
   const { user } = useAuth()
-  const version = process.env.npm_package_version
+  const version = process.env.APP_VERSION || 'unknown'
 
   useEffect(() => {
     if (user) {

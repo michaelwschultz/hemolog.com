@@ -8,7 +8,7 @@ import { useTreatmentSheet } from '@/lib/hooks/useTreatmentSheet'
 import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
 
 interface Props {
-  version?: string
+  version: string
 }
 
 const Header = (props: Props) => {
@@ -73,8 +73,8 @@ const Header = (props: Props) => {
               {dropdownOpen && (
                 <div className='absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50'>
                   <div className='px-4 py-2 border-b border-gray-200'>
-                    <div className='font-medium text-gray-900'>
-                      {user?.name}
+                    <div className='relative font-medium text-gray-900 truncate'>
+                      {user?.name || user?.email}
                     </div>
                   </div>
                   <div className='px-4 py-2 text-sm text-gray-600 border-b border-gray-200'>

@@ -1,4 +1,5 @@
 import bundleAnalyzer from '@next/bundle-analyzer'
+import pkg from './package.json' with { type: 'json' }
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -6,6 +7,9 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    APP_VERSION: pkg.version,
+  },
   // Image optimization settings
   images: {
     // Use remotePatterns instead of deprecated 'domains' for better security and flexibility

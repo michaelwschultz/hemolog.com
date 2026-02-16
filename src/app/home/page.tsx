@@ -38,7 +38,7 @@ const Home = () => {
   // it here https://www.youtube.com/watch?v=NSR_Y_rm_zU
 
   const { user } = useAuth()
-  const version = process.env.npm_package_version
+  const version = process.env.APP_VERSION || 'unknown'
 
   useEffect(() => {
     if (user) {
