@@ -1,0 +1,12 @@
+{
+  "[javascript, typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[json, jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports.biome": "explicit",
+    "source.fixAll.biome": "explicit"
+  }
+}

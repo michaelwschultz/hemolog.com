@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "lib": [
       "dom",
       "dom.iterable",
@@ -20,13 +20,25 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es6",
-    "incremental": true
+    "incremental": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "next.config.js"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "next.config.js",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
