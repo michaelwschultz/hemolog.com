@@ -92,30 +92,33 @@ export function SheetProvider({ children }: SheetProviderProps) {
   // Open sheet with config - kept as useCallback for context stability
   // biome-ignore lint/correctness/useExhaustiveDependencies: will cause infinite loop
   const open = useCallback((newConfig: SheetConfig) => {
-    // If there's still a config (sheet closing), wait for it to clear first
+    clearPortalTimer()
+    onCloseRef.current = newConfig.onClose
+    
+    // If there's already a config, clear it first to ensure a clean mount
     if (configRef.current) {
-      // Clear immediately and wait a frame for state to update
+      setPresented(false)
       setConfig(null)
       setShouldRenderPortal(false)
-      requestAnimationFrame(() => {
-        onCloseRef.current = newConfig.onClose
+      
+      // Wait for React to flush the unmount before remounting
+      setTimeout(() => {
         setConfig(newConfig)
         setShouldRenderPortal(true)
         requestAnimationFrame(() => {
           setPresented(true)
         })
-      })
+      }, 0)
       return
     }
 
-    clearPortalTimer()
-    onCloseRef.current = newConfig.onClose
     setConfig(newConfig)
     setShouldRenderPortal(true)
     // Small delay to ensure portal is mounted before presenting
-    requestAnimationFrame(() => {
+    // Silk components often need this for the entry animation to fire correctly
+    setTimeout(() => {
       setPresented(true)
-    })
+    }, 16)
   }, [])
 
   // Close sheet - kept as useCallback for context stability
