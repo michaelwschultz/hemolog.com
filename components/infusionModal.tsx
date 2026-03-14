@@ -194,7 +194,9 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
       {...bindings}
       style={{ width: isPhone ? 'calc(100vw - 16px)' : 'min(620px, 94vw)' }}
     >
-      <Modal.Title>{infusion ? 'Update treatment' : 'Log new treatment'}</Modal.Title>
+      <Modal.Title>
+        {infusion ? 'Update treatment' : 'Log new treatment'}
+      </Modal.Title>
       <StyledModalDescription small type='secondary'>
         Save your treatment details so stats stay accurate and easy to review.
       </StyledModalDescription>
