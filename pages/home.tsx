@@ -112,7 +112,7 @@ const StyledPage = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  max-width: 850pt;
+  max-width: 980px;
   width: 100%;
   margin: 0 auto;
 
@@ -125,13 +125,25 @@ const StyledPage = styled.div`
 `
 
 const StyledPageHeader = styled.header`
-  padding: 24px;
+  padding: 20px 24px 12px;
+
+  @media (max-width: 650px) {
+    padding: 16px 16px 8px;
+  }
 `
 
 const StyledPageContent = styled.main`
   padding: 0 24px;
+
+  @media (max-width: 650px) {
+    padding: 0 16px;
+  }
 `
 
 const StyledPageSection = styled.section`
-  padding: 40px 0 0 0;
+  padding: 28px 0 0;
+
+  @media (max-width: 650px) {
+    padding-top: 20px;
+  }
 `

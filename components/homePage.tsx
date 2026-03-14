@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Text, Spacer, Grid, Select, useMediaQuery } from '@geist-ui/react'
 import Filter from '@geist-ui/react-icons/filter'
 import { getYear } from 'date-fns'
+import styled from 'styled-components'
 
 import dynamic from 'next/dynamic'
 import InfusionTable from 'components/infusionTable'
@@ -84,22 +85,20 @@ const HomePage = (): JSX.Element => {
         </>
       )} */}
 
-      <Grid.Container
-        justify='space-between'
-        alignItems='center'
-        style={{ padding: '0 0 16px 0' }}
-      >
-        <Grid>
-          <Text h4 style={{ marginBottom: '0' }}>
-            Insights
-          </Text>
-        </Grid>
-        <Grid>
-          <Grid.Container gap={2} alignItems='center'>
-            <Grid alignItems='center'>
+      <StyledSectionHeader>
+        <Grid.Container
+          justify='space-between'
+          alignItems='center'
+          style={{ width: '100%', gap: '12px' }}
+        >
+          <Grid>
+            <Text h4 style={{ marginBottom: '0' }}>
+              Insights
+            </Text>
+          </Grid>
+          <Grid>
+            <StyledFilterWrap>
               <Filter size={16} />
-            </Grid>
-            <Grid>
               <Select
                 placeholder='Choose one'
                 disabled={infusionYears.length < 1}
@@ -118,10 +117,10 @@ const HomePage = (): JSX.Element => {
                   </Select.Option>
                 ))}
               </Select>
-            </Grid>
-          </Grid.Container>
-        </Grid>
-      </Grid.Container>
+            </StyledFilterWrap>
+          </Grid>
+        </Grid.Container>
+      </StyledSectionHeader>
       <Stats filterYear={filterYear} />
       <Spacer h={3} />
 
@@ -129,14 +128,22 @@ const HomePage = (): JSX.Element => {
       <Text h6 type='secondary'>
         Treatments are stacked by type (bleed, preventative, or prophy)
       </Text>
-      <Chart filterYear={filterYear} />
+      <StyledPanel>
+        <Chart filterYear={filterYear} />
+      </StyledPanel>
 
       <Spacer h={3} />
-      <Grid justify='space-between' alignItems='center'>
+      <Grid justify='space-between' alignItems='center' style={{ gap: '8px' }}>
         <Text h4>Treatments</Text>
-        {smallerThanSmall && <Text>Swipe →</Text>}
+        {smallerThanSmall && (
+          <Text small type='secondary'>
+            Swipe →
+          </Text>
+        )}
       </Grid>
-      <InfusionTable filterYear={filterYear} />
+      <StyledPanel>
+        <InfusionTable filterYear={filterYear} />
+      </StyledPanel>
     </>
   )
 }
@@ -162,3 +169,23 @@ const HomePage = (): JSX.Element => {
 // `
 
 export default HomePage
+
+const StyledSectionHeader = styled.div`
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #fff9fc 100%);
+`
+
+const StyledFilterWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`
+
+const StyledPanel = styled.div`
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 8px;
+`

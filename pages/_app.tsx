@@ -105,10 +105,9 @@ const GlobalStyle = createGlobalStyle`
   }
 
   /*  targets Nextjs empty div issue */
-  /* TODO(michael): remove scrollbar on mobile */
   body > div:first-child {
-    overflow: -moz-scrollbars-vertical; 
-    overflow-y: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
     height: inherit;
   }
 
