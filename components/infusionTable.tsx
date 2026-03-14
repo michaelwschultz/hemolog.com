@@ -258,5 +258,7 @@ export default function InfusionTable(props: InfusionTableProps): JSX.Element {
 }
 
 const StyledTableWrapper = styled.div`
-  overflow-x: scroll;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
 `

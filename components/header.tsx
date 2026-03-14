@@ -8,6 +8,7 @@ import {
   Spacer,
   useMediaQuery,
 } from '@geist-ui/react'
+import styled from 'styled-components'
 
 import { useAuth } from 'lib/auth'
 import Logo from 'components/logo'
@@ -67,48 +68,51 @@ const Header = (props: Props): JSX.Element | null => {
 
     return (
       <>
-        <Grid.Container justify='space-between' alignItems='center'>
-          <Grid>
-            <Logo />
-          </Grid>
-          <Grid>
-            <Grid.Container gap={2} alignItems='center'>
-              <Grid>
-                {!isMobile && (
-                  <Button
-                    onClick={() => setInfusionModalVisible(true)}
-                    auto
-                    type='success-light'
-                    scale={3 / 4}
-                  >
-                    New treatment
-                  </Button>
-                )}
-              </Grid>
-              <Grid>
-                {/* @ts-expect-error - Popover content prop has a type conflict with HTML content attribute */}
-                <Popover content={popoverContent} placement='bottomEnd'>
-                  <Avatar
-                    src={user.photoUrl || '/images/favicon-32x32.png'}
-                    text={avatarInitial}
-                    style={{ cursor: 'pointer' }}
-                    scale={2}
-                  />
-                </Popover>
-              </Grid>
-            </Grid.Container>
-          </Grid>
-        </Grid.Container>
+        <StyledHeaderCard>
+          <Grid.Container justify='space-between' alignItems='center'>
+            <Grid>
+              <Logo />
+            </Grid>
+            <Grid>
+              <Grid.Container gap={1.5} alignItems='center'>
+                <Grid>
+                  {!isMobile && (
+                    <Button
+                      onClick={() => setInfusionModalVisible(true)}
+                      auto
+                      type='success-light'
+                      scale={3 / 4}
+                      style={{ fontWeight: 600 }}
+                    >
+                      New treatment
+                    </Button>
+                  )}
+                </Grid>
+                <Grid>
+                  {/* @ts-expect-error - Popover content prop has a type conflict with HTML content attribute */}
+                  <Popover content={popoverContent} placement='bottomEnd'>
+                    <Avatar
+                      src={user.photoUrl || '/images/favicon-32x32.png'}
+                      text={avatarInitial}
+                      style={{ cursor: 'pointer' }}
+                      scale={2}
+                    />
+                  </Popover>
+                </Grid>
+              </Grid.Container>
+            </Grid>
+          </Grid.Container>
+        </StyledHeaderCard>
 
-        <Spacer />
+        <Spacer h={0.9} />
 
         {isMobile && (
           <Button
             onClick={() => setInfusionModalVisible(true)}
-            style={{ width: '100%' }}
+            style={{ width: '100%', fontWeight: 600 }}
             type='success-light'
           >
-            Log infusion
+            New treatment
           </Button>
         )}
 
@@ -125,3 +129,10 @@ const Header = (props: Props): JSX.Element | null => {
 }
 
 export default Header
+
+const StyledHeaderCard = styled.div`
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #fff8fb 100%);
+`

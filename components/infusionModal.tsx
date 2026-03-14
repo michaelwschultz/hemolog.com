@@ -6,9 +6,11 @@ import {
   Button,
   Grid,
   useToasts,
+  useMediaQuery,
 } from '@geist-ui/react'
 import { useFormik } from 'formik'
 import { compareDesc, format, parseISO } from 'date-fns'
+import styled from 'styled-components'
 
 import { useAuth } from 'lib/auth'
 import { track } from 'lib/helpers'
@@ -46,6 +48,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
   const { user } = useAuth()
   const [, setToast] = useToasts()
   const { data: infusions } = useInfusions()
+  const isPhone = useMediaQuery('xs', { match: 'down' })
 
   // TODO:(michael) limit the firebase call instead of having
   // to return all the infusions and filtering them here
@@ -186,153 +189,168 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
   }
 
   return (
-    <Modal open={visible} {...bindings}>
-      <Modal.Title>Treatment</Modal.Title>
+    <Modal
+      open={visible}
+      {...bindings}
+      style={{ width: isPhone ? 'calc(100vw - 16px)' : 'min(620px, 94vw)' }}
+    >
+      <Modal.Title>{infusion ? 'Update treatment' : 'Log new treatment'}</Modal.Title>
+      <StyledModalDescription small type='secondary'>
+        Save your treatment details so stats stay accurate and easy to review.
+      </StyledModalDescription>
       <Modal.Content>
-        <form onSubmit={formik.handleSubmit}>
-          <Grid.Container gap={1}>
-            <Grid xs={8}>
-              <Button
-                width='100%'
-                name='type'
-                onClick={() =>
-                  formik.setFieldValue('type', TreatmentTypeEnum.PROPHY)
-                }
-                style={{
-                  marginRight: '8px',
-                  paddingLeft: '4px',
-                  paddingRight: '4px',
-                }}
-                type={
-                  formik.values.type === TreatmentTypeEnum.PROPHY
-                    ? 'warning-light'
-                    : 'default'
-                }
-              >
-                Prophy
-              </Button>
-            </Grid>
-            <Grid xs={8}>
-              <Button
-                width='100%'
-                name='type'
-                onClick={() =>
-                  formik.setFieldValue('type', TreatmentTypeEnum.BLEED)
-                }
-                style={{
-                  marginRight: '8px',
-                  paddingLeft: '4px',
-                  paddingRight: '4px',
-                }}
-                type={
-                  formik.values.type === TreatmentTypeEnum.BLEED
-                    ? 'success-light'
-                    : 'default'
-                }
-              >
-                Bleed
-              </Button>
-            </Grid>
-            <Grid xs={8}>
-              <Button
-                width='100%'
-                name='type'
-                onClick={() =>
-                  formik.setFieldValue('type', TreatmentTypeEnum.PREVENTATIVE)
-                }
-                style={{
-                  paddingLeft: '4px',
-                  paddingRight: '4px',
-                }}
-                type={
-                  formik.values.type === TreatmentTypeEnum.PREVENTATIVE
-                    ? 'error-light'
-                    : 'default'
-                }
-              >
-                Preventative
-              </Button>
-            </Grid>
-          </Grid.Container>
-          {user?.monoclonalAntibody && (
-            <Grid.Container gap={1}>
-              <Grid xs={24}>
+        <StyledForm onSubmit={formik.handleSubmit}>
+          <StyledSection>
+            <Text h6 style={{ margin: 0 }}>
+              Treatment type
+            </Text>
+            <Spacer h={0.3} />
+            <Grid.Container gap={0.8}>
+              <Grid xs={12} sm={8}>
                 <Button
                   width='100%'
                   name='type'
                   onClick={() =>
-                    formik.setFieldValue('type', TreatmentTypeEnum.ANTIBODY)
+                    formik.setFieldValue('type', TreatmentTypeEnum.PROPHY)
                   }
-                  style={{
-                    paddingLeft: '4px',
-                    paddingRight: '4px',
-                  }}
+                  style={TREATMENT_BUTTON_STYLE}
                   type={
-                    formik.values.type === TreatmentTypeEnum.ANTIBODY
-                      ? 'secondary-light'
+                    formik.values.type === TreatmentTypeEnum.PROPHY
+                      ? 'warning-light'
                       : 'default'
                   }
                 >
-                  Monoclonal antibody
+                  Prophy
                 </Button>
               </Grid>
+              <Grid xs={12} sm={8}>
+                <Button
+                  width='100%'
+                  name='type'
+                  onClick={() =>
+                    formik.setFieldValue('type', TreatmentTypeEnum.BLEED)
+                  }
+                  style={TREATMENT_BUTTON_STYLE}
+                  type={
+                    formik.values.type === TreatmentTypeEnum.BLEED
+                      ? 'success-light'
+                      : 'default'
+                  }
+                >
+                  Bleed
+                </Button>
+              </Grid>
+              <Grid xs={24} sm={8}>
+                <Button
+                  width='100%'
+                  name='type'
+                  onClick={() =>
+                    formik.setFieldValue('type', TreatmentTypeEnum.PREVENTATIVE)
+                  }
+                  style={TREATMENT_BUTTON_STYLE}
+                  type={
+                    formik.values.type === TreatmentTypeEnum.PREVENTATIVE
+                      ? 'error-light'
+                      : 'default'
+                  }
+                >
+                  Preventative
+                </Button>
+              </Grid>
+              {user?.monoclonalAntibody && (
+                <Grid xs={24}>
+                  <Button
+                    width='100%'
+                    name='type'
+                    onClick={() =>
+                      formik.setFieldValue('type', TreatmentTypeEnum.ANTIBODY)
+                    }
+                    style={TREATMENT_BUTTON_STYLE}
+                    type={
+                      formik.values.type === TreatmentTypeEnum.ANTIBODY
+                        ? 'secondary-light'
+                        : 'default'
+                    }
+                  >
+                    Monoclonal antibody
+                  </Button>
+                </Grid>
+              )}
             </Grid.Container>
-          )}
-          <Spacer />
-          <Input
-            id='date'
-            name='date'
-            htmlType='date'
-            onChange={formik.handleChange}
-            placeholder='Date'
-            value={formik.values.date}
-            width='100%'
-            crossOrigin={undefined}
-          >
-            <Text h6>Date</Text>
-          </Input>
-          <Spacer />
-          <Input
-            id='brand'
-            name='brand'
-            onChange={formik.handleChange}
-            placeholder='Brand name'
-            disabled={formik.values.type === TreatmentTypeEnum.ANTIBODY}
-            crossOrigin={undefined}
-            value={
-              formik.values.type === TreatmentTypeEnum.ANTIBODY
-                ? user?.monoclonalAntibody || ''
-                : formik.values.brand
-            }
-            width='100%'
-          >
-            <Text h6>Medication</Text>
-          </Input>
-          <Spacer h={0.8} />
+          </StyledSection>
+
+          <StyledSection>
+            <Text h6 style={{ margin: 0 }}>
+              Medication details
+            </Text>
+            <Spacer h={0.3} />
+            <Input
+              id='date'
+              name='date'
+              htmlType='date'
+              onChange={formik.handleChange}
+              placeholder='Date'
+              value={formik.values.date}
+              width='100%'
+              crossOrigin={undefined}
+            >
+              <Text h6>Date</Text>
+            </Input>
+            <Spacer />
+            <Input
+              id='brand'
+              name='brand'
+              onChange={formik.handleChange}
+              placeholder='Brand name'
+              disabled={formik.values.type === TreatmentTypeEnum.ANTIBODY}
+              crossOrigin={undefined}
+              value={
+                formik.values.type === TreatmentTypeEnum.ANTIBODY
+                  ? user?.monoclonalAntibody || ''
+                  : formik.values.brand
+              }
+              width='100%'
+            >
+              <Text h6>Medication</Text>
+            </Input>
+            {formik.values.type !== TreatmentTypeEnum.ANTIBODY && (
+              <>
+                <Spacer />
+                <Input
+                  crossOrigin={undefined}
+                  id='units'
+                  name='units'
+                  htmlType='number'
+                  labelRight='units'
+                  onChange={formik.handleChange}
+                  placeholder='3000'
+                  value={formik.values.units}
+                  width='100%'
+                >
+                  <Text h6>Amount</Text>
+                </Input>
+                <Spacer />
+                <Input
+                  crossOrigin={undefined}
+                  id='lot'
+                  name='lot'
+                  onChange={formik.handleChange}
+                  placeholder='Lot number'
+                  value={formik.values.lot}
+                  width='100%'
+                >
+                  <Text h6>Lot</Text>
+                </Input>
+              </>
+            )}
+          </StyledSection>
+
           {formik.values.type !== TreatmentTypeEnum.ANTIBODY && (
-            <>
-              <Input
-                crossOrigin={undefined}
-                id='units'
-                name='units'
-                htmlType='number'
-                labelRight='units'
-                onChange={formik.handleChange}
-                placeholder='3000'
-                value={formik.values.units}
-                width='100%'
-              />
-              <Spacer h={0.5} />
-              <Input
-                crossOrigin={undefined}
-                id='lot'
-                name='lot'
-                onChange={formik.handleChange}
-                placeholder='Lot number'
-                value={formik.values.lot}
-                width='100%'
-              />
-              <Spacer />
+            <StyledSection>
+              <Text h6 style={{ margin: 0 }}>
+                Bleed notes
+              </Text>
+              <Spacer h={0.3} />
               <Input
                 crossOrigin={undefined}
                 id='sites'
@@ -350,13 +368,13 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
                 id='cause'
                 name='cause'
                 onChange={formik.handleChange}
-                placeholder='Ran into a door 🤦‍♂️'
+                placeholder='Ran into a door'
                 value={formik.values.cause}
                 width='100%'
               >
                 <Text h6>Cause of bleed</Text>
               </Input>
-            </>
+            </StyledSection>
           )}
 
           {/* <Text h6>Notes</Text>
@@ -364,7 +382,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
             width='100%'
             placeholder='Notes to help you remember anything special about this infusion'
           /> */}
-        </form>
+        </StyledForm>
       </Modal.Content>
       <Modal.Action passive onClick={() => closeModal()}>
         Cancel
@@ -373,9 +391,33 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
         onClick={handleSubmit}
         disabled={!formik.isValid}
         loading={formik.isSubmitting}
+        style={isPhone ? { fontWeight: 600 } : undefined}
       >
         {infusion ? 'Update Treatment' : 'Log Treatment'}
       </Modal.Action>
     </Modal>
   )
 }
+
+const TREATMENT_BUTTON_STYLE = {
+  minHeight: '42px',
+  paddingLeft: '6px',
+  paddingRight: '6px',
+}
+
+const StyledModalDescription = styled(Text)`
+  margin-top: -8px;
+  text-align: center;
+`
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+`
+
+const StyledSection = styled.section`
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 14px;
+`
