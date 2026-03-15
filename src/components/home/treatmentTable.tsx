@@ -12,6 +12,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { format, parseISO } from 'date-fns'
+import type { ReactElement } from 'react'
 import { useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useAuth } from '@/lib/auth'
@@ -30,7 +31,7 @@ interface TreatmentTableProps {
 
 export default function TreatmentTable(
   props: TreatmentTableProps
-): JSX.Element {
+): ReactElement {
   const { limit, uid, filterYear } = props
   const {
     data: treatments,

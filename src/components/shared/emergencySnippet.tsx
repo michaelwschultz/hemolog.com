@@ -1,6 +1,6 @@
 import { IconCopy } from '@tabler/icons-react'
 import type React from 'react'
-import { useEffect, useState } from 'react'
+import { type ReactElement, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   style?: React.CSSProperties
 }
 
-export default function EmergencySnippet(props: Props): JSX.Element {
+export default function EmergencySnippet(props: Props): ReactElement {
   const { alertId = 'example', style } = props
   const [domain, setDomain] = useState('hemolog.com')
 

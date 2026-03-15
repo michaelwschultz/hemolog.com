@@ -1,10 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import type { ReactElement } from 'react'
 import DescriptionCards from '@/components/landing/descriptionCards'
 import Footer from '@/components/shared/footer'
 import StaticHeader from '@/components/shared/staticHeader'
 
-export default function Landing(): JSX.Element {
+export default function Landing(): ReactElement {
   return (
     <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto relative'>
       <StaticHeader />

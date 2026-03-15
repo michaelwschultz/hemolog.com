@@ -1,9 +1,10 @@
 'use client'
 
+import type { ReactElement } from 'react'
 import EmergencyCard from '@/components/home/emergencyCard'
 import Logo from '@/components/shared/logo'
 
-export default function Print(): JSX.Element {
+export default function Print(): ReactElement {
   // TODO(michael) Could improve this by determining the user on the server side
   // and redirecting before hitting this page. Similar to how Lee Robinson explains
   // it here https://www.youtube.com/watch?v=NSR_Y_rm_zU

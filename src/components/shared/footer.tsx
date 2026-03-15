@@ -2,12 +2,12 @@
 
 // All Geist UI components have been migrated to Tailwind
 
-import { useEffect, useState } from 'react'
+import { type ReactElement, useEffect, useState } from 'react'
 import EmergencySnippet from '@/components/shared/emergencySnippet'
 import { useAuth } from '@/lib/auth'
 import { CONFIG } from '@/lib/helpers'
 
-export default function Footer(): JSX.Element {
+export default function Footer(): ReactElement {
   const { user, loading } = useAuth()
   const [mounted, setMounted] = useState(false)
 

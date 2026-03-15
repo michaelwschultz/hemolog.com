@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { type ReactElement, useState } from 'react'
 import _ from 'underscore'
 import FeedbackModal from '@/components/home/feedbackModal'
 import StatCard from '@/components/home/statCard'
@@ -29,7 +29,7 @@ interface StatsProps {
   filterYear: string
 }
 
-export default function Stats(props: StatsProps): JSX.Element {
+export default function Stats(props: StatsProps): ReactElement {
   const { filterYear } = props
   const { data, isLoading, isError, error } = useTreatmentsQuery()
 

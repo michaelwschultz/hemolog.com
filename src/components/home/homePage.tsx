@@ -3,6 +3,7 @@
 import { IconFilter } from '@tabler/icons-react'
 import { getYear } from 'date-fns'
 import dynamic from 'next/dynamic'
+import type { ReactElement } from 'react'
 import React, { useState } from 'react'
 import Stats from '@/components/home/stats'
 import TreatmentTable from '@/components/home/treatmentTable'
@@ -13,7 +14,7 @@ const Chart = dynamic(() => import('@/components/home/chart'), {
   ssr: false,
 })
 
-const HomePage = (): JSX.Element => {
+const HomePage = (): ReactElement => {
   const [smallerThanSmall, setSmallerThanSmall] = useState(false)
 
   React.useEffect(() => {

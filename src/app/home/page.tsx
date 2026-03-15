@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { useEffect } from 'react'
+import { type ReactElement, useEffect } from 'react'
 import FeedbackPage from '@/components/home/feedbackPage'
 
 import Header from '@/components/home/header'
@@ -13,7 +13,7 @@ import { withAuth } from '@/components/shared/withAuth'
 import { ProtectRoute, useAuth } from '@/lib/auth'
 import { track } from '@/lib/helpers'
 
-const Home = (): JSX.Element => {
+const Home = (): ReactElement => {
   // TODO(michael) add welcome message by checking to see if this is the users
   // first time logging in. Still not sure how to accomplish this.
   //

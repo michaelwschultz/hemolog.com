@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { type ReactElement } from 'react'
 import Logo from '@/components/shared/logo'
 import { useAuth } from '@/lib/auth'
 import { useTreatmentSheet } from '@/lib/hooks/useTreatmentSheet'
@@ -10,7 +10,7 @@ interface Props {
   version?: string
 }
 
-const Header = (props: Props): JSX.Element | null => {
+const Header = (props: Props): ReactElement | null => {
   const { version } = props
   const { user, signout } = useAuth()
   const { data: treatments } = useTreatmentsQuery()
