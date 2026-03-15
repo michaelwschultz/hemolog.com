@@ -248,7 +248,7 @@ export default function TreatmentTable(
   }
 
   return (
-    <div className='overflow-x-auto'>
+    <div className='overflow-x-auto rounded-lg border border-gray-200'>
       <table className='min-w-full divide-y divide-gray-200'>
         <thead className='bg-gray-50'>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -256,7 +256,7 @@ export default function TreatmentTable(
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+                  className='px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
                   onClick={header.column.getToggleSortingHandler()}
                 >
                   <div className='flex items-center gap-1'>
@@ -301,7 +301,7 @@ export default function TreatmentTable(
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className='px-6 py-4 whitespace-nowrap text-sm text-gray-900'
+                    className='px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-gray-900'
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
@@ -314,7 +314,7 @@ export default function TreatmentTable(
 
       {/* Pagination */}
       {filteredTreatments.length > 25 && (
-        <div className='flex items-center justify-between px-6 py-3 bg-white border-t border-gray-200'>
+        <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4 sm:px-6 py-3 bg-white border-t border-gray-200'>
           <div className='flex items-center gap-2'>
             <button
               type='button'

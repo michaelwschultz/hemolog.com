@@ -95,8 +95,8 @@ const HomePage = (): JSX.Element => {
         </>
       )} */}
 
-      <div className='flex justify-between items-center pb-4'>
-        <h4 className='text-xl font-semibold m-0'>Insights</h4>
+      <div className='flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 pb-4'>
+        <h4 className='text-lg sm:text-xl font-semibold m-0'>Insights</h4>
         <div className='flex items-center gap-2'>
           <IconFilter size={16} className='text-gray-500' />
           <select
@@ -122,15 +122,17 @@ const HomePage = (): JSX.Element => {
       <Stats filterYear={filterYear} />
       <div className='h-12' />
 
-      <h4 className='text-xl font-semibold'>Annual overview ({filterYear})</h4>
+      <h4 className='text-lg sm:text-xl font-semibold'>
+        Annual overview ({filterYear})
+      </h4>
       <p className='text-sm text-gray-600 mt-1'>
         Treatments are stacked by type (bleed, preventative, or prophy)
       </p>
       <Chart filterYear={filterYear} />
 
       <div className='h-12' />
-      <div className='flex justify-between items-center'>
-        <h4 className='text-xl font-semibold'>Treatments</h4>
+      <div className='flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1'>
+        <h4 className='text-lg sm:text-xl font-semibold'>Treatments</h4>
         <span className='text-sm text-gray-600' suppressHydrationWarning>
           {smallerThanSmall && 'Swipe →'}
         </span>

@@ -58,19 +58,19 @@ const Home = (): JSX.Element => {
   return (
     <ProtectRoute>
       <div className='h-full flex flex-col max-w-[80rem] w-full mx-auto'>
-        <header className='p-6'>
+        <header className='p-4 sm:p-6'>
           <Header version={version} />
         </header>
-        <main className='px-6'>
+        <main className='px-4 sm:px-6'>
           <Tabs initialValue={pathname}>
             <TabsItem label='home' value='/home'>
-              <section className='pt-10'>
+              <section className='pt-6 sm:pt-10'>
                 <HomePage />
               </section>
             </TabsItem>
 
             <TabsItem label='Profile' value='/profile'>
-              <section className='pt-10'>
+              <section className='pt-6 sm:pt-10'>
                 <ProfilePage />
               </section>
             </TabsItem>
@@ -82,7 +82,7 @@ const Home = (): JSX.Element => {
 
             {user?.isAdmin && (
               <TabsItem label='feedback' value='/feedback'>
-                <section className='pt-10'>
+                <section className='pt-6 sm:pt-10'>
                   <FeedbackPage />
                 </section>
               </TabsItem>

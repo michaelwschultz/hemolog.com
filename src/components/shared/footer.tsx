@@ -27,7 +27,7 @@ export default function Footer(): JSX.Element {
   }
 
   return (
-    <footer className='px-10 py-10'>
+    <footer className='px-4 sm:px-10 py-8 sm:py-10'>
       <hr className='border-gray-200' />
       <div className='h-8' />
       <div className='flex flex-col sm:flex-row gap-4'>

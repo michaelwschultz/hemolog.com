@@ -64,7 +64,7 @@ export function Tabs({
       <div
         className={`border-b border-gray-200 dark:border-gray-700 ${className}`}
       >
-        <nav className='flex space-x-8'>
+        <nav className='flex gap-4 sm:gap-8 overflow-x-auto pb-px -mb-px'>
           {tabItems.map((item) => {
             const isActive = item.value === currentValue
 

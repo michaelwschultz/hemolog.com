@@ -51,7 +51,7 @@ const Header = (props: Props): JSX.Element | null => {
             <button
               type='button'
               onClick={handleOpenSheet}
-              className='bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1.5 rounded text-sm font-medium transition-colors'
+              className='bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm transition-colors active:scale-[0.98]'
             >
               New treatment
             </button>

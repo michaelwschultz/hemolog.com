@@ -96,17 +96,12 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
     // Track if we've already submitted to prevent double-submission
     const hasSubmittedRef = useRef(false)
 
-    // Reset counter and submission flag on mount
+    // Reset counter and submission flag when treatment/previousTreatment changes
+    // biome-ignore lint/correctness/useExhaustiveDependencies: intentional - reset on treatment change
     useEffect(() => {
       renderCountRef.current = 0
       hasSubmittedRef.current = false
-      console.log('TreatmentModalContent mounted', {
-        treatment: treatment?.uid,
-        previousTreatment: previousTreatment?.uid,
-      })
       return () => {
-        console.log('TreatmentModalContent unmounting')
-        // Reset on unmount too, just in case
         hasSubmittedRef.current = false
       }
     }, [previousTreatment?.uid, treatment?.uid])
@@ -133,16 +128,11 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
     mutationsRef.current = mutations
 
     const [initialValues] = useState(() => {
-      const values = getInitialValues(
+      return getInitialValues(
         treatment,
         previousTreatment,
         user?.monoclonalAntibody
       )
-      console.log('TreatmentModalContent: Initial values calculated on mount', {
-        treatmentUid: treatment?.uid,
-        previousTreatmentUid: previousTreatment?.uid,
-      })
-      return values
     })
 
     // Store user in ref to avoid recreating handlers when user changes
@@ -253,14 +243,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
     // TODO(michael) Add formik validation
     // Memoize onSubmit with empty deps - use refs for all dependencies
     const onSubmit = useCallback((values: TreatmentValues) => {
-      console.log('onSubmit called', {
-        hasSubmitted: hasSubmittedRef.current,
-        treatmentUid: treatmentRef.current?.uid,
-      })
-      if (hasSubmittedRef.current) {
-        console.warn('onSubmit: Already submitted, ignoring')
-        return
-      }
+      if (hasSubmittedRef.current) return
       hasSubmittedRef.current = true
 
       if (treatmentRef.current) {
@@ -282,10 +265,6 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
     formikRef.current = formik
 
     const handleSubmit = useCallback(() => {
-      console.log('handleSubmit called', {
-        hasSubmitted: hasSubmittedRef.current,
-        formikValues: formikRef.current.values,
-      })
       track('Logged Treatment', {
         type: formikRef.current.values.type,
       })
@@ -294,68 +273,76 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
 
     useImperativeHandle(ref, () => ({ handleSubmit }), [handleSubmit])
 
+    const inputBase =
+      'w-full min-h-[44px] px-4 py-2.5 text-base border border-gray-200 rounded-xl bg-white shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:ring-offset-1'
+
+    const typeButtonBase =
+      'rounded-xl text-sm font-medium transition-all active:scale-[0.98] min-h-[44px]'
+
     return (
-      <div className='p-6'>
-        <form onSubmit={formik.handleSubmit} className='space-y-4'>
-          {/* Treatment Type Buttons */}
-          <div className='grid grid-cols-3 gap-2'>
-            <button
-              type='button'
-              onClick={() => {
-                formik.setFieldValue('type', TreatmentTypeEnum.PROPHY)
-                // Clear antibody-specific fields when switching away from antibody
-                if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
-                  formik.setFieldValue('brand', '')
-                  formik.setFieldValue('cause', '')
-                  formik.setFieldValue('sites', '')
-                }
-              }}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                formik.values.type === TreatmentTypeEnum.PROPHY
-                  ? 'bg-yellow-100 text-yellow-800 border border-yellow-300'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Prophy
-            </button>
-            <button
-              type='button'
-              onClick={() => {
-                formik.setFieldValue('type', TreatmentTypeEnum.BLEED)
-                // Clear antibody-specific fields when switching away from antibody
-                if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
-                  formik.setFieldValue('brand', '')
-                  formik.setFieldValue('cause', '')
-                  formik.setFieldValue('sites', '')
-                }
-              }}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                formik.values.type === TreatmentTypeEnum.BLEED
-                  ? 'bg-green-100 text-green-800 border border-green-300'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Bleed
-            </button>
-            <button
-              type='button'
-              onClick={() => {
-                formik.setFieldValue('type', TreatmentTypeEnum.PREVENTATIVE)
-                // Clear antibody-specific fields when switching away from antibody
-                if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
-                  formik.setFieldValue('brand', '')
-                  formik.setFieldValue('cause', '')
-                  formik.setFieldValue('sites', '')
-                }
-              }}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                formik.values.type === TreatmentTypeEnum.PREVENTATIVE
-                  ? 'bg-red-100 text-red-800 border border-red-300'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Preventative
-            </button>
+      <div className='p-4 sm:p-6 pb-[max(1rem,env(safe-area-inset-bottom))]'>
+        <form onSubmit={formik.handleSubmit} className='space-y-5'>
+          {/* Treatment Type Buttons - responsive: 2 cols on mobile, 3 on larger */}
+          <div>
+            <p className='text-xs font-medium text-gray-500 uppercase tracking-wide mb-3'>
+              Treatment type
+            </p>
+            <div className='grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3'>
+              <button
+                type='button'
+                onClick={() => {
+                  formik.setFieldValue('type', TreatmentTypeEnum.PROPHY)
+                  if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
+                    formik.setFieldValue('brand', '')
+                    formik.setFieldValue('cause', '')
+                    formik.setFieldValue('sites', '')
+                  }
+                }}
+                className={`${typeButtonBase} ${
+                  formik.values.type === TreatmentTypeEnum.PROPHY
+                    ? 'bg-amber-100 text-amber-900 border-2 border-amber-300 shadow-sm'
+                    : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100 hover:border-gray-300'
+                }`}
+              >
+                Prophy
+              </button>
+              <button
+                type='button'
+                onClick={() => {
+                  formik.setFieldValue('type', TreatmentTypeEnum.BLEED)
+                  if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
+                    formik.setFieldValue('brand', '')
+                    formik.setFieldValue('cause', '')
+                    formik.setFieldValue('sites', '')
+                  }
+                }}
+                className={`${typeButtonBase} ${
+                  formik.values.type === TreatmentTypeEnum.BLEED
+                    ? 'bg-emerald-100 text-emerald-900 border-2 border-emerald-300 shadow-sm'
+                    : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100 hover:border-gray-300'
+                }`}
+              >
+                Bleed
+              </button>
+              <button
+                type='button'
+                onClick={() => {
+                  formik.setFieldValue('type', TreatmentTypeEnum.PREVENTATIVE)
+                  if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
+                    formik.setFieldValue('brand', '')
+                    formik.setFieldValue('cause', '')
+                    formik.setFieldValue('sites', '')
+                  }
+                }}
+                className={`${typeButtonBase} ${
+                  formik.values.type === TreatmentTypeEnum.PREVENTATIVE
+                    ? 'bg-primary-50 text-primary-800 border-2 border-primary-300 shadow-sm'
+                    : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100 hover:border-gray-300'
+                }`}
+              >
+                Preventative
+              </button>
+            </div>
           </div>
 
           {user?.monoclonalAntibody && (
@@ -363,17 +350,16 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               type='button'
               onClick={() => {
                 formik.setFieldValue('type', TreatmentTypeEnum.ANTIBODY)
-                // Set brand to monoclonal antibody and clear cause/sites when switching to antibody
                 formik.setFieldValue('brand', user?.monoclonalAntibody || '')
                 formik.setFieldValue('cause', '')
                 formik.setFieldValue('sites', '')
                 formik.setFieldValue('units', '0')
                 formik.setFieldValue('lot', '')
               }}
-              className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              className={`w-full ${typeButtonBase} ${
                 formik.values.type === TreatmentTypeEnum.ANTIBODY
-                  ? 'bg-blue-100 text-blue-800 border border-blue-300'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-sky-100 text-sky-900 border-2 border-sky-300 shadow-sm'
+                  : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100 hover:border-gray-300'
               }`}
             >
               Monoclonal antibody
@@ -384,7 +370,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
           <div>
             <label
               htmlFor={dateId}
-              className='block text-sm font-medium text-gray-700 mb-1'
+              className='block text-sm font-medium text-gray-700 mb-1.5'
             >
               Date
             </label>
@@ -394,7 +380,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               type='date'
               onChange={formik.handleChange}
               value={formik.values.date}
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+              className={inputBase}
             />
           </div>
 
@@ -402,7 +388,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
           <div>
             <label
               htmlFor={brandId}
-              className='block text-sm font-medium text-gray-700 mb-1'
+              className='block text-sm font-medium text-gray-700 mb-1.5'
             >
               Medication
             </label>
@@ -418,7 +404,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                   ? user?.monoclonalAntibody || ''
                   : formik.values.brand
               }
-              className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed'
+              className={`${inputBase} disabled:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-70`}
             />
           </div>
 
@@ -428,7 +414,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               <div>
                 <label
                   htmlFor={unitsId}
-                  className='block text-sm font-medium text-gray-700 mb-1'
+                  className='block text-sm font-medium text-gray-700 mb-1.5'
                 >
                   Units
                 </label>
@@ -440,9 +426,9 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                     onChange={formik.handleChange}
                     placeholder='3000'
                     value={formik.values.units}
-                    className='w-full px-3 py-2 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+                    className={`${inputBase} pr-14`}
                   />
-                  <span className='absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500'>
+                  <span className='absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400'>
                     units
                   </span>
                 </div>
@@ -452,7 +438,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               <div>
                 <label
                   htmlFor={lotId}
-                  className='block text-sm font-medium text-gray-700 mb-1'
+                  className='block text-sm font-medium text-gray-700 mb-1.5'
                 >
                   Lot Number
                 </label>
@@ -463,7 +449,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                   onChange={formik.handleChange}
                   placeholder='Lot number'
                   value={formik.values.lot}
-                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+                  className={inputBase}
                 />
               </div>
 
@@ -471,7 +457,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               <div>
                 <label
                   htmlFor={sitesId}
-                  className='block text-sm font-medium text-gray-700 mb-1'
+                  className='block text-sm font-medium text-gray-700 mb-1.5'
                 >
                   Affected Areas
                 </label>
@@ -482,7 +468,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                   onChange={formik.handleChange}
                   placeholder='Left ankle, right knee'
                   value={formik.values.sites}
-                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+                  className={inputBase}
                 />
               </div>
 
@@ -490,7 +476,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               <div>
                 <label
                   htmlFor={causeId}
-                  className='block text-sm font-medium text-gray-700 mb-1'
+                  className='block text-sm font-medium text-gray-700 mb-1.5'
                 >
                   Cause of Bleed
                 </label>
@@ -501,7 +487,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                   onChange={formik.handleChange}
                   placeholder='Ran into a door'
                   value={formik.values.cause}
-                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+                  className={inputBase}
                 />
               </div>
             </>
