@@ -1,12 +1,13 @@
 'use client'
 
 import Image from 'next/image'
+import type { ReactElement } from 'react'
 import BlogFooter from '@/components/blog/blogFooter'
 import PostFooter from '@/components/blog/postFooter'
 import Footer from '@/components/shared/footer'
 import StaticHeader from '@/components/shared/staticHeader'
 
-const Changelog = (): JSX.Element => {
+const Changelog = (): ReactElement => {
   return (
     <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
       <StaticHeader />

@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import type { ReactElement } from 'react'
 import BlogFooter from '@/components/blog/blogFooter'
 import PostFooter from '@/components/blog/postFooter'
 import Footer from '@/components/shared/footer'
@@ -10,7 +11,7 @@ interface PageProps {
   }>
 }
 
-const ChangelogPost = async ({ params }: PageProps): Promise<JSX.Element> => {
+const ChangelogPost = async ({ params }: PageProps): Promise<ReactElement> => {
   const { slug } = await params
 
   // For now, redirect to 404 for unknown slugs

@@ -9,23 +9,28 @@
 
 .SheetProvider-header {
   /* SELF-LAYOUT */
-  height: 57px;
+  min-height: 56px;
+  padding-top: env(safe-area-inset-top, 0);
+  padding-inline: 1rem;
+  padding-bottom: 0.75rem;
 
   /* APPEARANCE */
   border-bottom: 1px solid rgb(229, 231, 235);
+  background: white;
 
   /* INNER-LAYOUT */
   position: relative;
-  padding-inline: 1.25rem;
   display: grid;
-  grid-template-columns: 80px 1fr 80px;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 0.75rem;
 }
 @media (min-width: 800px) {
   .SheetProvider-header {
-    /* SELF-LAYOUT */
-    height: 53px;
+    padding-inline: 1.25rem;
+    min-height: 52px;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }
 
@@ -34,8 +39,8 @@
   justify-self: start;
 
   /* APPEARANCE */
-  border-radius: 6px;
-  outline-offset: 5px;
+  border-radius: 8px;
+  outline-offset: 2px;
   border: none;
   appearance: none;
   background-color: transparent;
@@ -44,12 +49,19 @@
   cursor: pointer;
 
   /* INNER-LAYOUT */
-  padding: 0;
+  padding: 0.5rem 0.25rem;
 
   /* TEXT */
-  font-size: 17.25px;
+  font-size: 16px;
   font-weight: 500;
-  color: rgb(52, 159, 13);
+  color: rgb(107, 114, 128);
+}
+.SheetProvider-cancelButton:hover {
+  color: rgb(75, 85, 99);
+}
+.SheetProvider-cancelButton:focus-visible {
+  outline: 2px solid rgb(255, 6, 44);
+  outline-offset: 2px;
 }
 
 .SheetProvider-title {
@@ -58,9 +70,14 @@
   justify-self: center;
 
   /* TEXT */
-  font-size: 17.25px;
-  font-weight: 620;
-  color: rgb(31, 41, 55);
+  font-size: 17px;
+  font-weight: 600;
+  color: rgb(17, 24, 39);
+}
+@media (min-width: 800px) {
+  .SheetProvider-title {
+    font-size: 18px;
+  }
 }
 
 .SheetProvider-saveButton {
@@ -68,22 +85,32 @@
   justify-self: end;
 
   /* APPEARANCE */
-  border-radius: 6px;
-  outline-offset: 5px;
+  border-radius: 8px;
+  outline-offset: 2px;
   border: none;
   appearance: none;
-  background-color: transparent;
+  background-color: rgb(255, 6, 44);
 
   /* INTERACTIVITY */
   cursor: pointer;
 
   /* INNER-LAYOUT */
-  padding: 0;
+  padding: 0.5rem 1rem;
 
   /* TEXT */
-  font-size: 17.25px;
+  font-size: 16px;
   font-weight: 600;
-  color: rgb(52, 159, 13);
+  color: white;
+}
+.SheetProvider-saveButton:hover {
+  background-color: rgb(220, 38, 60);
+}
+.SheetProvider-saveButton:active {
+  transform: scale(0.98);
+}
+.SheetProvider-saveButton:focus-visible {
+  outline: 2px solid rgb(255, 6, 44);
+  outline-offset: 2px;
 }
 
 .SheetProvider-scrollView {

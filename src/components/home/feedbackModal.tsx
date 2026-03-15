@@ -1,5 +1,6 @@
 import { Sheet } from '@silk-hq/components'
 import { useFormik } from 'formik'
+import type React from 'react'
 import toast from 'react-hot-toast'
 
 import { useAuth } from '@/lib/auth'
@@ -18,7 +19,7 @@ interface FeedbackModalProps {
 
 export default function FeedbackModal(
   props: FeedbackModalProps
-): JSX.Element | null {
+): React.ReactElement | null {
   const { visible, setVisible } = props
   const { user } = useAuth()
 

@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react'
 import {
   Bar,
   BarChart,
@@ -22,7 +23,7 @@ interface ChartProps {
   filterYear: string
 }
 
-export default function Chart(props: ChartProps): JSX.Element | null {
+export default function Chart(props: ChartProps): ReactElement | null {
   const { filterYear } = props
   const { data } = useTreatmentsQuery()
 
