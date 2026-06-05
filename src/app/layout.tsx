@@ -1,6 +1,7 @@
 'use client'
 
 import { Nanum_Pen_Script } from 'next/font/google'
+import { Analytics } from '@/components/shared/analytics'
 import { Providers } from './providers'
 import './globals.css'
 
@@ -68,6 +69,7 @@ export default function RootLayout({
   return (
     <html lang='en' className={nanumPenScript.variable}>
       <body>
+        <Analytics />
         <Providers>{children}</Providers>
       </body>
     </html>
