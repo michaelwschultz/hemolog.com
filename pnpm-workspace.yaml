@@ -1,5 +1,5 @@
 allowBuilds:
-  '@firebase/util': set this to true or false
+  '@firebase/util': true
   cypress: true
   es5-ext: true
   protobufjs: true
