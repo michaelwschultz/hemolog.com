@@ -1,8 +1,8 @@
 {
   "name": "hemolog",
-  "version": "2.9.0",
+  "version": "3.0.0",
   "type": "module",
-  "packageManager": "pnpm@10.29.3",
+  "packageManager": "pnpm@11.5.1",
   "scripts": {
     "build": "pnpm run lint:fix; next build",
     "build:prod": "pnpm run rules:prod && pnpm run lint:fix && next build",

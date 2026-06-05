@@ -1,4 +1,9 @@
-packages: null
+allowBuilds:
+  '@firebase/util': true
+  cypress: true
+  protobufjs: true
+  re2: true
+  sharp: true
 
 onlyBuiltDependencies:
   - '@firebase/util'
