@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app'
 import { GeistProvider, CssBaseline, Themes } from '@geist-ui/react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from 'lib/theme'
+import { Analytics } from 'components/analytics'
 
 const hemologPalette = {
   success: '#FF062C',
@@ -76,14 +77,8 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         />
         <meta name='mobile-web-app-capable' content='yes' />
         <meta name='apple-mobile-web-app-capable' content='yes' />
-        {/* <script
-          defer
-          src='https://assets.onedollarstats.com/stonks.js'
-          data-debug={
-            process.env.NODE_ENV !== 'production' ? 'hemolog.com' : undefined
-          }
-        /> */}
       </Head>
+      <Analytics />
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <GeistProvider themes={[hemologLight]} themeType={themeType}>

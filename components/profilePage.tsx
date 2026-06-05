@@ -16,7 +16,8 @@ import EmergencySnippet from 'components/emergencySnippet'
 import SettingsForm from 'components/settingsForm'
 import { useAuth } from 'lib/auth'
 import { updateUser } from 'lib/db/users'
-import { generateUniqueString, track } from 'lib/helpers'
+import { generateUniqueString } from 'lib/helpers'
+import { track } from 'components/analytics'
 import useDbUser from 'lib/hooks/useDbUser'
 
 const ProfilePage = (): JSX.Element => {
@@ -27,10 +28,8 @@ const ProfilePage = (): JSX.Element => {
   const { visible, setVisible, bindings } = useModal()
   const [isDeletingAccount, setIsDeletingAccount] = useState(false)
 
-  track('Viewed Profile Page')
-
   const handleOnPrintClick = () => {
-    track('Clicked Print Button', { page: '/profile' })
+    track('Clicked Print Button', '/profile')
     router.push('/emergency/print')
   }
 
@@ -72,7 +71,7 @@ const ProfilePage = (): JSX.Element => {
 
     try {
       setIsDeletingAccount(true)
-      track('Confirmed Delete Account')
+      track('Confirmed Delete Account', '/profile')
       const response = await fetch('/api/delete-account', {
         method: 'DELETE',
         headers: {
@@ -185,7 +184,7 @@ const ProfilePage = (): JSX.Element => {
           auto
           type='error'
           onClick={() => {
-            track('Opened Delete Account Modal')
+            track('Opened Delete Account Modal', '/profile')
             setVisible(true)
           }}
         >

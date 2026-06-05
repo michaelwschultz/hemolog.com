@@ -11,7 +11,7 @@ import { useFormik } from 'formik'
 import { compareDesc, format, parseISO } from 'date-fns'
 
 import { useAuth } from 'lib/auth'
-import { track } from 'lib/helpers'
+import { track } from 'components/analytics'
 import {
   createInfusion,
   type TreatmentType,
@@ -179,7 +179,7 @@ export default function InfusionModal(props: ModalProps): JSX.Element {
   })
 
   const handleSubmit = () => {
-    track('Logged Infusion', {
+    track('Logged Infusion', '/infusion-modal', {
       type: formik.values.type,
     })
     formik.submitForm()

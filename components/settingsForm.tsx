@@ -9,11 +9,12 @@ import {
   Grid,
   AutoComplete,
 } from '@geist-ui/react'
+import type { BaseProps } from 'onedollarstats/dist/types'
 
 import { useAuth } from 'lib/auth'
 import useDbUser from 'lib/hooks/useDbUser'
 import { updateUser } from 'lib/db/users'
-import { track } from 'lib/helpers'
+import { track } from 'components/analytics'
 
 const SettingsForm = (): JSX.Element => {
   const { user } = useAuth()
@@ -108,7 +109,7 @@ const SettingsForm = (): JSX.Element => {
   ]
 
   const handleSubmitForm = () => {
-    track('Updated Profile', { ...formik.values })
+    track('Updated Profile', '/profile', { ...formik.values } as BaseProps)
     formik.submitForm()
   }
 

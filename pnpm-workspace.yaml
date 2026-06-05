@@ -1,4 +1,9 @@
-packages:
+allowBuilds:
+  '@firebase/util': set this to true or false
+  cypress: true
+  es5-ext: true
+  protobufjs: true
+  re2: true
 onlyBuiltDependencies:
   - '@firebase/util'
   - core-js

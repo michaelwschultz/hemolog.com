@@ -11,7 +11,7 @@ import { useAuth, ProtectRoute } from 'lib/auth'
 import HomePage from 'components/homePage'
 import ProfilePage from 'components/profilePage'
 import FeedbackPage from 'components/feedbackPage'
-import { track } from 'lib/helpers'
+import { track } from 'components/analytics'
 
 export async function getStaticProps() {
   return {
@@ -55,7 +55,7 @@ const Home = (props: { version: string }): JSX.Element => {
 
   useEffect(() => {
     if (user) {
-      track('Logged In', {
+      track('Logged In', '/home', {
         uid: user.uid,
         email: user.email,
         appVersion: version,
