@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import React from 'react'
+import React, { type ReactElement } from 'react'
 import QRCode from 'react-qr-code'
 
 import { useAuth } from '@/lib/auth'
@@ -10,7 +10,7 @@ interface Props {
   forPrint?: boolean
 }
 
-export default function EmergencyCard({ forPrint }: Props): JSX.Element {
+export default function EmergencyCard({ forPrint }: Props): ReactElement {
   const { user } = useAuth()
   const { person } = useUserQuery(user?.uid)
 

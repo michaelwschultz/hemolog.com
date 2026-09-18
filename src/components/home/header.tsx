@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { type ReactElement } from 'react'
 import Logo from '@/components/shared/logo'
 import { useAuth } from '@/lib/auth'
 import { useTreatmentSheet } from '@/lib/hooks/useTreatmentSheet'
@@ -10,7 +10,7 @@ interface Props {
   version?: string
 }
 
-const Header = (props: Props): JSX.Element | null => {
+const Header = (props: Props): ReactElement | null => {
   const { version } = props
   const { user, signout } = useAuth()
   const { data: treatments } = useTreatmentsQuery()
@@ -51,7 +51,7 @@ const Header = (props: Props): JSX.Element | null => {
             <button
               type='button'
               onClick={handleOpenSheet}
-              className='bg-green-100 hover:bg-green-200 text-green-800 px-3 py-1.5 rounded text-sm font-medium transition-colors'
+              className='bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm transition-colors active:scale-[0.98]'
             >
               New treatment
             </button>

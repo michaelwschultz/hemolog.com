@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { type ReactElement, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import EmergencyCard from '@/components/home/emergencyCard'
 import SettingsForm from '@/components/home/settingsForm'
@@ -11,7 +11,7 @@ import { generateUniqueString, track } from '@/lib/helpers'
 import { useUserMutations } from '@/lib/hooks/useUserMutations'
 import { useUserQuery } from '@/lib/hooks/useUserQuery'
 
-const ProfilePage = (): JSX.Element => {
+const ProfilePage = (): ReactElement => {
   const { user, signout } = useAuth()
   const { person } = useUserQuery(user?.uid)
   const { updateUser } = useUserMutations()

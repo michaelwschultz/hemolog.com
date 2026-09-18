@@ -1,12 +1,12 @@
 import { useFormik } from 'formik'
-import { useState } from 'react'
+import { type ReactElement, useState } from 'react'
 
 import { useAuth } from '@/lib/auth'
 import { track } from '@/lib/helpers'
 import { useUserMutations } from '@/lib/hooks/useUserMutations'
 import { useUserQuery } from '@/lib/hooks/useUserQuery'
 
-const SettingsForm = (): JSX.Element => {
+const SettingsForm = (): ReactElement => {
   const { user } = useAuth()
   const { person } = useUserQuery(user?.uid)
   const { updateUser } = useUserMutations()

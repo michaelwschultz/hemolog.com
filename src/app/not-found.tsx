@@ -1,12 +1,12 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { type ReactElement, useEffect } from 'react'
 import LoadingScreen from '@/components/shared/loadingScreen'
 import { withAuth } from '@/components/shared/withAuth'
 import { useAuth } from '@/lib/auth'
 
-function Custom404(): JSX.Element {
+function Custom404(): ReactElement {
   const router = useRouter()
   const { user, loading } = useAuth()
 

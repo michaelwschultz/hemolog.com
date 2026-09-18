@@ -1,3 +1,5 @@
+import type { ReactElement } from 'react'
+
 const googleRichResultsSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -5,7 +7,7 @@ const googleRichResultsSchema = {
   logo: 'https://hemolog.com/images/hemolog-logo.png',
 }
 
-export default function Head(): JSX.Element {
+export default function Head(): ReactElement {
   return (
     <script
       type='application/ld+json'

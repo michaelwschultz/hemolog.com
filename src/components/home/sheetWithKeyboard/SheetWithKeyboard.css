@@ -37,17 +37,20 @@
   overflow: clip;
   overflow: hidden;
   background-color: white;
+  box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.05);
 }
 @media (min-width: 800px) {
   .SheetWithKeyboard-content {
     /* SELF-LAYOUT */
-    width: calc(800px - 1.25rem);
-    height: calc(100% - 2rem * 2);
+    width: min(calc(100vw - 2rem), 480px);
+    max-width: 480px;
+    height: auto;
+    max-height: calc(100vh - 2rem);
 
     /* APPEARANCE */
     box-shadow:
-      0 10px 15px -3px rgb(0 0 0 / 0.1),
-      0 4px 6px -4px rgb(0 0 0 / 0.1);
+      0 25px 50px -12px rgb(0 0 0 / 0.15),
+      0 0 0 1px rgb(0 0 0 / 0.05);
     border-radius: var(--sheetWithKeyboard-radius);
   }
 }

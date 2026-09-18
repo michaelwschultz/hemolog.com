@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { type ReactElement, useState } from 'react'
 
 export interface TabsProps {
   initialValue?: string
@@ -14,7 +14,7 @@ export interface TabsItemProps {
   children: React.ReactNode
 }
 
-export function TabsItem({ children }: TabsItemProps): JSX.Element {
+export function TabsItem({ children }: TabsItemProps): ReactElement {
   return <>{children}</>
 }
 
@@ -24,7 +24,7 @@ export function Tabs({
   onChange,
   children,
   className = '',
-}: TabsProps): JSX.Element {
+}: TabsProps): ReactElement {
   const [activeTab, setActiveTab] = useState<string>(initialValue || '')
 
   const currentValue = value !== undefined ? value : activeTab
@@ -64,7 +64,7 @@ export function Tabs({
       <div
         className={`border-b border-gray-200 dark:border-gray-700 ${className}`}
       >
-        <nav className='flex space-x-8'>
+        <nav className='flex gap-4 sm:gap-8 overflow-x-auto pb-px -mb-px'>
           {tabItems.map((item) => {
             const isActive = item.value === currentValue
 
@@ -103,6 +103,6 @@ export interface TabsContentProps {
 export function TabsContent({
   children,
   className = '',
-}: TabsContentProps): JSX.Element {
+}: TabsContentProps): ReactElement {
   return <div className={`py-6 ${className}`}>{children}</div>
 }
