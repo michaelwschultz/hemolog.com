@@ -1,4 +1,5 @@
 import { getRecentUserInfusionsByApiKey } from 'lib/admin-db/infusions'
+import { getApiKeyFromRequest } from 'lib/api-auth'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const recentTreatments = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -6,7 +7,10 @@ const recentTreatments = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(405).send('Requires GET method.')
   }
   try {
-    const { apikey, alertid } = req.query
+    // SECURITY: Pull from the Authorization header when present,
+    // falling back to the query param for backward compatibility.
+    const apikey = getApiKeyFromRequest(req)
+    const { alertid } = req.query
     if (!apikey && !alertid) {
       throw { message: 'Access denied. Missing api key.' }
     }
