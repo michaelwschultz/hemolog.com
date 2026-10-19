@@ -48,7 +48,8 @@ export async function updateUser(
   uid: string,
   userData: Partial<UserType>
 ): Promise<void> {
-  await setDocument('users', uid, userData, true)
+  const { token: _token, ...dataWithoutToken } = userData
+  await setDocument('users', uid, dataWithoutToken, true)
 }
 
 // Fetch a user by UID (used by TanStack Query)

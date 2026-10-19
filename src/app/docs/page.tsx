@@ -204,9 +204,16 @@ export default function DocsPage(): ReactElement {
           <section id='authentication' className='mb-16 scroll-mt-8'>
             <h3 className='text-2xl font-bold mb-4'>Authentication</h3>
             <p className='text-gray-700 mb-4'>
-              Every request includes your API key as{' '}
-              <InlineCode>apikey</InlineCode> on the query string:
+              Send your API key in an{' '}
+              <InlineCode>Authorization: Bearer</InlineCode> header. A query
+              parameter still works for older clients.
             </p>
+            <div className='mb-4'>
+              <CodeBlock
+                label='Authorization header'
+                code='curl -H "Authorization: Bearer YOUR_API_KEY" https://hemolog.com/api/treatments'
+              />
+            </div>
             <div className='mb-4'>
               <CodeBlock
                 label='Query parameter'
@@ -241,7 +248,8 @@ export default function DocsPage(): ReactElement {
               <InlineCode>date</InlineCode> first.
             </p>
             <p className='text-gray-700 mb-2'>
-              Query: <InlineCode>apikey</InlineCode> (required)
+              API key: <InlineCode>Authorization</InlineCode> header or{' '}
+              <InlineCode>apikey</InlineCode> query parameter (required)
             </p>
             <div className='mb-4'>
               <CodeBlock label='Response' code={TREATMENT_JSON} />
@@ -265,7 +273,8 @@ export default function DocsPage(): ReactElement {
               <InlineCode>createdAt</InlineCode>, newest first.
             </p>
             <p className='text-gray-700 mb-4'>
-              Query: <InlineCode>apikey</InlineCode> or{' '}
+              API key: <InlineCode>Authorization</InlineCode> header or{' '}
+              <InlineCode>apikey</InlineCode> query parameter, or{' '}
               <InlineCode>alertid</InlineCode> (at least one required)
             </p>
             <div className='mb-4'>
@@ -296,7 +305,8 @@ export default function DocsPage(): ReactElement {
               <InlineCode>PROPHY</InlineCode>.
             </p>
             <p className='text-gray-700 mb-2'>
-              Query: <InlineCode>apikey</InlineCode> (required)
+              API key: <InlineCode>Authorization</InlineCode> header or{' '}
+              <InlineCode>apikey</InlineCode> query parameter (required)
             </p>
             <p className='text-gray-700 mb-4'>
               Body: JSON object (partial treatment).{' '}

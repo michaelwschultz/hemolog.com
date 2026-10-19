@@ -10,10 +10,6 @@ export async function generateUniqueString(length: number): Promise<string> {
     .substring(2, 2 + length)
 }
 
-export function track(event: string, data: Record<string, unknown>) {
-  console.log('track', event, data)
-}
-
 /** Calendar year from a `YYYY-MM-DD` treatment date. Date-only strings are UTC midnight, so `Date#getFullYear()` shifts them into the previous year in negative-offset timezones. */
 export function treatmentCalendarYear(date: string): number | null {
   const match = /^(\d{4})-\d{2}-\d{2}/.exec(date)

@@ -1,10 +1,11 @@
 import type { NextRequest } from 'next/server'
 import { getRecentUserTreatmentsByApiKey } from '@/lib/admin-db/treatments'
+import { getApiKeyFromRequest } from '@/lib/api-auth'
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const apikey = searchParams.get('apikey')
+    const apikey = getApiKeyFromRequest(request)
     const alertid = searchParams.get('alertid')
 
     if (!apikey && !alertid) {

@@ -4,9 +4,9 @@ import type { ReactElement, ReactNode } from 'react'
 import { useEffect } from 'react'
 import { AppNav } from '@/components/home/AppNav'
 import Header from '@/components/home/header'
+import { track } from '@/components/shared/analytics'
 import Footer from '@/components/shared/footer'
 import { ProtectRoute, useAuth } from '@/lib/auth'
-import { track } from '@/lib/helpers'
 
 export default function AppLayout({
   children,

@@ -1,8 +1,7 @@
 import { useFormik } from 'formik'
 import { type ReactElement, useState } from 'react'
-
+import { track } from '@/components/shared/analytics'
 import { useAuth } from '@/lib/auth'
-import { track } from '@/lib/helpers'
 import { useUserMutations } from '@/lib/hooks/useUserMutations'
 import { useUserQuery } from '@/lib/hooks/useUserQuery'
 

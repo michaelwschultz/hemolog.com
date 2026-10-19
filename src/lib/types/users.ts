@@ -8,6 +8,7 @@ export interface UserType {
   apiKey?: string
   medication?: string
   monoclonalAntibody?: string
+  injectionFrequency?: string
   photoUrl?: string
   provider?: string
   token?: string

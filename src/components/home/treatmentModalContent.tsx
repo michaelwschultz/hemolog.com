@@ -8,13 +8,13 @@ import {
   useState,
 } from 'react'
 import toast from 'react-hot-toast'
+import { track } from '@/components/shared/analytics'
 import { useAuth } from '@/lib/auth'
 import {
   type TreatmentType,
   TreatmentTypeEnum,
   type TreatmentTypeOptions,
 } from '@/lib/db/treatments'
-import { track } from '@/lib/helpers'
 import { useTreatmentMutations } from '@/lib/hooks/useTreatmentMutations'
 import { useUserQuery } from '@/lib/hooks/useUserQuery'
 import {

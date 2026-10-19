@@ -1,6 +1,7 @@
 'use client'
 
 import { IBM_Plex_Mono, Outfit, Syne } from 'next/font/google'
+import { Analytics } from '@/components/shared/analytics'
 import { Providers } from './providers'
 import './globals.css'
 
@@ -85,6 +86,7 @@ export default function RootLayout({
       className={`${syne.variable} ${outfit.variable} ${plexMono.variable}`}
     >
       <body>
+        <Analytics />
         <Providers>{children}</Providers>
       </body>
     </html>
