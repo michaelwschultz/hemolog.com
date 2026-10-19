@@ -7,49 +7,55 @@ import StaticHeader from '@/components/shared/staticHeader'
 
 export default function Landing(): ReactElement {
   return (
-    <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto relative'>
+    <div className='page'>
       <StaticHeader />
-      <main className='flex-1 px-6 pt-10 relative'>
-        {/* Background illustration */}
-        <div className='absolute right-0 top-0 w-1/2 h-full pointer-events-none'>
-          <Image
-            alt='logging treatment illustration'
-            src='/images/logging-infusion-illustration.png'
-            width={925 / 2}
-            height={989 / 2}
-            className='w-full h-auto object-contain'
-            priority
-            loading='eager'
-          />
+      <main className='flex-1 px-6 pt-6 pb-16 sm:pt-10'>
+        <div className='grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]'>
+          <div className='max-w-xl'>
+            <p className='mb-4 text-[13px] font-medium tracking-[0.16em] text-primary-700 uppercase'>
+              A treatment log
+            </p>
+            <h1 className='text-5xl leading-[0.95] text-ink sm:text-6xl'>
+              Insights that
+              <br />
+              matter.
+            </h1>
+            <div className='mt-6 h-0.5 w-10 bg-primary-500' />
+            <p className='mt-6 text-xl font-medium tracking-tight text-ink'>
+              The last treatment log you'll ever need.
+            </p>
+            <p className='mt-3 max-w-md text-base leading-relaxed text-slate'>
+              Log each infusion. Hemolog turns that history into the habits
+              behind your bleeds, prophylaxis, and factor use.
+            </p>
+            <div className='mt-8 flex flex-wrap items-center gap-x-5 gap-y-3'>
+              <Link href='/signin' className='btn btn-primary'>
+                Start logging
+              </Link>
+              <Link
+                href='/about'
+                className='text-sm font-medium text-ink underline decoration-primary-500 decoration-2 underline-offset-4'
+              >
+                Read the Hemolog story
+              </Link>
+            </div>
+          </div>
+
+          <div className='relative mx-auto w-full max-w-md lg:max-w-none'>
+            <Image
+              alt='Logging a treatment'
+              src='/images/logging-infusion-illustration.png'
+              width={925 / 2}
+              height={989 / 2}
+              className='h-auto w-full object-contain mix-blend-multiply'
+              priority
+              loading='eager'
+            />
+          </div>
         </div>
 
-        {/* Content */}
-        <div className='relative z-10 max-w-2xl'>
-          <h1 className='font-[var(--font-nanum-pen-script)] text-8xl md:text-[100px] leading-tight md:leading-[80px] w-3/4 mb-4'>
-            TREATMENT INSIGHTS <br />
-            THAT MATTER
-          </h1>
-          <h5 className='text-xl font-semibold text-gray-700 mb-6'>
-            The last treatment log you'll ever need.
-          </h5>
-
-          <div className='mb-6'>
-            <p className='text-gray-600 mb-4'>
-              Log your treatments and get fantastic insights that help you
-              change your habits.
-              <br />
-              Sign up for free and start using the newest version of Hemolog
-              today!
-            </p>
-
-            <p className='text-primary-500 hover:text-primary-600 transition-colors'>
-              <Link href='/about'>Learn more about the Hemolog story...</Link>
-            </p>
-          </div>
-
-          <div className='mt-12'>
-            <DescriptionCards />
-          </div>
+        <div className='mt-16 sm:mt-20'>
+          <DescriptionCards />
         </div>
       </main>
       <Footer />

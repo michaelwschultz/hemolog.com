@@ -36,10 +36,10 @@ export default function BlogFooter(): ReactElement {
               type='button'
               onClick={() => router.push('/signin')}
               disabled={isLoading}
-              className='px-4 py-2 bg-green-100 hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed text-green-800 rounded-lg font-medium transition-colors flex items-center gap-2 w-fit'
+              className='btn btn-primary w-fit'
             >
               {isLoading && (
-                <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-green-800'></div>
+                <span className='h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white' />
               )}
               Register
             </button>

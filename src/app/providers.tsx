@@ -49,7 +49,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <Toaster
               position='top-right'
               toastOptions={{
-                className: 'dark:bg-gray-800 dark:text-white',
+                style: {
+                  background: '#161A20',
+                  color: '#fff',
+                  borderRadius: '12px',
+                  fontSize: '14px',
+                  padding: '12px 14px',
+                },
               }}
             />
             <AgentErrorBoundary>{children}</AgentErrorBoundary>

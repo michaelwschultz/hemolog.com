@@ -52,7 +52,7 @@ const Header = (props: Props): ReactElement | null => {
             <button
               type='button'
               onClick={handleOpenSheet}
-              className='bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm transition-colors active:scale-[0.98]'
+              className='btn btn-primary'
             >
               New treatment
             </button>
@@ -60,7 +60,7 @@ const Header = (props: Props): ReactElement | null => {
               <button
                 type='button'
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className='flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors'
+                className='flex h-9 w-9 items-center justify-center rounded-full bg-white ring-1 ring-line transition-colors hover:bg-paper'
               >
                 {user.photoUrl ? (
                   <img
@@ -75,35 +75,33 @@ const Header = (props: Props): ReactElement | null => {
                 )}
               </button>
               {dropdownOpen && (
-                <div className='absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50'>
-                  <div className='px-4 py-2 border-b border-gray-200'>
-                    <div className='font-medium text-gray-900'>
-                      {user?.name}
+                <div className='absolute right-0 z-50 mt-2 w-52 rounded-2xl border border-line bg-white py-1 shadow-lg'>
+                  <div className='border-b border-line px-4 py-2.5'>
+                    <div className='font-medium text-ink'>{user?.name}</div>
+                    <div className='mt-0.5 font-mono text-xs text-slate'>
+                      v{version}
                     </div>
-                  </div>
-                  <div className='px-4 py-2 text-sm text-gray-600 border-b border-gray-200'>
-                    Hemolog v{version}
                   </div>
                   <Link
                     href='/changelog'
-                    className='block px-4 py-2 text-sm text-primary-600 hover:bg-gray-50'
+                    className='block px-4 py-2 text-sm text-ink hover:bg-paper'
                   >
                     Latest updates
                   </Link>
                   <Link
                     href='/docs'
-                    className='block px-4 py-2 text-sm text-primary-600 hover:bg-gray-50'
+                    className='block px-4 py-2 text-sm text-ink hover:bg-paper'
                   >
                     API docs
                   </Link>
-                  <div className='border-t border-gray-200 my-1'></div>
+                  <div className='my-1 border-t border-line' />
                   <button
                     type='button'
                     onClick={() => {
                       void signout?.()
                       setDropdownOpen(false)
                     }}
-                    className='block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50'
+                    className='block w-full px-4 py-2 text-left text-sm text-primary-700 hover:bg-primary-50'
                   >
                     Sign out
                   </button>

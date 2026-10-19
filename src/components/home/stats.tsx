@@ -57,11 +57,11 @@ export default function Stats(props: StatsProps): ReactElement {
 
   if (isError || error) {
     return (
-      <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
-        <div className='text-red-800 font-semibold mb-1'>Error</div>
-        <div className='text-red-700'>
-          Oops, the database didn't respond. Refresh the page to try again.
-        </div>
+      <div className='note note-urgent'>
+        <div className='note-title'>Couldn't load insights</div>
+        <p className='text-sm text-slate'>
+          The database didn't respond. Refresh the page to try again.
+        </p>
       </div>
     )
   }
@@ -172,21 +172,19 @@ export default function Stats(props: StatsProps): ReactElement {
             value={`$${estimatedTotalCost.toLocaleString()}`}
             label='Estimated cost this year'
           />
-          <div className='absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap'>
-            Current
+          <div className='pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-lg bg-ink px-2 py-1 text-sm whitespace-nowrap text-white opacity-0 transition-opacity group-hover:opacity-100'>
+            About $1.66 per unit
           </div>
         </div>
-        <div className='bg-white rounded-lg border shadow-md p-4 min-h-[116px] flex flex-col justify-between'>
-          <div className='text-sm text-gray-600'>Missing something?</div>
-          <div className='mt-4'>
-            <button
-              type='button'
-              onClick={() => setFeedbackModal(true)}
-              className='bg-transparent border-none cursor-pointer p-0 m-0 text-red-500 font-bold'
-            >
-              Give feedback
-            </button>
-          </div>
+        <div className='surface flex min-h-[116px] flex-col justify-between p-5'>
+          <div className='text-sm text-slate'>Missing something?</div>
+          <button
+            type='button'
+            onClick={() => setFeedbackModal(true)}
+            className='w-fit cursor-pointer text-sm font-medium text-primary-600 hover:text-primary-700'
+          >
+            Give feedback
+          </button>
         </div>
         {/* <div className="col-span-1 sm:col-span-1 lg:col-span-1 xl:col-span-1">
             TODO(michael) could setup a separate collection for this data as well as a

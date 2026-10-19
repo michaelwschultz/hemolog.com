@@ -112,7 +112,7 @@ function MethodBadge({ method }: { method: 'GET' | 'POST' }): ReactElement {
 
 function InlineCode({ children }: { children: ReactNode }): ReactElement {
   return (
-    <code className='bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono text-gray-800'>
+    <code className='rounded-md bg-white px-1.5 py-0.5 font-mono text-[13px] text-ink ring-1 ring-line'>
       {children}
     </code>
   )
@@ -137,52 +137,49 @@ function Field({
 
 export default function DocsPage(): ReactElement {
   return (
-    <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
+    <div className='page'>
       <StaticHeader />
-      <main className='flex-1 px-6 pt-10 pb-16'>
-        <div className='max-w-3xl mx-auto'>
-          <h2 className='text-3xl font-bold mb-2'>API</h2>
-          <h5 className='text-lg font-semibold text-gray-600 mb-8'>
+      <main className='flex-1 px-6 pt-6 pb-16 sm:pt-10'>
+        <div className='mx-auto max-w-3xl'>
+          <p className='mb-3 text-[13px] font-medium tracking-[0.16em] text-primary-700 uppercase'>
+            Developers
+          </p>
+          <h1 className='text-4xl text-ink sm:text-5xl'>API</h1>
+          <p className='mt-3 max-w-xl text-lg text-slate'>
             Read your treatment history and log doses from Shortcuts, scripts,
             and other apps
-          </h5>
-          <hr className='border-gray-200 mb-8' />
+          </p>
+          <div className='mt-8 mb-8 h-px bg-line' />
 
-          <nav className='flex flex-wrap gap-x-4 gap-y-2 mb-10 text-sm'>
+          <nav className='mb-10 flex flex-wrap gap-x-4 gap-y-2 text-sm'>
             <a
               href='#authentication'
-              className='text-primary-500 hover:text-primary-600'
+              className='text-ink hover:text-primary-600'
             >
               Authentication
             </a>
-            <a
-              href='#treatments'
-              className='text-primary-500 hover:text-primary-600'
-            >
+            <a href='#treatments' className='text-ink hover:text-primary-600'>
               Treatments
             </a>
             <a
               href='#recent-treatments'
-              className='text-primary-500 hover:text-primary-600'
+              className='text-ink hover:text-primary-600'
             >
               Recent
             </a>
             <a
               href='#log-treatment'
-              className='text-primary-500 hover:text-primary-600'
+              className='text-ink hover:text-primary-600'
             >
               Log a treatment
             </a>
             <a
               href='#treatment-object'
-              className='text-primary-500 hover:text-primary-600'
+              className='text-ink hover:text-primary-600'
             >
               Treatment object
             </a>
-            <a
-              href='#examples'
-              className='text-primary-500 hover:text-primary-600'
-            >
+            <a href='#examples' className='text-ink hover:text-primary-600'>
               Examples
             </a>
           </nav>
@@ -222,15 +219,13 @@ export default function DocsPage(): ReactElement {
               emergency card — instead of an API key. The other endpoints
               require the key.
             </p>
-            <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
-              <div className='font-semibold text-blue-800 mb-1'>
-                Keep your key private
-              </div>
-              <div className='text-blue-700'>
+            <div className='note'>
+              <div className='note-title'>Keep your key private</div>
+              <p className='text-sm leading-relaxed text-slate'>
                 Treat the API key like a password. Anyone who has it can read
                 your treatments and log new ones. Reset it anytime on your
                 Profile tab; the old key stops working immediately.
-              </div>
+              </p>
             </div>
           </section>
 
@@ -439,19 +434,19 @@ export default function DocsPage(): ReactElement {
             <CodeBlock label='Python' code={PYTHON_CSV} />
           </section>
 
-          <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
-            <div className='font-semibold text-blue-800 mb-1'>Your API key</div>
-            <div className='text-blue-700'>
+          <div className='note'>
+            <div className='note-title'>Your API key</div>
+            <p className='text-sm leading-relaxed text-slate'>
               Copy or reset your key on the{' '}
               <Link
                 href='/home'
-                className='text-blue-600 hover:text-blue-800 underline'
+                className='text-ink underline decoration-primary-500 decoration-2 underline-offset-2'
               >
                 Profile
               </Link>{' '}
               tab. If a request fails with an invalid key, generate a new one
               there and update your scripts.
-            </div>
+            </p>
           </div>
         </div>
       </main>

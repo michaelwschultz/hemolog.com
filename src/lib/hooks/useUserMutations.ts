@@ -79,7 +79,7 @@ export function useUserMutations(options: UseUserMutationsOptions = {}) {
       onError?.(error instanceof Error ? error : new Error(String(error)))
     },
     onSuccess: () => {
-      toast.success('Profile updated!')
+      toast.success('Profile saved')
       onUpdateSuccess?.()
     },
     onSettled: (_data, _error, variables) => {

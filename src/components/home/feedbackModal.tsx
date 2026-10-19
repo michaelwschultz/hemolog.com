@@ -70,7 +70,7 @@ export default function FeedbackModal(
   return (
     <Sheet.Root license='non-commercial'>
       <Sheet.View>
-        <Sheet.Content className='max-w-md w-full max-h-[90vh] overflow-y-auto bg-white rounded-lg'>
+        <Sheet.Content className='max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white'>
           <div className='p-6'>
             <h3 className='text-lg font-semibold mb-2'>Feedback</h3>
             <p className='text-sm text-gray-600 mb-1'>Hemolog.com</p>
@@ -109,18 +109,18 @@ export default function FeedbackModal(
                     placeholder="Your thoughts are appreciated, feel free to write as much or as little as you'd like."
                     value={formik.values.message}
                     rows={4}
-                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-vertical'
+                    className='field resize-y'
                   />
                 </div>
               </form>
             </div>
           </div>
 
-          <div className='flex justify-end gap-3 p-6 border-t border-gray-200'>
+          <div className='flex justify-end gap-3 border-t border-line p-6'>
             <button
               type='button'
               onClick={() => closeModal()}
-              className='px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors'
+              className='btn btn-secondary'
             >
               Cancel
             </button>
@@ -128,10 +128,10 @@ export default function FeedbackModal(
               type='button'
               onClick={formik.submitForm}
               disabled={!formik.isValid || !formik.dirty || formik.isSubmitting}
-              className='px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center gap-2'
+              className='btn btn-primary'
             >
               {formik.isSubmitting && (
-                <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
+                <span className='h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white' />
               )}
               Send feedback
             </button>

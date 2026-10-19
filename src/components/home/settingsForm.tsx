@@ -116,14 +116,14 @@ const SettingsForm = (): ReactElement => {
         <div>
           <label
             htmlFor='hemophiliaType'
-            className='block text-lg font-semibold mb-2'
+            className='mb-1.5 block text-sm font-medium text-slate'
           >
             Type of hemophilia
           </label>
           <select
             id='hemophiliaType'
             name='hemophiliaType'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='field'
             value={formik.values.hemophiliaType ?? ''}
             onChange={(e) =>
               formik.setFieldValue('hemophiliaType', e.target.value)
@@ -141,14 +141,14 @@ const SettingsForm = (): ReactElement => {
         <div>
           <label
             htmlFor='severity'
-            className='block text-lg font-semibold mb-2'
+            className='mb-1.5 block text-sm font-medium text-slate'
           >
             Severity
           </label>
           <select
             id='severity'
             name='severity'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='field'
             value={formik.values.severity ?? ''}
             onChange={(e) => formik.setFieldValue('severity', e.target.value)}
           >
@@ -162,14 +162,17 @@ const SettingsForm = (): ReactElement => {
         </div>
 
         <div>
-          <label htmlFor='factor' className='block text-lg font-semibold mb-2'>
+          <label
+            htmlFor='factor'
+            className='mb-1.5 block text-sm font-medium text-slate'
+          >
             Factor number
           </label>
           <input
             id='factor'
             name='factor'
             type='number'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='field'
             placeholder='8'
             onChange={formik.handleChange}
             value={formik.values.factor ?? ''}
@@ -179,7 +182,7 @@ const SettingsForm = (): ReactElement => {
         <div>
           <label
             htmlFor='medication'
-            className='block text-lg font-semibold mb-2'
+            className='mb-1.5 block text-sm font-medium text-slate'
           >
             Factor
           </label>
@@ -187,7 +190,7 @@ const SettingsForm = (): ReactElement => {
             id='medication'
             name='medication'
             type='text'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='field'
             placeholder='Advate'
             value={formik.values.medication ?? ''}
             onChange={(e) => {
@@ -210,7 +213,7 @@ const SettingsForm = (): ReactElement => {
         <div>
           <label
             htmlFor='monoclonalAntibody'
-            className='block text-lg font-semibold mb-2'
+            className='mb-1.5 block text-sm font-medium text-slate'
           >
             Monoclonal antibody
           </label>
@@ -218,7 +221,7 @@ const SettingsForm = (): ReactElement => {
             id='monoclonalAntibody'
             name='monoclonalAntibody'
             type='text'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='field'
             placeholder='Hemlibra'
             value={formik.values.monoclonalAntibody ?? ''}
             onChange={(e) =>
@@ -236,14 +239,14 @@ const SettingsForm = (): ReactElement => {
         <div>
           <label
             htmlFor='injectionFrequency'
-            className='block text-lg font-semibold mb-2'
+            className='mb-1.5 block text-sm font-medium text-slate'
           >
             Injection frequency
           </label>
           <select
             id='injectionFrequency'
             name='injectionFrequency'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='field'
             value={formik.values.injectionFrequency ?? ''}
             onChange={(e) =>
               formik.setFieldValue('injectionFrequency', e.target.value)
@@ -269,7 +272,7 @@ const SettingsForm = (): ReactElement => {
             id='emergencyContactName'
             name='emergencyContactName'
             type='text'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='field'
             onChange={formik.handleChange}
             value={formik.values.emergencyContacts[0].name}
           />
@@ -280,7 +283,7 @@ const SettingsForm = (): ReactElement => {
             id='emergencyContactPhone'
             name='emergencyContactPhone'
             type='text'
-            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent'
+            className='field'
             onChange={formik.handleChange}
             value={formik.values.emergencyContacts[0].phone}
           />
@@ -293,12 +296,12 @@ const SettingsForm = (): ReactElement => {
           type='button'
           onClick={handleSubmitForm}
           disabled={!formik.isValid || !formik.dirty || formik.isSubmitting}
-          className='px-6 py-3 bg-green-100 hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed text-green-800 rounded-lg font-medium transition-colors flex items-center gap-2'
+          className='btn btn-primary'
         >
           {formik.isSubmitting && (
-            <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-green-800'></div>
+            <span className='h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white' />
           )}
-          Update
+          Save profile
         </button>
       </div>
     </form>

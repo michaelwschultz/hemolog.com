@@ -10,35 +10,31 @@ interface Props {
 import type { ReactElement } from 'react'
 
 export default function StatCard(props: Props): ReactElement {
-  const {
-    value,
-    label,
-    loading = false,
-    type = 'default',
-    shadow = true,
-    style,
-  } = props
+  const { value, label, loading = false, type = 'default', style } = props
 
   const typeClasses = {
-    default: 'bg-white',
-    success: 'bg-success-50 border-success-200',
-    warning: 'bg-warning-50 border-warning-200',
-    error: 'bg-error-50 border-error-200',
+    default: '',
+    success: 'bg-success-50',
+    warning: 'bg-warning-50',
+    error: 'bg-error-50',
   }
 
   return (
     <div
-      className={`w-full min-h-[116px] h-full rounded-lg border p-4 ${
-        shadow && !loading ? 'shadow-md' : ''
-      } ${typeClasses[type]}`}
+      className={`assay min-h-[116px] p-5 ${typeClasses[type]}`}
       style={style}
     >
-      <div className='text-2xl font-semibold mb-2'>{value}</div>
-      <div className='text-sm text-gray-600'>{label}</div>
-      {loading && (
-        <div className='flex justify-center mt-4'>
-          <div className='animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500'></div>
+      {loading ? (
+        <div className='flex h-full min-h-[76px] items-center'>
+          <div className='h-5 w-5 animate-spin rounded-full border-2 border-line border-t-primary-500' />
         </div>
+      ) : (
+        <>
+          <div className='font-mono text-2xl font-medium tracking-tight text-ink'>
+            {value}
+          </div>
+          <div className='mt-2 text-sm leading-snug text-slate'>{label}</div>
+        </>
       )}
     </div>
   )

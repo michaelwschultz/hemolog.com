@@ -1,14 +1,28 @@
 'use client'
 
-import { Nanum_Pen_Script } from 'next/font/google'
+import { IBM_Plex_Mono, Outfit, Syne } from 'next/font/google'
 import { Providers } from './providers'
 import './globals.css'
 
-const nanumPenScript = Nanum_Pen_Script({
-  weight: '400',
+const syne = Syne({
+  weight: ['500', '600', '700'],
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-nanum-pen-script',
+  variable: '--font-syne',
+})
+
+const outfit = Outfit({
+  weight: ['400', '500', '600'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-outfit',
+})
+
+const plexMono = IBM_Plex_Mono({
+  weight: ['400', '500'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-plex-mono',
 })
 
 // export const metadata: Metadata = {
@@ -66,7 +80,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang='en' className={nanumPenScript.variable}>
+    <html
+      lang='en'
+      className={`${syne.variable} ${outfit.variable} ${plexMono.variable}`}
+    >
       <body>
         <Providers>{children}</Providers>
       </body>

@@ -61,10 +61,8 @@ export function Tabs({
 
   return (
     <>
-      <div
-        className={`border-b border-gray-200 dark:border-gray-700 ${className}`}
-      >
-        <nav className='flex gap-4 sm:gap-8 overflow-x-auto pb-px -mb-px'>
+      <div className={className}>
+        <nav className='inline-flex max-w-full gap-1 overflow-x-auto rounded-full border border-line bg-white p-1'>
           {tabItems.map((item) => {
             const isActive = item.value === currentValue
 
@@ -72,14 +70,9 @@ export function Tabs({
               <button
                 key={item.value}
                 onClick={() => handleTabChange(item.value)}
-                className={`
-                  whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors cursor-pointer
-                  ${
-                    isActive
-                      ? 'border-primary-500 text-primary-600 dark:text-primary-400'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
-                  }
-                `}
+                className={`cursor-pointer rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors ${
+                  isActive ? 'bg-ink text-white' : 'text-slate hover:text-ink'
+                }`}
                 role='tab'
                 aria-selected={isActive}
                 type='button'

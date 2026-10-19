@@ -26,50 +26,41 @@ const Signin = () => {
   }
 
   return (
-    <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
-      <header className='p-6'>
-        <div className='flex justify-between items-center'>
+    <div className='page'>
+      <header className='px-6 py-5'>
+        <div className='flex items-center justify-between'>
           <Logo />
-          <a
-            href='https://github.com/michaelwschultz/hemolog.com'
-            className='px-2 py-1 bg-gray-100 text-gray-800 text-sm rounded'
-          >
-            v{version}
-          </a>
+          <span className='font-mono text-xs text-slate'>v{version}</span>
         </div>
       </header>
 
-      <main className='flex-1 px-6 pt-10'>
-        <div className='bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8'>
-          <div className='font-semibold text-blue-800 mb-1'>Important</div>
-          <div className='text-blue-700'>
-            Hemolog is currently in development. Data integrity is not
-            guaranteed. Hemolog is{' '}
-            <b>
-              <i>not</i>
-            </b>{' '}
-            HIPAA compliant... yada yada yada.
-          </div>
+      <main className='flex-1 px-6 pt-6 pb-16'>
+        <div className='note note-urgent mb-8 max-w-xl'>
+          <div className='note-title'>Before you start</div>
+          <p className='text-sm leading-relaxed text-slate'>
+            Hemolog is in development. Data integrity is not guaranteed, and
+            Hemolog is not HIPAA compliant.
+          </p>
         </div>
 
-        <div className='flex justify-center'>
-          <div className='max-w-md w-full border border-gray-200 rounded-lg p-6'>
-            <h4 className='text-xl font-semibold mb-3'>Register or sign in</h4>
-            <p className='text-gray-600 mb-6'>
-              Signing in will create an account if you don't have one yet. Don't
-              worry, Hemolog will always be <i>free</i>.
+        <div className='mx-auto w-full max-w-md'>
+          <div className='surface p-6 sm:p-8'>
+            <h1 className='text-3xl text-ink'>Sign in</h1>
+            <p className='mt-3 text-sm leading-relaxed text-slate'>
+              Google creates an account if you don't have one yet. Hemolog stays
+              free.
             </p>
 
-            <div className='flex justify-end'>
+            <div className='mt-8'>
               {!process.env.NEXT_PUBLIC_USE_EMULATORS && (
                 <button
                   type='button'
                   onClick={() => auth.signinWithGoogle?.('/home')}
                   disabled={auth.loading}
-                  className='px-4 py-2 bg-green-100 hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed text-green-800 rounded-lg font-medium transition-colors flex items-center gap-2'
+                  className='btn btn-primary w-full'
                 >
                   {auth.loading && (
-                    <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-green-800'></div>
+                    <span className='h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white' />
                   )}
                   Continue with Google
                 </button>
@@ -79,21 +70,17 @@ const Signin = () => {
                   type='button'
                   onClick={() => auth.signinWithTestUser?.()}
                   disabled={auth.loading}
-                  className='px-4 py-2 bg-green-100 hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed text-green-800 rounded-lg font-medium transition-colors flex items-center gap-2'
+                  className='btn btn-primary w-full'
                 >
                   {auth.loading && (
-                    <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-green-800'></div>
+                    <span className='h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white' />
                   )}
-                  Continue with Test User
+                  Continue with test user
                 </button>
               )}
             </div>
           </div>
         </div>
-
-        {/* <div className='h-12' />
-          <DescriptionCards />
-          <div className='h-8' /> */}
       </main>
 
       <Footer />

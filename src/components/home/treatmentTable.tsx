@@ -82,7 +82,11 @@ export default function TreatmentTable(
           const dateString = getValue() as string
           try {
             const parsedDate = parseISO(dateString)
-            return format(parsedDate, 'MM/dd/yyyy')
+            return (
+              <span className='font-mono text-[13px]'>
+                {format(parsedDate, 'MMM d, yyyy')}
+              </span>
+            )
           } catch (error: unknown) {
             if (error instanceof Error) {
               toast.error(error.message)
@@ -112,15 +116,15 @@ export default function TreatmentTable(
         cell: ({ getValue }) => {
           const type = getValue() as TreatmentTypeEnum
           const badgeStyles = {
-            [TreatmentTypeEnum.BLEED]: 'bg-red-100 text-red-800',
-            [TreatmentTypeEnum.PROPHY]: 'bg-yellow-100 text-yellow-800',
-            [TreatmentTypeEnum.PREVENTATIVE]: 'bg-orange-100 text-orange-800',
-            [TreatmentTypeEnum.ANTIBODY]: 'bg-gray-100 text-gray-800',
+            [TreatmentTypeEnum.BLEED]: 'bg-primary-50 text-primary-800',
+            [TreatmentTypeEnum.PROPHY]: 'bg-warning-50 text-warning-800',
+            [TreatmentTypeEnum.PREVENTATIVE]: 'bg-success-50 text-success-800',
+            [TreatmentTypeEnum.ANTIBODY]: 'bg-paper text-slate',
           }
 
           return (
             <span
-              className={`px-2 py-1 text-xs font-medium rounded-full ${badgeStyles[type] || 'bg-gray-100 text-gray-800'}`}
+              className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium tracking-wide ${badgeStyles[type] || 'bg-paper text-slate'}`}
             >
               {TreatmentTypeEnum[type]}
             </span>
@@ -145,7 +149,11 @@ export default function TreatmentTable(
         header: 'Amount',
         cell: ({ getValue }) => {
           const units = getValue() as number
-          return units ? `${units} iu` : ''
+          return units ? (
+            <span className='font-mono text-[13px]'>{units} iu</span>
+          ) : (
+            ''
+          )
         },
       },
     ]
@@ -190,13 +198,11 @@ export default function TreatmentTable(
   // Handle case where uid is not available
   if (!uid && !user?.uid) {
     return (
-      <div className='bg-gray-50 border border-gray-200 rounded-lg p-4'>
-        <div className='font-semibold text-gray-800 mb-1'>
-          No treatment data available
-        </div>
-        <div className='text-gray-700'>
+      <div className='note'>
+        <div className='note-title'>No treatment data</div>
+        <p className='text-sm text-slate'>
           User information is not available to load treatments.
-        </div>
+        </p>
       </div>
     )
   }
@@ -223,11 +229,11 @@ export default function TreatmentTable(
   if (isError || error) {
     console.error('Error fetching treatments:', error)
     return (
-      <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
-        <div className='font-semibold text-red-800 mb-1'>Error</div>
-        <div className='text-red-700'>
-          Oops, the database didn't respond. Refresh the page to try again.
-        </div>
+      <div className='note note-urgent'>
+        <div className='note-title'>Couldn't load treatments</div>
+        <p className='text-sm text-slate'>
+          The database didn't respond. Refresh the page to try again.
+        </p>
       </div>
     )
   }
@@ -235,29 +241,27 @@ export default function TreatmentTable(
   // Show empty state if query completed successfully but no treatments found
   if (!treatments || treatments.length === 0) {
     const emptyMessage = isLoggedInUser
-      ? "You haven't logged any treatments yet. Add one by clicking 'New Treatment' above."
+      ? "You haven't logged any treatments yet. Add one with New treatment above."
       : 'This person has not logged any treatments yet.'
 
     return (
-      <div className='bg-green-50 border border-green-200 rounded-lg p-4'>
-        <div className='font-semibold text-green-800 mb-1'>
-          No treatment data available
-        </div>
-        <div className='text-green-700'>{emptyMessage}</div>
+      <div className='note'>
+        <div className='note-title'>No treatments yet</div>
+        <p className='text-sm text-slate'>{emptyMessage}</p>
       </div>
     )
   }
 
   return (
-    <div className='overflow-x-auto rounded-lg border border-gray-200'>
-      <table className='min-w-full divide-y divide-gray-200'>
-        <thead className='bg-gray-50'>
+    <div className='overflow-x-auto rounded-2xl border border-line bg-white'>
+      <table className='min-w-full divide-y divide-line'>
+        <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className='px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100'
+                  className='cursor-pointer px-4 py-3 text-left text-xs font-medium tracking-wide text-slate uppercase hover:text-ink sm:px-5'
                   onClick={header.column.getToggleSortingHandler()}
                 >
                   <div className='flex items-center gap-1'>
@@ -277,32 +281,30 @@ export default function TreatmentTable(
             </tr>
           ))}
         </thead>
-        <tbody className='bg-white divide-y divide-gray-200'>
+        <tbody className='divide-y divide-line bg-white'>
           {table.getRowModel().rows.length === 0 ? (
             <tr>
               <td
                 colSpan={columns.length}
-                className='px-6 py-12 text-center text-gray-500'
+                className='px-6 py-12 text-center text-slate'
               >
-                <div className='bg-green-50 border border-green-200 rounded-lg p-4 inline-block'>
-                  <div className='font-semibold text-green-800 mb-1'>
-                    No treatments found
-                  </div>
-                  <div className='text-green-700'>
+                <div className='note inline-block text-left'>
+                  <div className='note-title'>No treatments this year</div>
+                  <p className='text-sm text-slate'>
                     {isLoggedInUser
-                      ? "Add one by clicking 'New Treatment' above."
+                      ? 'Add one with New treatment above, or choose another year.'
                       : 'This person has not logged any treatments yet.'}
-                  </div>
+                  </p>
                 </div>
               </td>
             </tr>
           ) : (
             table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className='hover:bg-gray-50'>
+              <tr key={row.id} className='hover:bg-paper'>
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className='px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-gray-900'
+                    className='px-4 py-3 text-sm whitespace-nowrap text-ink sm:px-5 sm:py-3.5'
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
@@ -315,30 +317,30 @@ export default function TreatmentTable(
 
       {/* Pagination */}
       {filteredTreatments.length > 25 && (
-        <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4 sm:px-6 py-3 bg-white border-t border-gray-200'>
+        <div className='flex flex-col gap-3 border-t border-line bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5'>
           <div className='flex items-center gap-2'>
             <button
               type='button'
-              className='px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+              className='btn btn-secondary btn-sm'
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
               Previous
             </button>
-            <span className='text-sm text-gray-700'>
-              Page {table.getState().pagination.pageIndex + 1} of{' '}
+            <span className='font-mono text-xs text-slate'>
+              {table.getState().pagination.pageIndex + 1} /{' '}
               {table.getPageCount()}
             </span>
             <button
               type='button'
-              className='px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed'
+              className='btn btn-secondary btn-sm'
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
               Next
             </button>
           </div>
-          <div className='text-sm text-gray-700'>
+          <div className='text-sm text-slate'>
             Showing {table.getRowModel().rows.length} of{' '}
             {filteredTreatments.length} treatments
           </div>

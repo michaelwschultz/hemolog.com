@@ -82,19 +82,23 @@ const ProfilePage = (): ReactElement => {
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
       <div className='flex flex-col'>
-        <h4 className='text-xl font-semibold mb-4'>About you</h4>
+        <h2 className='mb-4 font-sans text-xl font-medium tracking-tight text-ink'>
+          About you
+        </h2>
         <SettingsForm />
 
         <div className='h-12' />
-        <h4 className='text-xl font-semibold mb-4'>API key</h4>
-        <div className='flex gap-2 w-full'>
-          <code className='flex-1 bg-gray-100 px-3 py-2 rounded text-sm font-mono text-gray-800 break-all'>
+        <h2 className='mb-4 font-sans text-xl font-medium tracking-tight text-ink'>
+          API key
+        </h2>
+        <div className='flex w-full gap-2'>
+          <code className='flex-1 break-all rounded-xl border border-line bg-white px-3 py-2 font-mono text-sm text-ink'>
             {person?.apiKey || ' '}
           </code>
           <button
             type='button'
             onClick={handleUpdateUserApiKey}
-            className='px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-medium transition-colors'
+            className='btn btn-secondary shrink-0'
           >
             Reset key
           </button>
@@ -112,7 +116,9 @@ const ProfilePage = (): ReactElement => {
       </div>
 
       <div className='flex flex-col'>
-        <h4 className='text-xl font-semibold mb-4'>In case of emergency</h4>
+        <h2 className='mb-4 font-sans text-xl font-medium tracking-tight text-ink'>
+          In case of emergency
+        </h2>
         <p className='mb-4 text-gray-600'>
           A medical worker can simply type in the URL listed on the card, or
           easier scan the QR code with their phone. This gives the worker a
@@ -126,7 +132,7 @@ const ProfilePage = (): ReactElement => {
           <button
             type='button'
             onClick={handleOnPrintClick}
-            className='px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-medium transition-colors whitespace-nowrap'
+            className='btn btn-secondary shrink-0'
           >
             Print your card
           </button>
@@ -135,7 +141,9 @@ const ProfilePage = (): ReactElement => {
         <EmergencyCard />
 
         <div className='h-12' />
-        <h4 className='text-xl font-semibold mb-4'>Delete account</h4>
+        <h2 className='mb-4 font-sans text-xl font-medium tracking-tight text-ink'>
+          Delete account
+        </h2>
         <p className='mb-4 text-gray-600'>
           Deleting your account removes your profile, treatments, and emergency
           info forever. This action cannot be undone.
@@ -147,25 +155,27 @@ const ProfilePage = (): ReactElement => {
             track('Opened Delete Account Modal', {})
             setDeleteModalVisible(true)
           }}
-          className='px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors w-fit'
+          className='btn btn-danger'
         >
           Delete account
         </button>
       </div>
 
       {deleteModalVisible && (
-        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
-          <div className='bg-white rounded-lg p-6 max-w-md w-full mx-4'>
-            <h3 className='text-lg font-semibold mb-4'>Delete your account?</h3>
-            <p className='text-gray-600 mb-6'>
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-ink/40 px-4'>
+          <div className='surface w-full max-w-md p-6'>
+            <h3 className='font-sans text-lg font-medium tracking-tight text-ink'>
+              Delete your account?
+            </h3>
+            <p className='mt-2 mb-6 text-sm leading-relaxed text-slate'>
               This permanently deletes your Hemolog data and cannot be reversed.
               You will need to create a new account to return.
             </p>
-            <div className='flex gap-3 justify-end'>
+            <div className='flex justify-end gap-3'>
               <button
                 type='button'
                 onClick={() => setDeleteModalVisible(false)}
-                className='px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors'
+                className='btn btn-secondary'
               >
                 Cancel
               </button>
@@ -173,10 +183,10 @@ const ProfilePage = (): ReactElement => {
                 type='button'
                 onClick={handleDeleteAccount}
                 disabled={isDeletingAccount}
-                className='px-4 py-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center gap-2'
+                className='btn btn-danger'
               >
                 {isDeletingAccount && (
-                  <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
+                  <span className='h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white' />
                 )}
                 Delete account
               </button>

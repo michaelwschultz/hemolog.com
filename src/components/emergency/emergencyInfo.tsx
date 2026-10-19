@@ -57,23 +57,20 @@ export default function EmergencyInfo(props: Props): React.ReactElement {
         {person.uid ? (
           <TreatmentTable limit={3} uid={person.uid} filterYear='All time' />
         ) : (
-          <div className='bg-yellow-50 border border-yellow-200 rounded-lg p-4'>
-            <div className='font-semibold text-yellow-800 mb-1'>Warning</div>
-            <div className='text-yellow-700'>
-              User ID is missing. Treatment data cannot be loaded.
-            </div>
+          <div className='note note-urgent'>
+            <div className='note-title'>Missing user id</div>
+            <p className='text-sm text-slate'>
+              Treatment data cannot be loaded.
+            </p>
           </div>
         )}
         <div className='h-4' />
-        <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
-          <div className='font-semibold text-blue-800 mb-1'>Note</div>
-          <div className='text-blue-700'>
-            Pay attention to the date on each of these logs. We're only showing
-            you the <span className='font-bold'>3</span> most recent logs. If
-            you want to see more,{' '}
-            <span className='italic'>{person.name?.split(' ')[0]}</span> will
-            have to give you permission.
-          </div>
+        <div className='note'>
+          <div className='note-title'>Three most recent logs</div>
+          <p className='text-sm leading-relaxed text-slate'>
+            Check the date on each log. Only the latest three are shown. More
+            history requires permission from {person.name?.split(' ')[0]}.
+          </p>
         </div>
 
         <div className='h-12' />
@@ -130,11 +127,11 @@ export default function EmergencyInfo(props: Props): React.ReactElement {
   }
 
   return (
-    <div className='bg-green-50 border border-green-200 rounded-lg p-4'>
-      <div className='font-semibold text-green-800 mb-1'>Error</div>
-      <div className='text-green-700'>
+    <div className='note'>
+      <div className='note-title'>Not found</div>
+      <p className='text-sm leading-relaxed text-slate'>
         This person's information could not be found.
-      </div>
+      </p>
     </div>
   )
 }

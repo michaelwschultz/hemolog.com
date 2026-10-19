@@ -22,7 +22,7 @@ export default function EmergencySnippet(props: Props): ReactElement {
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(url)
-      toast.success('Link copied!')
+      toast.success('Link copied')
     } catch (err) {
       console.error('Failed to copy: ', err)
       toast.error('Failed to copy link')
@@ -32,7 +32,7 @@ export default function EmergencySnippet(props: Props): ReactElement {
   return (
     <div className='flex items-center gap-2'>
       <code
-        className='flex-1 bg-gray-100 px-3 py-2 rounded text-sm font-mono text-gray-800 break-all'
+        className='flex-1 break-all rounded-xl border border-line bg-white px-3 py-2 font-mono text-sm text-ink'
         style={style}
       >
         {url}
@@ -40,10 +40,10 @@ export default function EmergencySnippet(props: Props): ReactElement {
       <button
         type='button'
         onClick={copyToClipboard}
-        className='p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors'
-        title='Copy to clipboard'
+        className='rounded-full p-2 text-slate transition-colors hover:bg-white hover:text-ink'
+        title='Copy link'
       >
-        <IconCopy className='w-4 h-4' />
+        <IconCopy className='h-4 w-4' />
       </button>
     </div>
   )

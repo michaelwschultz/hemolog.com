@@ -5,15 +5,18 @@ import StaticHeader from '@/components/shared/staticHeader'
 
 const About = (): ReactElement => {
   return (
-    <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
+    <div className='page'>
       <StaticHeader />
-      <main className='flex-1 px-6 pt-10 pb-16'>
-        <div className='max-w-4xl mx-auto'>
-          <h2 className='text-3xl font-bold mb-2'>The story so far</h2>
-          <h5 className='text-lg font-semibold text-gray-600 mb-8'>
+      <main className='flex-1 px-6 pt-6 pb-16 sm:pt-10'>
+        <div className='mx-auto max-w-3xl'>
+          <p className='mb-3 text-[13px] font-medium tracking-[0.16em] text-primary-700 uppercase'>
+            About
+          </p>
+          <h1 className='text-4xl text-ink sm:text-5xl'>The story so far</h1>
+          <p className='mt-3 max-w-xl text-lg text-slate'>
             More than you would ever want to know about Hemolog
-          </h5>
-          <hr className='border-gray-200 mb-12' />
+          </p>
+          <div className='mt-8 mb-12 h-px bg-line' />
 
           <div className='mb-8'>
             <Image
@@ -21,7 +24,7 @@ const About = (): ReactElement => {
               width={400}
               src='/images/hemolog-2-hero.png'
               alt='Hemolog 2'
-              className='w-full max-w-md mx-auto rounded-lg shadow-lg'
+              className='mx-auto w-full max-w-sm mix-blend-multiply'
             />
           </div>
 
@@ -59,7 +62,7 @@ const About = (): ReactElement => {
               alt='Insights example'
               width={800}
               height={400}
-              className='w-full rounded-lg shadow-lg'
+              className='w-full rounded-2xl border border-line'
             />
             <figcaption className='text-sm text-gray-600 mt-2 text-center'>
               High level insights that help you understand your habits
@@ -73,18 +76,18 @@ const About = (): ReactElement => {
             thoughts on what you would like to see, just let me know.
           </p>
 
-          <div className='bg-blue-50 border border-blue-200 rounded-lg p-4 mb-12'>
-            <div className='font-semibold text-blue-800 mb-1'>Note</div>
-            <div className='text-blue-700'>
-              Development is ongoing. Check out the{' '}
+          <div className='note mb-12'>
+            <div className='note-title'>Note</div>
+            <p className='text-sm leading-relaxed text-slate'>
+              Development is ongoing. Check the{' '}
               <a
                 href='/changelog'
-                className='text-blue-600 hover:text-blue-800 underline'
+                className='text-ink underline decoration-primary-500 decoration-2 underline-offset-2'
               >
                 development blog
               </a>{' '}
               for updates and changes.
-            </div>
+            </p>
           </div>
 
           <div className='flex flex-col sm:flex-row items-center gap-8 mb-12'>

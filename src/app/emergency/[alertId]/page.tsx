@@ -29,38 +29,37 @@ const Emergency = (): ReactElement => {
   const displayLoading = !mounted || isLoading
 
   return (
-    <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
-      {/* Header */}
-      <header className='flex justify-between items-center px-6 py-6 pb-0'>
-        <h4 className='text-xl font-semibold text-green-600'>Emergency Info</h4>
+    <div className='page'>
+      <header className='flex items-end justify-between px-6 pt-6 pb-2'>
+        <div>
+          <p className='mb-2 text-[13px] font-medium tracking-[0.16em] text-primary-700 uppercase'>
+            Emergency
+          </p>
+          <h1 className='text-3xl text-ink sm:text-4xl'>Responder info</h1>
+        </div>
         <Link
           href='/'
-          className='text-sm font-medium text-primary-500 hover:text-primary-600'
+          className='text-sm font-medium text-ink underline decoration-primary-500 decoration-2 underline-offset-4'
         >
-          Hemolog.com
+          Hemolog
         </Link>
       </header>
 
-      {/* Disclaimer and Important Note */}
-      <div className='flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 px-6 pb-8'>
-        <p className='text-sm text-gray-600 flex-1'>
-          This page shows the most recent medical logs for someone with
-          hemophilia. <br />
-          This data is <em>self reported</em> and may not be up-to-date.
+      <div className='flex flex-col items-start justify-between gap-6 px-6 pt-6 pb-8 lg:flex-row lg:items-center'>
+        <p className='max-w-md flex-1 text-sm leading-relaxed text-slate'>
+          Recent treatment logs for someone with hemophilia. This data is self
+          reported and may not be up to date.
         </p>
 
-        <div className='bg-green-50 border border-green-200 rounded-lg p-4 max-w-sm'>
-          <div className='font-semibold text-green-800 mb-1'>Important</div>
-          <div className='text-green-700'>
-            If someone has been in an accident, please call{' '}
-            <a
-              href='tel:911'
-              className='text-green-600 hover:text-green-800 font-semibold'
-            >
+        <div className='note note-urgent max-w-sm'>
+          <div className='note-title'>Call first</div>
+          <p className='text-sm leading-relaxed text-ink'>
+            If someone has been in an accident, call{' '}
+            <a href='tel:911' className='font-medium underline'>
               911
             </a>{' '}
             immediately.
-          </div>
+          </p>
         </div>
       </div>
 
@@ -74,22 +73,21 @@ const Emergency = (): ReactElement => {
         )}
 
         {mounted && (isError || error) && (
-          <div className='bg-red-50 border border-red-200 rounded-lg p-4 mb-6'>
-            <div className='font-semibold text-red-800 mb-1'>Error</div>
-            <div className='text-red-700'>
-              Something went wrong. This could mean that this person no longer
-              has a Hemolog account or the app is broken.
-            </div>
+          <div className='note note-urgent mb-6'>
+            <div className='note-title'>Couldn't load this page</div>
+            <p className='text-sm leading-relaxed text-slate'>
+              This person may no longer have a Hemolog account, or the app
+              failed to respond. Check the address and try again.
+            </p>
           </div>
         )}
 
         {mounted && !person && !displayLoading && !isError && (
-          <div className='bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6'>
-            <div className='font-semibold text-gray-800 mb-1'>Try again</div>
-            <div className='text-gray-700'>
-              Nothing could be found at this address. Please make sure the URL
-              matches the link provided on the Hemolog Emergency Card.
-            </div>
+          <div className='note mb-6'>
+            <div className='note-title'>Nothing at this address</div>
+            <p className='text-sm leading-relaxed text-slate'>
+              Check that the URL matches the link on the Hemolog emergency card.
+            </p>
           </div>
         )}
 

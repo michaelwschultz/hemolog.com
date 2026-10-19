@@ -255,8 +255,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
 
     useImperativeHandle(ref, () => ({ handleSubmit }), [handleSubmit])
 
-    const inputBase =
-      'w-full min-h-[44px] px-4 py-2.5 text-base border border-gray-200 rounded-xl bg-white shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 focus:ring-offset-1'
+    const inputBase = 'field min-h-[44px] px-4 py-2.5 text-base'
 
     const typeButtonBase =
       'rounded-xl text-sm font-medium transition-all active:scale-[0.98] min-h-[44px]'

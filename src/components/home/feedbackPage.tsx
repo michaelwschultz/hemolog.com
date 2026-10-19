@@ -47,7 +47,7 @@ const FeedbackPage = () => {
             // biome-ignore lint/suspicious/noArrayIndexKey: nothing else to use
             index
           }`}
-          className='border border-gray-200 rounded-lg p-6'
+          className='surface p-6'
         >
           <h3 className='text-lg font-semibold mb-2'>{feedback?.user?.name}</h3>
           <p className='text-gray-700 mb-4'>{feedback?.message}</p>
@@ -72,7 +72,7 @@ const FeedbackPage = () => {
             <button
               type='button'
               onClick={() => handleReplyClick(feedback?.user?.email || '')}
-              className='px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium transition-colors'
+              className='btn btn-secondary btn-sm'
             >
               Reply
             </button>

@@ -18,20 +18,20 @@ const StaticHeader = (): ReactElement => {
   const isLoading = !mounted || loading
 
   return (
-    <header className='p-6'>
-      <div className='flex justify-between items-center'>
+    <header className='px-6 py-5'>
+      <div className='flex items-center justify-between'>
         <Logo />
         <button
           type='button'
-          className='bg-green-100 hover:bg-green-200 text-green-800 px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+          className='btn btn-primary'
           onClick={() => router.push(user ? '/home' : '/signin')}
           disabled={isLoading}
         >
           {isLoading ? (
-            <div className='flex items-center'>
-              <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-green-800 mr-2'></div>
-              Loading...
-            </div>
+            <>
+              <span className='h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white' />
+              Loading
+            </>
           ) : user ? (
             'Dashboard'
           ) : (

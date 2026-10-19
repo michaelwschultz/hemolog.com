@@ -30,15 +30,18 @@ const ChangelogPost = async ({ params }: PageProps): Promise<ReactElement> => {
   const postData = getPostData(slug)
 
   return (
-    <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
+    <div className='page'>
       <StaticHeader />
-      <main className='flex-1 px-6 pt-10 pb-16'>
-        <div className='max-w-2xl mx-auto'>
-          <h2 className='text-3xl font-bold mb-2'>Changelog</h2>
-          <h5 className='text-lg font-semibold text-gray-600 mb-8'>
-            Development blog about new features, fixes, and updates to Hemolog
-          </h5>
-          <hr className='border-gray-200 mb-12' />
+      <main className='flex-1 px-6 pt-6 pb-16 sm:pt-10'>
+        <div className='mx-auto max-w-2xl'>
+          <p className='mb-3 text-[13px] font-medium tracking-[0.16em] text-primary-700 uppercase'>
+            Blog
+          </p>
+          <h1 className='text-4xl text-ink sm:text-5xl'>Changelog</h1>
+          <p className='mt-3 text-lg text-slate'>
+            New features, fixes, and updates to Hemolog
+          </p>
+          <div className='mt-8 mb-12 h-px bg-line' />
 
           <article className='pb-16'>
             <h4 className='text-xl font-semibold mb-2'>{postData.title}</h4>

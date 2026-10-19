@@ -63,7 +63,7 @@ const Home = (): ReactElement => {
         </header>
         <main className='px-4 sm:px-6'>
           <Tabs initialValue={pathname}>
-            <TabsItem label='home' value='/home'>
+            <TabsItem label='Home' value='/home'>
               <section className='pt-6 sm:pt-10'>
                 <HomePage />
               </section>
@@ -81,7 +81,7 @@ const Home = (): ReactElement => {
             /> */}
 
             {user?.isAdmin && (
-              <TabsItem label='feedback' value='/feedback'>
+              <TabsItem label='Feedback' value='/feedback'>
                 <section className='pt-6 sm:pt-10'>
                   <FeedbackPage />
                 </section>

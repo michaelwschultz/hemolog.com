@@ -82,12 +82,12 @@ export default function ActionMenu({
     isOpen && mounted ? (
       <div
         ref={menuRef}
-        className='fixed w-32 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-[9999]'
+        className='fixed z-[9999] w-32 rounded-2xl border border-line bg-white py-1 shadow-lg'
         style={{ top: menuPosition.top, left: menuPosition.left }}
       >
         <button
           type='button'
-          className='block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer'
+          className='block w-full cursor-pointer px-4 py-2 text-left text-sm text-ink hover:bg-paper'
           onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
@@ -98,7 +98,7 @@ export default function ActionMenu({
         </button>
         <button
           type='button'
-          className='block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer'
+          className='block w-full cursor-pointer px-4 py-2 text-left text-sm text-primary-700 hover:bg-primary-50'
           onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
@@ -115,7 +115,9 @@ export default function ActionMenu({
       <button
         ref={buttonRef}
         type='button'
-        className='p-1 text-gray-400 hover:text-gray-600 cursor-pointer'
+        className='cursor-pointer p-1 text-slate hover:text-ink'
+        aria-label='Treatment actions'
+        aria-expanded={isOpen}
         onClick={() => setIsOpen(!isOpen)}
       >
         <IconDots size={16} />

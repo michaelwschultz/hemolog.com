@@ -96,12 +96,15 @@ const HomePage = (): ReactElement => {
         </>
       )} */}
 
-      <div className='flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 pb-4'>
-        <h4 className='text-lg sm:text-xl font-semibold m-0'>Insights</h4>
+      <div className='flex flex-col gap-3 pb-4 sm:flex-row sm:items-center sm:justify-between'>
+        <h2 className='m-0 font-sans text-xl font-medium tracking-tight text-ink'>
+          Insights
+        </h2>
         <div className='flex items-center gap-2'>
-          <IconFilter size={16} className='text-gray-500' />
+          <IconFilter size={16} className='text-slate' aria-hidden='true' />
           <select
-            className='px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50'
+            aria-label='Filter by year'
+            className='field w-auto py-2 text-sm'
             disabled={treatmentYears.length < 1}
             value={filterYear}
             onChange={(e) => setFilterYear(e.target.value)}
@@ -121,24 +124,30 @@ const HomePage = (): ReactElement => {
         </div>
       </div>
       <Stats filterYear={filterYear} />
-      <div className='h-12' />
 
-      <h4 className='text-lg sm:text-xl font-semibold'>
-        Annual overview ({filterYear})
-      </h4>
-      <p className='text-sm text-gray-600 mt-1'>
-        Treatments are stacked by type (bleed, preventative, or prophy)
-      </p>
-      <Chart filterYear={filterYear} />
+      <div className='mt-14'>
+        <h2 className='font-sans text-xl font-medium tracking-tight text-ink'>
+          Annual overview ({filterYear})
+        </h2>
+        <p className='mt-1 text-sm text-slate'>
+          Each bar stacks bleed, preventative, and prophy treatments.
+        </p>
+        <div className='mt-4'>
+          <Chart filterYear={filterYear} />
+        </div>
+      </div>
 
-      <div className='h-12' />
-      <div className='flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1'>
-        <h4 className='text-lg sm:text-xl font-semibold'>Treatments</h4>
-        <span className='text-sm text-gray-600' suppressHydrationWarning>
+      <div className='mt-14 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between'>
+        <h2 className='font-sans text-xl font-medium tracking-tight text-ink'>
+          Treatments
+        </h2>
+        <span className='text-sm text-slate' suppressHydrationWarning>
           {smallerThanSmall && 'Swipe →'}
         </span>
       </div>
-      <TreatmentTable filterYear={filterYear} />
+      <div className='mt-4'>
+        <TreatmentTable filterYear={filterYear} />
+      </div>
     </>
   )
 }

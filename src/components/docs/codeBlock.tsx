@@ -23,22 +23,22 @@ export default function CodeBlock({
   }, [code])
 
   return (
-    <div className='relative rounded-lg bg-gray-100 overflow-hidden'>
-      <div className='flex items-center justify-between gap-3 px-3 py-1.5 border-b border-gray-200'>
-        <span className='text-xs font-medium text-gray-500 uppercase tracking-wide'>
+    <div className='relative overflow-hidden rounded-2xl bg-ink'>
+      <div className='flex items-center justify-between gap-3 border-b border-white/10 px-3 py-1.5'>
+        <span className='text-xs font-medium tracking-wide text-white/50 uppercase'>
           {label || 'Code'}
         </span>
         <button
           type='button'
           onClick={copyToClipboard}
-          className='inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded transition-colors'
-          title='Copy to clipboard'
+          className='inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white'
+          title='Copy'
         >
-          <IconCopy className='w-3.5 h-3.5' />
+          <IconCopy className='h-3.5 w-3.5' />
           Copy
         </button>
       </div>
-      <pre className='overflow-x-auto p-4 text-sm font-mono text-gray-800 leading-relaxed'>
+      <pre className='overflow-x-auto p-4 font-mono text-[13px] leading-relaxed text-white/90'>
         <code>{code}</code>
       </pre>
     </div>

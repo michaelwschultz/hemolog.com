@@ -103,21 +103,50 @@ export default function Chart(props: ChartProps): ReactElement | null {
   )
 
   return (
-    <div className='w-full relative'>
+    <div className='surface w-full px-2 pt-4 pb-3 sm:px-4'>
       <ResponsiveContainer width='100%' height={240}>
         <BarChart
           data={chartData}
-          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
         >
-          <CartesianGrid strokeDasharray='3 3' />
-          <XAxis dataKey='month' />
-          <YAxis domain={[0, maxY]} />
+          <CartesianGrid stroke='#E2E6EB' vertical={false} />
+          <XAxis
+            dataKey='month'
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: '#5A6470', fontSize: 12 }}
+          />
+          <YAxis
+            domain={[0, maxY]}
+            axisLine={false}
+            tickLine={false}
+            width={28}
+            tick={{ fill: '#5A6470', fontSize: 12 }}
+          />
           <Bar dataKey='bleed' stackId='a' fill='#FF062C' />
-          <Bar dataKey='preventative' stackId='a' fill='#48BB78' />
-          <Bar dataKey='prophy' stackId='a' fill='#0070F3' />
-          <Bar dataKey='antibody' stackId='a' fill='#333333' />
+          <Bar dataKey='preventative' stackId='a' fill='#2F9A5A' />
+          <Bar dataKey='prophy' stackId='a' fill='#3D78D0' />
+          <Bar dataKey='antibody' stackId='a' fill='#8B93A0' />
         </BarChart>
       </ResponsiveContainer>
+      <div className='flex flex-wrap gap-x-4 gap-y-2 px-2 pt-1 pb-2 text-xs text-slate'>
+        <span className='inline-flex items-center gap-1.5'>
+          <span className='h-2 w-2 rounded-full bg-primary-500' />
+          Bleed
+        </span>
+        <span className='inline-flex items-center gap-1.5'>
+          <span className='h-2 w-2 rounded-full bg-success-500' />
+          Preventative
+        </span>
+        <span className='inline-flex items-center gap-1.5'>
+          <span className='h-2 w-2 rounded-full bg-warning-500' />
+          Prophy
+        </span>
+        <span className='inline-flex items-center gap-1.5'>
+          <span className='h-2 w-2 rounded-full bg-[#8B93A0]' />
+          Antibody
+        </span>
+      </div>
     </div>
   )
 }
