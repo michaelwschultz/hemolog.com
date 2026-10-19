@@ -95,11 +95,32 @@ export function getFirestoreLite(): Firestore | null {
   return firestoreInstance
 }
 
-// Helper to filter undefined values from objects (Firestore doesn't accept undefined)
-function cleanUndefined<T extends object>(obj: T): Partial<T> {
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  if (value === null || typeof value !== 'object') {
+    return false
+  }
+
+  const prototype = Object.getPrototypeOf(value)
+  return prototype === Object.prototype || prototype === null
+}
+
+// Firestore rejects undefined anywhere in a document, including nested maps.
+// Null is a valid field value and is kept. Class instances (dates, field
+// sentinels) are left untouched.
+function cleanUndefined<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map((item) => cleanUndefined(item)) as T
+  }
+
+  if (!isPlainObject(value)) {
+    return value
+  }
+
   return Object.fromEntries(
-    Object.entries(obj).filter(([, v]) => v !== undefined)
-  ) as Partial<T>
+    Object.entries(value)
+      .filter(([, entry]) => entry !== undefined)
+      .map(([key, entry]) => [key, cleanUndefined(entry)])
+  ) as T
 }
 
 // Generic document fetch by ID
