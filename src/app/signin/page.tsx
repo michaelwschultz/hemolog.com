@@ -29,19 +29,13 @@ const Signin = () => {
       <header className='px-6 py-5'>
         <div className='flex items-center justify-between'>
           <Logo />
-          <span className='font-mono text-xs text-slate'>v{version}</span>
+          {version ? (
+            <span className='font-mono text-xs text-slate'>v{version}</span>
+          ) : null}
         </div>
       </header>
 
-      <main className='flex-1 px-6 pt-6 pb-16'>
-        <div className='note note-urgent mb-8 max-w-xl'>
-          <div className='note-title'>Before you start</div>
-          <p className='text-sm leading-relaxed text-slate'>
-            Hemolog is in development. Data integrity is not guaranteed, and
-            Hemolog is not HIPAA compliant.
-          </p>
-        </div>
-
+      <main className='flex-1 px-6 pt-10 pb-16 sm:pt-16'>
         <div className='mx-auto w-full max-w-md'>
           <div className='surface p-6 sm:p-8'>
             <h1 className='text-3xl text-ink'>Sign in</h1>
@@ -50,7 +44,25 @@ const Signin = () => {
               free.
             </p>
 
-            <div className='mt-8'>
+            <p className='mt-8 font-mono text-xs text-slate'>
+              Before you start
+            </p>
+            <dl className='mt-2 border-t-2 border-primary-500'>
+              <div className='grid gap-1 border-b border-line py-3 sm:grid-cols-[8.5rem_1fr] sm:items-baseline sm:gap-4'>
+                <dt className='font-mono text-xs text-ink'>Development</dt>
+                <dd className='text-sm leading-relaxed text-slate'>
+                  Hemolog is in development. Data integrity is not guaranteed.
+                </dd>
+              </div>
+              <div className='grid gap-1 border-b border-line py-3 sm:grid-cols-[8.5rem_1fr] sm:items-baseline sm:gap-4'>
+                <dt className='font-mono text-xs text-ink'>HIPAA</dt>
+                <dd className='text-sm leading-relaxed text-slate'>
+                  Hemolog is not HIPAA compliant.
+                </dd>
+              </div>
+            </dl>
+
+            <div className='mt-6'>
               {!process.env.NEXT_PUBLIC_USE_EMULATORS && (
                 <button
                   type='button'
