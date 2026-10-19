@@ -1,5 +1,7 @@
 rules_version = '2';
 
+// Deployed rules. firebase deploy reads this file.
+
 service cloud.firestore {
   match /databases/{database}/documents {
     match /infusions/{document=**} {
