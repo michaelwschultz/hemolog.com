@@ -1,12 +1,12 @@
 'use client'
 
 import { IconFilter } from '@tabler/icons-react'
-import { getYear } from 'date-fns'
 import dynamic from 'next/dynamic'
 import type { ReactElement } from 'react'
 import { useState } from 'react'
 import Stats from '@/components/home/stats'
 import TreatmentTable from '@/components/home/treatmentTable'
+import { treatmentCalendarYear } from '@/lib/helpers'
 import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
 
 const Chart = dynamic(() => import('@/components/home/chart'), {
@@ -19,7 +19,8 @@ const HomePage = (): ReactElement => {
   const treatmentYears = data
     ? data
         .filter((d) => d?.date)
-        .map((d) => getYear(new Date(d.date)))
+        .map((d) => treatmentCalendarYear(d.date))
+        .filter((year): year is number => year !== null)
         .filter((item, index, arr) => arr.indexOf(item) === index)
         .sort((a, b) => b - a)
     : []

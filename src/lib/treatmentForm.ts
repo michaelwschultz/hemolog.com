@@ -33,9 +33,8 @@ export function validateTreatmentValues(
     errors.brand = 'Medication is required'
   }
 
-  const units = Number.parseInt(values.units, 10)
-  if (!values.units || Number.isNaN(units) || units <= 0) {
-    errors.units = 'Enter a positive unit count'
+  if (parsePositiveUnits(values.units) === null) {
+    errors.units = 'Enter a whole number of units'
   }
 
   return errors
@@ -59,7 +58,7 @@ export function buildTreatmentPayload(
     medication: {
       brand: medicationBrand,
       lot: isAntibody ? undefined : values.lot,
-      units: isAntibody ? 0 : Number.parseInt(values.units, 10) || 0,
+      units: isAntibody ? 0 : (parsePositiveUnits(values.units) ?? 0),
     },
     sites: isBleed ? values.sites : '',
     type: values.type,
@@ -99,6 +98,25 @@ export function getTreatmentFormInitialValues(
       : '',
     uid: displayTreatment?.uid || null,
   }
+}
+
+/** Whole IU count. `parseInt` would accept `3,500` as 3 and `3500iu` as 3500. Number inputs can also yield a numeric value. */
+function parsePositiveUnits(raw: unknown): number | null {
+  if (typeof raw === 'number') {
+    return Number.isSafeInteger(raw) && raw > 0 ? raw : null
+  }
+  if (typeof raw !== 'string') {
+    return null
+  }
+  const trimmed = raw.trim()
+  if (!/^\d+$/.test(trimmed)) {
+    return null
+  }
+  const units = Number(trimmed)
+  if (!Number.isSafeInteger(units) || units <= 0) {
+    return null
+  }
+  return units
 }
 
 function formatToday(): string {

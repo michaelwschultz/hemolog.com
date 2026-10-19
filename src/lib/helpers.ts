@@ -1,3 +1,5 @@
+import type { TreatmentType } from './db/treatments'
+
 export const CONFIG = {
   blueskyUrl: 'https://bsky.app/profile/michaelschultz.com',
 }
@@ -12,7 +14,14 @@ export function track(event: string, data: Record<string, unknown>) {
   console.log('track', event, data)
 }
 
-import type { TreatmentType } from './db/treatments'
+/** Calendar year from a `YYYY-MM-DD` treatment date. Date-only strings are UTC midnight, so `Date#getFullYear()` shifts them into the previous year in negative-offset timezones. */
+export function treatmentCalendarYear(date: string): number | null {
+  const match = /^(\d{4})-\d{2}-\d{2}/.exec(date)
+  if (!match) {
+    return null
+  }
+  return Number(match[1])
+}
 
 export function filterTreatments(
   treatments: TreatmentType[] | undefined,
@@ -30,7 +39,7 @@ export function filterTreatments(
     if (!treatment.date) {
       return false
     }
-    const treatmentYear = new Date(treatment.date).getFullYear().toString()
-    return treatmentYear === filterYear
+    const treatmentYear = treatmentCalendarYear(treatment.date)
+    return treatmentYear !== null && treatmentYear.toString() === filterYear
   })
 }
