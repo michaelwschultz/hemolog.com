@@ -14,33 +14,6 @@ import { ProtectRoute, useAuth } from '@/lib/auth'
 import { track } from '@/lib/helpers'
 
 const Home = (): ReactElement => {
-  // TODO(michael) add welcome message by checking to see if this is the users
-  // first time logging in. Still not sure how to accomplish this.
-  //
-  // const [toasts, setToast] = useToasts()
-
-  // // displays welcome message on first login
-  // useEffect(() => {
-  //   if (user && !toasts.length) {
-  //     setToast({
-  //       text: '👋 Welcome to Hemolog 2!',
-  //       delay: 12000,
-  //       type: 'success',
-  //       actions: [
-  //         {
-  //           name: 'thanks',
-  //           passive: true,
-  //           handler: (_event, cancel) => cancel(),
-  //         },
-  //       ],
-  //     })
-  //   }
-  // }, [user])
-
-  // TODO(michael): Could improve this by determining the user on the server side
-  // and redirecting before hitting this page. Similar to how Lee Robinson explains
-  // it here https://www.youtube.com/watch?v=NSR_Y_rm_zU
-
   const { user } = useAuth()
   const pathname = usePathname()
   const version = process.env.npm_package_version

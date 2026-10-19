@@ -193,5 +193,3 @@ export function useTreatmentMutations(
       deleteMutation.isPending,
   }
 }
-
-export default useTreatmentMutations

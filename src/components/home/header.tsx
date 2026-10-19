@@ -1,11 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import React, { type ReactElement } from 'react'
+import React, { type ReactElement, useRef } from 'react'
+import TreatmentModalContent from '@/components/home/treatmentModalContent'
 import Logo from '@/components/shared/logo'
+import { Popup } from '@/components/shared/popup'
 import { useAuth } from '@/lib/auth'
-import { useTreatmentSheet } from '@/lib/hooks/useTreatmentSheet'
+import type { TreatmentType } from '@/lib/db/treatments'
 import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
+import { registerTreatmentDialog } from '@/lib/treatmentDialog'
 
 interface Props {
   version?: string
@@ -15,15 +18,24 @@ const Header = (props: Props): ReactElement | null => {
   const { version } = props
   const { user, signout } = useAuth()
   const { data: treatments } = useTreatmentsQuery()
-  const { openTreatmentSheet } = useTreatmentSheet()
+  const treatmentFormRef = useRef<{ handleSubmit: () => void }>(null)
 
   const [dropdownOpen, setDropdownOpen] = React.useState(false)
+  const [treatmentOpen, setTreatmentOpen] = React.useState(false)
+  const [editingTreatment, setEditingTreatment] = React.useState<
+    TreatmentType | undefined
+  >()
 
-  const handleOpenSheet = () => {
-    openTreatmentSheet({
-      mode: 'create',
-      previousTreatment: treatments?.[0],
+  React.useEffect(() => {
+    return registerTreatmentDialog((treatment) => {
+      setEditingTreatment(treatment)
+      setTreatmentOpen(true)
     })
+  }, [])
+
+  const closeTreatment = () => {
+    setTreatmentOpen(false)
+    setEditingTreatment(undefined)
   }
 
   // Close dropdown when clicking outside
@@ -51,7 +63,10 @@ const Header = (props: Props): ReactElement | null => {
           <div className='flex items-center gap-2' suppressHydrationWarning>
             <button
               type='button'
-              onClick={handleOpenSheet}
+              onClick={() => {
+                setEditingTreatment(undefined)
+                setTreatmentOpen(true)
+              }}
               className='btn btn-primary'
             >
               New treatment
@@ -112,6 +127,28 @@ const Header = (props: Props): ReactElement | null => {
         </div>
 
         <div className='h-4' />
+        <Popup
+          open={treatmentOpen}
+          title={editingTreatment ? 'Edit treatment' : 'Log treatment'}
+          onClose={closeTreatment}
+        >
+          <TreatmentModalContent
+            key={editingTreatment?.uid ?? 'create'}
+            ref={treatmentFormRef}
+            treatment={editingTreatment}
+            previousTreatment={editingTreatment ? undefined : treatments?.[0]}
+            onSuccess={closeTreatment}
+          />
+          <div className='flex justify-end px-4 pb-4 sm:px-6'>
+            <button
+              type='button'
+              className='btn btn-primary'
+              onClick={() => treatmentFormRef.current?.handleSubmit()}
+            >
+              {editingTreatment ? 'Save' : 'Log treatment'}
+            </button>
+          </div>
+        </Popup>
       </>
     )
   }

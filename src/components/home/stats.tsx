@@ -6,23 +6,6 @@ import { TreatmentTypeEnum } from '@/lib/db/treatments'
 import { filterTreatments } from '@/lib/helpers'
 import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
 
-// TODO(michael) move types to types file
-type Value = string[]
-
-interface ValueRanges {
-  range: string
-  majorDimension: string
-  values: Value[]
-}
-
-export interface TreatmentSheet {
-  error?: Error
-  spreadsheetId: string
-  valueRanges: ValueRanges[]
-}
-
-// TODO(michael) create array of factor brands with associated prices
-// const PHARMACY_ORDERS = 6
 const COST_OF_FACTOR = 1.66
 
 interface StatsProps {
@@ -34,10 +17,6 @@ export default function Stats(props: StatsProps): ReactElement {
   const { data, isLoading, isError, error } = useTreatmentsQuery()
 
   const filteredTreatments = filterTreatments(data, filterYear)
-
-  // TODO(michael): Remove the feedback modal from this component at some point
-  // since we already use it in the footer, maybe figure out a way to share
-  // the modal across multiple components my lifting it up into context.
   const [feedbackModal, setFeedbackModal] = useState(false)
 
   if (isLoading) {
@@ -186,17 +165,8 @@ export default function Stats(props: StatsProps): ReactElement {
             Give feedback
           </button>
         </div>
-        {/* <div className="col-span-1 sm:col-span-1 lg:col-span-1 xl:col-span-1">
-            TODO(michael) could setup a separate collection for this data as well as a
-            separate api call
-          <StatCard value='tk' label='Pharmacy Orders' />
-        </div> */}
       </div>
-      <FeedbackModal
-        visible={feedbackModal}
-        setVisible={setFeedbackModal}
-        bindings={{}}
-      />
+      <FeedbackModal visible={feedbackModal} setVisible={setFeedbackModal} />
     </>
   )
 }

@@ -65,6 +65,3 @@ export function useTreatmentsQuery(
     refetch: query.refetch,
   }
 }
-
-// Hook alias for backward compatibility
-export default useTreatmentsQuery

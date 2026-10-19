@@ -48,6 +48,3 @@ export function useUserQuery(
     refetch: query.refetch,
   }
 }
-
-// Alias for backward compatibility with useDbUser
-export default useUserQuery

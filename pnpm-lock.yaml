@@ -166,9 +166,6 @@ importers:
 
   .:
     dependencies:
-      '@silk-hq/components':
-        specifier: ^0.10.1
-        version: 0.10.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@tanstack/react-query':
         specifier: ^5.62.0
         version: 5.90.14(react@19.2.3)
@@ -1171,12 +1168,6 @@ packages:
         optional: true
       react-redux:
         optional: true
-
-  '@silk-hq/components@0.10.1':
-    resolution: {integrity: sha512-Xtn3Vhn6mSOmM8haegor0g2W3Cm5QcKbPWsfk5kJzyXSTTpyRphmapmFz70mKtbe9VIalpbpkBZ84MDvGNoYfg==}
-    peerDependencies:
-      react: ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-      react-dom: ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
 
   '@sindresorhus/is@4.6.0':
     resolution: {integrity: sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==}
@@ -5654,11 +5645,6 @@ snapshots:
     optionalDependencies:
       react: 19.2.3
       react-redux: 9.2.0(@types/react@19.2.8)(react@19.2.3)(redux@5.0.1)
-
-  '@silk-hq/components@0.10.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
-    dependencies:
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
 
   '@sindresorhus/is@4.6.0': {}
 

@@ -3,9 +3,7 @@
 import React, { useEffect } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from '@/lib/auth'
-import { ThemeProvider } from '@/lib/contexts/ThemeContext'
 import { QueryProvider } from '@/lib/providers/query-provider'
-import { SheetProvider } from '@/lib/providers/sheet-provider'
 
 class AgentErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -43,25 +41,21 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryProvider>
-      <ThemeProvider>
-        <AuthProvider>
-          <SheetProvider>
-            <Toaster
-              position='top-right'
-              toastOptions={{
-                style: {
-                  background: '#161A20',
-                  color: '#fff',
-                  borderRadius: '12px',
-                  fontSize: '14px',
-                  padding: '12px 14px',
-                },
-              }}
-            />
-            <AgentErrorBoundary>{children}</AgentErrorBoundary>
-          </SheetProvider>
-        </AuthProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <Toaster
+          position='top-right'
+          toastOptions={{
+            style: {
+              background: '#161A20',
+              color: '#fff',
+              borderRadius: '12px',
+              fontSize: '14px',
+              padding: '12px 14px',
+            },
+          }}
+        />
+        <AgentErrorBoundary>{children}</AgentErrorBoundary>
+      </AuthProvider>
     </QueryProvider>
   )
 }

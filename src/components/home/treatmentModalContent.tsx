@@ -3,7 +3,6 @@ import { useFormik } from 'formik'
 import {
   forwardRef,
   useCallback,
-  useEffect,
   useId,
   useImperativeHandle,
   useRef,
@@ -33,36 +32,30 @@ interface TreatmentValues {
 
 interface TreatmentModalProps {
   treatment?: TreatmentType
-  // Previous treatment for prefilling form when creating new treatments
   previousTreatment?: TreatmentType
-  // Callback when treatment is successfully created/updated
   onSuccess?: () => void
 }
 
-// Helper function to compute initial values - called once when modal mounts
 function getInitialValues(
   treatment: TreatmentType | undefined,
   previousTreatment: TreatmentType | undefined,
   monoclonalAntibody: string | undefined
-) {
+): TreatmentValues {
   const displayTreatment = treatment || previousTreatment
   const isAntibody = displayTreatment?.type === TreatmentTypeEnum.ANTIBODY
+  const medication = displayTreatment?.medication
 
   return {
     brand: displayTreatment
       ? isAntibody
         ? monoclonalAntibody || ''
-        : displayTreatment.medication.brand
+        : medication?.brand || ''
       : '',
     cause: displayTreatment ? (isAntibody ? '' : displayTreatment.cause) : '',
     date: treatment
       ? displayTreatment?.date || format(new Date(), 'yyyy-MM-dd')
       : format(new Date(), 'yyyy-MM-dd'),
-    lot: displayTreatment
-      ? isAntibody
-        ? ''
-        : displayTreatment.medication.lot || ''
-      : '',
+    lot: displayTreatment ? (isAntibody ? '' : medication?.lot || '') : '',
     sites: displayTreatment ? (isAntibody ? '' : displayTreatment.sites) : '',
     type: displayTreatment
       ? displayTreatment.type
@@ -70,7 +63,9 @@ function getInitialValues(
     units: displayTreatment
       ? isAntibody
         ? '0'
-        : displayTreatment.medication.units.toString()
+        : medication?.units != null
+          ? String(medication.units)
+          : ''
       : '',
     uid: displayTreatment?.uid || null,
   }
@@ -79,10 +74,8 @@ function getInitialValues(
 export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
   function TreatmentModalContent(props, ref) {
     const { treatment, previousTreatment, onSuccess } = props
-
     const { user } = useAuth()
 
-    // Generate all IDs unconditionally at the top level
     const dateId = useId()
     const brandId = useId()
     const unitsId = useId()
@@ -90,39 +83,20 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
     const sitesId = useId()
     const causeId = useId()
 
-    // Track if we've already submitted to prevent double-submission
     const hasSubmittedRef = useRef(false)
-
-    // Reset submission flag when treatment/previousTreatment changes
-    // biome-ignore lint/correctness/useExhaustiveDependencies: intentional - reset on treatment change
-    useEffect(() => {
-      hasSubmittedRef.current = false
-      return () => {
-        hasSubmittedRef.current = false
-      }
-    }, [previousTreatment?.uid, treatment?.uid])
-
-    // Stable reference to onSuccess to avoid closure issues
     const onSuccessRef = useRef(onSuccess)
     onSuccessRef.current = onSuccess
 
-    // Use the mutations hook without callbacks - we'll handle success manually
     const mutations = useTreatmentMutations()
-
-    // Store mutations in ref to ensure handlers don't recreate when mutations object changes
     const mutationsRef = useRef(mutations)
     mutationsRef.current = mutations
 
-    const [initialValues] = useState(() =>
-      getInitialValues(treatment, previousTreatment, user?.monoclonalAntibody)
-    )
-
-    // Store user in ref to avoid recreating handlers when user changes
     const userRef = useRef(user)
     userRef.current = user
 
-    // Memoize handlers to prevent recreation on every render
-    // Use refs to access mutations and user to keep handlers stable
+    const treatmentRef = useRef(treatment)
+    treatmentRef.current = treatment
+
     const handleCreateTreatment = useCallback(
       (treatmentValues: TreatmentValues) => {
         const treatmentUser: AttachedUserType = {
@@ -132,10 +106,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
           uid: userRef.current?.uid || '',
         }
 
-        // TODO:(michael) should probably move to toLocaleString()
         const { date, brand, lot, units, cause, sites, type } = treatmentValues
-
-        // For antibody treatments, use monoclonal antibody from profile and clear cause/sites
         const isAntibody = type === TreatmentTypeEnum.ANTIBODY
         const medicationBrand = isAntibody
           ? userRef.current?.monoclonalAntibody || ''
@@ -157,10 +128,9 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
         }
 
         mutationsRef.current.createTreatment(payload)
-        // Close immediately - mutation runs in background
         onSuccessRef.current?.()
       },
-      [] // Empty deps - use refs for all dependencies
+      []
     )
 
     const handleUpdateTreatment = useCallback(
@@ -174,8 +144,6 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
 
         const { uid, date, brand, lot, units, cause, sites, type } =
           treatmentValues
-
-        // For antibody treatments, use monoclonal antibody from profile and clear cause/sites
         const isAntibody = type === TreatmentTypeEnum.ANTIBODY
         const medicationBrand = isAntibody
           ? userRef.current?.monoclonalAntibody || ''
@@ -202,19 +170,14 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
             userUid: userRef.current?.uid || '',
             data: payload,
           })
-          // Close immediately - mutation runs in background
           onSuccessRef.current?.()
         } else {
           toast.error('Treatment database entry not found')
-          hasSubmittedRef.current = false // Allow retry
+          hasSubmittedRef.current = false
         }
       },
-      [] // Empty deps - use refs for all dependencies
+      []
     )
-
-    // Store treatment and handlers in refs to stabilize onSubmit
-    const treatmentRef = useRef(treatment)
-    treatmentRef.current = treatment
 
     const handleCreateTreatmentRef = useRef(handleCreateTreatment)
     handleCreateTreatmentRef.current = handleCreateTreatment
@@ -222,8 +185,6 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
     const handleUpdateTreatmentRef = useRef(handleUpdateTreatment)
     handleUpdateTreatmentRef.current = handleUpdateTreatment
 
-    // TODO(michael) Add formik validation
-    // Memoize onSubmit with empty deps - use refs for all dependencies
     const onSubmit = useCallback((values: TreatmentValues) => {
       if (hasSubmittedRef.current) return
       hasSubmittedRef.current = true
@@ -233,18 +194,45 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
       } else {
         handleCreateTreatmentRef.current(values)
       }
-    }, []) // Empty deps - use refs for all dependencies
+    }, [])
+
+    const [initialValues] = useState(() =>
+      getInitialValues(treatment, previousTreatment, user?.monoclonalAntibody)
+    )
 
     const formik = useFormik({
       initialValues,
-      enableReinitialize: false, // Prevent formik from resetting on prop changes
+      enableReinitialize: false,
       onSubmit,
     })
 
-    // Define handleSubmit with useCallback to stabilize the reference
-    // Use ref to access formik to avoid dependency on formik object
     const formikRef = useRef(formik)
     formikRef.current = formik
+
+    const selectTreatmentType = (type: TreatmentTypeOptions) => {
+      const current = formikRef.current.values
+      if (type === TreatmentTypeEnum.ANTIBODY) {
+        formikRef.current.setValues({
+          ...current,
+          type,
+          brand: userRef.current?.monoclonalAntibody || '',
+          cause: '',
+          sites: '',
+          units: '0',
+          lot: '',
+        })
+        return
+      }
+
+      const leavingAntibody = current.type === TreatmentTypeEnum.ANTIBODY
+      formikRef.current.setValues({
+        ...current,
+        type,
+        ...(leavingAntibody
+          ? { brand: '', cause: '', sites: '', units: '', lot: '' }
+          : {}),
+      })
+    }
 
     const handleSubmit = useCallback(() => {
       track('Logged Treatment', {
@@ -256,14 +244,12 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
     useImperativeHandle(ref, () => ({ handleSubmit }), [handleSubmit])
 
     const inputBase = 'field min-h-[44px] px-4 py-2.5 text-base'
-
     const typeButtonBase =
       'rounded-xl text-sm font-medium transition-all active:scale-[0.98] min-h-[44px]'
 
     return (
       <div className='p-4 sm:p-6 pb-[max(1rem,env(safe-area-inset-bottom))]'>
         <form onSubmit={formik.handleSubmit} className='space-y-5'>
-          {/* Treatment Type Buttons - responsive: 2 cols on mobile, 3 on larger */}
           <div>
             <p className='text-xs font-medium text-gray-500 uppercase tracking-wide mb-3'>
               Treatment type
@@ -271,14 +257,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
             <div className='grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3'>
               <button
                 type='button'
-                onClick={() => {
-                  formik.setFieldValue('type', TreatmentTypeEnum.PROPHY)
-                  if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
-                    formik.setFieldValue('brand', '')
-                    formik.setFieldValue('cause', '')
-                    formik.setFieldValue('sites', '')
-                  }
-                }}
+                onClick={() => selectTreatmentType(TreatmentTypeEnum.PROPHY)}
                 className={`${typeButtonBase} ${
                   formik.values.type === TreatmentTypeEnum.PROPHY
                     ? 'bg-amber-100 text-amber-900 border-2 border-amber-300 shadow-sm'
@@ -289,14 +268,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               </button>
               <button
                 type='button'
-                onClick={() => {
-                  formik.setFieldValue('type', TreatmentTypeEnum.BLEED)
-                  if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
-                    formik.setFieldValue('brand', '')
-                    formik.setFieldValue('cause', '')
-                    formik.setFieldValue('sites', '')
-                  }
-                }}
+                onClick={() => selectTreatmentType(TreatmentTypeEnum.BLEED)}
                 className={`${typeButtonBase} ${
                   formik.values.type === TreatmentTypeEnum.BLEED
                     ? 'bg-emerald-100 text-emerald-900 border-2 border-emerald-300 shadow-sm'
@@ -307,14 +279,9 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               </button>
               <button
                 type='button'
-                onClick={() => {
-                  formik.setFieldValue('type', TreatmentTypeEnum.PREVENTATIVE)
-                  if (formik.values.type === TreatmentTypeEnum.ANTIBODY) {
-                    formik.setFieldValue('brand', '')
-                    formik.setFieldValue('cause', '')
-                    formik.setFieldValue('sites', '')
-                  }
-                }}
+                onClick={() =>
+                  selectTreatmentType(TreatmentTypeEnum.PREVENTATIVE)
+                }
                 className={`${typeButtonBase} ${
                   formik.values.type === TreatmentTypeEnum.PREVENTATIVE
                     ? 'bg-primary-50 text-primary-800 border-2 border-primary-300 shadow-sm'
@@ -329,14 +296,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
           {user?.monoclonalAntibody && (
             <button
               type='button'
-              onClick={() => {
-                formik.setFieldValue('type', TreatmentTypeEnum.ANTIBODY)
-                formik.setFieldValue('brand', user?.monoclonalAntibody || '')
-                formik.setFieldValue('cause', '')
-                formik.setFieldValue('sites', '')
-                formik.setFieldValue('units', '0')
-                formik.setFieldValue('lot', '')
-              }}
+              onClick={() => selectTreatmentType(TreatmentTypeEnum.ANTIBODY)}
               className={`w-full ${typeButtonBase} ${
                 formik.values.type === TreatmentTypeEnum.ANTIBODY
                   ? 'bg-sky-100 text-sky-900 border-2 border-sky-300 shadow-sm'
@@ -347,7 +307,6 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
             </button>
           )}
 
-          {/* Date Input */}
           <div>
             <label
               htmlFor={dateId}
@@ -365,7 +324,6 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
             />
           </div>
 
-          {/* Medication Input */}
           <div>
             <label
               htmlFor={brandId}
@@ -380,18 +338,13 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               onChange={formik.handleChange}
               placeholder='Brand name'
               disabled={formik.values.type === TreatmentTypeEnum.ANTIBODY}
-              value={
-                formik.values.type === TreatmentTypeEnum.ANTIBODY
-                  ? user?.monoclonalAntibody || ''
-                  : formik.values.brand
-              }
+              value={formik.values.brand}
               className={`${inputBase} disabled:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-70`}
             />
           </div>
 
           {formik.values.type !== TreatmentTypeEnum.ANTIBODY && (
             <>
-              {/* Units Input */}
               <div>
                 <label
                   htmlFor={unitsId}
@@ -415,7 +368,6 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                 </div>
               </div>
 
-              {/* Lot Number Input */}
               <div>
                 <label
                   htmlFor={lotId}
@@ -434,7 +386,6 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                 />
               </div>
 
-              {/* Affected Areas Input */}
               <div>
                 <label
                   htmlFor={sitesId}
@@ -453,7 +404,6 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                 />
               </div>
 
-              {/* Cause Input */}
               <div>
                 <label
                   htmlFor={causeId}

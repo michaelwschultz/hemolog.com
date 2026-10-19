@@ -19,8 +19,8 @@ import { useAuth } from '@/lib/auth'
 import { type TreatmentType, TreatmentTypeEnum } from '@/lib/db/treatments'
 import { filterTreatments } from '@/lib/helpers'
 import { useTreatmentMutations } from '@/lib/hooks/useTreatmentMutations'
-import { useTreatmentSheet } from '@/lib/hooks/useTreatmentSheet'
 import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
+import { openTreatmentDialog } from '@/lib/treatmentDialog'
 import ActionMenu from './actionMenu'
 
 interface TreatmentTableProps {
@@ -42,7 +42,6 @@ export default function TreatmentTable(
 
   const { user } = useAuth()
   const { deleteTreatment } = useTreatmentMutations()
-  const { openTreatmentSheet } = useTreatmentSheet()
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'date', desc: true },
   ])
@@ -64,11 +63,7 @@ export default function TreatmentTable(
       toast.error('Cannot edit treatment: missing database ID')
       return
     }
-    openTreatmentSheet({
-      mode: 'edit',
-      treatment,
-      previousTreatment: treatments?.[0],
-    })
+    openTreatmentDialog(treatment)
   }
 
   // Column definitions - React 19 compiler handles memoization automatically

@@ -1,6 +1,3 @@
-@import "@silk-hq/components/layered-styles";
-/* @import "@silk-hq/components/unlayered-styles" layer(silk); */
-
 @import "tailwindcss";
 
 @theme {
@@ -77,6 +74,7 @@
 @layer base {
   html {
     background: var(--color-paper);
+    scrollbar-gutter: stable;
   }
 
   body {

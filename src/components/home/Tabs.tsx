@@ -87,15 +87,3 @@ export function Tabs({
     </>
   )
 }
-
-export interface TabsContentProps {
-  children: React.ReactNode
-  className?: string
-}
-
-export function TabsContent({
-  children,
-  className = '',
-}: TabsContentProps): ReactElement {
-  return <div className={`py-6 ${className}`}>{children}</div>
-}

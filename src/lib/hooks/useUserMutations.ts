@@ -101,5 +101,3 @@ export function useUserMutations(options: UseUserMutationsOptions = {}) {
     isPending: createMutation.isPending || updateMutation.isPending,
   }
 }
-
-export default useUserMutations

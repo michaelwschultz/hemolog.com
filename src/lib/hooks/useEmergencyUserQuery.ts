@@ -48,5 +48,3 @@ export function useEmergencyUserQuery(
     refetch: query.refetch,
   }
 }
-
-export default useEmergencyUserQuery
