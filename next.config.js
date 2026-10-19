@@ -1,11 +1,21 @@
+import { readFileSync } from 'node:fs'
 import bundleAnalyzer from '@next/bundle-analyzer'
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
 
+const { version: appVersion } = JSON.parse(
+  readFileSync(new URL('./package.json', import.meta.url), 'utf8')
+)
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Inline the package version for client components. `npm_package_version`
+  // is not exposed to the browser bundle.
+  env: {
+    NEXT_PUBLIC_APP_VERSION: appVersion,
+  },
   // Image optimization settings
   images: {
     // Use remotePatterns instead of deprecated 'domains' for better security and flexibility

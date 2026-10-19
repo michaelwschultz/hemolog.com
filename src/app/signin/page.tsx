@@ -5,13 +5,12 @@ import { useEffect } from 'react'
 import Footer from '@/components/shared/footer'
 import LoadingScreen from '@/components/shared/loadingScreen'
 import Logo from '@/components/shared/logo'
+import { appVersion } from '@/lib/appVersion'
 import { useAuth } from '@/lib/auth'
 
 const Signin = () => {
   const auth = useAuth()
   const router = useRouter()
-  const version = process.env.npm_package_version
-
   // Redirect authenticated users to home
   useEffect(() => {
     if (auth.user && !auth.loading) {
@@ -29,8 +28,8 @@ const Signin = () => {
       <header className='px-6 py-5'>
         <div className='flex items-center justify-between'>
           <Logo />
-          {version ? (
-            <span className='font-mono text-xs text-slate'>v{version}</span>
+          {appVersion ? (
+            <span className='font-mono text-xs text-slate'>v{appVersion}</span>
           ) : null}
         </div>
       </header>

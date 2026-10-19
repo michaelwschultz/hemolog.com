@@ -5,18 +5,14 @@ import React, { type ReactElement, useRef } from 'react'
 import TreatmentModalContent from '@/components/home/treatmentModalContent'
 import Logo from '@/components/shared/logo'
 import { Popup } from '@/components/shared/popup'
+import { appVersion } from '@/lib/appVersion'
 import { useAuth } from '@/lib/auth'
 import type { TreatmentType } from '@/lib/db/treatments'
 import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
 import { useUserQuery } from '@/lib/hooks/useUserQuery'
 import { registerTreatmentDialog } from '@/lib/treatmentDialog'
 
-interface Props {
-  version?: string
-}
-
-const Header = (props: Props): ReactElement | null => {
-  const { version } = props
+const Header = (): ReactElement | null => {
   const { user, signout } = useAuth()
   const { data: treatments } = useTreatmentsQuery()
   const { person } = useUserQuery(user?.uid)
@@ -95,9 +91,11 @@ const Header = (props: Props): ReactElement | null => {
                 <div className='absolute right-0 z-50 mt-2 w-52 rounded-2xl border border-line bg-white py-1 shadow-lg'>
                   <div className='border-b border-line px-4 py-2.5'>
                     <div className='font-medium text-ink'>{user?.name}</div>
-                    <div className='mt-0.5 font-mono text-xs text-slate'>
-                      v{version}
-                    </div>
+                    {appVersion ? (
+                      <div className='mt-0.5 font-mono text-xs text-slate'>
+                        v{appVersion}
+                      </div>
+                    ) : null}
                   </div>
                   <Link
                     href='/changelog'

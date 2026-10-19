@@ -6,6 +6,7 @@ import { AppNav } from '@/components/home/AppNav'
 import Header from '@/components/home/header'
 import { track } from '@/components/shared/analytics'
 import Footer from '@/components/shared/footer'
+import { appVersion } from '@/lib/appVersion'
 import { ProtectRoute, useAuth } from '@/lib/auth'
 
 export default function AppLayout({
@@ -14,23 +15,22 @@ export default function AppLayout({
   children: ReactNode
 }): ReactElement {
   const { user } = useAuth()
-  const version = process.env.npm_package_version
 
   useEffect(() => {
     if (user) {
       track('Logged In', {
         uid: user.uid,
         email: user.email,
-        appVersion: version,
+        appVersion,
       })
     }
-  }, [user, version])
+  }, [user])
 
   return (
     <ProtectRoute>
       <div className='h-full flex flex-col max-w-[80rem] w-full mx-auto'>
         <header className='p-4 sm:p-6'>
-          <Header version={version} />
+          <Header />
         </header>
         <main className='px-4 sm:px-6'>
           <AppNav />
