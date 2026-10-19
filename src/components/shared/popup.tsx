@@ -7,9 +7,10 @@ interface PopupProps {
   title: string
   onClose: () => void
   children?: ReactNode
+  footer?: ReactNode
 }
 
-export function Popup({ open, title, onClose, children }: PopupProps) {
+export function Popup({ open, title, onClose, children, footer }: PopupProps) {
   if (!open) return null
 
   return (
@@ -31,6 +32,11 @@ export function Popup({ open, title, onClose, children }: PopupProps) {
           </button>
         </div>
         <div className='min-h-0 flex-1 overflow-y-auto'>{children}</div>
+        {footer ? (
+          <div className='shrink-0 border-t border-line px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]'>
+            {footer}
+          </div>
+        ) : null}
       </div>
     </div>
   )

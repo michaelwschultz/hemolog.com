@@ -12,6 +12,7 @@ export default function Logo() {
         alt='Hemolog logo'
         fill
         sizes='(max-width: 640px) 85px, 122px'
+        loading='eager'
         className='object-contain'
       />
     </Link>

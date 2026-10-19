@@ -40,9 +40,9 @@ describe('Pages render', () => {
       .invoke('text')
       .should('include', '/emergency/')
 
-    cy.get('button[title="Copy to clipboard"]').click()
+    cy.get('button[title="Copy link"]').click()
 
-    cy.contains('[role="status"]', 'Link copied!').should('be.visible')
+    cy.contains('[role="status"]', 'Link copied').should('be.visible')
     cy.get('@clipboardWrite').should('have.been.called')
   })
 })

@@ -183,7 +183,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
       formik.values.type !== TreatmentTypeEnum.ANTIBODY
 
     return (
-      <div className='p-4 sm:p-6 pb-[max(1rem,env(safe-area-inset-bottom))]'>
+      <div className='p-4 sm:p-6'>
         <form onSubmit={formik.handleSubmit} className='space-y-5'>
           <div>
             <p className='text-xs font-medium text-gray-500 uppercase tracking-wide mb-3'>

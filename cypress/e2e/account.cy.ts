@@ -30,9 +30,9 @@ describe('Acccounts', () => {
     cy.get('input[name="medication"]').clear().type('Xyntha')
     cy.get('input[name="monoclonalAntibody"]').clear().type('Hemlibra')
     cy.get('select[name="injectionFrequency"]').select('Monthly')
-    cy.contains('button', 'Update').click()
+    cy.contains('button', 'Save profile').click()
 
-    toastShouldContain('Profile updated!')
+    toastShouldContain('Profile saved')
   })
 
   it('can log a prophy treatment', () => {

@@ -7,6 +7,7 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  type PaginationState,
   type Row,
   type SortingState,
   useReactTable,
@@ -47,6 +48,10 @@ export default function TreatmentTable(
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'date', desc: true },
   ])
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 25,
+  })
 
   const filteredTreatments = useMemo(
     () => filterTreatments(treatments, filterYear),
@@ -188,22 +193,30 @@ export default function TreatmentTable(
     return baseColumns
   }, [isLoggedInUser])
 
+  const pageCount = Math.max(
+    1,
+    Math.ceil(filteredTreatments.length / pagination.pageSize)
+  )
+  // Refetches keep the current page. A shorter year or a delete must not
+  // leave the index on a page that no longer exists.
+  const paginationState: PaginationState = {
+    pageIndex: Math.min(pagination.pageIndex, pageCount - 1),
+    pageSize: pagination.pageSize,
+  }
+
   const table = useReactTable({
     data: filteredTreatments,
     columns,
     state: {
       sorting,
+      pagination: paginationState,
     },
     onSortingChange: setSorting,
+    onPaginationChange: setPagination,
     autoResetPageIndex: false,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    initialState: {
-      pagination: {
-        pageSize: 25,
-      },
-    },
   })
 
   // Handle case where uid is not available
@@ -327,7 +340,7 @@ export default function TreatmentTable(
       </table>
 
       {/* Pagination */}
-      {filteredTreatments.length > 25 && (
+      {filteredTreatments.length > paginationState.pageSize && (
         <div className='flex flex-col gap-3 border-t border-line bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5'>
           <div className='flex items-center gap-2'>
             <button

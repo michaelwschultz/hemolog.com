@@ -133,6 +133,15 @@ const Header = (props: Props): ReactElement | null => {
           open={treatmentOpen}
           title={editingTreatment ? 'Edit treatment' : 'Log treatment'}
           onClose={closeTreatment}
+          footer={
+            <button
+              type='button'
+              className='btn btn-primary w-full'
+              onClick={() => treatmentFormRef.current?.handleSubmit()}
+            >
+              {editingTreatment ? 'Save' : 'Log treatment'}
+            </button>
+          }
         >
           <TreatmentModalContent
             key={
@@ -144,15 +153,6 @@ const Header = (props: Props): ReactElement | null => {
             previousTreatment={editingTreatment ? undefined : treatments?.[0]}
             onSuccess={closeTreatment}
           />
-          <div className='flex justify-end px-4 pb-4 sm:px-6'>
-            <button
-              type='button'
-              className='btn btn-primary'
-              onClick={() => treatmentFormRef.current?.handleSubmit()}
-            >
-              {editingTreatment ? 'Save' : 'Log treatment'}
-            </button>
-          </div>
         </Popup>
       </>
     )
