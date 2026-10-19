@@ -20,18 +20,18 @@ export default function BlogFooter(): ReactElement {
   const showUserContent = mounted && !loading && user
 
   return (
-    <div className='flex flex-col sm:flex-row items-center gap-6'>
-      <div className='flex-1 flex flex-col'>
-        <h4 className='text-lg font-semibold mb-2'>
+    <div className='mt-16 flex flex-col items-center gap-6 sm:flex-row'>
+      <div className='flex flex-1 flex-col'>
+        <p className='mb-2 text-lg font-medium tracking-tight text-ink'>
           Designed and developed by Michael Schultz in Oakland, California.
-        </h4>
+        </p>
         {showUserContent ? (
-          <p className='text-gray-600'>
-            Thanks for being part of the Hemolog community!
+          <p className='text-slate'>
+            Thanks for being part of the Hemolog community.
           </p>
         ) : (
           <>
-            <p className='text-gray-600 mb-3'>Start using Hemolog for free.</p>
+            <p className='mb-3 text-slate'>Start using Hemolog for free.</p>
             <button
               type='button'
               onClick={() => router.push('/signin')}
