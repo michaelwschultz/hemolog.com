@@ -1,11 +1,18 @@
-// Placeholder - need to restore from git
+export interface ApiKeyEntry {
+  id: string
+  key: string
+  description: string
+  uid: string
+  createdAt: string
+  revokedAt?: string | null
+}
+
 export interface UserType {
   uid: string
   email: string
   name: string
   alertId?: string
   isAdmin?: boolean
-  apiKey?: string
   medication?: string
   monoclonalAntibody?: string
   injectionFrequency?: string

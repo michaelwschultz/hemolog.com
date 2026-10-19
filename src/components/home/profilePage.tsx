@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { type ReactElement, useCallback, useEffect, useState } from 'react'
+import { type ReactElement, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import EmergencyCard from '@/components/home/emergencyCard'
 import SettingsForm from '@/components/home/settingsForm'
@@ -10,17 +10,48 @@ import { track } from '@/components/shared/analytics'
 import EmergencySnippet from '@/components/shared/emergencySnippet'
 import { Popup } from '@/components/shared/popup'
 import { useAuth } from '@/lib/auth'
-import { generateUniqueString } from '@/lib/helpers'
-import { useUserMutations } from '@/lib/hooks/useUserMutations'
-import { useUserQuery } from '@/lib/hooks/useUserQuery'
+import {
+  maskApiKey,
+  useApiKeysMutations,
+  useApiKeysQuery,
+} from '@/lib/hooks/useApiKeys'
+import type { ApiKeyEntry } from '@/lib/types/users'
 
 const ProfilePage = (): ReactElement => {
   const { user, signout } = useAuth()
-  const { person } = useUserQuery(user?.uid)
-  const { updateUser } = useUserMutations()
   const router = useRouter()
   const [deleteModalVisible, setDeleteModalVisible] = useState(false)
   const [isDeletingAccount, setIsDeletingAccount] = useState(false)
+  const [keyPendingRevoke, setKeyPendingRevoke] = useState<ApiKeyEntry | null>(
+    null
+  )
+
+  const { apiKeys, isLoading: isLoadingKeys } = useApiKeysQuery(user?.uid)
+  const { createApiKey, revokeApiKey, isCreating, isRevoking } =
+    useApiKeysMutations()
+  const [newKeyDescription, setNewKeyDescription] = useState('')
+  const [revealedKeyIds, setRevealedKeyIds] = useState<string[]>([])
+
+  const handleCreateKey = () => {
+    if (!user?.uid) return
+    createApiKey({ uid: user.uid, description: newKeyDescription })
+    setNewKeyDescription('')
+  }
+
+  const handleCopyKey = async (key: string) => {
+    try {
+      await navigator.clipboard.writeText(key)
+      toast.success('Copied to clipboard')
+    } catch {
+      toast.error('Unable to copy. Reveal the key and copy it manually.')
+    }
+  }
+
+  const toggleRevealKey = (id: string) => {
+    setRevealedKeyIds((prev) =>
+      prev.includes(id) ? prev.filter((k) => k !== id) : [...prev, id]
+    )
+  }
 
   useEffect(() => {
     track('Viewed Profile Page', {})
@@ -30,19 +61,6 @@ const ProfilePage = (): ReactElement => {
     track('Clicked Print Button', { page: '/app/profile' })
     router.push('/emergency/print')
   }
-
-  const handleUpdateUserApiKey = useCallback(async () => {
-    if (!user?.uid) return
-    const newApiKey = await generateUniqueString(20)
-    updateUser({ uid: user.uid, userData: { apiKey: newApiKey } })
-  }, [user?.uid, updateUser])
-
-  // Only create API key once when person is loaded and doesn't have one
-  useEffect(() => {
-    if (person && !person.apiKey && user?.uid) {
-      handleUpdateUserApiKey()
-    }
-  }, [person, person?.apiKey, user?.uid, handleUpdateUserApiKey])
 
   const handleDeleteAccount = async () => {
     if (!user?.token) {
@@ -91,19 +109,88 @@ const ProfilePage = (): ReactElement => {
 
         <div className='h-12' />
         <h2 className='mb-4 font-sans text-xl font-medium tracking-tight text-ink'>
-          API key
+          API keys
         </h2>
-        <div className='flex w-full gap-2'>
-          <code className='flex-1 break-all rounded-xl border border-line bg-white px-3 py-2 font-mono text-sm text-ink'>
-            {person?.apiKey || ' '}
-          </code>
-          <button
-            type='button'
-            onClick={handleUpdateUserApiKey}
-            className='btn btn-secondary shrink-0'
-          >
-            Reset key
-          </button>
+        <div className='space-y-4'>
+          <div className='flex w-full gap-2'>
+            <input
+              type='text'
+              value={newKeyDescription}
+              onChange={(e) => setNewKeyDescription(e.target.value)}
+              placeholder='Key description (e.g. "Mobile app")'
+              className='flex-1 rounded-xl border border-line bg-white px-3 py-2 text-sm text-ink'
+              maxLength={50}
+            />
+            <button
+              type='button'
+              onClick={handleCreateKey}
+              disabled={isCreating || !newKeyDescription.trim()}
+              className='btn btn-primary shrink-0'
+            >
+              {isCreating ? 'Creating...' : 'Create key'}
+            </button>
+          </div>
+
+          {isLoadingKeys ? (
+            <p className='text-sm text-gray-600'>Loading API keys...</p>
+          ) : apiKeys.length === 0 ? (
+            <p className='text-sm text-gray-600'>No API keys created yet.</p>
+          ) : (
+            <div className='space-y-2'>
+              {apiKeys.map((key) => (
+                <div
+                  key={key.id}
+                  className='flex items-center justify-between rounded-xl border border-line bg-white px-3 py-2'
+                >
+                  <div className='flex-1 min-w-0'>
+                    <p className='font-medium text-sm text-ink truncate'>
+                      {key.description}
+                    </p>
+                    <code className='font-mono text-xs text-gray-600 break-all'>
+                      {revealedKeyIds.includes(key.id)
+                        ? key.key
+                        : maskApiKey(key.key)}
+                    </code>
+                  </div>
+                  {key.revokedAt ? (
+                    <span className='ml-4 shrink-0 rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500'>
+                      Revoked
+                    </span>
+                  ) : (
+                    <div className='flex items-center gap-2 ml-4 shrink-0'>
+                      <button
+                        type='button'
+                        onClick={() =>
+                          handleCopyKey(
+                            revealedKeyIds.includes(key.id)
+                              ? key.key
+                              : maskApiKey(key.key)
+                          )
+                        }
+                        className='text-xs text-gray-500 hover:text-ink'
+                      >
+                        Copy
+                      </button>
+                      <button
+                        type='button'
+                        onClick={() => toggleRevealKey(key.id)}
+                        className='text-xs text-gray-500 hover:text-ink'
+                      >
+                        {revealedKeyIds.includes(key.id) ? 'Hide' : 'Reveal'}
+                      </button>
+                      <button
+                        type='button'
+                        onClick={() => setKeyPendingRevoke(key)}
+                        className='text-xs text-red-500 hover:text-red-700'
+                      >
+                        Revoke
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <p className='mt-2 text-gray-600'>
           Used to access the Hemolog API. See the{' '}
@@ -162,6 +249,42 @@ const ProfilePage = (): ReactElement => {
           Delete account
         </button>
       </div>
+
+      <Popup
+        open={!!keyPendingRevoke}
+        title='Revoke this API key?'
+        onClose={() => setKeyPendingRevoke(null)}
+        footer={
+          <div className='flex gap-2'>
+            <button
+              type='button'
+              onClick={() => setKeyPendingRevoke(null)}
+              className='btn btn-secondary flex-1'
+            >
+              Cancel
+            </button>
+            <button
+              type='button'
+              disabled={isRevoking}
+              onClick={() => {
+                if (user?.uid && keyPendingRevoke) {
+                  track('Revoked API Key', {})
+                  revokeApiKey({ id: keyPendingRevoke.id, uid: user.uid })
+                  setKeyPendingRevoke(null)
+                }
+              }}
+              className='btn btn-danger flex-1'
+            >
+              {isRevoking ? 'Revoking...' : 'Revoke key'}
+            </button>
+          </div>
+        }
+      >
+        <p className='text-sm text-gray-600'>
+          Anything using <strong>{keyPendingRevoke?.description}</strong> will
+          immediately lose access to the Hemolog API. This cannot be undone.
+        </p>
+      </Popup>
 
       <Popup
         open={deleteModalVisible}

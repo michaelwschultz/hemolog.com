@@ -1,4 +1,5 @@
 import { compareDesc, parseISO } from 'date-fns'
+import { findActiveApiKey } from '@/lib/admin-db/apiKeys'
 import { adminFirestore } from '@/lib/firebase-admin'
 import type { AttachedUserType } from '@/lib/types/users'
 import { type TreatmentType, TreatmentTypeEnum } from '../db/treatments'
@@ -39,22 +40,18 @@ async function getTreatment(treatmentId: string) {
 
 async function getAllTreatmentsByApiKey(apiKey: string) {
   try {
-    const userSnapshot = await adminFirestore
-      .collection('users')
-      .where('apiKey', '==', apiKey)
-      .limit(1)
-      .get()
+    const apiKeyEntry = await findActiveApiKey(apiKey)
 
-    if (!userSnapshot.docs[0]) {
+    if (!apiKeyEntry) {
       throw new Error(
-        'Invalid API key. Reset your key on your profile page at Hemolog.com'
+        'Invalid or revoked API key. Manage your keys on your profile page at Hemolog.com'
       )
     }
-    const user = userSnapshot.docs[0].data()
+    const uid = apiKeyEntry.uid
 
     const snapshot = await adminFirestore
       .collection('infusions')
-      .where('user.uid', '==', user.uid)
+      .where('user.uid', '==', uid)
       .where('deletedAt', '==', null)
       .orderBy('date', 'desc')
       .get()
@@ -78,22 +75,33 @@ async function getRecentUserTreatmentsByApiKey(
   alertId?: string
 ) {
   try {
-    const userSnapshot = await adminFirestore
-      .collection('users')
-      .where(alertId ? 'alertId' : 'apiKey', '==', alertId || apiKey)
-      .limit(1)
-      .get()
+    let uid = ''
 
-    if (!userSnapshot.docs[0]) {
-      throw new Error(
-        'Invalid API key. Reset your key on your profile page at Hemolog.com'
-      )
+    if (alertId) {
+      const userSnapshot = await adminFirestore
+        .collection('users')
+        .where('alertId', '==', alertId)
+        .limit(1)
+        .get()
+      if (!userSnapshot.docs[0]) {
+        throw new Error(
+          'Invalid alert ID. Check the link on your emergency card at Hemolog.com'
+        )
+      }
+      uid = userSnapshot.docs[0].id
+    } else {
+      const apiKeyEntry = apiKey ? await findActiveApiKey(apiKey) : null
+      if (!apiKeyEntry) {
+        throw new Error(
+          'Invalid or revoked API key. Manage your keys on your profile page at Hemolog.com'
+        )
+      }
+      uid = apiKeyEntry.uid
     }
-    const user = userSnapshot.docs[0].data()
 
     const snapshot = await adminFirestore
       .collection('infusions')
-      .where('user.uid', '==', user.uid)
+      .where('user.uid', '==', uid)
       .where('deletedAt', '==', null)
       // TODO: Need to add a timestamp value to each treatment and replace createdAt
       // .orderBy('timestamp', 'asc')
@@ -206,16 +214,22 @@ async function postTreatmentByApiKey(
   newTreatment: Partial<TreatmentType>
 ) {
   try {
+    const apiKeyEntry = await findActiveApiKey(apiKey)
+
+    if (!apiKeyEntry) {
+      throw new Error(
+        'Invalid or revoked API key. Manage your keys on your profile page at Hemolog.com'
+      )
+    }
+
     const userSnapshot = await adminFirestore
       .collection('users')
-      .where('apiKey', '==', apiKey)
+      .where('uid', '==', apiKeyEntry.uid)
       .limit(1)
       .get()
 
     if (!userSnapshot.docs[0]) {
-      throw new Error(
-        'Invalid API key. Reset your key on your profile page at Hemolog.com'
-      )
+      throw new Error('User not found for the provided API key.')
     }
 
     const userDoc = userSnapshot.docs[0]

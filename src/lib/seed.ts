@@ -36,7 +36,7 @@ function checkEmulatorMode() {
     process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8082'
   }
   if (!process.env.FIREBASE_AUTH_EMULATOR_HOST) {
-    process.env.FIREBASE_AUTH_EMULATOR_HOST = 'localhost:9099'
+    process.env.FIREBASE_AUTH_EMULATOR_HOST = 'localhost:9098'
   }
 
   console.log('✓ Running in emulator mode (safe for local development)')

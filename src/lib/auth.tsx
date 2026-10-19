@@ -94,7 +94,6 @@ function useProvideAuth() {
         if (dbUser) {
           formattedUser.alertId = dbUser.alertId
           formattedUser.isAdmin = (dbUser as unknown as UserType).isAdmin
-          formattedUser.apiKey = dbUser.apiKey
           formattedUser.medication = dbUser.medication || ''
           formattedUser.monoclonalAntibody = dbUser.monoclonalAntibody || ''
           delete userWithoutToken.alertId
