@@ -2,7 +2,7 @@
   "name": "hemolog",
   "version": "2.9.5",
   "type": "module",
-  "packageManager": "pnpm@10.28.0",
+  "packageManager": "pnpm@12.4.2",
   "scripts": {
     "build": "pnpm run lint:fix; next build",
     "build:prod": "pnpm run rules:prod && pnpm run lint:fix && next build",
@@ -23,7 +23,7 @@
     "node": "24.x"
   },
   "dependencies": {
-    "@silk-hq/components": "^0.10.0",
+    "@silk-hq/components": "^0.10.1",
     "@tanstack/react-query": "^5.62.0",
     "@tanstack/react-table": "^8.21.3",
     "date-fns": "^2.30.0",

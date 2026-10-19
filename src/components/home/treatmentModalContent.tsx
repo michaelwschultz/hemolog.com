@@ -90,31 +90,17 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
     const sitesId = useId()
     const causeId = useId()
 
-    // Debug: Track render count to detect infinite loops
-    const renderCountRef = useRef(0)
-
     // Track if we've already submitted to prevent double-submission
     const hasSubmittedRef = useRef(false)
 
-    // Reset counter and submission flag when treatment/previousTreatment changes
+    // Reset submission flag when treatment/previousTreatment changes
     // biome-ignore lint/correctness/useExhaustiveDependencies: intentional - reset on treatment change
     useEffect(() => {
-      renderCountRef.current = 0
       hasSubmittedRef.current = false
       return () => {
         hasSubmittedRef.current = false
       }
     }, [previousTreatment?.uid, treatment?.uid])
-
-    renderCountRef.current += 1
-    if (renderCountRef.current > 10) {
-      console.error('TreatmentModalContent render loop detected!', {
-        renderCount: renderCountRef.current,
-        treatment: treatment?.uid,
-        previousTreatment: previousTreatment?.uid,
-      })
-      throw new Error('Infinite render loop detected in TreatmentModalContent')
-    }
 
     // Stable reference to onSuccess to avoid closure issues
     const onSuccessRef = useRef(onSuccess)
@@ -127,13 +113,9 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
     const mutationsRef = useRef(mutations)
     mutationsRef.current = mutations
 
-    const [initialValues] = useState(() => {
-      return getInitialValues(
-        treatment,
-        previousTreatment,
-        user?.monoclonalAntibody
-      )
-    })
+    const [initialValues] = useState(() =>
+      getInitialValues(treatment, previousTreatment, user?.monoclonalAntibody)
+    )
 
     // Store user in ref to avoid recreating handlers when user changes
     const userRef = useRef(user)

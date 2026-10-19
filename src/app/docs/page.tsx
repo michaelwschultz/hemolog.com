@@ -1,0 +1,461 @@
+import Link from 'next/link'
+import type { ReactElement, ReactNode } from 'react'
+import CodeBlock from '@/components/docs/codeBlock'
+import Footer from '@/components/shared/footer'
+import StaticHeader from '@/components/shared/staticHeader'
+
+const CURL_RECENT = `curl -X GET \\
+  'https://hemolog.com/api/recent-treatments?apikey=YOUR_API_KEY' \\
+  -H 'Accept: application/json'`
+
+const FETCH_TREATMENTS = `const response = await fetch(
+  'https://hemolog.com/api/treatments?apikey=YOUR_API_KEY'
+)
+const treatments = await response.json()
+
+if (!response.ok) {
+  throw new Error(treatments.error || 'Request failed')
+}
+
+console.log(treatments)`
+
+const PYTHON_CSV = `import csv
+import json
+import urllib.request
+
+API_KEY = 'YOUR_API_KEY'
+url = f'https://hemolog.com/api/treatments?apikey={API_KEY}'
+
+with urllib.request.urlopen(url) as response:
+    treatments = json.load(response)
+
+with open('treatments.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(['date', 'type', 'brand', 'units', 'sites', 'cause'])
+    for treatment in treatments:
+        medication = treatment.get('medication') or {}
+        writer.writerow([
+            treatment.get('date'),
+            treatment.get('type'),
+            medication.get('brand'),
+            medication.get('units'),
+            treatment.get('sites'),
+            treatment.get('cause'),
+        ])`
+
+const TREATMENT_JSON = `[
+  {
+    "id": "abc123",
+    "uid": "abc123",
+    "cause": "",
+    "createdAt": "2026-10-15T14:30:00.000Z",
+    "date": "2026-10-15",
+    "deletedAt": null,
+    "medication": {
+      "brand": "Advate",
+      "units": 3000,
+      "lot": "LOT1234"
+    },
+    "sites": "Left arm",
+    "type": "PROPHY",
+    "user": {
+      "uid": "firebase-uid",
+      "email": "you@example.com",
+      "name": "Jane Doe",
+      "photoUrl": "https://example.com/photo.jpg"
+    }
+  }
+]`
+
+const LOG_BODY = `{
+  "type": "PROPHY",
+  "date": "2026-10-18",
+  "sites": "Left arm",
+  "medication": {
+    "brand": "Advate",
+    "units": 3000,
+    "lot": "LOT5555"
+  }
+}`
+
+const LOG_SUCCESS = `{
+  "message": "Success"
+}`
+
+const LOG_CURL = `curl -X POST \\
+  'https://hemolog.com/api/log-treatment?apikey=YOUR_API_KEY' \\
+  -H 'Content-Type: application/json' \\
+  -d '{"type":"PROPHY"}'`
+
+const ERROR_MISSING_KEY = `{
+  "error": "Access denied. Missing api key."
+}`
+
+const ERROR_INVALID_KEY = `{
+  "error": "Invalid API key. Reset your key on your profile page at Hemolog.com"
+}`
+
+function MethodBadge({ method }: { method: 'GET' | 'POST' }): ReactElement {
+  const styles =
+    method === 'GET'
+      ? 'bg-warning-50 text-warning-700 border-warning-200'
+      : 'bg-primary-50 text-primary-700 border-primary-200'
+
+  return (
+    <span
+      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold tracking-wide border ${styles}`}
+    >
+      {method}
+    </span>
+  )
+}
+
+function InlineCode({ children }: { children: ReactNode }): ReactElement {
+  return (
+    <code className='bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono text-gray-800'>
+      {children}
+    </code>
+  )
+}
+
+function Field({
+  name,
+  children,
+}: {
+  name: string
+  children: ReactNode
+}): ReactElement {
+  return (
+    <div className='grid grid-cols-1 sm:grid-cols-[9rem_1fr] gap-1 sm:gap-4 py-3 border-b border-gray-100'>
+      <dt>
+        <InlineCode>{name}</InlineCode>
+      </dt>
+      <dd className='text-gray-700'>{children}</dd>
+    </div>
+  )
+}
+
+export default function DocsPage(): ReactElement {
+  return (
+    <div className='min-h-screen flex flex-col max-w-[850pt] w-full mx-auto'>
+      <StaticHeader />
+      <main className='flex-1 px-6 pt-10 pb-16'>
+        <div className='max-w-3xl mx-auto'>
+          <h2 className='text-3xl font-bold mb-2'>API</h2>
+          <h5 className='text-lg font-semibold text-gray-600 mb-8'>
+            Read your treatment history and log doses from Shortcuts, scripts,
+            and other apps
+          </h5>
+          <hr className='border-gray-200 mb-8' />
+
+          <nav className='flex flex-wrap gap-x-4 gap-y-2 mb-10 text-sm'>
+            <a
+              href='#authentication'
+              className='text-primary-500 hover:text-primary-600'
+            >
+              Authentication
+            </a>
+            <a
+              href='#treatments'
+              className='text-primary-500 hover:text-primary-600'
+            >
+              Treatments
+            </a>
+            <a
+              href='#recent-treatments'
+              className='text-primary-500 hover:text-primary-600'
+            >
+              Recent
+            </a>
+            <a
+              href='#log-treatment'
+              className='text-primary-500 hover:text-primary-600'
+            >
+              Log a treatment
+            </a>
+            <a
+              href='#treatment-object'
+              className='text-primary-500 hover:text-primary-600'
+            >
+              Treatment object
+            </a>
+            <a
+              href='#examples'
+              className='text-primary-500 hover:text-primary-600'
+            >
+              Examples
+            </a>
+          </nav>
+
+          <p className='text-gray-700 mb-4'>
+            Anyone with a Hemolog account can use the REST API to work with
+            their own treatment logs. Copy your API key from the{' '}
+            <Link
+              href='/home'
+              className='text-primary-500 hover:text-primary-600'
+            >
+              Profile
+            </Link>{' '}
+            tab, then pass it as a query parameter on each request.
+          </p>
+          <p className='text-gray-700 mb-12'>
+            The API is intentionally small: fetch your full history, fetch the
+            last three logs (the same slice shown on your emergency page), or
+            post a new treatment. Deleted treatments are never returned.
+          </p>
+
+          <section id='authentication' className='mb-16 scroll-mt-8'>
+            <h3 className='text-2xl font-bold mb-4'>Authentication</h3>
+            <p className='text-gray-700 mb-4'>
+              Every request includes your API key as{' '}
+              <InlineCode>apikey</InlineCode> on the query string:
+            </p>
+            <div className='mb-4'>
+              <CodeBlock
+                label='Query parameter'
+                code='https://hemolog.com/api/treatments?apikey=YOUR_API_KEY'
+              />
+            </div>
+            <p className='text-gray-700 mb-4'>
+              <InlineCode>GET /api/recent-treatments</InlineCode> also accepts{' '}
+              <InlineCode>alertid</InlineCode> — the public ID printed on your
+              emergency card — instead of an API key. The other endpoints
+              require the key.
+            </p>
+            <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
+              <div className='font-semibold text-blue-800 mb-1'>
+                Keep your key private
+              </div>
+              <div className='text-blue-700'>
+                Treat the API key like a password. Anyone who has it can read
+                your treatments and log new ones. Reset it anytime on your
+                Profile tab; the old key stops working immediately.
+              </div>
+            </div>
+          </section>
+
+          <section id='treatments' className='mb-16 scroll-mt-8'>
+            <div className='flex flex-wrap items-center gap-3 mb-4'>
+              <MethodBadge method='GET' />
+              <h3 className='text-xl font-semibold font-mono'>
+                /api/treatments
+              </h3>
+            </div>
+            <p className='text-gray-700 mb-4'>
+              Returns every non-deleted treatment for the key holder, newest{' '}
+              <InlineCode>date</InlineCode> first.
+            </p>
+            <p className='text-gray-700 mb-2'>
+              Query: <InlineCode>apikey</InlineCode> (required)
+            </p>
+            <div className='mb-4'>
+              <CodeBlock label='Response' code={TREATMENT_JSON} />
+            </div>
+            <p className='text-sm text-gray-600'>
+              Each item includes an extra <InlineCode>id</InlineCode> field that
+              matches <InlineCode>uid</InlineCode>.
+            </p>
+          </section>
+
+          <section id='recent-treatments' className='mb-16 scroll-mt-8'>
+            <div className='flex flex-wrap items-center gap-3 mb-4'>
+              <MethodBadge method='GET' />
+              <h3 className='text-xl font-semibold font-mono'>
+                /api/recent-treatments
+              </h3>
+            </div>
+            <p className='text-gray-700 mb-4'>
+              Returns the three most recent treatments, the same slice shown on
+              the public emergency page. Sorted by{' '}
+              <InlineCode>createdAt</InlineCode>, newest first.
+            </p>
+            <p className='text-gray-700 mb-4'>
+              Query: <InlineCode>apikey</InlineCode> or{' '}
+              <InlineCode>alertid</InlineCode> (at least one required)
+            </p>
+            <div className='mb-4'>
+              <CodeBlock label='cURL' code={CURL_RECENT} />
+            </div>
+            <p className='text-sm text-gray-600'>
+              With an alert ID:{' '}
+              <InlineCode>
+                /api/recent-treatments?alertid=your-alert-id
+              </InlineCode>
+            </p>
+          </section>
+
+          <section id='log-treatment' className='mb-16 scroll-mt-8'>
+            <div className='flex flex-wrap items-center gap-3 mb-4'>
+              <MethodBadge method='POST' />
+              <h3 className='text-xl font-semibold font-mono'>
+                /api/log-treatment
+              </h3>
+            </div>
+            <p className='text-gray-700 mb-4'>
+              Creates a new treatment. Send a JSON body with any subset of
+              treatment fields. Missing fields are copied from your most recent
+              log, so a Shortcut can post{' '}
+              <InlineCode>{`{ "type": "PROPHY" }`}</InlineCode> and reuse the
+              last medication, dose, and sites. If you have never logged a
+              treatment, omitted fields fall back to empty values and{' '}
+              <InlineCode>PROPHY</InlineCode>.
+            </p>
+            <p className='text-gray-700 mb-2'>
+              Query: <InlineCode>apikey</InlineCode> (required)
+            </p>
+            <p className='text-gray-700 mb-4'>
+              Body: JSON object (partial treatment).{' '}
+              <InlineCode>createdAt</InlineCode>,{' '}
+              <InlineCode>deletedAt</InlineCode>, and{' '}
+              <InlineCode>uid</InlineCode> are set by the server.
+            </p>
+            <div className='mb-4'>
+              <CodeBlock label='Request body' code={LOG_BODY} />
+            </div>
+            <div className='mb-4'>
+              <CodeBlock label='Success' code={LOG_SUCCESS} />
+            </div>
+            <p className='text-sm text-gray-600 mb-4'>
+              The response is a success message, not the created record.
+            </p>
+            <CodeBlock label='Minimal cURL' code={LOG_CURL} />
+          </section>
+
+          <section id='errors' className='mb-16 scroll-mt-8'>
+            <h3 className='text-2xl font-bold mb-4'>Errors</h3>
+            <p className='text-gray-700 mb-4'>
+              Failed requests return HTTP 500 with an{' '}
+              <InlineCode>error</InlineCode> string:
+            </p>
+            <div className='space-y-4'>
+              <CodeBlock label='Missing key' code={ERROR_MISSING_KEY} />
+              <CodeBlock label='Invalid key' code={ERROR_INVALID_KEY} />
+            </div>
+            <p className='text-sm text-gray-600 mt-4'>
+              Posting without a JSON body returns{' '}
+              <InlineCode>
+                {'{ "error": "Missing treatment data." }'}
+              </InlineCode>
+            </p>
+          </section>
+
+          <section id='treatment-object' className='mb-16 scroll-mt-8'>
+            <h3 className='text-2xl font-bold mb-4'>Treatment object</h3>
+            <p className='text-gray-700 mb-4'>
+              Fields you can send when logging, and that you will see on reads:
+            </p>
+            <dl>
+              <Field name='type'>
+                <InlineCode>PROPHY</InlineCode>, <InlineCode>BLEED</InlineCode>,{' '}
+                <InlineCode>PREVENTATIVE</InlineCode>, or{' '}
+                <InlineCode>ANTIBODY</InlineCode>
+              </Field>
+              <Field name='date'>
+                Treatment date as <InlineCode>YYYY-MM-DD</InlineCode>
+              </Field>
+              <Field name='cause'>
+                Bleed cause or notes. Empty string for a typical prophylaxis
+                log.
+              </Field>
+              <Field name='sites'>Infusion site, for example Left arm</Field>
+              <Field name='medication.brand'>Product name</Field>
+              <Field name='medication.units'>Dose as a number</Field>
+              <Field name='medication.lot'>Optional lot number</Field>
+              <Field name='createdAt'>
+                ISO timestamp set by the server when the log is created
+              </Field>
+              <Field name='deletedAt'>
+                <InlineCode>null</InlineCode> on active treatments. Soft-deleted
+                logs are omitted from API responses.
+              </Field>
+              <Field name='user'>
+                Attached account snapshot: <InlineCode>uid</InlineCode>,{' '}
+                <InlineCode>email</InlineCode>, <InlineCode>name</InlineCode>,{' '}
+                <InlineCode>photoUrl</InlineCode>
+              </Field>
+            </dl>
+          </section>
+
+          <section id='examples' className='mb-16 scroll-mt-8'>
+            <h3 className='text-2xl font-bold mb-4'>Examples</h3>
+            <p className='text-gray-700 mb-8'>
+              A few ways people actually use this API — from a one-off curl to a
+              home-screen Shortcut.
+            </p>
+
+            <h4 className='text-lg font-semibold mb-2'>cURL</h4>
+            <p className='text-gray-700 mb-4'>
+              Confirm your key works by fetching the last three treatments:
+            </p>
+            <div className='mb-10'>
+              <CodeBlock label='cURL' code={CURL_RECENT} />
+            </div>
+
+            <h4 className='text-lg font-semibold mb-2'>JavaScript</h4>
+            <p className='text-gray-700 mb-4'>
+              Export your full history from the browser console, a Node script,
+              or a personal dashboard:
+            </p>
+            <div className='mb-10'>
+              <CodeBlock label='JavaScript' code={FETCH_TREATMENTS} />
+            </div>
+
+            <h4 className='text-lg font-semibold mb-2'>Apple Shortcut</h4>
+            <p className='text-gray-700 mb-4'>
+              Log prophylaxis from your home screen. Because the API fills in
+              missing fields from your last treatment, the Shortcut only needs
+              to send a type.
+            </p>
+            <ol className='list-decimal pl-5 text-gray-700 mb-4 space-y-2'>
+              <li>Open Shortcuts and create a new shortcut.</li>
+              <li>
+                Add <strong>Get Contents of URL</strong>.
+              </li>
+              <li>
+                Set the URL to{' '}
+                <InlineCode>
+                  https://hemolog.com/api/log-treatment?apikey=YOUR_API_KEY
+                </InlineCode>
+                .
+              </li>
+              <li>
+                Method: <InlineCode>POST</InlineCode>. Request body:{' '}
+                <InlineCode>JSON</InlineCode> with <InlineCode>type</InlineCode>{' '}
+                set to <InlineCode>PROPHY</InlineCode>.
+              </li>
+              <li>
+                Add the shortcut to your Home Screen. Repeat for{' '}
+                <InlineCode>BLEED</InlineCode> if you want a second button.
+              </li>
+            </ol>
+            <div className='mb-10'>
+              <CodeBlock label='JSON body' code={`{\n  "type": "PROPHY"\n}`} />
+            </div>
+
+            <h4 className='text-lg font-semibold mb-2'>Python CSV export</h4>
+            <p className='text-gray-700 mb-4'>
+              Pull your history into a spreadsheet before a clinic visit:
+            </p>
+            <CodeBlock label='Python' code={PYTHON_CSV} />
+          </section>
+
+          <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
+            <div className='font-semibold text-blue-800 mb-1'>Your API key</div>
+            <div className='text-blue-700'>
+              Copy or reset your key on the{' '}
+              <Link
+                href='/home'
+                className='text-blue-600 hover:text-blue-800 underline'
+              >
+                Profile
+              </Link>{' '}
+              tab. If a request fails with an invalid key, generate a new one
+              there and update your scripts.
+            </div>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  )
+}

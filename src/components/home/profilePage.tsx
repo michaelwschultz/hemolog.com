@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { type ReactElement, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -99,8 +100,14 @@ const ProfilePage = (): ReactElement => {
           </button>
         </div>
         <p className='mt-2 text-gray-600'>
-          Used to access the (limited) Hemolog API. No documentation exists yet
-          but you can find more info inside the readme on Github.
+          Used to access the Hemolog API. See the{' '}
+          <Link
+            href='/docs'
+            className='text-primary-500 hover:text-primary-600'
+          >
+            API docs
+          </Link>{' '}
+          for endpoints and examples.
         </p>
       </div>
 

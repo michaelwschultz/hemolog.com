@@ -2,6 +2,7 @@
 
 // All Geist UI components have been migrated to Tailwind
 
+import Link from 'next/link'
 import { type ReactElement, useEffect, useState } from 'react'
 import EmergencySnippet from '@/components/shared/emergencySnippet'
 import { useAuth } from '@/lib/auth'
@@ -33,18 +34,24 @@ export default function Footer(): ReactElement {
       <div className='flex flex-col sm:flex-row gap-4'>
         <div className='flex-1 flex flex-col'>
           <h5 className='text-lg font-semibold mb-2'>Hemolog 2</h5>
-          <a
+          <Link
             className='text-primary-500 hover:text-primary-600 mb-1'
             href='/about'
           >
             The story so far...
-          </a>
-          <a
-            className='text-primary-500 hover:text-primary-600 mb-4'
+          </Link>
+          <Link
+            className='text-primary-500 hover:text-primary-600 mb-1'
             href='/changelog'
           >
             Development blog
-          </a>
+          </Link>
+          <Link
+            className='text-primary-500 hover:text-primary-600 mb-4'
+            href='/docs'
+          >
+            API docs
+          </Link>
           <h5 className='text-lg font-semibold mb-2'>Follow</h5>
           <a
             className='text-primary-500 hover:text-primary-600 mb-1 flex items-center'

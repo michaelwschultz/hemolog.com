@@ -22,6 +22,7 @@ import LoadingScreen from '@/components/shared/loadingScreen'
 import { createUser, fetchUserByUid } from '@/lib/db/users'
 import { getAuth } from '@/lib/firebase'
 import { generateUniqueString } from '@/lib/helpers'
+import { TEST_USER } from '@/lib/testUser'
 import type { UserType } from '@/lib/types/users'
 
 type ContextProps = {
@@ -202,8 +203,8 @@ function useProvideAuth() {
       return
     }
 
-    const testEmail = 'michael+test@hemolog.com'
-    const testPassword = 'test123'
+    const testEmail = TEST_USER.email
+    const testPassword = TEST_USER.password
 
     try {
       const signInResponse = await signInWithEmailAndPassword(

@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import React, { type ReactElement } from 'react'
 import Logo from '@/components/shared/logo'
 import { useAuth } from '@/lib/auth'
@@ -83,12 +84,18 @@ const Header = (props: Props): ReactElement | null => {
                   <div className='px-4 py-2 text-sm text-gray-600 border-b border-gray-200'>
                     Hemolog v{version}
                   </div>
-                  <a
+                  <Link
                     href='/changelog'
                     className='block px-4 py-2 text-sm text-primary-600 hover:bg-gray-50'
                   >
                     Latest updates
-                  </a>
+                  </Link>
+                  <Link
+                    href='/docs'
+                    className='block px-4 py-2 text-sm text-primary-600 hover:bg-gray-50'
+                  >
+                    API docs
+                  </Link>
                   <div className='border-t border-gray-200 my-1'></div>
                   <button
                     type='button'
