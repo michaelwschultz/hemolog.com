@@ -17,6 +17,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'fonts.gstatic.com',
+        pathname: '/**', // Allow all paths on this hostname
+      },
+      {
+        protocol: 'https',
         hostname: 'assets.onedollarstats.com',
         pathname: '/**',
       },
@@ -25,6 +30,28 @@ const nextConfig = {
     formats: ['image/webp', 'image/avif'],
     // Set reasonable limits to prevent abuse
     minimumCacheTTL: 60,
+  },
+
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        has: [{ type: 'query', key: 'tab', value: 'profile' }],
+        destination: '/app/profile',
+        permanent: true,
+      },
+      {
+        source: '/home',
+        has: [{ type: 'query', key: 'tab', value: 'feedback' }],
+        destination: '/app/feedback',
+        permanent: true,
+      },
+      {
+        source: '/home',
+        destination: '/app',
+        permanent: true,
+      },
+    ]
   },
 
   // Custom headers for security and CORS
@@ -67,12 +94,12 @@ const nextConfig = {
   // },
 
   // Production optimizations
-  ...(process.env.NODE_ENV === 'production' && {
-    // Enable standalone output for better deployment
-    output: 'standalone',
-    // Compress responses
-    compress: true,
-  }),
+  // ...(process.env.NODE_ENV === 'production' && {
+  //   // // Enable standalone output for better deployment
+  //   // output: 'standalone',
+  //   // // Compress responses
+  //   compress: true,
+  // }),
 }
 
 export default withBundleAnalyzer(nextConfig)

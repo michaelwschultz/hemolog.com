@@ -86,20 +86,12 @@ The easiest way to deploy Hemolog is to use the [Vercel Platform](https://vercel
 
 ## API
 
-Added in June 2021. The Hemolog.com API allows anyone with an account to access their data via REST endpoints.
+Anyone with a Hemolog account can read their treatment history and log treatments via REST. Copy your API key from the Profile tab.
 
-
-### Endpoints
-- recent-treatments (most recent 3 treatments)
-- treatments (all treatments)
-- log-treatment (log a new treatment)
-
-For example, recent-treatments returns the API key holders most recent treatments. Same as what is shown on the public emergency page. You can test this in the browser or using a cURL command.
-
-#### Example cURL request
+Full documentation, request/response examples, and Shortcut / JavaScript / Python samples live at [hemolog.com/docs](https://hemolog.com/docs).
 
 ```
 curl -X GET \
   'https://hemolog.com/api/recent-treatments?apikey=<your-api-key>' \
-  -H 'Accept: */*'
+  -H 'Accept: application/json'
 ```

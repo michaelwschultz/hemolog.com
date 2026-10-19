@@ -11,6 +11,7 @@
 # next.js
 /.next/
 /out/
+/next-env.d.ts
 
 # production
 /build
@@ -44,3 +45,11 @@ firebase-debug.log*
 cypress/downloads/
 cypress/videos/
 cypress/screenshots/
+
+# Kilo Code agent worktrees
+.kilocode/worktrees/
+
+# local Cursor hook state
+.cursor/hooks/state/
+.plans/
+.env*.local

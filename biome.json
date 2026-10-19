@@ -12,7 +12,10 @@
       "**/*.tsx",
       "**/*.js",
       "**/*.jsx",
+      "**/*.css",
+      "**/*.cy.ts",
       "!**/*.min.js",
+      "!**/*.d.ts",
       "!**/node_modules",
       "!**/dist",
       "!**/build",
@@ -22,8 +25,7 @@
       "!**/.husky",
       "!**/.vscode",
       "!**/.env",
-      "!**/.env.local",
-      "!**/cypress"
+      "!**/.env.local"
     ]
   },
   "formatter": {
@@ -34,7 +36,16 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "performance": {
+        "noImgElement": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "warn"
+      }
     }
   },
   "javascript": {
@@ -49,8 +60,13 @@
     "enabled": true,
     "actions": {
       "source": {
-        "organizeImports": "off"
+        "organizeImports": "on"
       }
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   }
 }
