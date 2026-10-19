@@ -46,7 +46,10 @@ export default function TreatmentTable(
     { id: 'date', desc: true },
   ])
 
-  const filteredTreatments = filterTreatments(treatments, filterYear)
+  const filteredTreatments = useMemo(
+    () => filterTreatments(treatments, filterYear),
+    [treatments, filterYear]
+  )
 
   // Determine if user can edit/delete treatments
   const isLoggedInUser = user && (!uid || uid === user.uid)
@@ -180,6 +183,7 @@ export default function TreatmentTable(
       sorting,
     },
     onSortingChange: setSorting,
+    autoResetPageIndex: false,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
