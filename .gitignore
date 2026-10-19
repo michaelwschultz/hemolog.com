@@ -48,5 +48,8 @@ cypress/screenshots/
 
 # Kilo Code agent worktrees
 .kilocode/worktrees/
+
+# local Cursor hook state
+.cursor/hooks/state/
 .plans/
 .env*.local
