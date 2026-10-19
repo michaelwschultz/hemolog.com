@@ -159,6 +159,14 @@ pnpm build            # Production build
 pnpm seed             # Seed test data
 ```
 
+## Development Environment Setup
+To start or restore the dev environment:
+1. **Install deps**: `pnpm install`
+2. **Env file**: Ensure `.env.local` exists with `NEXT_PUBLIC_USE_EMULATORS=true` (copy from `.env.example` if needed)
+3. **Terminal 1**: `pnpm run firebase` (Auth:9099, Firestore:8082, Emulator UI:8081)
+4. **Terminal 2**: `pnpm run dev` (Next.js at http://localhost:3000)
+5. **Verify**: App at http://localhost:3000, Firebase UI at http://localhost:8081
+
 ## Environment
 ```
 NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY, NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN, NEXT_PUBLIC_FIREBASE_PROJECT_ID
