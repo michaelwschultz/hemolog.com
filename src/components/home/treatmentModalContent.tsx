@@ -1,4 +1,3 @@
-import { format } from 'date-fns'
 import { useFormik } from 'formik'
 import {
   forwardRef,
@@ -17,18 +16,14 @@ import {
 } from '@/lib/db/treatments'
 import { track } from '@/lib/helpers'
 import { useTreatmentMutations } from '@/lib/hooks/useTreatmentMutations'
+import { useUserQuery } from '@/lib/hooks/useUserQuery'
+import {
+  buildTreatmentPayload,
+  getTreatmentFormInitialValues,
+  type TreatmentFormValues,
+  validateTreatmentValues,
+} from '@/lib/treatmentForm'
 import type { AttachedUserType } from '@/lib/types/users'
-
-interface TreatmentValues {
-  brand: string
-  cause: string
-  date: string
-  lot?: string
-  sites: string
-  type: TreatmentTypeOptions
-  units: string
-  uid?: string | null
-}
 
 interface TreatmentModalProps {
   treatment?: TreatmentType
@@ -36,45 +31,11 @@ interface TreatmentModalProps {
   onSuccess?: () => void
 }
 
-function getInitialValues(
-  treatment: TreatmentType | undefined,
-  previousTreatment: TreatmentType | undefined,
-  monoclonalAntibody: string | undefined
-): TreatmentValues {
-  const displayTreatment = treatment || previousTreatment
-  const isAntibody = displayTreatment?.type === TreatmentTypeEnum.ANTIBODY
-  const medication = displayTreatment?.medication
-
-  return {
-    brand: displayTreatment
-      ? isAntibody
-        ? monoclonalAntibody || ''
-        : medication?.brand || ''
-      : '',
-    cause: displayTreatment ? (isAntibody ? '' : displayTreatment.cause) : '',
-    date: treatment
-      ? displayTreatment?.date || format(new Date(), 'yyyy-MM-dd')
-      : format(new Date(), 'yyyy-MM-dd'),
-    lot: displayTreatment ? (isAntibody ? '' : medication?.lot || '') : '',
-    sites: displayTreatment ? (isAntibody ? '' : displayTreatment.sites) : '',
-    type: displayTreatment
-      ? displayTreatment.type
-      : (TreatmentTypeEnum.PROPHY as TreatmentTypeOptions),
-    units: displayTreatment
-      ? isAntibody
-        ? '0'
-        : medication?.units != null
-          ? String(medication.units)
-          : ''
-      : '',
-    uid: displayTreatment?.uid || null,
-  }
-}
-
 export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
   function TreatmentModalContent(props, ref) {
     const { treatment, previousTreatment, onSuccess } = props
     const { user } = useAuth()
+    const { person } = useUserQuery(user?.uid)
 
     const dateId = useId()
     const brandId = useId()
@@ -87,122 +48,85 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
     const onSuccessRef = useRef(onSuccess)
     onSuccessRef.current = onSuccess
 
-    const mutations = useTreatmentMutations()
+    const mutations = useTreatmentMutations({
+      onCreateSuccess: () => onSuccessRef.current?.(),
+      onUpdateSuccess: () => onSuccessRef.current?.(),
+      onError: () => {
+        hasSubmittedRef.current = false
+      },
+    })
     const mutationsRef = useRef(mutations)
     mutationsRef.current = mutations
 
     const userRef = useRef(user)
     userRef.current = user
 
+    const personRef = useRef(person)
+    personRef.current = person
+
     const treatmentRef = useRef(treatment)
     treatmentRef.current = treatment
 
-    const handleCreateTreatment = useCallback(
-      (treatmentValues: TreatmentValues) => {
-        const treatmentUser: AttachedUserType = {
-          email: userRef.current?.email || '',
-          name: userRef.current?.name || '',
-          photoUrl: userRef.current?.photoUrl || '',
-          uid: userRef.current?.uid || '',
-        }
+    const submitTreatment = useCallback((values: TreatmentFormValues) => {
+      const treatmentUser: AttachedUserType = {
+        email: userRef.current?.email || '',
+        name: userRef.current?.name || '',
+        photoUrl: userRef.current?.photoUrl || '',
+        uid: userRef.current?.uid || '',
+      }
 
-        const { date, brand, lot, units, cause, sites, type } = treatmentValues
-        const isAntibody = type === TreatmentTypeEnum.ANTIBODY
-        const medicationBrand = isAntibody
-          ? userRef.current?.monoclonalAntibody || ''
-          : brand
+      const payload = buildTreatmentPayload(
+        values,
+        treatmentUser,
+        personRef.current?.monoclonalAntibody
+      )
 
-        const payload: TreatmentType = {
-          cause: isAntibody ? '' : cause,
-          createdAt: new Date().toISOString(),
-          deletedAt: null,
-          date,
-          medication: {
-            brand: medicationBrand,
-            lot: isAntibody ? undefined : lot,
-            units: isAntibody ? 0 : units ? parseInt(units, 10) : 0,
+      if (treatmentRef.current?.uid) {
+        mutationsRef.current.updateTreatment({
+          uid: treatmentRef.current.uid,
+          userUid: userRef.current?.uid || '',
+          data: {
+            ...payload,
+            createdAt: treatmentRef.current.createdAt,
           },
-          sites: isAntibody ? '' : sites,
-          type,
-          user: treatmentUser,
-        }
+        })
+        return
+      }
 
-        mutationsRef.current.createTreatment(payload)
-        onSuccessRef.current?.()
-      },
-      []
-    )
+      mutationsRef.current.createTreatment(payload)
+    }, [])
 
-    const handleUpdateTreatment = useCallback(
-      (treatmentValues: TreatmentValues) => {
-        const treatmentUser: AttachedUserType = {
-          email: userRef.current?.email || '',
-          name: userRef.current?.name || '',
-          photoUrl: userRef.current?.photoUrl || '',
-          uid: userRef.current?.uid || '',
-        }
+    const submitTreatmentRef = useRef(submitTreatment)
+    submitTreatmentRef.current = submitTreatment
 
-        const { uid, date, brand, lot, units, cause, sites, type } =
-          treatmentValues
-        const isAntibody = type === TreatmentTypeEnum.ANTIBODY
-        const medicationBrand = isAntibody
-          ? userRef.current?.monoclonalAntibody || ''
-          : brand
-
-        const payload: TreatmentType = {
-          cause: isAntibody ? '' : cause,
-          createdAt: new Date().toISOString(),
-          deletedAt: null,
-          date,
-          medication: {
-            brand: medicationBrand,
-            lot: isAntibody ? undefined : lot,
-            units: isAntibody ? 0 : units ? parseInt(units, 10) : 0,
-          },
-          sites: isAntibody ? '' : sites,
-          type,
-          user: treatmentUser,
-        }
-
-        if (uid) {
-          mutationsRef.current.updateTreatment({
-            uid,
-            userUid: userRef.current?.uid || '',
-            data: payload,
-          })
-          onSuccessRef.current?.()
-        } else {
-          toast.error('Treatment database entry not found')
-          hasSubmittedRef.current = false
-        }
-      },
-      []
-    )
-
-    const handleCreateTreatmentRef = useRef(handleCreateTreatment)
-    handleCreateTreatmentRef.current = handleCreateTreatment
-
-    const handleUpdateTreatmentRef = useRef(handleUpdateTreatment)
-    handleUpdateTreatmentRef.current = handleUpdateTreatment
-
-    const onSubmit = useCallback((values: TreatmentValues) => {
-      if (hasSubmittedRef.current) return
+    const onSubmit = useCallback((values: TreatmentFormValues) => {
+      if (hasSubmittedRef.current) {
+        return
+      }
       hasSubmittedRef.current = true
 
-      if (treatmentRef.current) {
-        handleUpdateTreatmentRef.current(values)
-      } else {
-        handleCreateTreatmentRef.current(values)
+      if (treatmentRef.current && !treatmentRef.current.uid) {
+        toast.error('Treatment database entry not found')
+        hasSubmittedRef.current = false
+        return
       }
+
+      submitTreatmentRef.current(values)
     }, [])
 
     const [initialValues] = useState(() =>
-      getInitialValues(treatment, previousTreatment, user?.monoclonalAntibody)
+      getTreatmentFormInitialValues(
+        treatment,
+        previousTreatment,
+        person?.medication,
+        person?.monoclonalAntibody
+      )
     )
 
     const formik = useFormik({
       initialValues,
       enableReinitialize: false,
+      validate: validateTreatmentValues,
       onSubmit,
     })
 
@@ -215,7 +139,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
         formikRef.current.setValues({
           ...current,
           type,
-          brand: userRef.current?.monoclonalAntibody || '',
+          brand: personRef.current?.monoclonalAntibody || '',
           cause: '',
           sites: '',
           units: '0',
@@ -228,8 +152,16 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
       formikRef.current.setValues({
         ...current,
         type,
+        cause: type === TreatmentTypeEnum.BLEED ? current.cause : '',
+        sites: type === TreatmentTypeEnum.BLEED ? current.sites : '',
         ...(leavingAntibody
-          ? { brand: '', cause: '', sites: '', units: '', lot: '' }
+          ? {
+              brand: personRef.current?.medication || '',
+              cause: '',
+              sites: '',
+              units: '',
+              lot: '',
+            }
           : {}),
       })
     }
@@ -246,6 +178,9 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
     const inputBase = 'field min-h-[44px] px-4 py-2.5 text-base'
     const typeButtonBase =
       'rounded-xl text-sm font-medium transition-all active:scale-[0.98] min-h-[44px]'
+    const showBleedFields = formik.values.type === TreatmentTypeEnum.BLEED
+    const showMedicationFields =
+      formik.values.type !== TreatmentTypeEnum.ANTIBODY
 
     return (
       <div className='p-4 sm:p-6 pb-[max(1rem,env(safe-area-inset-bottom))]'>
@@ -293,7 +228,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
             </div>
           </div>
 
-          {user?.monoclonalAntibody && (
+          {person?.monoclonalAntibody && (
             <button
               type='button'
               onClick={() => selectTreatmentType(TreatmentTypeEnum.ANTIBODY)}
@@ -322,29 +257,38 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               value={formik.values.date}
               className={inputBase}
             />
+            {formik.errors.date && (
+              <p className='mt-1 text-sm text-primary-600'>
+                {formik.errors.date}
+              </p>
+            )}
           </div>
 
-          <div>
-            <label
-              htmlFor={brandId}
-              className='block text-sm font-medium text-gray-700 mb-1.5'
-            >
-              Medication
-            </label>
-            <input
-              id={brandId}
-              name='brand'
-              type='text'
-              onChange={formik.handleChange}
-              placeholder='Brand name'
-              disabled={formik.values.type === TreatmentTypeEnum.ANTIBODY}
-              value={formik.values.brand}
-              className={`${inputBase} disabled:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-70`}
-            />
-          </div>
-
-          {formik.values.type !== TreatmentTypeEnum.ANTIBODY && (
+          {showMedicationFields && (
             <>
+              <div>
+                <label
+                  htmlFor={brandId}
+                  className='block text-sm font-medium text-gray-700 mb-1.5'
+                >
+                  Medication
+                </label>
+                <input
+                  id={brandId}
+                  name='brand'
+                  type='text'
+                  onChange={formik.handleChange}
+                  placeholder='Brand name'
+                  value={formik.values.brand}
+                  className={inputBase}
+                />
+                {formik.errors.brand && (
+                  <p className='mt-1 text-sm text-primary-600'>
+                    {formik.errors.brand}
+                  </p>
+                )}
+              </div>
+
               <div>
                 <label
                   htmlFor={unitsId}
@@ -366,6 +310,11 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                     units
                   </span>
                 </div>
+                {formik.errors.units && (
+                  <p className='mt-1 text-sm text-primary-600'>
+                    {formik.errors.units}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -385,7 +334,11 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                   className={inputBase}
                 />
               </div>
+            </>
+          )}
 
+          {showBleedFields && (
+            <>
               <div>
                 <label
                   htmlFor={sitesId}

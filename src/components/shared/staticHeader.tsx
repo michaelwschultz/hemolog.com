@@ -24,7 +24,7 @@ const StaticHeader = (): ReactElement => {
         <button
           type='button'
           className='btn btn-primary'
-          onClick={() => router.push(user ? '/home' : '/signin')}
+          onClick={() => router.push(user ? '/app' : '/signin')}
           disabled={isLoading}
         >
           {isLoading ? (

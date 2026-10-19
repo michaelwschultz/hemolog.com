@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'
 import { type ReactElement, useEffect } from 'react'
 import LoadingScreen from '@/components/shared/loadingScreen'
-import { withAuth } from '@/components/shared/withAuth'
 import { useAuth } from '@/lib/auth'
 
 function Custom404(): ReactElement {
@@ -14,11 +13,11 @@ function Custom404(): ReactElement {
     if (!loading) {
       // If user is authenticated, redirect to home
       // If not authenticated, redirect to signin
-      router.replace(user ? '/home' : '/signin')
+      router.replace(user ? '/app' : '/signin')
     }
   }, [router, user, loading])
 
   return <LoadingScreen />
 }
 
-export default withAuth(Custom404)
+export default Custom404

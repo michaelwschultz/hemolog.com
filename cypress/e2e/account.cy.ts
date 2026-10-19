@@ -15,15 +15,14 @@ describe('Acccounts', () => {
   it('can create an acccount', () => {
     cy.visit('/signin')
     cy.contains('button', 'Continue with Test User').click()
-    cy.url().should('include', '/home')
+    cy.url().should('include', '/app')
     cy.contains('Insights')
     cy.contains('Annual overview')
     cy.contains('Treatments')
   })
 
   it('can update profile', () => {
-    cy.visit('/home')
-    cy.findByRole('tab', { name: 'Profile' }).click()
+    cy.visit('/app/profile')
     cy.contains('About you')
     cy.get('select[name="hemophiliaType"]').select('A')
     cy.get('select[name="severity"]').select('Severe')
@@ -37,7 +36,7 @@ describe('Acccounts', () => {
   })
 
   it('can log a prophy treatment', () => {
-    cy.visit('/home')
+    cy.visit('/app')
     newTreatmentButton().click()
     treatmentModalHeading()
     cy.contains('button', 'Prophy').click()
@@ -50,7 +49,7 @@ describe('Acccounts', () => {
   })
 
   it('can log a bleed treatment', () => {
-    cy.visit('/home')
+    cy.visit('/app')
     newTreatmentButton().click()
     treatmentModalHeading()
     cy.contains('button', 'Bleed').click()
@@ -63,7 +62,7 @@ describe('Acccounts', () => {
   })
 
   it('can update treatment', () => {
-    cy.visit('/home')
+    cy.visit('/app')
     openTreatmentMenuFor('PROPHY')
     cy.contains('button', /^Update$/).click()
     treatmentModalHeading()
@@ -77,29 +76,30 @@ describe('Acccounts', () => {
   })
 
   it('can delete treatment', () => {
-    cy.visit('/home')
+    cy.visit('/app')
     openTreatmentMenuFor('BLEED')
     cy.contains('button', /^Delete$/).click()
+    cy.contains('button', 'Delete treatment').click()
 
     toastShouldContain('Treatment deleted')
   })
 
   it('can show treatment count card correctly', () => {
-    cy.visit('/home')
+    cy.visit('/app')
     cy.contains('div', /^Treatments$/)
       .prev()
       .should('contain', '1')
   })
 
   it('can show bleed card correctly', () => {
-    cy.visit('/home')
+    cy.visit('/app')
     cy.contains('div', /^Bleeds$/)
       .prev()
       .should('contain', '0')
   })
 
   it('can show prophy card correctly', () => {
-    cy.visit('/home')
+    cy.visit('/app')
     cy.contains('div', /^Consecutive prophy treatments$/)
       .prev()
       .should('contain', '0')

@@ -215,7 +215,7 @@ function useProvideAuth() {
       if (signInResponse.user) {
         await handleUser(signInResponse.user)
         // Set pending redirect - will navigate after state is updated
-        setPendingRedirect('/home')
+        setPendingRedirect('/app')
         return
       }
     } catch (signInError: unknown) {
@@ -243,7 +243,7 @@ function useProvideAuth() {
         if (createResponse.user) {
           await handleUser(createResponse.user)
           // Set pending redirect - will navigate after state is updated
-          setPendingRedirect('/home')
+          setPendingRedirect('/app')
           return
         }
       } catch (createError: unknown) {
@@ -264,7 +264,7 @@ function useProvideAuth() {
             if (retrySignIn.user) {
               await handleUser(retrySignIn.user)
               // Set pending redirect - will navigate after state is updated
-              setPendingRedirect('/home')
+              setPendingRedirect('/app')
               return
             }
           } catch (retryError) {

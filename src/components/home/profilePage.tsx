@@ -7,6 +7,7 @@ import toast from 'react-hot-toast'
 import EmergencyCard from '@/components/home/emergencyCard'
 import SettingsForm from '@/components/home/settingsForm'
 import EmergencySnippet from '@/components/shared/emergencySnippet'
+import { Popup } from '@/components/shared/popup'
 import { useAuth } from '@/lib/auth'
 import { generateUniqueString, track } from '@/lib/helpers'
 import { useUserMutations } from '@/lib/hooks/useUserMutations'
@@ -25,7 +26,7 @@ const ProfilePage = (): ReactElement => {
   }, [])
 
   const handleOnPrintClick = () => {
-    track('Clicked Print Button', { page: '/profile' })
+    track('Clicked Print Button', { page: '/app/profile' })
     router.push('/emergency/print')
   }
 
@@ -161,39 +162,38 @@ const ProfilePage = (): ReactElement => {
         </button>
       </div>
 
-      {deleteModalVisible && (
-        <div className='fixed inset-0 z-50 flex items-center justify-center bg-ink/40 px-4'>
-          <div className='surface w-full max-w-md p-6'>
-            <h3 className='font-sans text-lg font-medium tracking-tight text-ink'>
-              Delete your account?
-            </h3>
-            <p className='mt-2 mb-6 text-sm leading-relaxed text-slate'>
-              This permanently deletes your Hemolog data and cannot be reversed.
-              You will need to create a new account to return.
-            </p>
-            <div className='flex justify-end gap-3'>
-              <button
-                type='button'
-                onClick={() => setDeleteModalVisible(false)}
-                className='btn btn-secondary'
-              >
-                Cancel
-              </button>
-              <button
-                type='button'
-                onClick={handleDeleteAccount}
-                disabled={isDeletingAccount}
-                className='btn btn-danger'
-              >
-                {isDeletingAccount && (
-                  <span className='h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white' />
-                )}
-                Delete account
-              </button>
-            </div>
+      <Popup
+        open={deleteModalVisible}
+        title='Delete your account?'
+        onClose={() => setDeleteModalVisible(false)}
+      >
+        <div className='p-6'>
+          <p className='text-sm leading-relaxed text-slate'>
+            This permanently deletes your Hemolog data and cannot be reversed.
+            You will need to create a new account to return.
+          </p>
+          <div className='mt-6 flex justify-end gap-3'>
+            <button
+              type='button'
+              onClick={() => setDeleteModalVisible(false)}
+              className='btn btn-secondary'
+            >
+              Cancel
+            </button>
+            <button
+              type='button'
+              onClick={handleDeleteAccount}
+              disabled={isDeletingAccount}
+              className='btn btn-danger'
+            >
+              {isDeletingAccount && (
+                <span className='h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white' />
+              )}
+              Delete account
+            </button>
           </div>
         </div>
-      )}
+      </Popup>
     </div>
   )
 }

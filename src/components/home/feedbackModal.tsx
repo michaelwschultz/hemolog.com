@@ -2,11 +2,12 @@
 
 import { useFormik } from 'formik'
 import type React from 'react'
-import toast from 'react-hot-toast'
+import { useRef } from 'react'
 
 import { Popup } from '@/components/shared/popup'
 import { useAuth } from '@/lib/auth'
-import { createFeedback, type FeedbackType } from '@/lib/db/feedback'
+import type { FeedbackType } from '@/lib/db/feedback'
+import { useFeedbackMutations } from '@/lib/hooks/useFeedbackMutations'
 import type { AttachedUserType } from '@/lib/types/users'
 
 interface FeedbackModalProps {
@@ -19,12 +20,20 @@ export default function FeedbackModal(
 ): React.ReactElement {
   const { visible, setVisible } = props
   const { user } = useAuth()
+  const resetFormRef = useRef<(() => void) | null>(null)
+
+  const { createFeedback, isCreating } = useFeedbackMutations({
+    onCreateSuccess: () => {
+      setVisible(false)
+      resetFormRef.current?.()
+    },
+  })
 
   const formik = useFormik({
     initialValues: {
       message: '',
     },
-    onSubmit: async (values, { setSubmitting, resetForm }) => {
+    onSubmit: (values) => {
       const feedbackUser: AttachedUserType = {
         email: user?.email || '',
         name: user?.name || '',
@@ -38,20 +47,10 @@ export default function FeedbackModal(
         user: feedbackUser,
       }
 
-      try {
-        await createFeedback(feedbackPayload)
-        toast.success("Feedback submitted! We'll respond soon via email.")
-        setVisible(false)
-        resetForm()
-      } catch (error: unknown) {
-        toast.error(
-          `Something went wrong: ${error instanceof Error ? error.message : String(error)}`
-        )
-      } finally {
-        setSubmitting(false)
-      }
+      createFeedback(feedbackPayload)
     },
   })
+  resetFormRef.current = formik.resetForm
 
   const closeModal = () => {
     setVisible(false)
@@ -87,6 +86,7 @@ export default function FeedbackModal(
           <button
             type='button'
             className='btn btn-primary'
+            disabled={isCreating}
             onClick={() => formik.submitForm()}
           >
             Send feedback

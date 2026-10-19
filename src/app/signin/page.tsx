@@ -5,7 +5,6 @@ import { useEffect } from 'react'
 import Footer from '@/components/shared/footer'
 import LoadingScreen from '@/components/shared/loadingScreen'
 import Logo from '@/components/shared/logo'
-import { withAuth } from '@/components/shared/withAuth'
 import { useAuth } from '@/lib/auth'
 
 const Signin = () => {
@@ -16,7 +15,7 @@ const Signin = () => {
   // Redirect authenticated users to home
   useEffect(() => {
     if (auth.user && !auth.loading) {
-      router.replace('/home')
+      router.replace('/app')
     }
   }, [auth.user, auth.loading, router])
 
@@ -55,7 +54,7 @@ const Signin = () => {
               {!process.env.NEXT_PUBLIC_USE_EMULATORS && (
                 <button
                   type='button'
-                  onClick={() => auth.signinWithGoogle?.('/home')}
+                  onClick={() => auth.signinWithGoogle?.('/app')}
                   disabled={auth.loading}
                   className='btn btn-primary w-full'
                 >
@@ -88,4 +87,4 @@ const Signin = () => {
   )
 }
 
-export default withAuth(Signin)
+export default Signin

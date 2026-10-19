@@ -188,12 +188,12 @@ export default function DocsPage(): ReactElement {
             Anyone with a Hemolog account can use the REST API to work with
             their own treatment logs. Copy your API key from the{' '}
             <Link
-              href='/home'
+              href='/app/profile'
               className='text-primary-500 hover:text-primary-600'
             >
               Profile
             </Link>{' '}
-            tab, then pass it as a query parameter on each request.
+            page, then pass it as a query parameter on each request.
           </p>
           <p className='text-gray-700 mb-12'>
             The API is intentionally small: fetch your full history, fetch the
@@ -224,7 +224,7 @@ export default function DocsPage(): ReactElement {
               <p className='text-sm leading-relaxed text-slate'>
                 Treat the API key like a password. Anyone who has it can read
                 your treatments and log new ones. Reset it anytime on your
-                Profile tab; the old key stops working immediately.
+                profile page; the old key stops working immediately.
               </p>
             </div>
           </section>
@@ -437,14 +437,14 @@ export default function DocsPage(): ReactElement {
           <div className='note'>
             <div className='note-title'>Your API key</div>
             <p className='text-sm leading-relaxed text-slate'>
-              Copy or reset your key on the{' '}
+              Copy or reset your key on your{' '}
               <Link
-                href='/home'
+                href='/app/profile'
                 className='text-ink underline decoration-primary-500 decoration-2 underline-offset-2'
               >
                 Profile
               </Link>{' '}
-              tab. If a request fails with an invalid key, generate a new one
+              page. If a request fails with an invalid key, generate a new one
               there and update your scripts.
             </p>
           </div>

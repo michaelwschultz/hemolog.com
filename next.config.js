@@ -32,6 +32,28 @@ const nextConfig = {
     minimumCacheTTL: 60,
   },
 
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        has: [{ type: 'query', key: 'tab', value: 'profile' }],
+        destination: '/app/profile',
+        permanent: true,
+      },
+      {
+        source: '/home',
+        has: [{ type: 'query', key: 'tab', value: 'feedback' }],
+        destination: '/app/feedback',
+        permanent: true,
+      },
+      {
+        source: '/home',
+        destination: '/app',
+        permanent: true,
+      },
+    ]
+  },
+
   // Custom headers for security and CORS
   async headers() {
     return [

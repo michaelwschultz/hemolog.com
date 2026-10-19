@@ -15,6 +15,7 @@ import { format, parseISO } from 'date-fns'
 import type { ReactElement } from 'react'
 import { useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Popup } from '@/components/shared/popup'
 import { useAuth } from '@/lib/auth'
 import { type TreatmentType, TreatmentTypeEnum } from '@/lib/db/treatments'
 import { filterTreatments } from '@/lib/helpers'
@@ -42,6 +43,7 @@ export default function TreatmentTable(
 
   const { user } = useAuth()
   const { deleteTreatment } = useTreatmentMutations()
+  const [deleteTargetUid, setDeleteTargetUid] = useState<string | null>(null)
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'date', desc: true },
   ])
@@ -54,9 +56,19 @@ export default function TreatmentTable(
   // Determine if user can edit/delete treatments
   const isLoggedInUser = user && (!uid || uid === user.uid)
 
-  // Delete function - React 19 compiler handles memoization automatically
-  const deleteRow = (treatmentUid: string) => {
-    deleteTreatment({ uid: treatmentUid, userUid: user?.uid || '' })
+  const requestDeleteRow = (treatmentUid: string) => {
+    setDeleteTargetUid(treatmentUid)
+  }
+
+  const confirmDeleteRow = () => {
+    if (!deleteTargetUid) {
+      return
+    }
+    deleteTreatment({
+      uid: deleteTargetUid,
+      userUid: user?.uid || '',
+    })
+    setDeleteTargetUid(null)
   }
 
   // Edit function - React 19 compiler handles memoization automatically
@@ -166,7 +178,7 @@ export default function TreatmentTable(
             <ActionMenu
               treatment={treatment}
               onEdit={editRow}
-              onDelete={deleteRow}
+              onDelete={requestDeleteRow}
             />
           )
         },
@@ -345,6 +357,34 @@ export default function TreatmentTable(
           </div>
         </div>
       )}
+      <Popup
+        open={deleteTargetUid !== null}
+        title='Delete treatment?'
+        onClose={() => setDeleteTargetUid(null)}
+      >
+        <div className='p-6'>
+          <p className='text-sm leading-relaxed text-slate'>
+            This removes the treatment from your log. You cannot undo this
+            action.
+          </p>
+          <div className='mt-6 flex justify-end gap-3'>
+            <button
+              type='button'
+              className='btn btn-secondary'
+              onClick={() => setDeleteTargetUid(null)}
+            >
+              Cancel
+            </button>
+            <button
+              type='button'
+              className='btn btn-danger'
+              onClick={confirmDeleteRow}
+            >
+              Delete treatment
+            </button>
+          </div>
+        </div>
+      </Popup>
     </div>
   )
 }

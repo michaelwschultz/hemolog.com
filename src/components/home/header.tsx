@@ -8,6 +8,7 @@ import { Popup } from '@/components/shared/popup'
 import { useAuth } from '@/lib/auth'
 import type { TreatmentType } from '@/lib/db/treatments'
 import { useTreatmentsQuery } from '@/lib/hooks/useTreatmentsQuery'
+import { useUserQuery } from '@/lib/hooks/useUserQuery'
 import { registerTreatmentDialog } from '@/lib/treatmentDialog'
 
 interface Props {
@@ -18,6 +19,7 @@ const Header = (props: Props): ReactElement | null => {
   const { version } = props
   const { user, signout } = useAuth()
   const { data: treatments } = useTreatmentsQuery()
+  const { person } = useUserQuery(user?.uid)
   const treatmentFormRef = useRef<{ handleSubmit: () => void }>(null)
 
   const [dropdownOpen, setDropdownOpen] = React.useState(false)
@@ -133,7 +135,10 @@ const Header = (props: Props): ReactElement | null => {
           onClose={closeTreatment}
         >
           <TreatmentModalContent
-            key={editingTreatment?.uid ?? 'create'}
+            key={
+              editingTreatment?.uid ??
+              `create-${person?.medication ?? ''}-${person?.monoclonalAntibody ?? ''}`
+            }
             ref={treatmentFormRef}
             treatment={editingTreatment}
             previousTreatment={editingTreatment ? undefined : treatments?.[0]}
