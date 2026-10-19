@@ -9,6 +9,12 @@
 - `@silk-hq/components` is removed; treatment and feedback use `Popup`, and the treatments table opens edit through `openTreatmentDialog` in `src/lib/treatmentDialog.ts`.
 - Treatment form shared logic lives in `src/lib/treatmentForm.ts` (validation, payload builder, initial values).
 
+## Signing in for browser testing
+
+- Dev server runs at `http://localhost:3000` (`npm run dev`). Auth-protected pages redirect to `/signin`.
+- To sign in for browser testing: on `/signin`, click the **"Continue with test user"** button — it signs in as the test profile (uid `3OHCqKgvsYbMiGfKDavqq7Duveg1`) with seeded treatments, no credentials needed.
+- Prod Firestore rules live in `firebase/firestore.prod.rules`; deploy with `npx firebase-tools deploy --only firestore:rules`.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know

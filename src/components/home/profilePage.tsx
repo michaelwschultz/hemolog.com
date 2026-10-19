@@ -291,7 +291,6 @@ const ProfilePage = (): ReactElement => {
         title='Delete your account?'
         onClose={() => setDeleteModalVisible(false)}
       >
-        <div className='p-6'>
           <p className='text-sm leading-relaxed text-slate'>
             This permanently deletes your Hemolog data and cannot be reversed.
             You will need to create a new account to return.
@@ -316,7 +315,6 @@ const ProfilePage = (): ReactElement => {
               Delete account
             </button>
           </div>
-        </div>
       </Popup>
     </div>
   )

@@ -31,7 +31,7 @@ export function Popup({ open, title, onClose, children, footer }: PopupProps) {
             Close
           </button>
         </div>
-        <div className='min-h-0 flex-1 overflow-y-auto'>{children}</div>
+        <div className='min-h-0 flex-1 overflow-y-auto px-5 py-4'>{children}</div>
         {footer ? (
           <div className='shrink-0 border-t border-line px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]'>
             {footer}
