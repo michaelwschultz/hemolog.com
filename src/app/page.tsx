@@ -15,8 +15,8 @@ const yearNotes = [
     body: 'Hemolog counts the joints and causes that show up most often, so you know where the problems are.',
   },
   {
-    title: 'Share your numbers with your care team',
-    body: 'Send a link to your latest logs before an appointment. The page says the record is self-reported, and to call 911 first.',
+    title: 'Hand first responders your emergency card',
+    body: 'In an accident, the card links to a page with your recent treatment logs. The page says the record is self-reported, and to call 911 first.',
   },
 ]
 
