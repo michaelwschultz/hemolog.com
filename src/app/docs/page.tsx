@@ -1,3 +1,5 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import Link from 'next/link'
 import type { ReactElement, ReactNode } from 'react'
 import CodeBlock from '@/components/docs/codeBlock'
@@ -5,11 +7,13 @@ import Footer from '@/components/shared/footer'
 import StaticHeader from '@/components/shared/staticHeader'
 
 const CURL_RECENT = `curl -X GET \\
-  'https://hemolog.com/api/recent-treatments?apikey=YOUR_API_KEY' \\
+  'https://hemolog.com/api/recent-treatments' \\
+  -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Accept: application/json'`
 
 const FETCH_TREATMENTS = `const response = await fetch(
-  'https://hemolog.com/api/treatments?apikey=YOUR_API_KEY'
+  'https://hemolog.com/api/treatments',
+  { headers: { Authorization: 'Bearer YOUR_API_KEY' } }
 )
 const treatments = await response.json()
 
@@ -24,9 +28,12 @@ import json
 import urllib.request
 
 API_KEY = 'YOUR_API_KEY'
-url = f'https://hemolog.com/api/treatments?apikey={API_KEY}'
+request = urllib.request.Request(
+    'https://hemolog.com/api/treatments',
+    headers={'Authorization': f'Bearer {API_KEY}'},
+)
 
-with urllib.request.urlopen(url) as response:
+with urllib.request.urlopen(request) as response:
     treatments = json.load(response)
 
 with open('treatments.csv', 'w', newline='') as file:
@@ -83,7 +90,8 @@ const LOG_SUCCESS = `{
 }`
 
 const LOG_CURL = `curl -X POST \\
-  'https://hemolog.com/api/log-treatment?apikey=YOUR_API_KEY' \\
+  'https://hemolog.com/api/log-treatment' \\
+  -H 'Authorization: Bearer YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{"type":"PROPHY"}'`
 
@@ -94,6 +102,11 @@ const ERROR_MISSING_KEY = `{
 const ERROR_INVALID_KEY = `{
   "error": "Invalid API key. Reset your key on your profile page at Hemolog.com"
 }`
+
+const API_SKILL_MD = fs.readFileSync(
+  path.join(process.cwd(), 'public', 'hemolog-api-skill.md'),
+  'utf8'
+)
 
 function MethodBadge({ method }: { method: 'GET' | 'POST' }): ReactElement {
   const styles =
@@ -182,6 +195,9 @@ export default function DocsPage(): ReactElement {
             <a href='#examples' className='text-ink hover:text-primary-600'>
               Examples
             </a>
+            <a href='#ai-agents' className='text-ink hover:text-primary-600'>
+              For AI agents
+            </a>
           </nav>
 
           <p className='text-gray-700 mb-4'>
@@ -193,7 +209,9 @@ export default function DocsPage(): ReactElement {
             >
               Profile
             </Link>{' '}
-            page, then pass it as a query parameter on each request.
+            page, then send it as an{' '}
+          <InlineCode>Authorization: Bearer</InlineCode> header on each
+            request.
           </p>
           <p className='text-gray-700 mb-12'>
             The API is intentionally small: fetch your full history, fetch the
@@ -205,8 +223,7 @@ export default function DocsPage(): ReactElement {
             <h3 className='text-2xl font-bold mb-4'>Authentication</h3>
             <p className='text-gray-700 mb-4'>
               Send your API key in an{' '}
-              <InlineCode>Authorization: Bearer</InlineCode> header. A query
-              parameter still works for older clients.
+              <InlineCode>Authorization: Bearer</InlineCode> header:
             </p>
             <div className='mb-4'>
               <CodeBlock
@@ -214,9 +231,15 @@ export default function DocsPage(): ReactElement {
                 code='curl -H "Authorization: Bearer YOUR_API_KEY" https://hemolog.com/api/treatments'
               />
             </div>
+            <p className='text-gray-700 mb-4'>
+              The <InlineCode>apikey</InlineCode> query parameter
+              (<InlineCode>?apikey=YOUR_API_KEY</InlineCode>) still works but is
+              deprecated and will be removed in a future release. New
+              integrations should use the header.
+            </p>
             <div className='mb-4'>
               <CodeBlock
-                label='Query parameter'
+                label='Query parameter (deprecated)'
                 code='https://hemolog.com/api/treatments?apikey=YOUR_API_KEY'
               />
             </div>
@@ -230,8 +253,10 @@ export default function DocsPage(): ReactElement {
               <div className='note-title'>Keep your key private</div>
               <p className='text-sm leading-relaxed text-slate'>
                 Treat the API key like a password. Anyone who has it can read
-                your treatments and log new ones. Reset it anytime on your
-                profile page; the old key stops working immediately.
+                your treatments and log new ones. You can create several keys,
+                each with its own name — for example one per app — and revoke
+                them individually on your profile page; a revoked key stops
+                working immediately.
               </p>
             </div>
           </section>
@@ -248,8 +273,10 @@ export default function DocsPage(): ReactElement {
               <InlineCode>date</InlineCode> first.
             </p>
             <p className='text-gray-700 mb-2'>
-              API key: <InlineCode>Authorization</InlineCode> header or{' '}
-              <InlineCode>apikey</InlineCode> query parameter (required)
+              API key: <InlineCode>Authorization</InlineCode> header
+              (required). The{' '}
+              <InlineCode>apikey</InlineCode> query parameter is deprecated and
+              will be removed in a future release.
             </p>
             <div className='mb-4'>
               <CodeBlock label='Response' code={TREATMENT_JSON} />
@@ -273,9 +300,10 @@ export default function DocsPage(): ReactElement {
               <InlineCode>createdAt</InlineCode>, newest first.
             </p>
             <p className='text-gray-700 mb-4'>
-              API key: <InlineCode>Authorization</InlineCode> header or{' '}
-              <InlineCode>apikey</InlineCode> query parameter, or{' '}
-              <InlineCode>alertid</InlineCode> (at least one required)
+              API key: <InlineCode>Authorization</InlineCode> header, or{' '}
+              <InlineCode>alertid</InlineCode> (at least one required). The{' '}
+              <InlineCode>apikey</InlineCode> query parameter is deprecated and
+              will be removed in a future release.
             </p>
             <div className='mb-4'>
               <CodeBlock label='cURL' code={CURL_RECENT} />
@@ -305,8 +333,10 @@ export default function DocsPage(): ReactElement {
               <InlineCode>PROPHY</InlineCode>.
             </p>
             <p className='text-gray-700 mb-2'>
-              API key: <InlineCode>Authorization</InlineCode> header or{' '}
-              <InlineCode>apikey</InlineCode> query parameter (required)
+              API key: <InlineCode>Authorization</InlineCode> header
+              (required). The{' '}
+              <InlineCode>apikey</InlineCode> query parameter is deprecated and
+              will be removed in a future release.
             </p>
             <p className='text-gray-700 mb-4'>
               Body: JSON object (partial treatment).{' '}
@@ -414,14 +444,11 @@ export default function DocsPage(): ReactElement {
             <ol className='list-decimal pl-5 text-gray-700 mb-4 space-y-2'>
               <li>Open Shortcuts and create a new shortcut.</li>
               <li>
-                Add <strong>Get Contents of URL</strong>.
-              </li>
-              <li>
-                Set the URL to{' '}
-                <InlineCode>
-                  https://hemolog.com/api/log-treatment?apikey=YOUR_API_KEY
-                </InlineCode>
-                .
+                Add <strong>Get Contents of URL</strong>. Set the URL to{' '}
+                <InlineCode>https://hemolog.com/api/log-treatment</InlineCode>
+                and add a header:{' '}
+                <InlineCode>Authorization</InlineCode> with value{' '}
+                <InlineCode>Bearer YOUR_API_KEY</InlineCode>.
               </li>
               <li>
                 Method: <InlineCode>POST</InlineCode>. Request body:{' '}
@@ -445,19 +472,86 @@ export default function DocsPage(): ReactElement {
           </section>
 
           <div className='note'>
-            <div className='note-title'>Your API key</div>
+            <div className='note-title'>Your API keys</div>
             <p className='text-sm leading-relaxed text-slate'>
-              Copy or reset your key on your{' '}
+              Create, name, and revoke keys on your{' '}
               <Link
                 href='/app/profile'
                 className='text-ink underline decoration-primary-500 decoration-2 underline-offset-2'
               >
                 Profile
               </Link>{' '}
-              page. If a request fails with an invalid key, generate a new one
+              page. If a request fails with an invalid key, create a new one
               there and update your scripts.
             </p>
           </div>
+
+          <section id='ai-agents' className='mb-16 scroll-mt-8'>
+            <h3 className='text-2xl font-bold mb-4'>For AI agents</h3>
+            <p className='text-gray-700 mb-4'>
+              If you are an AI assistant (or you are building with one), you can
+              use this page as your instructions for the Hemolog API. Create a
+              key on your{' '}
+              <Link
+                href='/app/profile'
+                className='text-primary-500 hover:text-primary-600'
+              >
+                Profile
+              </Link>{' '}
+              page, then send it as{' '}
+              <InlineCode>Authorization: Bearer YOUR_API_KEY</InlineCode> on
+              every request.
+            </p>
+            <p className='text-gray-700 mb-2'>Quick reference:</p>
+            <ul className='list-disc pl-5 text-gray-700 mb-4 space-y-1'>
+              <li>
+                Base URL:{' '}
+                <InlineCode>https://hemolog.com</InlineCode> (JSON in and out)
+              </li>
+              <li>
+                <InlineCode>GET /api/treatments</InlineCode> — every
+                non-deleted treatment, newest first
+              </li>
+              <li>
+                <InlineCode>GET /api/recent-treatments</InlineCode> — the three
+                most recent treatments (also works with{' '}
+                <InlineCode>?alertid=</InlineCode> instead of a key)
+              </li>
+              <li>
+                <InlineCode>POST /api/log-treatment</InlineCode> — log a new
+                treatment; missing fields are copied from the last log, so{' '}
+                <InlineCode>{`{ "type": "PROPHY" }`}</InlineCode> is enough
+              </li>
+              <li>
+                Errors return HTTP 500 with an{' '}
+                <InlineCode>error</InlineCode> string — show it to the user
+                rather than retrying
+              </li>
+            </ul>
+            <p className='text-gray-700 mb-4'>
+              A revoked key stops working immediately. If you get{' '}
+              <InlineCode>Invalid API key</InlineCode>, ask the user for a new
+              one from their Profile page. Treat the key like a password: never
+              print or log it, and prefer the header over URL parameters.
+            </p>
+            <p className='text-gray-700 mb-4'>
+              The full skill as a single markdown file, suitable for pasting
+              into an agent's instructions:
+            </p>
+            <div className='mb-4'>
+              <CodeBlock label='hemolog-api-skill.md' code={API_SKILL_MD} />
+            </div>
+            <p className='text-sm text-gray-600'>
+              Also available as a download at{' '}
+              <a
+                href='/hemolog-api-skill.md'
+                className='text-primary-500 hover:text-primary-600 underline'
+              >
+                hemolog.com/hemolog-api-skill.md
+              </a>
+              .
+            </p>
+          </section>
         </div>
       </main>
       <Footer />
