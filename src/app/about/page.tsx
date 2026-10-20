@@ -34,25 +34,24 @@ const About = (): ReactElement => {
           <div className='mt-8 space-y-5 text-base leading-relaxed text-ink'>
             <p>
               Let's face it, there are some exciting developments in the world
-              of Hemophilia research. Honestly, it's not <em>just</em> research
-              anymore. Clinical trials are happening now across the globe. Gene
-              therapy is definitely going to change things for the better, it's
-              just a matter of when it's available to all of us.
+              of Hemophilia research. Clinical trials are happening now across
+              the globe. Gene therapy is going to change things for the
+              better, it's just a matter of when it's available to all of us.
             </p>
             <p>
               That being said, it's still important to keep track of your
               treatments. Maybe even more now than ever. If getting on a trial
               is something you're interested in, knowing how many bleeds you
-              were having before is really important.
+              were having before is exactly what the doctors will ask about.
             </p>
             <p>
               Trial or not, keeping track of your treatment habits can be hard
-              and the tools we have aren't great. Hemolog is simple. You track
-              your treatments and Hemolog gives you instant feedback.
+              and the tools we have aren't great. Hemolog is simple. You log
+              your treatments and you get instant feedback.
             </p>
             <p>
-              Insights are something that I always wanted to be a part of
-              Hemolog and now they're finally here.
+              Insights are something I always wanted in Hemolog, and now
+              they're finally here.
             </p>
           </div>
 
@@ -66,13 +65,14 @@ const About = (): ReactElement => {
               sizes='(min-width: 720px) 672px, 100vw'
             />
             <figcaption className='mt-3 text-sm leading-relaxed text-slate'>
-              High level insights that help you understand your habits
+              The joints that show up most, bleeds vs. prophy, and how one
+              year compares to the last
             </figcaption>
           </figure>
 
           <p className='mt-8 text-base leading-relaxed text-ink'>
             These insights are calculated as you log your treatments. Filter by
-            year for a comprehensive view into your treatment history. I've
+            year to see your whole history at once. I've
             chosen a few insights that are interesting to me. If you have
             thoughts on what you would like to see, just let me know.
           </p>

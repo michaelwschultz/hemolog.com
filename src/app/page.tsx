@@ -7,16 +7,16 @@ import StaticHeader from '@/components/shared/staticHeader'
 
 const yearNotes = [
   {
-    title: 'Bleeds, counted apart',
+    title: 'Separate bleeds from prophy',
     body: 'Prophy, preventative doses, and bleeds stay in separate counts. Filter by year when you want one stretch of time.',
   },
   {
-    title: 'The joint that repeats',
-    body: 'Hemolog names the site and the cause that show up most often.',
+    title: 'See which joints take the most hits',
+    body: 'Hemolog counts the joints and causes that show up most often, so you know where the problems are.',
   },
   {
-    title: 'A page for someone else',
-    body: 'Share a link to your latest logs. The page says the record is self-reported, and to call 911 first.',
+    title: 'Share your numbers with your care team',
+    body: 'Send a link to your latest logs before an appointment. The page says the record is self-reported, and to call 911 first.',
   },
 ]
 
@@ -31,14 +31,13 @@ export default function Landing(): ReactElement {
               A treatment log
             </p>
             <h1 className='text-4xl leading-[1.02] text-ink sm:text-6xl'>
-              Keep the year
-              <br />
-              you infused.
+              Insights that matter.
             </h1>
             <p className='mt-6 max-w-md text-base leading-relaxed text-slate'>
-              Write down the date, the units, and why. Hemolog lines them up so
-              you can see your bleeds, your prophy, and the joint that shows up
-              most.
+              Hemolog is a treatment log for hemophilia. Write down the date,
+              the units, and why, and it turns your entries into insights you
+              can act on: your bleeds, your prophy, and the joints that need
+              the most attention.
             </p>
             <HeroActions />
           </div>
@@ -50,7 +49,7 @@ export default function Landing(): ReactElement {
             id='year-heading'
             className='font-sans text-xl font-medium tracking-tight text-ink'
           >
-            What a year of logs shows
+            What you'll see when you log
           </h2>
           <dl className='mt-6 border-t border-line'>
             {yearNotes.map((note) => (
@@ -66,8 +65,9 @@ export default function Landing(): ReactElement {
             ))}
           </dl>
           <p className='mt-8 max-w-xl text-sm leading-relaxed text-slate'>
-            Free to use. No sponsors and no ads. Hemolog did die. It's back, and
-            this version shows the habits in the log. The{' '}
+            Free to use. No sponsors and no ads. Hemolog did die. It's back,
+            rebuilt to make your treatment history easy to log and easy to
+            understand. The{' '}
             <a
               href='https://github.com/michaelwschultz/hemolog.com'
               className='text-ink underline decoration-primary-500 decoration-2 underline-offset-2'

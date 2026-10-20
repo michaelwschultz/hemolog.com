@@ -270,13 +270,8 @@ export default function DocsPage(): ReactElement {
             </div>
             <p className='text-gray-700 mb-4'>
               Returns every non-deleted treatment for the key holder, newest{' '}
-              <InlineCode>date</InlineCode> first.
-            </p>
-            <p className='text-gray-700 mb-2'>
-              API key: <InlineCode>Authorization</InlineCode> header
-              (required). The{' '}
-              <InlineCode>apikey</InlineCode> query parameter is deprecated and
-              will be removed in a future release.
+              <InlineCode>date</InlineCode> first. API key:{' '}
+              <InlineCode>Authorization</InlineCode> header (required).
             </p>
             <div className='mb-4'>
               <CodeBlock label='Response' code={TREATMENT_JSON} />
@@ -302,8 +297,8 @@ export default function DocsPage(): ReactElement {
             <p className='text-gray-700 mb-4'>
               API key: <InlineCode>Authorization</InlineCode> header, or{' '}
               <InlineCode>alertid</InlineCode> (at least one required). The{' '}
-              <InlineCode>apikey</InlineCode> query parameter is deprecated and
-              will be removed in a future release.
+              <InlineCode>apikey</InlineCode> query parameter is deprecated
+              (see Authentication).
             </p>
             <div className='mb-4'>
               <CodeBlock label='cURL' code={CURL_RECENT} />
@@ -330,13 +325,8 @@ export default function DocsPage(): ReactElement {
               <InlineCode>{`{ "type": "PROPHY" }`}</InlineCode> and reuse the
               last medication, dose, and sites. If you have never logged a
               treatment, omitted fields fall back to empty values and{' '}
-              <InlineCode>PROPHY</InlineCode>.
-            </p>
-            <p className='text-gray-700 mb-2'>
-              API key: <InlineCode>Authorization</InlineCode> header
-              (required). The{' '}
-              <InlineCode>apikey</InlineCode> query parameter is deprecated and
-              will be removed in a future release.
+              <InlineCode>PROPHY</InlineCode>. API key:{' '}
+              <InlineCode>Authorization</InlineCode> header (required).
             </p>
             <p className='text-gray-700 mb-4'>
               Body: JSON object (partial treatment).{' '}
