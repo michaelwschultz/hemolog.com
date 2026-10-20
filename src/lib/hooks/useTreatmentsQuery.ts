@@ -15,6 +15,8 @@ interface UseTreatmentsQueryOptions {
   uid?: string
   // Polling interval in ms (default: no polling)
   refetchInterval?: number
+  // Skip the query entirely (e.g. data passed in from a server route)
+  enabled?: boolean
 }
 
 interface TreatmentQueryResult {
@@ -29,7 +31,12 @@ interface TreatmentQueryResult {
 export function useTreatmentsQuery(
   options: UseTreatmentsQueryOptions = {}
 ): TreatmentQueryResult {
-  const { limit: maxItems, uid: overrideUid, refetchInterval } = options
+  const {
+    limit: maxItems,
+    uid: overrideUid,
+    refetchInterval,
+    enabled: enabledOption = true,
+  } = options
   const { user } = useAuth()
   const userUid = overrideUid ?? user?.uid
 
@@ -41,7 +48,7 @@ export function useTreatmentsQuery(
       }
       return fetchTreatments(userUid)
     },
-    enabled: !!userUid,
+    enabled: enabledOption && !!userUid,
     refetchInterval,
     // Keep data fresh
     staleTime: 10 * 1000, // 10 seconds

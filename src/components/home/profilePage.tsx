@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { IconCopy, IconEye, IconEyeOff } from '@tabler/icons-react'
 import { type ReactElement, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import EmergencyCard from '@/components/home/emergencyCard'
@@ -157,25 +158,45 @@ const ProfilePage = (): ReactElement => {
                       Revoked
                     </span>
                   ) : (
-                    <div className='flex items-center gap-2 ml-4 shrink-0'>
+                    <div className='flex items-center gap-1 ml-4 shrink-0'>
                       <button
                         type='button'
                         onClick={() => handleCopyKey(key.key)}
-                        className='text-xs text-gray-500 hover:text-ink'
+                        className='rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-ink'
+                        title='Copy key'
+                        aria-label='Copy key'
                       >
-                        Copy
+                        <IconCopy className='h-4 w-4' />
                       </button>
                       <button
                         type='button'
                         onClick={() => toggleRevealKey(key.id)}
-                        className='text-xs text-gray-500 hover:text-ink'
+                        className='rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-ink'
+                        title={
+                          revealedKeyIds.includes(key.id)
+                            ? 'Hide key'
+                            : 'Reveal key'
+                        }
+                        aria-label={
+                          revealedKeyIds.includes(key.id)
+                            ? 'Hide key'
+                            : 'Reveal key'
+                        }
                       >
-                        {revealedKeyIds.includes(key.id) ? 'Hide' : 'Reveal'}
+                        {revealedKeyIds.includes(key.id) ? (
+                          <IconEyeOff className='h-4 w-4' />
+                        ) : (
+                          <IconEye className='h-4 w-4' />
+                        )}
                       </button>
+                      <span
+                        className='mx-1.5 h-4 w-px bg-gray-200'
+                        aria-hidden='true'
+                      />
                       <button
                         type='button'
                         onClick={() => setKeyPendingRevoke(key)}
-                        className='text-xs text-red-500 hover:text-red-700'
+                        className='rounded-lg px-2 py-1 text-xs text-red-500 transition-colors hover:bg-red-50 hover:text-red-700'
                       >
                         Revoke
                       </button>

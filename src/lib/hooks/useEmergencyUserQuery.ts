@@ -1,8 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchUserByAlertId } from '@/lib/db/users'
+import type { TreatmentType } from '@/lib/db/treatments'
 import type { Person } from '@/lib/types/person'
 
-// Query key factory for emergency users (by alertId)
+interface EmergencyData {
+  person: Person
+  treatments: TreatmentType[]
+}
+
+// Query key factory for emergency data (by alertId)
 export const emergencyUserKeys = {
   all: ['users', 'alertId'] as const,
   detail: (alertId: string) => [...emergencyUserKeys.all, alertId] as const,
@@ -14,6 +19,7 @@ interface UseEmergencyUserQueryOptions {
 
 interface EmergencyUserQueryResult {
   person: Person | null
+  treatments: TreatmentType[]
   isLoading: boolean
   isError: boolean
   error: Error | null
@@ -30,18 +36,26 @@ export function useEmergencyUserQuery(
 
   const query = useQuery({
     queryKey: emergencyUserKeys.detail(normalizedAlertId ?? ''),
-    queryFn: async () => {
+    queryFn: async (): Promise<EmergencyData> => {
       if (!normalizedAlertId) {
-        return null
+        throw new Error('Missing alert ID')
       }
-      return fetchUserByAlertId(normalizedAlertId)
+      const response = await fetch(`/api/emergency/${normalizedAlertId}`)
+      if (!response.ok) {
+        const body = await response.json().catch(() => null)
+        throw new Error(
+          body?.error || `Emergency data request failed (${response.status})`
+        )
+      }
+      return response.json()
     },
     enabled: enabled && !!normalizedAlertId,
     staleTime: 60 * 1000, // 1 minute (emergency data doesn't change often)
   })
 
   return {
-    person: query.data ?? null,
+    person: query.data?.person ?? null,
+    treatments: query.data?.treatments ?? [],
     isLoading: query.isLoading,
     isError: query.isError,
     error: query.error,

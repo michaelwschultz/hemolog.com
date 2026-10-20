@@ -1,14 +1,17 @@
 import React from 'react'
 import TreatmentTable from '@/components/home/treatmentTable'
 import { useAuth } from '@/lib/auth'
+import type { TreatmentType } from '@/lib/db/treatments'
 import type { Person } from '@/lib/types/person'
 
 interface Props {
   person: Person
+  // Pre-fetched via /api/emergency — the visitor cannot read these from Firestore.
+  treatments: TreatmentType[]
 }
 
 export default function EmergencyInfo(props: Props): React.ReactElement {
-  const { person } = props
+  const { person, treatments } = props
   const { user } = useAuth()
   const [smallerThanSmall, setSmallerThanSmall] = React.useState(false)
 
@@ -55,7 +58,12 @@ export default function EmergencyInfo(props: Props): React.ReactElement {
           </span>
         </div>
         {person.uid ? (
-          <TreatmentTable limit={3} uid={person.uid} filterYear='All time' />
+          <TreatmentTable
+            limit={3}
+            uid={person.uid}
+            filterYear='All time'
+            treatments={treatments}
+          />
         ) : (
           <div className='note note-urgent'>
             <div className='note-title'>Missing user id</div>

@@ -21,9 +21,8 @@ const Emergency = (): ReactElement => {
     isExample = true
   }
 
-  const { person, isLoading, isError, error } = useEmergencyUserQuery(
-    isExample ? 'mike29' : alertId
-  )
+  const { person, treatments, isLoading, isError, error } =
+    useEmergencyUserQuery(isExample ? 'mike29' : alertId)
 
   // During SSR and initial hydration, show loading state to prevent mismatch
   const displayLoading = !mounted || isLoading
@@ -91,7 +90,9 @@ const Emergency = (): ReactElement => {
           </div>
         )}
 
-        {mounted && person && <EmergencyInfo person={person} />}
+        {mounted && person && (
+          <EmergencyInfo person={person} treatments={treatments} />
+        )}
       </main>
       <Footer />
     </div>

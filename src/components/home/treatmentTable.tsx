@@ -29,18 +29,24 @@ interface TreatmentTableProps {
   limit?: number
   uid?: string
   filterYear: string
+  // Pre-fetched treatments (e.g. emergency page via API). Skips the client query.
+  treatments?: TreatmentType[]
 }
 
 export default function TreatmentTable(
   props: TreatmentTableProps
 ): ReactElement {
-  const { limit, uid, filterYear } = props
-  const {
-    data: treatments,
-    isLoading,
-    isError,
-    error,
-  } = useTreatmentsQuery({ limit, uid })
+  const { limit, uid, filterYear, treatments: preloadedTreatments } = props
+  const query = useTreatmentsQuery({
+    limit,
+    uid,
+    // With pre-fetched treatments the client query is skipped entirely.
+    enabled: !preloadedTreatments,
+  })
+  const treatments = preloadedTreatments ?? query.data
+  const isLoading = preloadedTreatments ? false : query.isLoading
+  const isError = preloadedTreatments ? false : query.isError
+  const error = preloadedTreatments ? null : query.error
 
   const { user } = useAuth()
   const { deleteTreatment } = useTreatmentMutations()

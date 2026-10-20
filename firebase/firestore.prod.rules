@@ -1,24 +1,41 @@
 rules_version = '2';
 
 // Deployed rules. firebase deploy reads this file.
+//
+// Security model:
+// - Users can only read/write their own Firestore documents.
+// - Public emergency-card data is served by /api/emergency/[alertId], which
+//   runs on the server with the admin SDK and bypasses these rules.
+//   It returns only whitelisted fields (no email, no other users' data).
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Treatments: owner-only. Ownership lives on treatment.user.uid.
     match /infusions/{document=**} {
-    	allow read: if true;
-      allow write, update, delete: if request.auth != null;
+      allow read: if request.auth != null
+        && request.auth.uid == resource.data.user.uid;
+      allow create: if request.auth != null
+        && request.resource.data.user.uid == request.auth.uid;
+      allow update, delete: if request.auth != null
+        && request.auth.uid == resource.data.user.uid;
     }
+
     match /feedback/{document=**} {
 			allow read: if request.auth != null && request.auth.uid == '3OHCqKgvsYbMiGfKDavqq7Duveg1';
       allow write: if request.auth != null;
     }
+
     match /api_keys/{apiKeyId} {
       allow read, delete: if request.auth != null && resource.data.uid == request.auth.uid;
       allow create, update: if request.auth != null && request.resource.data.uid == request.auth.uid;
     }
+
+    // User profiles: owner-only. Document id is the user's uid.
     match /users/{document=**} {
-			allow read: if true;
-      allow write, update: if request.auth != null;
+      allow read: if request.auth != null
+        && request.auth.uid == resource.data.uid;
+      allow create, update: if request.auth != null
+        && request.auth.uid == request.resource.data.uid;
     }
   }
 }

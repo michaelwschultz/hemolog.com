@@ -23,6 +23,7 @@ import { createUser, fetchUserByUid } from '@/lib/db/users'
 import { getAuth } from '@/lib/firebase'
 import { generateUniqueString } from '@/lib/helpers'
 import { TEST_USER } from '@/lib/testUser'
+import type { Person } from '@/lib/types/person'
 import type { UserType } from '@/lib/types/users'
 
 type ContextProps = {
@@ -83,13 +84,20 @@ function useProvideAuth() {
       }
 
       try {
-        // Fetch user data from Firestore using Firestore Lite with timeout
-        const dbUser = await withTimeout(
-          fetchUserByUid(formattedUser.uid),
-          5000
-        )
-
         const { ...userWithoutToken } = formattedUser
+
+        let dbUser: Person | null = null
+        try {
+          // Fetch user data from Firestore using Firestore Lite with timeout
+          dbUser = await withTimeout(fetchUserByUid(formattedUser.uid), 5000)
+        } catch (fetchError) {
+          // Fetch failed (offline, timeout, rules). Fall through to createUser:
+          // idempotent upsert that also backfills docs missing after failures.
+          console.warn(
+            'fetchUserByUid failed, falling back to createUser:',
+            fetchError instanceof Error ? fetchError.message : fetchError
+          )
+        }
 
         if (dbUser) {
           formattedUser.alertId = dbUser.alertId
@@ -100,7 +108,7 @@ function useProvideAuth() {
           // Only update if document exists but might be missing fields
           // Don't update on every auth token change to prevent loops
         } else {
-          // Only create user document if it doesn't exist
+          // No document (or the fetch failed) — create/update it.
           await createUser(formattedUser.uid, userWithoutToken)
         }
       } catch (error) {

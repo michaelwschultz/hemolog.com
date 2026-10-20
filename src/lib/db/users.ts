@@ -1,10 +1,4 @@
-import {
-  getDocument,
-  getDocuments,
-  limit,
-  setDocument,
-  where,
-} from '@/lib/firestore-lite'
+import { getDocument, setDocument } from '@/lib/firestore-lite'
 import type { Person } from '../types/person'
 import type { UserType } from '../types/users'
 
@@ -56,16 +50,4 @@ export async function updateUser(
 export async function fetchUserByUid(uid: string): Promise<Person | null> {
   const user = await getDocument<Person>('users', uid)
   return user
-}
-
-// Fetch a user by alertId (used for emergency access)
-export async function fetchUserByAlertId(
-  alertId: string
-): Promise<Person | null> {
-  const users = await getDocuments<Person>(
-    'users',
-    where('alertId', '==', alertId),
-    limit(1)
-  )
-  return users.length > 0 ? users[0] : null
 }
