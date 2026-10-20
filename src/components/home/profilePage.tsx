@@ -160,13 +160,7 @@ const ProfilePage = (): ReactElement => {
                     <div className='flex items-center gap-2 ml-4 shrink-0'>
                       <button
                         type='button'
-                        onClick={() =>
-                          handleCopyKey(
-                            revealedKeyIds.includes(key.id)
-                              ? key.key
-                              : maskApiKey(key.key)
-                          )
-                        }
+                        onClick={() => handleCopyKey(key.key)}
                         className='text-xs text-gray-500 hover:text-ink'
                       >
                         Copy
