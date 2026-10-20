@@ -210,7 +210,7 @@ export default function DocsPage(): ReactElement {
               Profile
             </Link>{' '}
             page, then send it as an{' '}
-          <InlineCode>Authorization: Bearer</InlineCode> header on each
+            <InlineCode>Authorization: Bearer</InlineCode> header on each
             request.
           </p>
           <p className='text-gray-700 mb-12'>
@@ -232,17 +232,11 @@ export default function DocsPage(): ReactElement {
               />
             </div>
             <p className='text-gray-700 mb-4'>
-              The <InlineCode>apikey</InlineCode> query parameter
-              (<InlineCode>?apikey=YOUR_API_KEY</InlineCode>) still works but is
-              deprecated and will be removed in a future release. New
-              integrations should use the header.
+              The <InlineCode>apikey</InlineCode> query parameter (
+              <InlineCode>?apikey=YOUR_API_KEY</InlineCode>) is no longer
+              accepted. Send the key in the{' '}
+              <InlineCode>Authorization</InlineCode> header instead.
             </p>
-            <div className='mb-4'>
-              <CodeBlock
-                label='Query parameter (deprecated)'
-                code='https://hemolog.com/api/treatments?apikey=YOUR_API_KEY'
-              />
-            </div>
             <p className='text-gray-700 mb-4'>
               <InlineCode>GET /api/recent-treatments</InlineCode> also accepts{' '}
               <InlineCode>alertid</InlineCode> — the public ID printed on your
@@ -296,9 +290,7 @@ export default function DocsPage(): ReactElement {
             </p>
             <p className='text-gray-700 mb-4'>
               API key: <InlineCode>Authorization</InlineCode> header, or{' '}
-              <InlineCode>alertid</InlineCode> (at least one required). The{' '}
-              <InlineCode>apikey</InlineCode> query parameter is deprecated
-              (see Authentication).
+              <InlineCode>alertid</InlineCode> (at least one required).
             </p>
             <div className='mb-4'>
               <CodeBlock label='cURL' code={CURL_RECENT} />
@@ -436,9 +428,8 @@ export default function DocsPage(): ReactElement {
               <li>
                 Add <strong>Get Contents of URL</strong>. Set the URL to{' '}
                 <InlineCode>https://hemolog.com/api/log-treatment</InlineCode>
-                and add a header:{' '}
-                <InlineCode>Authorization</InlineCode> with value{' '}
-                <InlineCode>Bearer YOUR_API_KEY</InlineCode>.
+                and add a header: <InlineCode>Authorization</InlineCode> with
+                value <InlineCode>Bearer YOUR_API_KEY</InlineCode>.
               </li>
               <li>
                 Method: <InlineCode>POST</InlineCode>. Request body:{' '}
@@ -495,12 +486,12 @@ export default function DocsPage(): ReactElement {
             <p className='text-gray-700 mb-2'>Quick reference:</p>
             <ul className='list-disc pl-5 text-gray-700 mb-4 space-y-1'>
               <li>
-                Base URL:{' '}
-                <InlineCode>https://hemolog.com</InlineCode> (JSON in and out)
+                Base URL: <InlineCode>https://hemolog.com</InlineCode> (JSON in
+                and out)
               </li>
               <li>
-                <InlineCode>GET /api/treatments</InlineCode> — every
-                non-deleted treatment, newest first
+                <InlineCode>GET /api/treatments</InlineCode> — every non-deleted
+                treatment, newest first
               </li>
               <li>
                 <InlineCode>GET /api/recent-treatments</InlineCode> — the three
@@ -513,9 +504,8 @@ export default function DocsPage(): ReactElement {
                 <InlineCode>{`{ "type": "PROPHY" }`}</InlineCode> is enough
               </li>
               <li>
-                Errors return HTTP 500 with an{' '}
-                <InlineCode>error</InlineCode> string — show it to the user
-                rather than retrying
+                Errors return HTTP 500 with an <InlineCode>error</InlineCode>{' '}
+                string — show it to the user rather than retrying
               </li>
             </ul>
             <p className='text-gray-700 mb-4'>

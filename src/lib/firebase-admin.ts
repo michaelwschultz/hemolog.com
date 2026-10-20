@@ -15,7 +15,7 @@ if (getApps().length === 0) {
     // For emulators, use a minimal config without credentials
     // The emulators don't require authentication
     process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8082'
-    process.env.FIREBASE_AUTH_EMULATOR_HOST = 'localhost:9098'
+    process.env.FIREBASE_AUTH_EMULATOR_HOST = 'localhost:9099'
 
     app = initializeApp({
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'hemolog',

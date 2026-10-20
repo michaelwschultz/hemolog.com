@@ -23,6 +23,7 @@
       "!**/.vercel",
       "!**/.github",
       "!**/.husky",
+      "!**/.delta",
       "!**/.vscode",
       "!**/.env",
       "!**/.env.local"

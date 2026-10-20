@@ -4,8 +4,13 @@ import { adminFirestore } from '@/lib/firebase-admin'
 import type { AttachedUserType } from '@/lib/types/users'
 import { type TreatmentType, TreatmentTypeEnum } from '../db/treatments'
 
-async function getAllTreatments() {
-  const snapshot = await adminFirestore.collection('infusions').get()
+async function getAllTreatments(uid: string) {
+  const snapshot = await adminFirestore
+    .collection('infusions')
+    .where('user.uid', '==', uid)
+    .where('deletedAt', '==', null)
+    .orderBy('date', 'desc')
+    .get()
 
   const treatments: TreatmentType[] = []
 
@@ -19,23 +24,16 @@ async function getAllTreatments() {
 }
 
 async function getTreatment(treatmentId: string) {
-  const snapshot = await adminFirestore
+  const doc = await adminFirestore
     .collection('infusions')
-    .where('uid', '==', treatmentId)
+    .doc(treatmentId)
     .get()
-  const treatments: TreatmentType[] = []
 
-  snapshot.forEach((doc) => {
-    treatments.push({ id: doc.id, ...doc.data() } as TreatmentType & {
-      id: string
-    })
-  })
+  if (!doc.exists) {
+    return { treatment: null }
+  }
 
-  treatments.sort((a: TreatmentType, b: TreatmentType) =>
-    compareDesc(parseISO(a.createdAt), parseISO(b.createdAt))
-  )
-
-  return { treatments }
+  return { treatment: { id: doc.id, ...doc.data() } }
 }
 
 async function getAllTreatmentsByApiKey(apiKey: string) {
@@ -47,23 +45,7 @@ async function getAllTreatmentsByApiKey(apiKey: string) {
         'Invalid or revoked API key. Manage your keys on your profile page at Hemolog.com'
       )
     }
-    const uid = apiKeyEntry.uid
-
-    const snapshot = await adminFirestore
-      .collection('infusions')
-      .where('user.uid', '==', uid)
-      .where('deletedAt', '==', null)
-      .orderBy('date', 'desc')
-      .get()
-
-    const treatments: TreatmentType[] = []
-
-    snapshot.forEach((doc) => {
-      treatments.push({ id: doc.id, ...doc.data() } as TreatmentType & {
-        id: string
-      })
-    })
-
+    const { treatments } = await getAllTreatments(apiKeyEntry.uid)
     return { treatments }
   } catch (error) {
     return { error }

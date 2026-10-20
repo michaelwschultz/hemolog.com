@@ -92,6 +92,7 @@ Full documentation, request/response examples, and Shortcut / JavaScript / Pytho
 
 ```
 curl -X GET \
-  'https://hemolog.com/api/recent-treatments?apikey=<your-api-key>' \
-  -H 'Accept: application/json'
+  'https://hemolog.com/api/recent-treatments' \
+  -H 'Accept: application/json' \
+  -H 'Authorization: Bearer <your-api-key>'
 ```
