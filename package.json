@@ -14,7 +14,7 @@
     "start": "next start",
     "prepare": "husky install",
     "cy:open": "cypress open",
-    "cy:run": "cypress run",
+    "cy:run": "cypress run --browser chromium",
     "seed": "NEXT_PUBLIC_USE_EMULATORS=true npx tsx src/lib/seed.ts"
   },
   "engines": {
