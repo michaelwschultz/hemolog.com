@@ -14,6 +14,10 @@ export default function EmergencyCard({ forPrint }: Props): ReactElement {
   const { user } = useAuth()
   const { person } = useUserQuery(user?.uid)
 
+  // The auth profile may lack a photo (e.g. the seeded test user); the
+  // Firestore person doc carries the same avatar, so use it as a fallback.
+  const photoUrl = user?.photoUrl ?? person?.photoUrl ?? undefined
+
   // Check if we're on mobile - use a simple approach for now
   const [isMobile, setIsMobile] = React.useState(false)
 
@@ -35,36 +39,34 @@ export default function EmergencyCard({ forPrint }: Props): ReactElement {
 
   return (
     <div
-      className={`relative ${forPrint ? 'w-80 h-48' : 'w-[525px] h-[300px]'} rounded-xl overflow-hidden shadow-lg emergency-card`}
+      className={`relative bg-white ${forPrint ? 'w-80 h-48' : 'w-[525px] h-[300px]'} rounded-xl overflow-hidden shadow-lg emergency-card`}
       suppressHydrationWarning
     >
       <div
-        className={`bg-primary-500 w-full ${forPrint ? 'h-14 p-4' : 'h-[90px] p-6'}`}
+        className={`relative bg-primary-500 w-full ${forPrint ? 'h-14' : 'h-[90px]'}`}
       >
-        <div className='flex justify-between items-center'>
-          <div>
-            <h5
-              className={`text-white p-0 m-0 font-normal ${forPrint ? 'text-xs leading-[15px]' : 'text-base leading-6'}`}
-            >
-              Bleeding disorder
-            </h5>
-            <h2
-              className={`text-white p-0 m-0 ${forPrint ? 'text-xs leading-[15px]' : 'text-base leading-6'}`}
-            >
-              Emergency
-            </h2>
-          </div>
-
-          {user?.photoUrl && (
-            <div>
-              <img
-                src={user.photoUrl}
-                alt='User avatar'
-                className={`rounded-full border-white ${forPrint ? 'w-15 h-15 border-4' : 'w-25 h-25 border-8'}`}
-              />
-            </div>
-          )}
+        <div
+          className={`absolute inset-y-0 left-0 flex flex-col justify-center ${forPrint ? 'px-4' : 'px-6'}`}
+        >
+          <h2
+            className={`text-white p-0 m-0 font-bold ${forPrint ? 'text-xs leading-[15px]' : 'text-xl leading-7'}`}
+          >
+            Bleeding Disorder
+          </h2>
+          <h2
+            className={`text-white p-0 m-0 font-bold ${forPrint ? 'text-xs leading-[15px]' : 'text-xl leading-7'}`}
+          >
+            Emergency
+          </h2>
         </div>
+
+        {photoUrl && (
+          <img
+            src={photoUrl}
+            alt='User avatar'
+            className={`absolute rounded-full border-white ${forPrint ? 'right-2 top-[26px] w-15 h-15 border-4' : 'right-3 top-[40px] w-25 h-25 border-8'}`}
+          />
+        )}
       </div>
       <div className={forPrint ? 'h-2' : 'h-4'} />
       <div className={`flex gap-3 ${forPrint ? 'p-2' : 'p-4'}`}>
@@ -93,25 +95,25 @@ export default function EmergencyCard({ forPrint }: Props): ReactElement {
           {person ? (
             <div className={forPrint ? 'pl-2' : 'pl-4'}>
               <h3
-                className={`p-0 m-0 ${forPrint ? 'text-xs leading-[15px]' : 'text-base leading-6'}`}
+                className={`text-night p-0 m-0 ${forPrint ? 'text-xs leading-[15px]' : 'text-base leading-6'}`}
               >
                 {person?.name}
               </h3>
               <h5
-                className={`p-0 m-0 font-normal ${forPrint ? 'text-xs leading-[15px]' : 'text-base leading-6'}`}
+                className={`text-night/70 p-0 m-0 font-normal ${forPrint ? 'text-xs leading-[15px]' : 'text-base leading-6'}`}
               >
                 {person?.severity} Hemophilia {person?.hemophiliaType}
               </h5>
               {person?.factor && (
                 <h5
-                  className={`p-0 m-0 font-normal ${forPrint ? 'text-xs leading-[15px]' : 'text-base leading-6'}`}
+                  className={`text-night/70 p-0 m-0 font-normal ${forPrint ? 'text-xs leading-[15px]' : 'text-base leading-6'}`}
                 >
                   Treat with factor {person.factor}
                 </h5>
               )}
               <div className={forPrint ? 'pt-2' : 'pt-4'}>
                 <h4
-                  className={`text-lg font-semibold mb-2 ${forPrint ? 'text-xs' : ''}`}
+                  className={`text-night text-lg font-semibold mb-2 ${forPrint ? 'text-xs' : ''}`}
                 >
                   Scan or visit for treatment history
                 </h4>

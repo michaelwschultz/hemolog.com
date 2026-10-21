@@ -5,6 +5,7 @@ export const TEST_USER = {
   email: 'michael+test@hemolog.com',
   password: 'test123',
   name: 'Test User',
+  photoUrl: '/images/test-avatar.jpg',
   alertId: 'testuser',
   apiKey: 'test-api-key-local-dev',
   hemophiliaType: 'A',

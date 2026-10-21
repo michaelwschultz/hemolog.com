@@ -324,6 +324,7 @@ async function seedTestUser(): Promise<void> {
     monoclonalAntibody: TEST_USER.monoclonalAntibody,
     injectionFrequency: TEST_USER.injectionFrequency,
     factor: TEST_USER.factor,
+    photoUrl: TEST_USER.photoUrl,
   })
 
   const attachedUser: AttachedUserType = {
