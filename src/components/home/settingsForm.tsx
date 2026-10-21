@@ -266,7 +266,7 @@ const SettingsForm = (): ReactElement => {
       <div className='space-y-4'>
         <h5 className='text-lg font-semibold'>Emergency contacts</h5>
         <div>
-          <label htmlFor='emergencyContactName' className='block text-sm font-medium text-gray-700 mb-1'>Contact name</label>
+          <label htmlFor='emergencyContactName' className='block text-sm font-medium text-slate mb-1'>Contact name</label>
           <input
             id='emergencyContactName'
             name='emergencyContactName'
@@ -277,7 +277,7 @@ const SettingsForm = (): ReactElement => {
           />
         </div>
         <div>
-          <label htmlFor='emergencyContactPhone' className='block text-sm font-medium text-gray-700 mb-1'>Contact phone number</label>
+          <label htmlFor='emergencyContactPhone' className='block text-sm font-medium text-slate mb-1'>Contact phone number</label>
           <input
             id='emergencyContactPhone'
             name='emergencyContactPhone'

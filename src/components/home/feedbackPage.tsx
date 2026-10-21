@@ -50,9 +50,9 @@ const FeedbackPage = () => {
           className='surface p-6'
         >
           <h3 className='text-lg font-semibold mb-2'>{feedback?.user?.name}</h3>
-          <p className='text-gray-700 mb-4'>{feedback?.message}</p>
+          <p className='text-slate mb-4'>{feedback?.message}</p>
 
-          <div className='flex justify-between items-center pt-4 border-t border-gray-100'>
+          <div className='flex justify-between items-center pt-4 border-t border-line'>
             <div className='flex items-center gap-3'>
               {feedback?.user?.photoUrl ? (
                 <img
@@ -61,11 +61,11 @@ const FeedbackPage = () => {
                   className='w-7 h-7 rounded-full'
                 />
               ) : (
-                <div className='w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center text-sm font-semibold text-gray-700'>
+                <div className='w-7 h-7 rounded-full bg-line flex items-center justify-center text-sm font-semibold text-slate'>
                   {feedback?.user?.name?.charAt(0) || '?'}
                 </div>
               )}
-              <span className='text-sm text-gray-600'>
+              <span className='text-sm text-slate'>
                 {format(new Date(feedback?.createdAt), 'PPp')}
               </span>
             </div>

@@ -43,7 +43,7 @@ export default function Print(): ReactElement {
               Keep the card in your wallet or in your car.
             </p>
 
-            <div className='inline-block p-2 border-2 border-dashed border-gray-400 rounded-2xl'>
+            <div className='inline-block p-2 border-2 border-dashed border-slate rounded-2xl'>
               <EmergencyCard forPrint />
             </div>
           </div>

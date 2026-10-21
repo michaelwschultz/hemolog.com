@@ -56,7 +56,10 @@ export function getAuth(): Auth | null {
 
     if (useEmulators && !authEmulatorConnected) {
       try {
-        connectAuthEmulator(authInstance, 'http://localhost:9099', {
+        connectAuthEmulator(
+          authInstance,
+          process.env.NEXT_PUBLIC_AUTH_EMULATOR_URL || 'http://localhost:9099',
+          {
           disableWarnings: true,
         })
         authEmulatorConnected = true

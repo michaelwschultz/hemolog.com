@@ -24,6 +24,38 @@ const linkClass =
 
 export const changelogPosts: ChangelogPost[] = [
   {
+    slug: 'api-enhancements',
+    id: 'post-5',
+    number: '5',
+    title: 'Take Hemolog anywhere',
+    subtitle: (
+      <>
+        Building on our{' '}
+        <a href='https://raycast.com' className={linkClass}>
+          Raycast
+        </a>{' '}
+        update, you can now take Hemolog with you anywhere—or have an AI agent
+        interact with it to either log or review your data.
+      </>
+    ),
+    image: {
+      src: '/images/changelog/api-concept.svg',
+      alt: 'Diagram of the Hemolog API connecting Raycast and AI agents',
+      width: 800,
+      height: 400,
+    },
+    body: (
+      <>
+        <p>
+          Last update brought Hemolog straight into your keyboard with Raycast.
+          Now we're opening up the platform with a robust API. Whether you are
+          traveling light or delegating to an AI agent, your treatment logs are
+          accessible anywhere you go.
+        </p>
+      </>
+    ),
+  },
+  {
     slug: 'raycast-extension',
     id: 'post-4',
     number: '4',
@@ -188,7 +220,7 @@ export function ChangelogEntry({
         alt={post.image.alt}
         width={post.image.width}
         height={post.image.height}
-        className='mt-6 h-auto w-full rounded-2xl border border-line bg-white'
+        className='mt-6 h-auto w-full rounded-2xl border border-line bg-surface'
         sizes='(min-width: 720px) 672px, 100vw'
       />
       {full ? (

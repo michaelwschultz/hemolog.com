@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { type ReactElement, useRef } from 'react'
 import TreatmentModalContent from '@/components/home/treatmentModalContent'
 import Logo from '@/components/shared/logo'
+import ThemeToggle from '@/components/shared/themeToggle'
 import { Popup } from '@/components/shared/popup'
 import { appVersion } from '@/lib/appVersion'
 import { useAuth } from '@/lib/auth'
@@ -59,6 +60,7 @@ const Header = (): ReactElement | null => {
         <div className='flex justify-between items-center'>
           <Logo />
           <div className='flex items-center gap-2' suppressHydrationWarning>
+            <ThemeToggle />
             <button
               type='button'
               onClick={() => {
@@ -73,7 +75,7 @@ const Header = (): ReactElement | null => {
               <button
                 type='button'
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className='flex h-9 w-9 items-center justify-center rounded-full bg-white ring-1 ring-line transition-colors hover:bg-paper'
+                className='flex h-9 w-9 items-center justify-center rounded-full bg-surface ring-1 ring-line transition-colors hover:bg-paper'
               >
                 {user.photoUrl ? (
                   <img
@@ -82,13 +84,13 @@ const Header = (): ReactElement | null => {
                     className='w-8 h-8 rounded-full'
                   />
                 ) : (
-                  <span className='text-sm font-medium text-gray-700'>
+                  <span className='text-sm font-medium text-slate'>
                     {avatarInitial}
                   </span>
                 )}
               </button>
               {dropdownOpen && (
-                <div className='absolute right-0 z-50 mt-2 w-52 rounded-2xl border border-line bg-white py-1 shadow-lg'>
+                <div className='absolute right-0 z-50 mt-2 w-52 rounded-2xl border border-line bg-surface py-1 shadow-lg'>
                   <div className='border-b border-line px-4 py-2.5'>
                     <div className='font-medium text-ink'>{user?.name}</div>
                     {appVersion ? (

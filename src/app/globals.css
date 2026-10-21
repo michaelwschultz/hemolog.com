@@ -1,7 +1,10 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-paper: #f2f4f7;
+  --color-surface: #ffffff;
   --color-ink: #161a20;
   --color-slate: #5a6470;
   --color-line: #e2e6eb;
@@ -56,6 +59,10 @@
 
   --color-link: #d10526;
 
+  /* Constant tokens: elements that stay dark in both themes (code blocks,
+     tooltips). Not remapped under .dark. */
+  --color-night: #161a20;
+
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
   --font-mono:
@@ -71,10 +78,82 @@
   --shadow-none: 0 0 #0000;
 }
 
+.dark {
+  --color-paper: #0e1216;
+  --color-surface: #171c23;
+  --color-ink: #e8ecf1;
+  --color-slate: #97a1ae;
+  --color-line: #2a313b;
+  --color-link: #ff6b7f;
+
+  /* Accent ramps remapped for dark backgrounds: low steps become dark
+     surface tints, high steps become light text colors. */
+  --color-primary-50: #2a1015;
+  --color-primary-100: #3a151c;
+  --color-primary-200: #4d1c25;
+  --color-primary-300: #ff8fa0;
+  --color-primary-400: #ff4d68;
+  --color-primary-500: #ff062c;
+  --color-primary-600: #ff5c73;
+  --color-primary-700: #ff7a8c;
+  --color-primary-800: #ff9db0;
+  --color-primary-900: #ffc2cc;
+  --color-primary-950: #ffe0e6;
+
+  --color-success-50: #10241a;
+  --color-success-100: #163024;
+  --color-success-200: #1f4132;
+  --color-success-300: #86d4a4;
+  --color-success-400: #4fba78;
+  --color-success-500: #3fb56e;
+  --color-success-600: #4fc47e;
+  --color-success-700: #6fd394;
+  --color-success-800: #8fdea9;
+  --color-success-900: #afe8be;
+  --color-success-950: #cff2d4;
+
+  --color-warning-50: #131c2b;
+  --color-warning-100: #1a2637;
+  --color-warning-200: #3a4a6b;
+  --color-warning-300: #9ec0ee;
+  --color-warning-400: #6b9ae0;
+  --color-warning-500: #6b9ae0;
+  --color-warning-600: #82abee;
+  --color-warning-700: #9ec0ee;
+  --color-warning-800: #b9d4f6;
+  --color-warning-900: #d5e6fa;
+  --color-warning-950: #eff4fd;
+
+  --color-error-50: #2a1015;
+  --color-error-100: #3a151c;
+  --color-error-200: #4d1c25;
+  --color-error-300: #ff8fa0;
+  --color-error-400: #ff4d68;
+  --color-error-500: #ff062c;
+  --color-error-600: #ff5c73;
+  --color-error-700: #ff7a8c;
+  --color-error-800: #ff9db0;
+  --color-error-900: #ffc2cc;
+  --color-error-950: #ffe0e6;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow: 0 1px 2px 0 rgb(0 0 0 / 0.35);
+  --shadow-md: 0 8px 24px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 16px 40px rgb(0 0 0 / 0.45);
+  --shadow-xl: 0 24px 48px rgb(0 0 0 / 0.5);
+  --shadow-2xl: 0 32px 64px rgb(0 0 0 / 0.55);
+  --shadow-inner: inset 0 1px 2px 0 rgb(0 0 0 / 0.3);
+}
+
 @layer base {
   html {
     background: var(--color-paper);
     scrollbar-gutter: stable;
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
   }
 
   body {
@@ -96,6 +175,11 @@
     color: var(--color-ink);
   }
 
+  html.dark ::selection {
+    background: #5c1018;
+    color: var(--color-ink);
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-primary-500);
     outline-offset: 2px;
@@ -113,7 +197,7 @@
   }
 
   .surface {
-    background: #fff;
+    background: var(--color-surface);
     border: 1px solid var(--color-line);
     border-radius: 16px;
   }
@@ -155,13 +239,13 @@
   }
 
   .btn-secondary {
-    background: #fff;
+    background: var(--color-surface);
     color: var(--color-ink);
     border: 1px solid var(--color-line);
   }
 
   .btn-secondary:hover:not(:disabled) {
-    background: #f7f8fa;
+    background: var(--color-paper);
   }
 
   .btn-danger {
@@ -180,7 +264,7 @@
 
   .field {
     width: 100%;
-    background: #fff;
+    background: var(--color-surface);
     border: 1px solid var(--color-line);
     border-radius: 12px;
     padding: 0.6rem 0.8rem;
@@ -201,7 +285,7 @@
   }
 
   .note {
-    background: #fff;
+    background: var(--color-surface);
     border: 1px solid var(--color-line);
     border-radius: 16px;
     padding: 1rem 1.1rem;
@@ -210,6 +294,11 @@
   .note-urgent {
     background: #fff5f6;
     border-color: #ffd0d6;
+  }
+
+  html.dark .note-urgent {
+    background: #2a1218;
+    border-color: #4d1c25;
   }
 
   .note-title {
@@ -224,7 +313,7 @@
   .assay {
     position: relative;
     overflow: hidden;
-    background: #fff;
+    background: var(--color-surface);
     border: 1px solid var(--color-line);
     border-radius: 16px;
   }
@@ -239,6 +328,12 @@
 }
 
 @media print {
+  html.dark,
+  html.dark body {
+    background: #fff;
+    color: #161a20;
+  }
+
   body {
     background: #fff;
   }

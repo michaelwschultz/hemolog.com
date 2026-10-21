@@ -33,7 +33,7 @@ export function AppNav(): ReactElement {
 
   return (
     <nav
-      className='inline-flex max-w-full gap-1 overflow-x-auto rounded-full border border-line bg-white p-1'
+      className='inline-flex max-w-full gap-1 overflow-x-auto rounded-full border border-line bg-surface p-1'
       aria-label='App sections'
     >
       {items.map((item) => {
@@ -44,7 +44,7 @@ export function AppNav(): ReactElement {
             key={item.href}
             href={item.href}
             className={`rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors ${
-              isActive ? 'bg-ink text-white' : 'text-slate hover:text-ink'
+              isActive ? 'bg-ink text-paper' : 'text-slate hover:text-ink'
             }`}
             role='tab'
             aria-selected={isActive}

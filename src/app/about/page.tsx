@@ -61,7 +61,7 @@ const About = (): ReactElement => {
               alt='Insights example'
               width={487}
               height={337}
-              className='h-auto w-full rounded-2xl border border-line bg-white'
+              className='h-auto w-full rounded-2xl border border-line bg-surface'
               sizes='(min-width: 720px) 672px, 100vw'
             />
             <figcaption className='mt-3 text-sm leading-relaxed text-slate'>

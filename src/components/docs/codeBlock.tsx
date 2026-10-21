@@ -23,7 +23,7 @@ export default function CodeBlock({
   }, [code])
 
   return (
-    <div className='relative overflow-hidden rounded-2xl bg-ink'>
+    <div className='relative overflow-hidden rounded-2xl bg-night'>
       <div className='flex items-center justify-between gap-3 border-b border-white/10 px-3 py-1.5'>
         <span className='text-xs font-medium tracking-wide text-white/50 uppercase'>
           {label || 'Code'}
@@ -31,7 +31,7 @@ export default function CodeBlock({
         <button
           type='button'
           onClick={copyToClipboard}
-          className='inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white'
+          className='inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium text-white/70 transition-colors hover:bg-surface/10 hover:text-white'
           title='Copy'
         >
           <IconCopy className='h-3.5 w-3.5' />

@@ -82,7 +82,7 @@ export default function ActionMenu({
     isOpen && mounted ? (
       <div
         ref={menuRef}
-        className='fixed z-[9999] w-32 rounded-2xl border border-line bg-white py-1 shadow-lg'
+        className='fixed z-[9999] w-32 rounded-2xl border border-line bg-surface py-1 shadow-lg'
         style={{ top: menuPosition.top, left: menuPosition.left }}
       >
         <button

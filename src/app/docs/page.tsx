@@ -125,7 +125,7 @@ function MethodBadge({ method }: { method: 'GET' | 'POST' }): ReactElement {
 
 function InlineCode({ children }: { children: ReactNode }): ReactElement {
   return (
-    <code className='rounded-md bg-white px-1.5 py-0.5 font-mono text-[13px] text-ink ring-1 ring-line'>
+    <code className='rounded-md bg-surface px-1.5 py-0.5 font-mono text-[13px] text-ink ring-1 ring-line'>
       {children}
     </code>
   )
@@ -139,11 +139,11 @@ function Field({
   children: ReactNode
 }): ReactElement {
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-[9rem_1fr] gap-1 sm:gap-4 py-3 border-b border-gray-100'>
+    <div className='grid grid-cols-1 sm:grid-cols-[9rem_1fr] gap-1 sm:gap-4 py-3 border-b border-line'>
       <dt>
         <InlineCode>{name}</InlineCode>
       </dt>
-      <dd className='text-gray-700'>{children}</dd>
+      <dd className='text-slate'>{children}</dd>
     </div>
   )
 }
@@ -200,7 +200,7 @@ export default function DocsPage(): ReactElement {
             </a>
           </nav>
 
-          <p className='text-gray-700 mb-4'>
+          <p className='text-slate mb-4'>
             Anyone with a Hemolog account can use the REST API to work with
             their own treatment logs. Copy your API key from the{' '}
             <Link
@@ -213,7 +213,7 @@ export default function DocsPage(): ReactElement {
             <InlineCode>Authorization: Bearer</InlineCode> header on each
             request.
           </p>
-          <p className='text-gray-700 mb-12'>
+          <p className='text-slate mb-12'>
             The API is intentionally small: fetch your full history, fetch the
             last three logs (the same slice shown on your emergency page), or
             post a new treatment. Deleted treatments are never returned.
@@ -221,7 +221,7 @@ export default function DocsPage(): ReactElement {
 
           <section id='authentication' className='mb-16 scroll-mt-8'>
             <h3 className='text-2xl font-bold mb-4'>Authentication</h3>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               Send your API key in an{' '}
               <InlineCode>Authorization: Bearer</InlineCode> header:
             </p>
@@ -231,13 +231,13 @@ export default function DocsPage(): ReactElement {
                 code='curl -H "Authorization: Bearer YOUR_API_KEY" https://hemolog.com/api/treatments'
               />
             </div>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               The <InlineCode>apikey</InlineCode> query parameter (
               <InlineCode>?apikey=YOUR_API_KEY</InlineCode>) is no longer
               accepted. Send the key in the{' '}
               <InlineCode>Authorization</InlineCode> header instead.
             </p>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               <InlineCode>GET /api/recent-treatments</InlineCode> also accepts{' '}
               <InlineCode>alertid</InlineCode> — the public ID printed on your
               emergency card — instead of an API key. The other endpoints
@@ -262,7 +262,7 @@ export default function DocsPage(): ReactElement {
                 /api/treatments
               </h3>
             </div>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               Returns every non-deleted treatment for the key holder, newest{' '}
               <InlineCode>date</InlineCode> first. API key:{' '}
               <InlineCode>Authorization</InlineCode> header (required).
@@ -270,7 +270,7 @@ export default function DocsPage(): ReactElement {
             <div className='mb-4'>
               <CodeBlock label='Response' code={TREATMENT_JSON} />
             </div>
-            <p className='text-sm text-gray-600'>
+            <p className='text-sm text-slate'>
               Each item includes an extra <InlineCode>id</InlineCode> field that
               matches <InlineCode>uid</InlineCode>.
             </p>
@@ -283,19 +283,19 @@ export default function DocsPage(): ReactElement {
                 /api/recent-treatments
               </h3>
             </div>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               Returns the three most recent treatments, the same slice shown on
               the public emergency page. Sorted by{' '}
               <InlineCode>createdAt</InlineCode>, newest first.
             </p>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               API key: <InlineCode>Authorization</InlineCode> header, or{' '}
               <InlineCode>alertid</InlineCode> (at least one required).
             </p>
             <div className='mb-4'>
               <CodeBlock label='cURL' code={CURL_RECENT} />
             </div>
-            <p className='text-sm text-gray-600'>
+            <p className='text-sm text-slate'>
               With an alert ID:{' '}
               <InlineCode>
                 /api/recent-treatments?alertid=your-alert-id
@@ -310,7 +310,7 @@ export default function DocsPage(): ReactElement {
                 /api/log-treatment
               </h3>
             </div>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               Creates a new treatment. Send a JSON body with any subset of
               treatment fields. Missing fields are copied from your most recent
               log, so a Shortcut can post{' '}
@@ -320,7 +320,7 @@ export default function DocsPage(): ReactElement {
               <InlineCode>PROPHY</InlineCode>. API key:{' '}
               <InlineCode>Authorization</InlineCode> header (required).
             </p>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               Body: JSON object (partial treatment).{' '}
               <InlineCode>createdAt</InlineCode>,{' '}
               <InlineCode>deletedAt</InlineCode>, and{' '}
@@ -332,7 +332,7 @@ export default function DocsPage(): ReactElement {
             <div className='mb-4'>
               <CodeBlock label='Success' code={LOG_SUCCESS} />
             </div>
-            <p className='text-sm text-gray-600 mb-4'>
+            <p className='text-sm text-slate mb-4'>
               The response is a success message, not the created record.
             </p>
             <CodeBlock label='Minimal cURL' code={LOG_CURL} />
@@ -340,7 +340,7 @@ export default function DocsPage(): ReactElement {
 
           <section id='errors' className='mb-16 scroll-mt-8'>
             <h3 className='text-2xl font-bold mb-4'>Errors</h3>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               Failed requests return HTTP 500 with an{' '}
               <InlineCode>error</InlineCode> string:
             </p>
@@ -348,7 +348,7 @@ export default function DocsPage(): ReactElement {
               <CodeBlock label='Missing key' code={ERROR_MISSING_KEY} />
               <CodeBlock label='Invalid key' code={ERROR_INVALID_KEY} />
             </div>
-            <p className='text-sm text-gray-600 mt-4'>
+            <p className='text-sm text-slate mt-4'>
               Posting without a JSON body returns{' '}
               <InlineCode>
                 {'{ "error": "Missing treatment data." }'}
@@ -358,7 +358,7 @@ export default function DocsPage(): ReactElement {
 
           <section id='treatment-object' className='mb-16 scroll-mt-8'>
             <h3 className='text-2xl font-bold mb-4'>Treatment object</h3>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               Fields you can send when logging, and that you will see on reads:
             </p>
             <dl>
@@ -395,13 +395,13 @@ export default function DocsPage(): ReactElement {
 
           <section id='examples' className='mb-16 scroll-mt-8'>
             <h3 className='text-2xl font-bold mb-4'>Examples</h3>
-            <p className='text-gray-700 mb-8'>
+            <p className='text-slate mb-8'>
               A few ways people actually use this API — from a one-off curl to a
               home-screen Shortcut.
             </p>
 
             <h4 className='text-lg font-semibold mb-2'>cURL</h4>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               Confirm your key works by fetching the last three treatments:
             </p>
             <div className='mb-10'>
@@ -409,7 +409,7 @@ export default function DocsPage(): ReactElement {
             </div>
 
             <h4 className='text-lg font-semibold mb-2'>JavaScript</h4>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               Export your full history from the browser console, a Node script,
               or a personal dashboard:
             </p>
@@ -418,12 +418,12 @@ export default function DocsPage(): ReactElement {
             </div>
 
             <h4 className='text-lg font-semibold mb-2'>Apple Shortcut</h4>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               Log prophylaxis from your home screen. Because the API fills in
               missing fields from your last treatment, the Shortcut only needs
               to send a type.
             </p>
-            <ol className='list-decimal pl-5 text-gray-700 mb-4 space-y-2'>
+            <ol className='list-decimal pl-5 text-slate mb-4 space-y-2'>
               <li>Open Shortcuts and create a new shortcut.</li>
               <li>
                 Add <strong>Get Contents of URL</strong>. Set the URL to{' '}
@@ -446,7 +446,7 @@ export default function DocsPage(): ReactElement {
             </div>
 
             <h4 className='text-lg font-semibold mb-2'>Python CSV export</h4>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               Pull your history into a spreadsheet before a clinic visit:
             </p>
             <CodeBlock label='Python' code={PYTHON_CSV} />
@@ -469,7 +469,7 @@ export default function DocsPage(): ReactElement {
 
           <section id='ai-agents' className='mb-16 scroll-mt-8'>
             <h3 className='text-2xl font-bold mb-4'>For AI agents</h3>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               If you are an AI assistant (or you are building with one), you can
               use this page as your instructions for the Hemolog API. Create a
               key on your{' '}
@@ -483,8 +483,8 @@ export default function DocsPage(): ReactElement {
               <InlineCode>Authorization: Bearer YOUR_API_KEY</InlineCode> on
               every request.
             </p>
-            <p className='text-gray-700 mb-2'>Quick reference:</p>
-            <ul className='list-disc pl-5 text-gray-700 mb-4 space-y-1'>
+            <p className='text-slate mb-2'>Quick reference:</p>
+            <ul className='list-disc pl-5 text-slate mb-4 space-y-1'>
               <li>
                 Base URL: <InlineCode>https://hemolog.com</InlineCode> (JSON in
                 and out)
@@ -508,20 +508,20 @@ export default function DocsPage(): ReactElement {
                 string — show it to the user rather than retrying
               </li>
             </ul>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               A revoked key stops working immediately. If you get{' '}
               <InlineCode>Invalid API key</InlineCode>, ask the user for a new
               one from their Profile page. Treat the key like a password: never
               print or log it, and prefer the header over URL parameters.
             </p>
-            <p className='text-gray-700 mb-4'>
+            <p className='text-slate mb-4'>
               The full skill as a single markdown file, suitable for pasting
               into an agent's instructions:
             </p>
             <div className='mb-4'>
               <CodeBlock label='hemolog-api-skill.md' code={API_SKILL_MD} />
             </div>
-            <p className='text-sm text-gray-600'>
+            <p className='text-sm text-slate'>
               Also available as a download at{' '}
               <a
                 href='/hemolog-api-skill.md'

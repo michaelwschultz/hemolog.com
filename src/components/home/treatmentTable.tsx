@@ -241,16 +241,16 @@ export default function TreatmentTable(
     return (
       <div className='overflow-x-auto'>
         <div className='animate-pulse'>
-          <div className='h-12 bg-gray-200 rounded mb-4'></div>
-          <div className='h-16 bg-gray-100 rounded mb-2'></div>
-          <div className='h-16 bg-gray-100 rounded mb-2'></div>
-          <div className='h-16 bg-gray-100 rounded mb-2'></div>
-          <div className='h-16 bg-gray-100 rounded mb-2'></div>
-          <div className='h-16 bg-gray-100 rounded mb-2'></div>
+          <div className='h-12 bg-line rounded mb-4'></div>
+          <div className='h-16 bg-paper rounded mb-2'></div>
+          <div className='h-16 bg-paper rounded mb-2'></div>
+          <div className='h-16 bg-paper rounded mb-2'></div>
+          <div className='h-16 bg-paper rounded mb-2'></div>
+          <div className='h-16 bg-paper rounded mb-2'></div>
         </div>
         <div className='flex justify-center items-center py-8'>
           <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500'></div>
-          <span className='ml-3 text-gray-600'>Loading treatment data</span>
+          <span className='ml-3 text-slate'>Loading treatment data</span>
         </div>
       </div>
     )
@@ -283,7 +283,7 @@ export default function TreatmentTable(
   }
 
   return (
-    <div className='overflow-x-auto rounded-2xl border border-line bg-white'>
+    <div className='overflow-x-auto rounded-2xl border border-line bg-surface'>
       <table className='min-w-full divide-y divide-line'>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -311,7 +311,7 @@ export default function TreatmentTable(
             </tr>
           ))}
         </thead>
-        <tbody className='divide-y divide-line bg-white'>
+        <tbody className='divide-y divide-line bg-surface'>
           {table.getRowModel().rows.length === 0 ? (
             <tr>
               <td
@@ -330,7 +330,7 @@ export default function TreatmentTable(
             </tr>
           ) : (
             table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className='hover:bg-paper'>
+              <tr key={row.id} className='hover:bg-line/30'>
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
@@ -347,7 +347,7 @@ export default function TreatmentTable(
 
       {/* Pagination */}
       {filteredTreatments.length > paginationState.pageSize && (
-        <div className='flex flex-col gap-3 border-t border-line bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5'>
+        <div className='flex flex-col gap-3 border-t border-line bg-surface px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5'>
           <div className='flex items-center gap-2'>
             <button
               type='button'

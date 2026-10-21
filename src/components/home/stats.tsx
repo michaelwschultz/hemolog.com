@@ -151,7 +151,7 @@ export default function Stats(props: StatsProps): ReactElement {
             value={`$${estimatedTotalCost.toLocaleString()}`}
             label='Estimated cost this year'
           />
-          <div className='pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-lg bg-ink px-2 py-1 text-sm whitespace-nowrap text-white opacity-0 transition-opacity group-hover:opacity-100'>
+          <div className='pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-lg bg-ink px-2 py-1 text-sm whitespace-nowrap text-paper opacity-0 transition-opacity group-hover:opacity-100'>
             About $1.66 per unit
           </div>
         </div>

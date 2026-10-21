@@ -119,7 +119,7 @@ const ProfilePage = (): ReactElement => {
               value={newKeyDescription}
               onChange={(e) => setNewKeyDescription(e.target.value)}
               placeholder='Key description (e.g. "Mobile app")'
-              className='flex-1 rounded-xl border border-line bg-white px-3 py-2 text-sm text-ink'
+              className='flex-1 rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink'
               maxLength={50}
             />
             <button
@@ -133,28 +133,28 @@ const ProfilePage = (): ReactElement => {
           </div>
 
           {isLoadingKeys ? (
-            <p className='text-sm text-gray-600'>Loading API keys...</p>
+            <p className='text-sm text-slate'>Loading API keys...</p>
           ) : apiKeys.length === 0 ? (
-            <p className='text-sm text-gray-600'>No API keys created yet.</p>
+            <p className='text-sm text-slate'>No API keys created yet.</p>
           ) : (
             <div className='space-y-2'>
               {apiKeys.map((key) => (
                 <div
                   key={key.id}
-                  className='flex items-center justify-between rounded-xl border border-line bg-white px-3 py-2'
+                  className='flex items-center justify-between rounded-xl border border-line bg-surface px-3 py-2'
                 >
                   <div className='flex-1 min-w-0'>
                     <p className='font-medium text-sm text-ink truncate'>
                       {key.description}
                     </p>
-                    <code className='font-mono text-xs text-gray-600 break-all'>
+                    <code className='font-mono text-xs text-slate break-all'>
                       {revealedKeyIds.includes(key.id)
                         ? key.key
                         : maskApiKey(key.key)}
                     </code>
                   </div>
                   {key.revokedAt ? (
-                    <span className='ml-4 shrink-0 rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500'>
+                    <span className='ml-4 shrink-0 rounded-full bg-paper px-2 py-0.5 text-xs text-slate'>
                       Revoked
                     </span>
                   ) : (
@@ -162,7 +162,7 @@ const ProfilePage = (): ReactElement => {
                       <button
                         type='button'
                         onClick={() => handleCopyKey(key.key)}
-                        className='rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-ink'
+                        className='rounded-lg p-1.5 text-slate transition-colors hover:bg-line hover:text-ink'
                         title='Copy key'
                         aria-label='Copy key'
                       >
@@ -171,7 +171,7 @@ const ProfilePage = (): ReactElement => {
                       <button
                         type='button'
                         onClick={() => toggleRevealKey(key.id)}
-                        className='rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-ink'
+                        className='rounded-lg p-1.5 text-slate transition-colors hover:bg-line hover:text-ink'
                         title={
                           revealedKeyIds.includes(key.id)
                             ? 'Hide key'
@@ -190,7 +190,7 @@ const ProfilePage = (): ReactElement => {
                         )}
                       </button>
                       <span
-                        className='mx-1.5 h-4 w-px bg-gray-200'
+                        className='mx-1.5 h-4 w-px bg-line'
                         aria-hidden='true'
                       />
                       <button
@@ -207,7 +207,7 @@ const ProfilePage = (): ReactElement => {
             </div>
           )}
         </div>
-        <p className='mt-2 text-gray-600'>
+        <p className='mt-2 text-slate'>
           Used to access the Hemolog API. See the{' '}
           <Link
             href='/docs'
@@ -223,7 +223,7 @@ const ProfilePage = (): ReactElement => {
         <h2 className='mb-4 font-sans text-xl font-medium tracking-tight text-ink'>
           In case of emergency
         </h2>
-        <p className='mb-4 text-gray-600'>
+        <p className='mb-4 text-slate'>
           A medical worker can simply type in the URL listed on the card, or
           easier scan the QR code with their phone. This gives the worker a
           quick summary of all your info including your 3 most recent logs, and
@@ -248,7 +248,7 @@ const ProfilePage = (): ReactElement => {
         <h2 className='mb-4 font-sans text-xl font-medium tracking-tight text-ink'>
           Delete account
         </h2>
-        <p className='mb-4 text-gray-600'>
+        <p className='mb-4 text-slate'>
           Deleting your account removes your profile, treatments, and emergency
           info forever. This action cannot be undone.
         </p>
@@ -295,7 +295,7 @@ const ProfilePage = (): ReactElement => {
           </div>
         }
       >
-        <p className='text-sm text-gray-600'>
+        <p className='text-sm text-slate'>
           Anything using <strong>{keyPendingRevoke?.description}</strong> will
           immediately lose access to the Hemolog API. This cannot be undone.
         </p>

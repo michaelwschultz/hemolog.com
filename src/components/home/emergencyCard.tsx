@@ -122,7 +122,7 @@ export default function EmergencyCard({ forPrint }: Props): ReactElement {
                   >
                     <h4>{alertUrl}</h4>
                   </Link>
-                  <div className='absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap'>
+                  <div className='absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-night text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap'>
                     Visit your page to preview what others will see.
                   </div>
                 </div>

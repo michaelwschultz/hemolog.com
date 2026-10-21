@@ -36,14 +36,14 @@ export default function EmergencyInfo(props: Props): React.ReactElement {
               className='w-12 h-12 rounded-full'
             />
           ) : (
-            <div className='w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-lg font-semibold text-gray-700'>
+            <div className='w-12 h-12 rounded-full bg-line flex items-center justify-center text-lg font-semibold text-slate'>
               {person.name?.charAt(0) || '?'}
             </div>
           )}
 
           <div className='flex flex-col pl-4'>
             <h3 className='text-xl font-semibold m-0'>{person.name}</h3>
-            <h5 className='text-sm text-gray-600 m-0'>
+            <h5 className='text-sm text-slate m-0'>
               {person.severity} Hemophilia {person.hemophiliaType}, treat with
               factor {person.factor}
             </h5>
@@ -53,7 +53,7 @@ export default function EmergencyInfo(props: Props): React.ReactElement {
         <div className='h-8' />
         <div className='flex justify-between items-center'>
           <h5 className='text-lg font-semibold'>Most recent treatments</h5>
-          <span className='text-sm text-gray-600' suppressHydrationWarning>
+          <span className='text-sm text-slate' suppressHydrationWarning>
             {smallerThanSmall && 'Swipe →'}
           </span>
         </div>
@@ -88,7 +88,7 @@ export default function EmergencyInfo(props: Props): React.ReactElement {
             <h5 className='text-lg font-semibold'>
               Emergency contacts (coming soon)
             </h5>
-            <p className='text-gray-600 mt-1'>
+            <p className='text-slate mt-1'>
               Soon you'll be able to add these from your settings page.
             </p>
           </>

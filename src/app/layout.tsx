@@ -83,8 +83,16 @@ export default function RootLayout({
   return (
     <html
       lang='en'
+      suppressHydrationWarning
       className={`${syne.variable} ${outfit.variable} ${plexMono.variable}`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('hemolog-theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d)}catch(e){}`,
+          }}
+        />
+      </head>
       <body>
         <Analytics />
         <Providers>{children}</Providers>

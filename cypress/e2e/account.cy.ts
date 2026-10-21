@@ -1,8 +1,7 @@
 describe('Account', () => {
   const newTreatmentButton = () => cy.contains('button', 'New treatment')
   const yearFilter = () => cy.get('select[aria-label="Filter by year"]')
-  const statValueFor = (label: string) =>
-    cy.contains('div', label).prev()
+  const statValueFor = (label: string) => cy.contains('div', label).prev()
   const toastShouldContain = (message: string) =>
     cy.contains('[role="status"]', message).should('be.visible')
 

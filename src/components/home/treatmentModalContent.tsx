@@ -186,7 +186,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
       <div className='p-4 sm:p-6'>
         <form onSubmit={formik.handleSubmit} className='space-y-5'>
           <div>
-            <p className='text-xs font-medium text-gray-500 uppercase tracking-wide mb-3'>
+            <p className='text-xs font-medium text-slate uppercase tracking-wide mb-3'>
               Treatment type
             </p>
             <div className='grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3'>
@@ -196,7 +196,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                 className={`${typeButtonBase} ${
                   formik.values.type === TreatmentTypeEnum.PROPHY
                     ? 'bg-amber-100 text-amber-900 border-2 border-amber-300 shadow-sm'
-                    : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100 hover:border-gray-300'
+                    : 'bg-paper text-slate border border-line hover:bg-line hover:border-line'
                 }`}
               >
                 Prophy
@@ -207,7 +207,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                 className={`${typeButtonBase} ${
                   formik.values.type === TreatmentTypeEnum.BLEED
                     ? 'bg-emerald-100 text-emerald-900 border-2 border-emerald-300 shadow-sm'
-                    : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100 hover:border-gray-300'
+                    : 'bg-paper text-slate border border-line hover:bg-line hover:border-line'
                 }`}
               >
                 Bleed
@@ -220,7 +220,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                 className={`${typeButtonBase} ${
                   formik.values.type === TreatmentTypeEnum.PREVENTATIVE
                     ? 'bg-primary-50 text-primary-800 border-2 border-primary-300 shadow-sm'
-                    : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100 hover:border-gray-300'
+                    : 'bg-paper text-slate border border-line hover:bg-line hover:border-line'
                 }`}
               >
                 Preventative
@@ -235,7 +235,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               className={`w-full ${typeButtonBase} ${
                 formik.values.type === TreatmentTypeEnum.ANTIBODY
                   ? 'bg-sky-100 text-sky-900 border-2 border-sky-300 shadow-sm'
-                  : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100 hover:border-gray-300'
+                  : 'bg-paper text-slate border border-line hover:bg-line hover:border-line'
               }`}
             >
               Monoclonal antibody
@@ -245,7 +245,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
           <div>
             <label
               htmlFor={dateId}
-              className='block text-sm font-medium text-gray-700 mb-1.5'
+              className='block text-sm font-medium text-slate mb-1.5'
             >
               Date
             </label>
@@ -269,7 +269,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               <div>
                 <label
                   htmlFor={brandId}
-                  className='block text-sm font-medium text-gray-700 mb-1.5'
+                  className='block text-sm font-medium text-slate mb-1.5'
                 >
                   Medication
                 </label>
@@ -292,7 +292,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               <div>
                 <label
                   htmlFor={unitsId}
-                  className='block text-sm font-medium text-gray-700 mb-1.5'
+                  className='block text-sm font-medium text-slate mb-1.5'
                 >
                   Units
                 </label>
@@ -306,7 +306,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
                     value={formik.values.units}
                     className={`${inputBase} pr-14`}
                   />
-                  <span className='absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400'>
+                  <span className='absolute right-4 top-1/2 -translate-y-1/2 text-sm text-slate'>
                     units
                   </span>
                 </div>
@@ -320,7 +320,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               <div>
                 <label
                   htmlFor={lotId}
-                  className='block text-sm font-medium text-gray-700 mb-1.5'
+                  className='block text-sm font-medium text-slate mb-1.5'
                 >
                   Lot Number
                 </label>
@@ -342,7 +342,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               <div>
                 <label
                   htmlFor={sitesId}
-                  className='block text-sm font-medium text-gray-700 mb-1.5'
+                  className='block text-sm font-medium text-slate mb-1.5'
                 >
                   Affected Areas
                 </label>
@@ -360,7 +360,7 @@ export default forwardRef<{ handleSubmit: () => void }, TreatmentModalProps>(
               <div>
                 <label
                   htmlFor={causeId}
-                  className='block text-sm font-medium text-gray-700 mb-1.5'
+                  className='block text-sm font-medium text-slate mb-1.5'
                 >
                   Cause of Bleed
                 </label>

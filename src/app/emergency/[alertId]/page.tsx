@@ -67,7 +67,7 @@ const Emergency = (): ReactElement => {
         {displayLoading && (
           <div className='flex justify-center items-center py-12'>
             <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500'></div>
-            <span className='ml-3 text-gray-600'>Loading emergency info</span>
+            <span className='ml-3 text-slate'>Loading emergency info</span>
           </div>
         )}
 
