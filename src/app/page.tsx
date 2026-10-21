@@ -81,7 +81,7 @@ export default function Landing(): ReactElement {
               src='/images/logging-infusion-illustration.png'
               width={925}
               height={989}
-              className='h-auto w-full max-w-sm object-contain mix-blend-multiply'
+              className='h-auto w-full max-w-sm rounded-2xl bg-white object-contain p-2 mix-blend-multiply dark:mix-blend-normal dark:shadow-md'
             />
           </figure>
         </section>

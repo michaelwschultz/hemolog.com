@@ -21,13 +21,13 @@ const About = (): ReactElement => {
             More than you would ever want to know about Hemolog
           </p>
 
-          <div className='relative mt-10 aspect-[451/285] w-56 overflow-hidden'>
+          <div className='relative mt-10 aspect-[451/285] w-56 overflow-hidden rounded-xl dark:shadow-md'>
             <Image
               src='/images/hemolog-2-hero.png'
               alt='Hemolog 2'
               width={765}
               height={530}
-              className='absolute top-0 left-0 h-auto w-[169.6%] max-w-none -translate-x-[20.52%] -translate-y-[23.2%] mix-blend-multiply'
+              className='absolute top-0 left-0 h-auto w-[169.6%] max-w-none -translate-x-[20.52%] -translate-y-[23.2%] scale-[0.857] bg-white mix-blend-multiply dark:mix-blend-normal'
             />
           </div>
 
