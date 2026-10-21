@@ -1,0 +1,85 @@
+<svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#1e293b" flood-opacity="0.08" />
+    </filter>
+    <filter id="pillShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#ff062c" flood-opacity="0.28" />
+    </filter>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffe0e5" />
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#ff97a6" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="400" fill="#ffffff" />
+  <ellipse cx="440" cy="200" rx="230" ry="160" fill="url(#glow)" />
+
+  <g font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+    <!-- Connectors -->
+    <g fill="none" stroke="#ff97a6" stroke-width="2">
+      <path d="M256 124 C 292 124 298 162 318 184" marker-end="url(#arrow)" />
+      <path d="M256 276 C 292 276 298 238 318 216" marker-end="url(#arrow)" />
+      <path d="M560 200 L 588 200" marker-end="url(#arrow)" />
+    </g>
+
+    <!-- Center: Hemolog API pill -->
+    <rect x="320" y="152" width="240" height="96" rx="48" fill="#ff062c" filter="url(#pillShadow)" />
+    <text x="440" y="198" font-size="21" font-weight="700" text-anchor="middle" fill="#ffffff">Hemolog API</text>
+    <text x="440" y="224" font-size="12.5" text-anchor="middle" fill="#ffffff" fill-opacity="0.78">REST · MCP</text>
+
+    <!-- Left: Raycast card -->
+    <g filter="url(#cardShadow)">
+      <rect x="56" y="72" width="200" height="104" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+    </g>
+    <g>
+      <rect x="76" y="94" width="38" height="26" rx="5" fill="#f8fafc" stroke="#cbd5e1" />
+      <g fill="#94a3b8">
+        <rect x="82" y="100" width="5" height="5" rx="1" />
+        <rect x="89" y="100" width="5" height="5" rx="1" />
+        <rect x="96" y="100" width="5" height="5" rx="1" />
+        <rect x="103" y="100" width="5" height="5" rx="1" />
+        <rect x="82" y="109" width="26" height="4" rx="2" />
+      </g>
+      <text x="76" y="150" font-size="16" font-weight="600" fill="#1e293b">Raycast</text>
+      <text x="76" y="168" font-size="12.5" fill="#64748b">From your keyboard</text>
+    </g>
+
+    <!-- Left: AI agents card -->
+    <g filter="url(#cardShadow)">
+      <rect x="56" y="224" width="200" height="104" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+    </g>
+    <g>
+      <path d="M93 247 L96.5 255.5 L105 259 L96.5 262.5 L93 271 L89.5 262.5 L81 259 L89.5 255.5 Z" fill="#ff062c" />
+      <path d="M108 244 l1.7 4.2 4.2 1.7 -4.2 1.7 -1.7 4.2 -1.7 -4.2 -4.2 -1.7 4.2 -1.7 z" fill="#ff97a6" />
+      <text x="76" y="302" font-size="16" font-weight="600" fill="#1e293b">AI agents</text>
+      <text x="76" y="320" font-size="12.5" fill="#64748b">Natural language</text>
+    </g>
+
+    <!-- Right: treatment log preview -->
+    <g filter="url(#cardShadow)">
+      <rect x="592" y="96" width="184" height="208" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+    </g>
+    <text x="612" y="130" font-size="10.5" font-weight="600" letter-spacing="1.5" fill="#94a3b8">TREATMENT LOG</text>
+    <line x1="612" y1="142" x2="756" y2="142" stroke="#f1f5f9" />
+    <g>
+      <circle cx="618" cy="161" r="4.5" fill="#ff062c" />
+      <text x="632" y="166" font-size="13.5" font-weight="600" fill="#1e293b">Advate</text>
+      <text x="756" y="166" font-size="12" fill="#64748b" text-anchor="end">3000 IU</text>
+
+      <circle cx="618" cy="191" r="4.5" fill="#ff062c" />
+      <text x="632" y="196" font-size="13.5" font-weight="600" fill="#1e293b">Advate</text>
+      <text x="756" y="196" font-size="12" fill="#64748b" text-anchor="end">3000 IU</text>
+
+      <circle cx="618" cy="221" r="4.5" fill="#ff062c" />
+      <text x="632" y="226" font-size="13.5" font-weight="600" fill="#1e293b">Advate</text>
+      <text x="756" y="226" font-size="12" fill="#64748b" text-anchor="end">3000 IU</text>
+    </g>
+    <line x1="612" y1="246" x2="756" y2="246" stroke="#f1f5f9" />
+    <text x="612" y="272" font-size="12" fill="#64748b">3 doses this month</text>
+  </g>
+</svg>

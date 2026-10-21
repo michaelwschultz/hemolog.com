@@ -52,6 +52,27 @@ export const changelogPosts: ChangelogPost[] = [
           traveling light or delegating to an AI agent, your treatment logs are
           accessible anywhere you go.
         </p>
+        <p>
+          Everything you need is on the{' '}
+          <Link href='/docs' className={linkClass}>
+            API docs page
+          </Link>
+          : every endpoint, response shapes, and ready-to-run examples for
+          cURL, JavaScript, Shortcuts, and Python.
+        </p>
+        <p>
+          How it works: grab your API key from your{' '}
+          <Link href='/app/profile' className={linkClass}>
+            Profile
+          </Link>{' '}
+          page and send it as an{' '}
+          <code className='font-mono text-[13px]'>Authorization: Bearer</code>{' '}
+          header on each request. Keys are per-app — create as many as you
+          like, name them so you know what's using them, and revoke them
+          individually at any time (a revoked key stops working immediately).
+          Treat each key like a password: anyone who has it can read your
+          treatments and log new ones.
+        </p>
       </>
     ),
   },
@@ -220,6 +241,7 @@ export function ChangelogEntry({
         alt={post.image.alt}
         width={post.image.width}
         height={post.image.height}
+        priority={full}
         className='mt-6 h-auto w-full rounded-2xl border border-line bg-surface'
         sizes='(min-width: 720px) 672px, 100vw'
       />

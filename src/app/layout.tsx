@@ -1,5 +1,3 @@
-'use client'
-
 import { IBM_Plex_Mono, Outfit, Syne } from 'next/font/google'
 import { Analytics } from '@/components/shared/analytics'
 import { Providers } from './providers'
@@ -75,6 +73,13 @@ const plexMono = IBM_Plex_Mono({
 //   },
 // }
 
+const googleRichResultsSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  url: 'https://hemolog.com',
+  logo: 'https://hemolog.com/images/hemolog-logo.png',
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -86,14 +91,18 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${syne.variable} ${outfit.variable} ${plexMono.variable}`}
     >
-      <head>
+      <body>
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(googleRichResultsSchema),
+          }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `try{var t=localStorage.getItem('hemolog-theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d)}catch(e){}`,
           }}
         />
-      </head>
-      <body>
         <Analytics />
         <Providers>{children}</Providers>
       </body>
