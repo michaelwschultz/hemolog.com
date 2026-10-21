@@ -1,11 +1,11 @@
 // E2E coverage for delete-account against the Firebase emulators, so the
 // shared Test User fixture is never touched.
 //
-// Emulator ports come from firebase.emulator.json (auth 9099, firestore 8082).
+// Emulator ports come from firebase.emulator.json (auth 9098, firestore 8082).
 // The API route verifies tokens via FIREBASE_AUTH_EMULATOR_HOST from
 // src/lib/firebase-admin.ts, which must point at the same Auth emulator.
 
-const AUTH_EMULATOR_URL = 'http://localhost:9099'
+const AUTH_EMULATOR_URL = 'http://localhost:9098'
 const FIRESTORE_BASE =
   'http://localhost:8082/v1/projects/hemolog/databases/(default)/documents'
 
